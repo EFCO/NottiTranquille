@@ -8,4 +8,15 @@
     <artifactId>nottitranquille</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+
+    <dependencies>
+        <!-- The JavaServer Pages Standard Tag Library (JSTL)
+        is a collection of useful JSP tags which encapsulates core functionality common to many JSP applications. -->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+    </dependencies>
 </project>
