@@ -1,5 +1,7 @@
 package it.ispw.efco.nottitranquille.model;
 
+import it.ispw.efco.nottitranquille.model.enumeration.Gender;
+
 import java.util.*;
 
 /**
@@ -38,6 +40,9 @@ public class Person {
      */
     private String phoneNumber;
 
+    private Address address;
+
+    private Gender gender;
 
 
 }

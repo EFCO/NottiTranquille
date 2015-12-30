@@ -49,6 +49,15 @@ public class Location {
     private Integer numberOfBedrooms;
 
 
+    private Prices prices;
+
+    private LocationType type;
+
+    private List<Service> services;
+
+    private Location structure;
+
+    private List<BookingCalendar> booking;
 
 
 

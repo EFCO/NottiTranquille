@@ -1,5 +1,7 @@
 package it.ispw.efco.nottitranquille.model;
 
+import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
+
 import java.util.*;
 
 /**
@@ -27,6 +29,14 @@ public class Request {
      * 
      */
     private Date lastModified;
+
+    private Applicant requestedBy;
+
+    private Scout reviewedBy;
+
+    private Structure structure;
+
+    private RequestStatus status;
 
 
 

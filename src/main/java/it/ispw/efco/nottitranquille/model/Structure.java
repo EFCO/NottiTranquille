@@ -48,9 +48,15 @@ public class Structure {
      */
     private Date checkOut;
 
+    private Manager managedBy;
 
+    private Owner owner;
 
+    private Address address;
 
+    private StructureType type;
+
+    private List<Service> services;
 
 
 

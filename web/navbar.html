@@ -1,5 +1,5 @@
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,23 +7,43 @@
                 <h4 class="modal-title" id="myModalLabel">Search</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Nation">
-                    <input type="text" class="form-control" placeholder="City">
-                    <input type="date" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-default">Submit</button>
+                <form action="search.jsp" name="myform" method="GET">
+                    <div class="form-group">
+                        <label for="nation">Nazione :</label>
+                        <input name="nation" id="nation" type="text" class="form-control" placeholder="Roma">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">Città :</label>
+                        <input name="city" id="city" type="text" class="form-control" placeholder="Zagarolo">
+                    </div>
+                    <div class="form-group">
+                        <label for="checkin">Check In:</label>
+                        <input name="checkin" id="checkin" type="date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="checkout">Check Out:</label>
+                        <input name="checkout" id="checkout" type="date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="pricerange">Prezzo :</label>
+                        <select name="pricerange" id="pricerange" class="form-control">
+                            <option>Fino a 100 euro</option>
+                            <option>da 100 a 200 euro</option>
+                            <option>da 200 a 500 euro</option>
+                        </select>
+                    </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default">Advanced Search</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Search</button>
+                <button type="submit" name="search" class="btn btn-primary" id="search" value="search">Search</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -76,8 +96,8 @@
                         </li>
                     </ul>
                     <form class="navbar-form navbar-right" role="search">
-                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal" >Search</button>
-                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal2" >Sign In/Sign Up</button>
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#searchModal" >Search</button>
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#signModal" >Sign In/Sign Up</button>
                     </form>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
