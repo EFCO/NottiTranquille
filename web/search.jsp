@@ -10,7 +10,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page contentType="text/html;charset=ISO-8859-1" language="java" pageEncoding="ISO-8859-1"%>
+<%@ page contentType="text/html;charset=ISO-8859-1" language="java" pageEncoding="ISO-8859-1" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -18,12 +18,13 @@
              class="it.ispw.efco.nottitranquille.view.SearchBean" />
 
 <jsp:setProperty name="basicSearchBean" property="*" />
+
 <%
     if (request.getParameter("search") != null) {
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd/mm/yyyy");
-        DateTime checkin = DateTime.parse(request.getParameter("checkin"), dateTimeFormatter);
-        DateTime checkout = DateTime.parse(request.getParameter("checkout"), dateTimeFormatter);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-mm-dd");
+        DateTime checkin = DateTime.parse(request.getParameter("checkin_str"), dateTimeFormatter);
+        DateTime checkout = DateTime.parse(request.getParameter("checkout_str"), dateTimeFormatter);
 
         basicSearchBean.setCheckin(checkin);
         basicSearchBean.setCheckout(checkout);
@@ -58,12 +59,12 @@
             <input name="city" id="city" type="text" class="form-control" placeholder="Zagarolo">
         </div>
         <div class="form-group">
-            <label for="checkin">Check In:</label>
-            <input name="checkin" id="checkin" type="date" class="form-control">
+            <label for="checkin_str">Check In:</label>
+            <input name="checkin_str" id="checkin_str" type="date" class="form-control">
         </div>
         <div class="form-group">
-            <label for="checkout">Check Out:</label>
-            <input name="checkout" id="checkout" type="date" class="form-control" >
+            <label for="checkout_str">Check Out:</label>
+            <input name="checkout_str" id="checkout_str" type="date" class="form-control" >
         </div>
         <div class="form-group">
             <label for="pricerange">Prezzo :</label>
