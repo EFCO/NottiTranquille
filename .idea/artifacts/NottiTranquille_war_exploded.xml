@@ -9,6 +9,8 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
+          <element id="library" level="project" name="Maven: joda-time:joda-time:2.9.1" />
+          <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.5" />
         </element>
       </element>
     </root>

@@ -1,5 +1,7 @@
 package it.ispw.efco.nottitranquille.view;
 
+import org.joda.time.DateTime;
+
 import java.util.Date;
 
 /**
@@ -8,8 +10,8 @@ import java.util.Date;
 public class SearchBean {
     private String nation = "";
     private String city = "";
-    private Date checkin = null;
-    private Date checkout = null;
+    private DateTime checkin;
+    private DateTime checkout;
     private String pricerange = "";
 
     public SearchBean() {
@@ -23,11 +25,11 @@ public class SearchBean {
         return city;
     }
 
-    public Date getCheckin() {
+    public DateTime getCheckin() {
         return checkin;
     }
 
-    public Date getCheckout() {
+    public DateTime getCheckout() {
         return checkout;
     }
 
@@ -43,11 +45,11 @@ public class SearchBean {
         this.city = city;
     }
 
-    public void setCheckin(Date checkin) {
+    public void setCheckin(DateTime checkin) {
         this.checkin = checkin;
     }
 
-    public void setCheckout(Date checkout) {
+    public void setCheckout(DateTime checkout) {
         this.checkout = checkout;
     }
 
@@ -56,7 +58,8 @@ public class SearchBean {
     }
 
     public boolean validate() {
-        if(this.nation.equals("") || this.city.equals("") || this.checkin == null || this.checkout == null || this.pricerange.equals("")) {
+        System.out.println("Nazione:" + this.nation + "\nCittà: " + this.checkin + this.checkout + this.city + this.pricerange);
+        if(this.nation.equals("") || this.city.equals("") || this.checkin == null|| this.checkout == null || this.pricerange.equals("")) {
             return false;
         }
         return true;

@@ -1,3 +1,7 @@
+<%@ page import="org.joda.time.format.DateTimeFormat" %>
+<%@ page import="org.joda.time.format.DateTimeFormatter" %>
+<%@ page import="org.joda.time.DateTime" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: Federico
@@ -5,6 +9,7 @@
   Time: 15:11
   To change this template use File | Settings | File Templates.
 --%>
+
 <%@ page contentType="text/html;charset=ISO-8859-1" language="java" pageEncoding="ISO-8859-1"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -15,6 +20,14 @@
 <jsp:setProperty name="basicSearchBean" property="*" />
 <%
     if (request.getParameter("search") != null) {
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd/mm/yyyy");
+        DateTime checkin = DateTime.parse(request.getParameter("checkin"), dateTimeFormatter);
+        DateTime checkout = DateTime.parse(request.getParameter("checkout"), dateTimeFormatter);
+
+        basicSearchBean.setCheckin(checkin);
+        basicSearchBean.setCheckout(checkout);
+
         if (basicSearchBean.validate()) {
             %>
             <!-- Passa il controllo alla nuova pagina -->
