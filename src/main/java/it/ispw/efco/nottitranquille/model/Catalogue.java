@@ -7,9 +7,6 @@ import java.util.*;
  */
 public class Catalogue {
 
-
-    List<Request> requests;
-
     /**
      * Default constructor
      */

@@ -16,7 +16,7 @@ public class StructureType {
     /**
      * 
      */
-    private String type;
+    private void type: String;
 
 
 }

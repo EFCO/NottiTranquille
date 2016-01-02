@@ -23,7 +23,7 @@ public class Tenant extends Person {
     /**
      * @param Location
      */
-    public void reserve(location Location) {
+    public void reserve(Location location) {
         // TODO implement here
     }
 

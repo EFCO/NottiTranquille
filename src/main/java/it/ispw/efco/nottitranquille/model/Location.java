@@ -41,26 +41,12 @@ public class Location {
     /**
      * 
      */
-    private String[] photos;
+    private String[0..*] photos;
 
     /**
      * 
      */
     private Integer numberOfBedrooms;
-
-
-    private Prices prices;
-
-    private LocationType type;
-
-    private List<Service> services;
-
-    private Location structure;
-
-    private List<BookingCalendar> booking;
-
-
-
 
 
 

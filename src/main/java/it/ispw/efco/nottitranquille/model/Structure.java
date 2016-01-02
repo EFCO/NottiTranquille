@@ -41,22 +41,16 @@ public class Structure {
     /**
      * 
      */
-    private Date checkIn;
+    private Date.Hour checkIn;
 
     /**
      * 
      */
-    private Date checkOut;
+    private Date.Hour checkOut;
 
-    private Manager managedBy;
 
-    private Owner owner;
 
-    private Address address;
 
-    private StructureType type;
-
-    private List<Service> services;
 
 
 

@@ -16,12 +16,12 @@ public class BookingCalendar {
     /**
      * 
      */
-    private Date startDate;
+    public void startDate;
 
     /**
      * 
      */
-    private Date endDate;
+    public void endDate;
 
 
 

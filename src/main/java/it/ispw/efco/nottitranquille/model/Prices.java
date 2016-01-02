@@ -16,4 +16,7 @@ public class Prices {
     /**
      * 
      */
+    public void Attribute1;
+
+
 }

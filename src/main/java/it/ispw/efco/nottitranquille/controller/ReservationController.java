@@ -19,7 +19,7 @@ public class ReservationController {
     /**
      * @param Reservation
      */
-    public void confirm(reservetion Reservation) {
+    public void confirm(Reservetion reservation) {
         // TODO implement here
     }
 
