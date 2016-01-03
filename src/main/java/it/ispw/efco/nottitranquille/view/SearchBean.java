@@ -47,12 +47,15 @@ public class SearchBean {
         this.city = city;
     }
 
-    public void setCheckin(DateTime checkin) {
-        this.checkin = checkin;
+    public void setCheckin(String checkin) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-mm-dd");
+        this.checkin = DateTime.parse(checkin, dateTimeFormatter);
     }
 
-    public void setCheckout(DateTime checkout) {
-        this.checkout = checkout;
+    public void setCheckout(String checkout) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-mm-dd");
+        this.checkout = DateTime.parse(checkout, dateTimeFormatter);
+        ;
     }
 
     public void setPricerange(String pricerange) {

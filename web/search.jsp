@@ -22,12 +22,8 @@
 <%
     if (request.getParameter("search") != null) {
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-mm-dd");
-        DateTime checkin = DateTime.parse(request.getParameter("checkin_str"), dateTimeFormatter);
-        DateTime checkout = DateTime.parse(request.getParameter("checkout_str"), dateTimeFormatter);
-
-        basicSearchBean.setCheckin(checkin);
-        basicSearchBean.setCheckout(checkout);
+        basicSearchBean.setCheckin(request.getParameter("checkin"));
+        basicSearchBean.setCheckout(request.getParameter("checkout"));
 
         if (basicSearchBean.validate()) {
             %>
@@ -59,12 +55,12 @@
             <input name="city" id="city" type="text" class="form-control" placeholder="Zagarolo">
         </div>
         <div class="form-group">
-            <label for="checkin_str">Check In:</label>
-            <input name="checkin_str" id="checkin_str" type="date" class="form-control">
+            <label for="checkin">Check In:</label>
+            <input name="checkin" id="checkin" type="date" class="form-control required">
         </div>
         <div class="form-group">
-            <label for="checkout_str">Check Out:</label>
-            <input name="checkout_str" id="checkout_str" type="date" class="form-control" >
+            <label for="checkout">Check Out:</label>
+            <input name="checkout" id="checkout" type="date" class="form-control required" >
         </div>
         <div class="form-group">
             <label for="pricerange">Prezzo :</label>
