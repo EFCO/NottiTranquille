@@ -21,9 +21,10 @@
 
 <%
     if (request.getParameter("search") != null) {
-
-        basicSearchBean.setCheckin(request.getParameter("checkin"));
-        basicSearchBean.setCheckout(request.getParameter("checkout"));
+        if (!request.getParameter("checkin").equals("") && !request.getParameter("checkout").equals("")) {
+            basicSearchBean.setCheckin(request.getParameter("checkin"));
+            basicSearchBean.setCheckout(request.getParameter("checkout"));
+        }
 
         if (basicSearchBean.validate()) {
             %>

@@ -1,5 +1,7 @@
 package it.ispw.efco.nottitranquille.model;
 
+import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
+
 import java.util.*;
 
 /**
@@ -74,7 +76,7 @@ public class Reservation {
     /**
      * 
      */
-    public void notify() {
+    public void reservationNotify() {
         // TODO implement here
     }
 

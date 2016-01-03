@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
 
-    <persistence-unit name="NewPersistenceUnit"/>
+    <persistence-unit name="NottiTranquille">
+        <properties>
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/notti_tranquille" />
+            <property name="hibernate.connection.username" value="root" />
+            <property name="hibernate.connection.password" value="admin" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="current_session_context_class" value="thread" />
+            <property name="hibernate.archive.autodetection" value="class, hbm"/>
+        </properties>
+    </persistence-unit>
 </persistence>

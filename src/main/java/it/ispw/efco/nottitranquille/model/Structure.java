@@ -1,10 +1,13 @@
 package it.ispw.efco.nottitranquille.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.*;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
+@Entity
 public class Structure {
 
     /**
@@ -59,7 +62,14 @@ public class Structure {
     private List<Service> services;
 
 
+    private String id;
 
+    @Id
+    public String getId() {
+        return id;
+    }
 
-
+    public void setId(String id) {
+        this.id = id;
+    }
 }

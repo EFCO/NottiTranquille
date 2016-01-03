@@ -1,5 +1,7 @@
 package it.ispw.efco.nottitranquille.controller;
 
+import it.ispw.efco.nottitranquille.model.Reservation;
+
 import java.util.*;
 
 /**
@@ -17,9 +19,9 @@ public class ReservationController {
 
 
     /**
-     * @param Reservation
+     * @param reservation
      */
-    public void confirm(Reservetion reservation) {
+    public void confirm(Reservation reservation) {
         // TODO implement here
     }
 

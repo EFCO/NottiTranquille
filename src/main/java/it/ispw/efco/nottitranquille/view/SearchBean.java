@@ -1,10 +1,12 @@
 package it.ispw.efco.nottitranquille.view;
 
+import it.ispw.efco.nottitranquille.model.CatalogueDAO;
+import it.ispw.efco.nottitranquille.model.Structure;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Federico on 30/12/2015.
@@ -15,6 +17,7 @@ public class SearchBean {
     private DateTime checkin = null;
     private DateTime checkout = null;
     private String pricerange = "";
+    public List<Structure> result;
 
     public SearchBean() {
     }
@@ -66,6 +69,9 @@ public class SearchBean {
         if(this.nation.equals("") || this.city.equals("") || this.checkin == null|| this.checkout == null || this.pricerange.equals("")) {
             return false;
         }
+        CatalogueDAO catalogueDAO = new CatalogueDAO();
+        List<Structure> results = catalogueDAO.selectAcceptedRequestsByFilter(this);
+        System.out.println(results);
         return true;
     }
 }
