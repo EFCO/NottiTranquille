@@ -1,11 +1,24 @@
 package it.ispw.efco.nottitranquille.model;
 
-import java.util.*;
-
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 public class Service {
+
+    /**
+     *
+     */
+    private String serviceName;
+
+    /**
+     *
+     */
+    private Boolean selectable;
+
+    /**
+     *
+     */
+    private BasePrice price;
 
     /**
      * Default constructor
@@ -14,15 +27,18 @@ public class Service {
     }
 
     /**
-     * 
+     *
+     * @return
      */
-    private String serviceName;
+    public BasePrice getPrice() {
+        return price;
+    }
 
     /**
-     * 
+     *
+     * @param price
      */
-    private Boolean selectable;
-
-
-
+    public void setPrice(BasePrice price) {
+        this.price = price;
+    }
 }
