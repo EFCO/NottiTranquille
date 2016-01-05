@@ -20,6 +20,13 @@ public class FixFee extends Fee {
 	protected FixFee() {
 	}
 
+    /**
+     * Builder constructor
+     */
+    protected FixFee(Builder builder) {
+        super(builder);
+    }
+
 	/**
      * {@inheritDoc}
 	 */
@@ -38,7 +45,7 @@ public class FixFee extends Fee {
     public static final class Builder extends Fee.Builder<FixFee, Builder> {
 
         protected FixFee createObject() {
-            return new FixFee();
+            return new FixFee(this);
         }
 
         protected Builder thisObject() {

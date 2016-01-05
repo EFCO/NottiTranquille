@@ -24,6 +24,17 @@ public abstract class Decorator extends Price {
 	}
 
     /**
+     * Builder constructor
+     */
+    protected Decorator(Builder builder) {
+        super(builder);
+
+
+        // DO NOT CHECK if null because it could be set later
+        this.price = builder.price;
+    }
+
+    /**
      * Applies itself to a {@link Price}.
      *
      * @param price the price to decorate
@@ -42,13 +53,18 @@ public abstract class Decorator extends Price {
     protected static abstract class Builder<T extends Decorator, B extends Builder<T, B>> extends Price.Builder<T, B> {
 
         /**
+         * The instance of Price to decorate
+         */
+        protected Price price;
+
+        /**
          * Applies itself to a {@link Price}.
          *
          * @param price the price to decorate
          * @return  the builder itself
          */
         public B applyTo(Price price) {
-            object.price = price;
+            this.price = price;
             return thisObject;
         }
     }

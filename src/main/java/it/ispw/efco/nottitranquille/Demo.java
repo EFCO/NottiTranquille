@@ -1,6 +1,10 @@
 package it.ispw.efco.nottitranquille;
 
 import it.ispw.efco.nottitranquille.model.*;
+import it.ispw.efco.nottitranquille.model.enumeration.Day;
+import it.ispw.efco.nottitranquille.model.enumeration.RepetitionType;
+
+import java.util.Collections;
 
 public class Demo {
     private Price price;
@@ -31,6 +35,30 @@ public class Demo {
         demo.display();
         System.out.println();
 
+        double percentageFee = 21;
+        PercentageFee basePriceWithPercentageFee = new PercentageFee.Builder()
+                .applyTo(basePrice)
+                .setFee(percentageFee)
+                .build();
+
+        demo.setPrice(basePriceWithPercentageFee);
+        System.out.printf("Cost with a fee of %.0f%%: ", percentageFee);
+        demo.display();
+
+        double discount = 10;
+        FixDiscount basePriceWithPercentageFeeAndFixDiscount = new FixDiscount.Builder()
+                .applyTo(basePriceWithPercentageFee)
+                .setRepetitionType(RepetitionType.EVERY_MONTH)
+                .setDays(Collections.singletonList(Day.FIRST_SUNDAY))
+                .setDiscount(discount)
+                .build();
+
+        demo.setPrice(basePriceWithPercentageFeeAndFixDiscount);
+        System.out.printf("Cost with a discount of %.2f€: ", discount);
+        demo.display();
+
+        System.out.print(basePriceWithPercentageFeeAndFixDiscount.toString());
+/*
         double discount = 10;
         FixDiscount priceWithFixDiscount = new FixDiscount.Builder()
                 .applyTo(basePrice)
@@ -59,6 +87,6 @@ public class Demo {
 
         demo.setPrice(priceWithFixDiscountAndPercentageDiscountAndPercentageFee);
         System.out.printf("Cost with a fee of %.0f%%: ", percentageFee);
-        demo.display();
+        demo.display();*/
     }
 }

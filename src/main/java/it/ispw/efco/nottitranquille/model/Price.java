@@ -2,7 +2,11 @@ package it.ispw.efco.nottitranquille.model;
 
 import it.ispw.efco.nottitranquille.model.enumeration.Day;
 import it.ispw.efco.nottitranquille.model.enumeration.RepetitionType;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.List;
 
@@ -62,7 +66,7 @@ public abstract class Price {
     /**
      * The value of the Price
      */
-    protected double price;
+    protected double priceValue;
 
     /**
      * Default constructor
@@ -71,11 +75,74 @@ public abstract class Price {
     }
 
     /**
+     * Builder constructor
+     */
+    protected Price(Builder builder) {
+        this.interval = builder.interval;
+        this.times = builder.times;
+        this.occurrences = builder.occurrences;
+        this.repetitionType = builder.repetitionType;
+        this.days = builder.days;
+        this.priceValue = builder.priceValue;
+
+        if (builder.priceValue < 0) {
+            throw new IllegalStateException("Price must be set greater than zero!");
+        }
+
+        if (builder.repetitionType != null) {
+            if (builder.repetitionType == RepetitionType.EVERY_DAY) {
+                if (builder.days != null) {
+                    throw new IllegalStateException("If repetition type is EVERY_DAYS it is not legal set days!");
+                }
+            } else if (builder.repetitionType == RepetitionType.EVERY_WORKDAY || builder.repetitionType == RepetitionType.EVERY_NOT_WORKDAY || builder.repetitionType == RepetitionType.EVERY_WEEKEND) {
+                if (builder.days != null) {
+                    throw new IllegalStateException("If repetition type is EVERY_WORKDAY or EVERY_NOT_WORKDAY it is not legal set days!");
+                }
+
+                if (builder.times != -1) {
+                    throw new IllegalStateException("If repetition type is EVERY_WORKDAY or EVERY_NOT_WORKDAY it is not legal set repetition times!");
+                }
+
+            } else if (builder.repetitionType == RepetitionType.EVERY_WEEK || builder.repetitionType == RepetitionType.EVERY_MONTH || builder.repetitionType == RepetitionType.EVERY_YEAR) {
+                if (builder.days == null) {
+                    throw new IllegalStateException("If repetition is EVERY_WEEK, EVERY_MONTH or EVERY_YEAR, days is mandatory!");
+                }
+
+                // Sets default times to 1
+                if (builder.times == -1) {
+                    this.times = 1;
+                }
+            }
+
+            if (builder.interval != null) {
+                if (builder.occurrences != -1) {
+                    throw new IllegalStateException("If there is an interval occurrences is useless!");
+                }
+            } else {
+                // Sets default interval from now to forever
+                this.interval = new Interval(new DateTime(), new DateTime(9999, 1, 1, 0, 0, 0, DateTimeZone.UTC ));
+            }
+        }
+    }
+
+    /**
 	 * Shows the current Price's value decorating with all decorator applied.
      *
 	 * @return the Price's value
 	 */
 	public abstract double showPrice();
+
+    @Override
+    public String toString() {
+        return "Price{" +
+                "interval=" + interval +
+                ", times=" + times +
+                ", occurrences=" + occurrences +
+                ", days=" + days +
+                ", repetitionType=" + repetitionType +
+                ", priceValue=" + priceValue +
+                '}';
+    }
 
     /**
      * TODO
@@ -96,6 +163,36 @@ public abstract class Price {
         protected B thisObject;
 
         /**
+         * The interval in which Price is valid
+         */
+        public Interval interval;
+
+        /**
+         * The number of times the Price must be repeated
+         */
+        public int times = -1;
+
+        /**
+         * The number of the occurrences the Price must be repeated
+         */
+        public int occurrences = -1;
+
+        /**
+         * The list of the days in which the Price must be repeated
+         */
+        public List<Day> days;
+
+        /**
+         * The type of repetition
+         */
+        public RepetitionType repetitionType;
+
+        /**
+         * The value of the Price
+         */
+        public double priceValue = -1;
+
+        /**
          *
          * @return
          */
@@ -111,7 +208,6 @@ public abstract class Price {
          *
          */
         public Builder() {
-            object = createObject();
             thisObject = thisObject();
         }
 
@@ -122,7 +218,7 @@ public abstract class Price {
          * @return  the builder itself
          */
         public B setInterval(Interval interval) {
-            object.interval = interval;
+            this.interval = interval;
             return thisObject;
         }
 
@@ -133,7 +229,7 @@ public abstract class Price {
          * @return  the builder itself
          */
         public B setTimes(int times) {
-            object.times = times;
+            this.times = times;
             return thisObject;
         }
 
@@ -144,7 +240,7 @@ public abstract class Price {
          * @return  the builder itself
          */
         public B setOccurrences(int occurrences) {
-            object.occurrences = occurrences;
+            this.occurrences = occurrences;
             return thisObject;
         }
 
@@ -155,7 +251,7 @@ public abstract class Price {
          * @return  the builder itself
          */
         public B setDays(List<Day> days) {
-            object.days = days;
+            this.days = days;
             return thisObject;
         }
 
@@ -166,7 +262,7 @@ public abstract class Price {
          * @return  the builder itself
          */
         public B setRepetitionType(RepetitionType repetitionType) {
-            object.repetitionType = repetitionType;
+            this.repetitionType = repetitionType;
             return thisObject;
         }
 
@@ -177,7 +273,7 @@ public abstract class Price {
          * @return  the builder itself
          */
         public B setPrice(double price) {
-            object.price = price;
+            this.priceValue = price;
             return thisObject;
         }
 
@@ -187,7 +283,7 @@ public abstract class Price {
          * @return
          */
         public T build() {
-            return object;
+            return createObject();
         }
     }
 }

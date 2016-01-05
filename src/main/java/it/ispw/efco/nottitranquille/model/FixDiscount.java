@@ -21,6 +21,13 @@ public class FixDiscount extends Discount {
     }
 
     /**
+     * Builder constructor
+     */
+    public FixDiscount(Builder builder) {
+        super(builder);
+    }
+
+    /**
      * {@inheritDoc}
      */
 	public double showPrice() {
@@ -38,7 +45,7 @@ public class FixDiscount extends Discount {
     public static final class Builder extends Discount.Builder<FixDiscount, Builder> {
 
         protected FixDiscount createObject() {
-            return new FixDiscount();
+            return new FixDiscount(this);
         }
 
         protected Builder thisObject() {

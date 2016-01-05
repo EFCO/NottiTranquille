@@ -27,7 +27,27 @@ public abstract class Fee extends Decorator {
 	protected Fee() {
 	}
 
-	/**
+    /**
+     * Builder constructor
+     */
+    public Fee(Builder builder) {
+        super(builder);
+
+        if (builder.fee < 0) {
+            throw new IllegalStateException("The fee value must be set grater than zero!");
+        } else {
+            this.fee = builder.fee;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "Fee{" +
+                "fee=" + fee +
+                '}';
+    }
+
+    /**
 	 * Applies fee to {@link Price}'s value.
      *
      * @param price the Price's value
@@ -35,8 +55,12 @@ public abstract class Fee extends Decorator {
 	 */
 	protected abstract double applyFee(double price);
 
-
     protected static abstract class Builder<T extends Fee, B extends Builder<T, B>> extends Decorator.Builder<T, B> {
+
+        /**
+         * The Fee's value
+         */
+        protected double fee = -1;
 
         /**
          * Sets Fee's value.
@@ -45,7 +69,10 @@ public abstract class Fee extends Decorator {
          * @return the builder itself
          */
         public B setFee(double fee) {
-            object.fee = fee;
+            // Sets a default value grater than 0 in order to avoid IllegalStateException in Price(builder) construction
+            this.priceValue = 1;
+
+            this.fee = fee;
             return thisObject;
         }
     }

@@ -21,6 +21,13 @@ public class PercentageFee extends Fee {
 	}
 
     /**
+     * Builder constructor
+     */
+    protected PercentageFee(Builder builder) {
+        super(builder);
+    }
+
+    /**
      * {@inheritDoc}
      */
 	public double showPrice() {
@@ -38,7 +45,7 @@ public class PercentageFee extends Fee {
 	public static final class Builder extends Fee.Builder<PercentageFee, Builder> {
 
 		protected PercentageFee createObject() {
-			return new PercentageFee();
+			return new PercentageFee(this);
 		}
 
 		protected Builder thisObject() {

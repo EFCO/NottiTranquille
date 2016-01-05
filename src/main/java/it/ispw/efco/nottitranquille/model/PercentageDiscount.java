@@ -21,6 +21,13 @@ public class PercentageDiscount extends Discount {
 	}
 
     /**
+     * Builder constructor
+     */
+    public PercentageDiscount(Builder builder) {
+        super(builder);
+    }
+
+    /**
      * {@inheritDoc}
      */
 	public double showPrice() {
@@ -38,7 +45,7 @@ public class PercentageDiscount extends Discount {
     public static final class Builder extends Discount.Builder<PercentageDiscount, Builder> {
 
         protected PercentageDiscount createObject() {
-            return new PercentageDiscount();
+            return new PercentageDiscount(this);
         }
 
         protected Builder thisObject() {

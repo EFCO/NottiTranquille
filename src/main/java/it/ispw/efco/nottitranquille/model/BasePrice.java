@@ -18,16 +18,23 @@ public class BasePrice extends Price {
 	}
 
     /**
+     * Builder constructor
+     */
+    protected BasePrice(Builder builder) {
+        super(builder);
+    }
+
+    /**
 	 * {@inheritDoc}
 	 */
     @Override
 	public double showPrice() {
-		return this.price;
+		return this.priceValue;
 	}
 
     public static final class Builder extends Price.Builder<BasePrice, Builder> {
         protected BasePrice createObject() {
-            return new BasePrice();
+            return new BasePrice(this);
         }
         protected Builder thisObject() {
             return this;
