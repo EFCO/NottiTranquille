@@ -1,7 +1,6 @@
 package it.ispw.efco.nottitranquille.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.*;
 
 /**
@@ -11,25 +10,38 @@ import java.util.*;
 @Entity
 public class Address {
 
+    @Column
     private String nation;
+
     private String city;
+
     private String address;
+
     private String postalcode;
+
+    public Address(String nation, String city, String address, String postalcode) {
+        this.nation = nation;
+        this.city = city;
+        this.address = address;
+        this.postalcode = postalcode;
+    }
+
     /**
      * Default constructor
      */
     public Address() {
+
     }
 
-
-    private String id;
-
     @Id
-    public String getId() {
+    @GeneratedValue
+    private Long id;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

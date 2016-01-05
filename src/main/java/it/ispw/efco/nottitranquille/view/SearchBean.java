@@ -1,5 +1,6 @@
 package it.ispw.efco.nottitranquille.view;
 
+import it.ispw.efco.nottitranquille.model.Address;
 import it.ispw.efco.nottitranquille.model.CatalogueDAO;
 import it.ispw.efco.nottitranquille.model.Structure;
 import org.joda.time.DateTime;
@@ -69,9 +70,13 @@ public class SearchBean {
         if(this.nation.equals("") || this.city.equals("") || this.checkin == null|| this.checkout == null || this.pricerange.equals("")) {
             return false;
         }
+
+        Address address = new Address("Roma","Zagarolo","Piazza ciao","00039");
+        Structure structure = new Structure("casa mia",address);
         CatalogueDAO catalogueDAO = new CatalogueDAO();
+        catalogueDAO.saveStructure(structure);
         List<Structure> results = catalogueDAO.selectAcceptedRequestsByFilter(this);
-        System.out.println(results);
+        System.out.println(results.toString());
         return true;
     }
 }
