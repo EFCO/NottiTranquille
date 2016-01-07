@@ -3,7 +3,7 @@ package it.ispw.efco.nottitranquille.model.enumeration;
 import it.ispw.efco.nottitranquille.model.Price;
 
 /**
- * Enumeration for day in a week, in a month and in a year that can be used for {@link Price} repetition.
+ * Enumeration for day in a week and in a month that can be used for {@link Price} repetition.
  *
  * <p>
  * Day that can be used:

@@ -2,12 +2,13 @@ package it.ispw.efco.nottitranquille.model;
 
 import it.ispw.efco.nottitranquille.model.enumeration.Day;
 import it.ispw.efco.nottitranquille.model.enumeration.RepetitionType;
+import org.hibernate.annotations.Columns;
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -36,11 +37,21 @@ import java.util.List;
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
+@SuppressWarnings("JpaDataSourceORMInspection")
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="priceType", discriminatorType = DiscriminatorType.STRING, length = 20)
 public abstract class Price {
 
-	/**
-	 * The interval in which Price is valid
-	 */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    /**
+     * The interval in which Price is valid
+     */
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentInterval")
+    @Columns(columns = { @Column(name = "startDate"), @Column(name = "endDate") })
     protected Interval interval;
 
 	/**
@@ -56,6 +67,8 @@ public abstract class Price {
 	/**
 	 * The list of the days in which the Price must be repeated
 	 */
+    @ElementCollection(targetClass = Day.class)
+    @Enumerated
     protected List<Day> days;
 
     /**
@@ -66,7 +79,7 @@ public abstract class Price {
     /**
      * The value of the Price
      */
-    protected double priceValue;
+    protected double value;
 
     /**
      * Default constructor
@@ -83,10 +96,10 @@ public abstract class Price {
         this.occurrences = builder.occurrences;
         this.repetitionType = builder.repetitionType;
         this.days = builder.days;
-        this.priceValue = builder.priceValue;
+        this.value = builder.value;
 
-        if (builder.priceValue < 0) {
-            throw new IllegalStateException("Price must be set greater than zero!");
+        if (builder.value < 0) {
+            throw new IllegalStateException("Value must be set greater than zero!");
         }
 
         if (builder.repetitionType != null) {
@@ -113,16 +126,25 @@ public abstract class Price {
                     this.times = 1;
                 }
             }
-
-            if (builder.interval != null) {
-                if (builder.occurrences != -1) {
-                    throw new IllegalStateException("If there is an interval occurrences is useless!");
-                }
-            } else {
-                // Sets default interval from now to forever
-                this.interval = new Interval(new DateTime(), new DateTime(9999, 1, 1, 0, 0, 0, DateTimeZone.UTC ));
-            }
         }
+
+        if (builder.interval != null) {
+            if (builder.occurrences != -1) {
+                throw new IllegalStateException("If there is an interval occurrences is useless!");
+            }
+        } else {
+            // Sets default interval from now to forever
+            this.interval = new Interval(DateTime.now(), new DateTime(9999, 1, 1, 0, 0, 0, DateTimeZone.UTC ));
+        }
+    }
+
+    /**
+     * Gets Price's id of persistent system.
+     *
+     * @return the id into persistent system
+     */
+    public Long getId() {
+        return this.id;
     }
 
     /**
@@ -132,6 +154,20 @@ public abstract class Price {
 	 */
 	public abstract double showPrice();
 
+    /**
+     * Updates Price's state with the state of the Price provided.
+     *
+     * @param priceToUpdate the new price
+     */
+    public void update(Price priceToUpdate) {
+        this.interval = priceToUpdate.interval;
+        this.times = priceToUpdate.times;
+        this.occurrences = priceToUpdate.occurrences;
+        this.repetitionType = priceToUpdate.repetitionType;
+        this.days = priceToUpdate.days;
+        this.value = priceToUpdate.value;
+    }
+
     @Override
     public String toString() {
         return "Price{" +
@@ -140,72 +176,91 @@ public abstract class Price {
                 ", occurrences=" + occurrences +
                 ", days=" + days +
                 ", repetitionType=" + repetitionType +
-                ", priceValue=" + priceValue +
+                ", value=" + value +
                 '}';
     }
 
     /**
-     * TODO
+     * Builder for {@link Price} object.
      *
-     * @param <T>
-     * @param <B>
+     * @param <T>   price
+     * @param <B>   builder
      */
     protected static abstract class Builder<T extends Price, B extends Builder<T, B>> {
 
         /**
-         * TODO
-         */
-        protected T object;
-
-        /**
-         * TODO
+         * This object
          */
         protected B thisObject;
 
         /**
          * The interval in which Price is valid
          */
-        public Interval interval;
+        protected Interval interval;
 
         /**
          * The number of times the Price must be repeated
          */
-        public int times = -1;
+        protected int times = -1;
 
         /**
          * The number of the occurrences the Price must be repeated
          */
-        public int occurrences = -1;
+        protected int occurrences = -1;
 
         /**
          * The list of the days in which the Price must be repeated
          */
-        public List<Day> days;
+        protected List<Day> days;
 
         /**
          * The type of repetition
          */
-        public RepetitionType repetitionType;
+        protected RepetitionType repetitionType;
 
         /**
          * The value of the Price
          */
-        public double priceValue = -1;
+        protected double value = -1;
 
         /**
+         * Abstract method that has to call the concrete object constructor passing builder instance.
+         * <br>
+         * Calls builder constructor.
+         * <p>
+         * Example:
+         * </p>
          *
-         * @return
+         * <pre>
+         * &#064;Override
+         * protected BasePrice createObject() {
+         *      return new BasePrice(this);
+         * }
+         * </pre>
+         *
+         * @return the new object
          */
         protected abstract T createObject();
 
         /**
+         * Abstract method that has to refer to concrete object.
+         * <p>
+         * Example:
+         * </p>
          *
-         * @return
+         * <pre>
+         * &#064;Override
+         * protected Builder thisObject() {
+         *      return this;
+         * }
+         * </pre>
+         *
+         * @return this object
          */
         protected abstract B thisObject();
 
         /**
-         *
+         * Default constructor.
          */
         public Builder() {
             thisObject = thisObject();
@@ -273,14 +328,15 @@ public abstract class Price {
          * @return  the builder itself
          */
         public B setPrice(double price) {
-            this.priceValue = price;
+            this.value = price;
             return thisObject;
         }
 
         /**
+         * Builds object calling object constructor.
          *
-         *
-         * @return
+         * @return  the new object
+         * @throws  IllegalStateException if TODO
          */
         public T build() {
             return createObject();

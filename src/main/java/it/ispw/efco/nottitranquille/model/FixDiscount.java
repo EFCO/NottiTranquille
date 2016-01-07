@@ -1,5 +1,8 @@
 package it.ispw.efco.nottitranquille.model;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * FixDiscount is one of two concrete {@link Price}'s {@link Decorator}.
  * <br>
@@ -12,6 +15,8 @@ package it.ispw.efco.nottitranquille.model;
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
+@Entity
+@DiscriminatorValue("FixDiscount")
 public class FixDiscount extends Discount {
 
     /**
@@ -39,15 +44,23 @@ public class FixDiscount extends Discount {
      */
 	@Override
 	protected double applyDiscount(double price) {
-		return price - discount;
+		return price - this.value;
 	}
 
     public static final class Builder extends Discount.Builder<FixDiscount, Builder> {
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         protected FixDiscount createObject() {
             return new FixDiscount(this);
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         protected Builder thisObject() {
             return this;
         }

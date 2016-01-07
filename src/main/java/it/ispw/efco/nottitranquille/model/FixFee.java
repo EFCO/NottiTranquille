@@ -1,5 +1,8 @@
 package it.ispw.efco.nottitranquille.model;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * FixFee is one of two concrete {@link Price}'s {@link Decorator}.
  * <br>
@@ -12,6 +15,8 @@ package it.ispw.efco.nottitranquille.model;
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
+@Entity
+@DiscriminatorValue("FixFee")
 public class FixFee extends Fee {
 
 	/**
@@ -39,16 +44,24 @@ public class FixFee extends Fee {
 	 */
 	@Override
 	protected double applyFee(double price) {
-        return price + fee;
+        return price + this.value;
 	}
 
     public static final class Builder extends Fee.Builder<FixFee, Builder> {
 
+        /**
+         * {@inheritDoc}
+         */
+		@Override
         protected FixFee createObject() {
             return new FixFee(this);
         }
 
-        protected Builder thisObject() {
+        /**
+         * {@inheritDoc}
+         */
+		@Override
+		protected Builder thisObject() {
             return this;
         }
     }

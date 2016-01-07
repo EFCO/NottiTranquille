@@ -1,5 +1,7 @@
 package it.ispw.efco.nottitranquille.model;
 
+import javax.persistence.Entity;
+
 /**
  * BasePrice is the concrete component of {@link Price}.
  *
@@ -9,6 +11,7 @@ package it.ispw.efco.nottitranquille.model;
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
+@Entity
 public class BasePrice extends Price {
 
 	/**
@@ -29,13 +32,15 @@ public class BasePrice extends Price {
 	 */
     @Override
 	public double showPrice() {
-		return this.priceValue;
+		return this.value;
 	}
 
     public static final class Builder extends Price.Builder<BasePrice, Builder> {
+        @Override
         protected BasePrice createObject() {
             return new BasePrice(this);
         }
+        @Override
         protected Builder thisObject() {
             return this;
         }

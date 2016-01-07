@@ -11,6 +11,7 @@
         <element id="library" level="project" name="JPA 2.0-2.0" />
       </element>
       <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
+      <element id="jpa-descriptors" facet="NottiTranquille/jpa/JPA" />
     </root>
   </artifact>
 </component>

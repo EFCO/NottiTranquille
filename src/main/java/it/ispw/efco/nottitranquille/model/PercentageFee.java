@@ -1,5 +1,7 @@
 package it.ispw.efco.nottitranquille.model;
 
+import javax.persistence.*;
+
 /**
  * PercentageFee is one of two concrete {@link Price}'s {@link Decorator}.
  * <br>
@@ -12,6 +14,8 @@ package it.ispw.efco.nottitranquille.model;
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
+@Entity
+@DiscriminatorValue("PercentageFee")
 public class PercentageFee extends Fee {
 
 	/**
@@ -39,16 +43,24 @@ public class PercentageFee extends Fee {
      */
 	@Override
 	protected double applyFee(double price) {
-		return price + (price * fee/100);
+		return price + (price * this.value/100);
 	}
 
 	public static final class Builder extends Fee.Builder<PercentageFee, Builder> {
 
+        /**
+         * {@inheritDoc}
+         */
+		@Override
 		protected PercentageFee createObject() {
 			return new PercentageFee(this);
 		}
 
-		protected Builder thisObject() {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected Builder thisObject() {
 			return this;
 		}
 	}

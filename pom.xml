@@ -10,18 +10,51 @@
 
 
     <dependencies>
-        <!-- The JavaServer Pages Standard Tag Library (JSTL)
-        is a collection of useful JSP tags which encapsulates core functionality common to many JSP applications. -->
+        <!-- The JavaServer Pages Standard Tag Library (JSTL) -->
+        <!-- is a collection of useful JSP tags which encapsulates core functionality common to many JSP applications. -->
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
 
+        <!-- Hibernate JPA Support -->
+        <!-- Hibernate O/RM implementation of the JPA specification -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.0.6.Final</version>
+        </dependency>
+
+        <!-- Joda-Time -->
+        <!-- Date and time library to replace JDK date handling -->
         <dependency>
           <groupId>joda-time</groupId>
           <artifactId>joda-time</artifactId>
           <version>2.9.1</version>
+        </dependency>
+
+        <!-- Classes utilising Java 7 and/or 8 that add Hibernate support for types such as Moneta -->
+        <dependency>
+            <groupId>org.jadira.usertype</groupId>
+            <artifactId>usertype.extended</artifactId>
+            <version>5.0.0.GA</version>
+        </dependency>
+
+        <!-- Java Transaction API -->
+        <!-- It is appropriate for inclusion in a classpath, and may be added to a Java 2 installation. -->
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.1</version>
+        </dependency>
+
+        <!-- MySQL Connector/J -->
+        <!-- MySQL JDBC Type 4 driver -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.38</version>
         </dependency>
 
     </dependencies>

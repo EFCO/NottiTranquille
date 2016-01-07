@@ -10,7 +10,7 @@ import java.util.*;
 
 /**
  * ManagesPrices Controller.
- *
+ * <br>
  * This Use Case shows the process by which a Manager can manage the {@link Price} of his {@link Location} and payable
  * {@link Service}s.
  * <p>

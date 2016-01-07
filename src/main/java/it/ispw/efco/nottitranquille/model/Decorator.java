@@ -29,7 +29,6 @@ public abstract class Decorator extends Price {
     protected Decorator(Builder builder) {
         super(builder);
 
-
         // DO NOT CHECK if null because it could be set later
         this.price = builder.price;
     }

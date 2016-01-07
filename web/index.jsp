@@ -1,3 +1,4 @@
+<%@ page import="it.ispw.efco.nottitranquille.Demo" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%-- Use JSTL core lib in order to add some useful feature --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -28,6 +29,8 @@
 <!-- Wrap the rest of the page in another container to center all the content. -->
 
 <div class="container marketing">
+
+    <% Demo.main(null); %>
 
     <!-- Three columns of text below the carousel -->
     <div class="row">
