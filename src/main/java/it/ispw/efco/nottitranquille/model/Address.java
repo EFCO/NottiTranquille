@@ -1,13 +1,12 @@
 package it.ispw.efco.nottitranquille.model;
 
 import javax.persistence.*;
-import java.util.*;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 
-@Entity
+@Embeddable
 public class Address {
 
     @Column
@@ -31,17 +30,5 @@ public class Address {
      */
     public Address() {
 
-    }
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

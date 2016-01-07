@@ -17,10 +17,12 @@ public class Structure {
     /**
      * Default constructor
      */
-    public Structure() {
-
+    protected Structure() {
     }
 
+    public Structure(List<Service> services) {
+        this.services = services;
+    }
     /**
      * 
      */
@@ -63,17 +65,14 @@ public class Structure {
     @ManyToOne
     private Owner owner;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @Embedded
     private Address address;
 
-    @Transient
+    @ManyToOne
     private StructureType type;
 
-    @Transient
+    @OneToMany
     private List<Service> services;
-
-
-    private Long id;
 
     @Override
     public String toString() {
@@ -96,6 +95,8 @@ public class Structure {
 
     @Id
     @GeneratedValue
+    private Long id;
+
     public Long getId() {
         return id;
     }

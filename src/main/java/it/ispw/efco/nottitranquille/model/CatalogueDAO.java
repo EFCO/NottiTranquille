@@ -23,7 +23,7 @@ public class CatalogueDAO {
     public List<Structure> selectAcceptedRequestsByFilter(SearchBean searchBean) {
         // TODO implement here
         EntityManager entityManager = JPAInitializer.getEntityManager();
-        TypedQuery<Structure> query = entityManager.createQuery("SELECT structure FROM Structure structure WHERE structure.address.nation = :n",Structure.class);
+        TypedQuery<Structure> query = entityManager.createQuery("FROM Structure s WHERE s.address.nation = :n",Structure.class);
         query.setParameter("n",searchBean.getNation());
         List<Structure> result;
         result = query.getResultList();

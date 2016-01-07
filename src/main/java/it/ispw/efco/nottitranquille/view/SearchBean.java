@@ -76,7 +76,9 @@ public class SearchBean {
         CatalogueDAO catalogueDAO = new CatalogueDAO();
         catalogueDAO.saveStructure(structure);
         List<Structure> results = catalogueDAO.selectAcceptedRequestsByFilter(this);
-        System.out.println(results.toString());
+        for (Structure elem : results) {
+            System.out.println(elem.toString());
+        }
         return true;
     }
 }
