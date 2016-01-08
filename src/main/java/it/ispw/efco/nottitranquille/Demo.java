@@ -34,7 +34,7 @@ public class Demo {
 
     public static void main(String[] args) {
 
-       DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-mm-dd");
+ /*      DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-mm-dd");
 
         DateTime da = DateTime.parse("2016-01-13", dateTimeFormatter);
         DateTime a = DateTime.parse("2016-01-19", dateTimeFormatter);
@@ -100,18 +100,18 @@ public class Demo {
                 .setInterval(interval)
                 .build();
 
-        PriceDao.store(basePrice);
+        PriceDao.store(basePrice);*/
 
 /*        List<Price> prices = PriceDao.findAllPrices(new Interval(da, a));*/
 
-        List <Fee> fees = PriceDao.findAllFees();
+/*        List <Fee> fees = PriceDao.findAllFees();
 
         System.out.println("Retrieving fees...");
 
         System.out.println("\nFees: " + fees.size());
         for (Fee fee : fees) {
             System.out.println(fee.toString());
-        }
+        }*/
 
         /*System.out.println("Intializing JPA/Hibernate...");
 
