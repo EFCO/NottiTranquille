@@ -6,10 +6,9 @@ import javax.persistence.*;
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 
-@Embeddable
+@Entity
 public class Address {
 
-    @Column
     private String nation;
 
     private String city;
@@ -30,5 +29,13 @@ public class Address {
      */
     public Address() {
 
+    }
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    public Long getId() {
+        return id;
     }
 }

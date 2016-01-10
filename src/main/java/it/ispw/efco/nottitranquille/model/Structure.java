@@ -1,6 +1,7 @@
 package it.ispw.efco.nottitranquille.model;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.*;
 
 /**
@@ -12,12 +13,6 @@ public class Structure {
     public Structure(String name, Address address) {
         this.name = name;
         this.address = address;
-    }
-
-    /**
-     * Default constructor
-     */
-    protected Structure() {
     }
 
     public Structure(List<Service> services) {
@@ -65,7 +60,7 @@ public class Structure {
     @ManyToOne
     private Owner owner;
 
-    @Embedded
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
     private Address address;
 
     @ManyToOne
@@ -73,6 +68,16 @@ public class Structure {
 
     @OneToMany
     private List<Service> services;
+
+    public void setRequest(Request request) {
+        this.request = request;
+    }
+
+    @OneToOne(optional=false, mappedBy="structure")
+    private Request request;
+
+    public Structure() {
+    }
 
     @Override
     public String toString() {
@@ -101,7 +106,4 @@ public class Structure {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

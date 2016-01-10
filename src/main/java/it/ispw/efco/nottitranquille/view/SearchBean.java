@@ -2,6 +2,7 @@ package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.model.Address;
 import it.ispw.efco.nottitranquille.model.CatalogueDAO;
+import it.ispw.efco.nottitranquille.model.Request;
 import it.ispw.efco.nottitranquille.model.Structure;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -18,7 +19,7 @@ public class SearchBean {
     private DateTime checkin = null;
     private DateTime checkout = null;
     private String pricerange = "";
-    public List<Structure> result;
+    public List<Request> result;
 
     public SearchBean() {
     }
@@ -73,12 +74,14 @@ public class SearchBean {
 
         Address address = new Address("Roma","Zagarolo","Piazza ciao","00039");
         Structure structure = new Structure("casa mia",address);
+        Request request = new Request(structure);
         CatalogueDAO catalogueDAO = new CatalogueDAO();
-        catalogueDAO.saveStructure(structure);
-        List<Structure> results = catalogueDAO.selectAcceptedRequestsByFilter(this);
-        for (Structure elem : results) {
-            System.out.println(elem.toString());
+        catalogueDAO.saveRequest(request);
+        List<Request> results = catalogueDAO.selectAcceptedRequestsByFilter(this.getNation(),this.getCity(),this.getCheckin(),this.getCheckout(),this.getPricerange());
+        for (Request elem : results) {
+            System.out.println(elem.getStructure().toString());
         }
+        this.result = results;
         return true;
     }
 }

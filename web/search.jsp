@@ -45,7 +45,7 @@
 </head>
 <body>
 
-<!--TODO sarà la pagina di default se non verrano passati dei dati-->
+<!--sarà la pagina di default se non verrano passati dei dati-->
 <form action="search.jsp" name="myform" method="POST">
         <div class="form-group">
             <label for="nation">Nazione :</label>
