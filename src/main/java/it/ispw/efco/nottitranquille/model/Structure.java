@@ -1,5 +1,7 @@
 package it.ispw.efco.nottitranquille.model;
 
+import org.joda.time.DateTime;
+
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.util.*;
@@ -31,7 +33,7 @@ public class Structure {
     /**
      * 
      */
-    @Transient
+    @ElementCollection
     private Set<String> photos;
 
     /**
@@ -47,12 +49,12 @@ public class Structure {
     /**
      * 
      */
-    private Date checkIn;
+    private DateTime checkIn;
 
     /**
      * 
      */
-    private Date checkOut;
+    private DateTime checkOut;
 
     @ManyToOne
     private Manager managedBy;

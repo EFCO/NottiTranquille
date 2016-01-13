@@ -1,12 +1,10 @@
 package it.ispw.efco.nottitranquille.model;
 
 import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
-import java.util.*;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
@@ -24,7 +22,7 @@ public class Request {
      * @param structure
      * @param status
      */
-    public Request(Date requestDate, Date acceptedDate, Date lastModified, Applicant requestedBy, Scout reviewedBy, Structure structure, RequestStatus status) {
+    public Request(DateTime requestDate, DateTime acceptedDate, DateTime lastModified, Person requestedBy, Scout reviewedBy, Structure structure, RequestStatus status) {
         this.requestDate = requestDate;
         this.acceptedDate = acceptedDate;
         this.lastModified = lastModified;
@@ -47,23 +45,20 @@ public class Request {
     /**
      * 
      */
-    @Basic
-    private Date requestDate;
+    private DateTime requestDate;
 
     /**
      * 
      */
-    @Basic
-    private Date acceptedDate;
+    private DateTime acceptedDate;
 
     /**
      * 
      */
-    @Basic
-    private Date lastModified;
+    private DateTime lastModified;
 
-    @Transient //TODO
-    private Applicant requestedBy;
+    @ManyToOne      //Scout/Manager
+    private Person requestedBy;
 
     @ManyToOne
     private Scout reviewedBy;

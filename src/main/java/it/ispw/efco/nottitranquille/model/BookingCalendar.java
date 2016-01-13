@@ -1,5 +1,7 @@
 package it.ispw.efco.nottitranquille.model;
 
+import org.joda.time.DateTime;
+
 import java.util.*;
 
 /**
@@ -16,12 +18,12 @@ public class BookingCalendar {
     /**
      * 
      */
-    private Date startDate;
+    private DateTime startDate;
 
     /**
      * 
      */
-    private Date endDate;
+    private DateTime endDate;
 
 
 

@@ -1,10 +1,14 @@
 package it.ispw.efco.nottitranquille.model;
 
+import org.joda.time.DateTime;
+
+import javax.persistence.*;
 import java.util.*;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
+//TODO @Entity
 public class Location {
 
     /**
@@ -41,34 +45,34 @@ public class Location {
     /**
      * 
      */
-    private String[] photos;
+    //TODO @ElementCollection(targetClass = String.class)
+    private List<String> photos;
 
     /**
      * 
      */
     private Integer numberOfBedrooms;
 
-
+    //TODO @OneToMany
     private Prices prices;
 
+    //TODO @Embedded
     private LocationType type;
 
+    //TODO @ElementCollection(targetClass = Service.class)
     private List<Service> services;
 
-    private Location structure;
+    //TODO @ManyToOne
+    private Structure structure;
 
+    //TODO @ElementCollection(targetClass = BookingCalendar.class)
     private List<BookingCalendar> booking;
-
-
-
-
-
 
     /**
      * @param date 
      * @return
      */
-    public Float getPrice(Date date) {
+    public Float getPrice(DateTime date) {
         // TODO implement here
         return null;
     }
@@ -78,7 +82,7 @@ public class Location {
      * @param toDate 
      * @return
      */
-    public Float getPrices(Date fromDate, Date toDate) {
+    public Float getPrices(DateTime fromDate, DateTime toDate) {
         // TODO implement here
         return null;
     }
@@ -98,7 +102,7 @@ public class Location {
      * @param toDate 
      * @param conditions
      */
-    public void reserve(Date fromDate, Date toDate, Set<Condition> conditions) {
+    public void reserve(DateTime fromDate, DateTime toDate, Set<Condition> conditions) {
         // TODO implement here
     }
 

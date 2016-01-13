@@ -1,8 +1,6 @@
 package it.ispw.efco.nottitranquille.model;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.*;
 
 /**
@@ -14,20 +12,23 @@ public class Tenant extends Person {
 
     /**
      * Default constructor
+     * @param reservations
      */
-    public Tenant() {
+    public Tenant(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     /**
      * 
      */
-    @Transient //TODO
-    public List<Reservation> reservations;
+    @Transient //TODO to resolve
+    private List<Reservation> reservations;
 
-
+    public Tenant() {
+    }
 
     /**
-     * @param Location
+     * @param location
      */
     public void reserve(Location location) {
         // TODO implement here

@@ -29,13 +29,6 @@ public class CatalogueDAO {
         entityManager.getTransaction().commit();
     }
 
-    public void saveStructure(Structure structure) {
-        EntityManager entityManager = JPAInitializer.getEntityManager();
-        entityManager.getTransaction().begin();
-        entityManager.persist(structure);
-        entityManager.getTransaction().commit();
-    }
-
     public void selectAllRequestsByFilter() {
         // TODO implement here
     }

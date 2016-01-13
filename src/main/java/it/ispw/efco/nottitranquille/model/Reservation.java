@@ -1,12 +1,15 @@
 package it.ispw.efco.nottitranquille.model;
 
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
+import org.joda.time.DateTime;
 
+import javax.persistence.*;
 import java.util.*;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
+//TODO @Entity
 public class Reservation {
 
     /**
@@ -18,11 +21,13 @@ public class Reservation {
     /**
      * 
      */
-    private Date date;
+    private DateTime date;
 
     /**
      * 
      */
+    //TODO @ElementCollection(targetClass = Service.class)
+    @Transient
     private List<Service> services;
 
     /**
@@ -33,6 +38,8 @@ public class Reservation {
     /**
      * 
      */
+    //TODO @ManyToOne
+    @Transient
     private Request request;
 
 
@@ -80,4 +87,11 @@ public class Reservation {
         // TODO implement here
     }
 
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
 }

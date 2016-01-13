@@ -1,5 +1,6 @@
 package it.ispw.efco.nottitranquille.view;
 
+import it.ispw.efco.nottitranquille.controller.FilteredSearch;
 import it.ispw.efco.nottitranquille.model.Address;
 import it.ispw.efco.nottitranquille.model.CatalogueDAO;
 import it.ispw.efco.nottitranquille.model.Request;
@@ -68,20 +69,10 @@ public class SearchBean {
     }
 
     public boolean validate() {
-        if(this.nation.equals("") || this.city.equals("") || this.checkin == null|| this.checkout == null || this.pricerange.equals("")) {
+        if(this.nation.equals("") || this.city.equals("") || this.checkin == null|| this.checkout == null) {
             return false;
         }
-
-        Address address = new Address("Roma","Zagarolo","Piazza ciao","00039");
-        Structure structure = new Structure("casa mia",address);
-        Request request = new Request(structure);
-        CatalogueDAO catalogueDAO = new CatalogueDAO();
-        catalogueDAO.saveRequest(request);
-        List<Request> results = catalogueDAO.selectAcceptedRequestsByFilter(this.getNation(),this.getCity(),this.getCheckin(),this.getCheckout(),this.getPricerange());
-        for (Request elem : results) {
-            System.out.println(elem.getStructure().toString());
-        }
-        this.result = results;
+        List<Request> result = FilteredSearch.getListOfRequests(this);
         return true;
     }
 }

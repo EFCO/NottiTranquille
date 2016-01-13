@@ -1,6 +1,7 @@
 package it.ispw.efco.nottitranquille.model;
 
 import it.ispw.efco.nottitranquille.model.enumeration.Gender;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.util.*;
@@ -23,7 +24,6 @@ public class Person {
     /**
      * 
      */
-    @Column
     private String firstName;
 
     /**
@@ -39,7 +39,7 @@ public class Person {
     /**
      * 
      */
-    private Date birthdate;
+    private DateTime birthdate;
 
     /**
      * 

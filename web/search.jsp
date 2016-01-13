@@ -39,14 +39,14 @@
 <head>
 
     <%@include file="header.html" %>
-
+    <%--<script src="resources/js/searchValidation.js"></script>--%>
     <title>Title</title>
 
 </head>
 <body>
 
 <!--sarà la pagina di default se non verrano passati dei dati-->
-<form action="search.jsp" name="myform" method="POST">
+<form action="search.jsp" name="myform" method="POST" id="searchForm">
         <div class="form-group">
             <label for="nation">Nazione :</label>
             <input name="nation" id="nation" type="text" class="form-control" placeholder="Roma">
@@ -74,13 +74,14 @@
         <%
             if (request.getParameter("search") != null) {
         %>
-        <div class="alert alert-danger" role="alert">Completa tutti i campi!</div>
+        <div class="alert alert-danger" role="alert" id="alert">
+            Devi rimepire tutti i campi per effettuare una ricerca!
+        </div>
         <%
             }
         %>
         <button type="button" class="btn btn-default">Advanced Search</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button name="search" type="submit" class="btn btn-primary" value="search" id="search">Search</button>
+        <button name="search" onfocus="validation()" type="submit" class="btn btn-primary" value="search" id="search">Search</button>
 
 
 

@@ -1,10 +1,8 @@
 package it.ispw.efco.nottitranquille.model;
 
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.*;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
@@ -37,7 +35,4 @@ public class Service {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 }
