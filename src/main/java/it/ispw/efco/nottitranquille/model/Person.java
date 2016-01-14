@@ -13,7 +13,7 @@ import java.util.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "persontype",discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("Person")
-public class Person {
+public abstract class Person {
 
     /**
      * Default constructor

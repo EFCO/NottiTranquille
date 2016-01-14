@@ -71,6 +71,9 @@ public class Structure {
     @OneToMany
     private List<Service> services;
 
+    @OneToMany
+    private List<Location> locations;
+
     public void setRequest(Request request) {
         this.request = request;
     }
@@ -108,4 +111,7 @@ public class Structure {
         return id;
     }
 
+    public List<Location> getLocations() {
+        return locations;
+    }
 }

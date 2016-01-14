@@ -1,6 +1,8 @@
 package it.ispw.efco.nottitranquille.model;
 
+import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
 import org.joda.time.DateTime;
+import org.joda.time.Interval;
 
 import javax.persistence.*;
 import java.util.*;
@@ -8,7 +10,7 @@ import java.util.*;
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-//TODO @Entity
+@Entity
 public class Location {
 
     /**
@@ -45,7 +47,7 @@ public class Location {
     /**
      * 
      */
-    //TODO @ElementCollection(targetClass = String.class)
+    @ElementCollection(targetClass = String.class)
     private List<String> photos;
 
     /**
@@ -54,19 +56,21 @@ public class Location {
     private Integer numberOfBedrooms;
 
     //TODO @OneToMany
+    @Transient
     private Prices prices;
 
-    //TODO @Embedded
+    @Enumerated
     private LocationType type;
 
     //TODO @ElementCollection(targetClass = Service.class)
+    @Transient
     private List<Service> services;
 
-    //TODO @ManyToOne
+    @ManyToOne
     private Structure structure;
 
-    //TODO @ElementCollection(targetClass = BookingCalendar.class)
-    private List<BookingCalendar> booking;
+    @ElementCollection(targetClass = Interval.class)
+    private List<Interval> booking;
 
     /**
      * @param date 
@@ -109,8 +113,20 @@ public class Location {
     /**
      * 
      */
-    public void getAvailability() {
-        // TODO implement here
+    public boolean isAvailable(Interval interval) {
+        for (Interval inter : this.booking) {
+            if (interval.isEqual(inter) || (inter.getStart().isBefore(interval.getStart()) && inter.getEnd().isAfter(interval.getEnd()))) {
+                return true;
+            }
+        }
+        return false;
     }
 
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
 }

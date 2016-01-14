@@ -3,6 +3,7 @@ package it.ispw.efco.nottitranquille.model;
 import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
 import it.ispw.efco.nottitranquille.view.SearchBean;
 import org.joda.time.DateTime;
+import org.joda.time.Interval;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -33,9 +34,10 @@ public class CatalogueDAO {
         // TODO implement here
     }
 
-    public List<Request> selectAcceptedRequestsByFilter(String nation, String city, DateTime checkin, DateTime checkout, String pricerange) {
+    public List<Request> selectAcceptedRequests(String nation, String city) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
-        TypedQuery<Request> query = entityManager.createQuery("FROM Request r WHERE r.status=:s AND (r.structure.address.nation = :n OR r.structure.address.city = :c)",Request.class);
+        TypedQuery<Request> query = entityManager.createQuery(
+                "FROM Request r WHERE r.status=:s AND (r.structure.address.nation = :n AND r.structure.address.city = :c)",Request.class);
         query.setParameter("n",nation);
         query.setParameter("s", RequestStatus.Accepted);
         query.setParameter("c",city);

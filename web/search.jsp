@@ -49,39 +49,40 @@
 <form action="search.jsp" name="myform" method="POST" id="searchForm">
         <div class="form-group">
             <label for="nation">Nazione :</label>
-            <input name="nation" id="nation" type="text" class="form-control" placeholder="Roma">
+            <input name="nation" id="nation" type="text" class="form-control" placeholder="Roma" required>
         </div>
         <div class="form-group">
             <label for="city">Città :</label>
-            <input name="city" id="city" type="text" class="form-control" placeholder="Zagarolo">
+            <input name="city" id="city" type="text" class="form-control" placeholder="Zagarolo" required>
         </div>
         <div class="form-group">
             <label for="checkin">Check In:</label>
-            <input name="checkin" id="checkin" type="date" class="form-control required">
+            <input name="checkin" id="checkin" type="date" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="checkout">Check Out:</label>
-            <input name="checkout" id="checkout" type="date" class="form-control required" >
+            <input name="checkout" id="checkout" type="date" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="pricerange">Prezzo :</label>
             <select name="pricerange" id="pricerange" class="form-control">
                 <option>Fino a 100 euro</option>
-                <option>da 100 a 200 euro</option>
-                <option>da 200 a 500 euro</option>
+                <option>Fino a 200 euro</option>
+                <option>Fino a 500 euro</option>
+                <option>Nessun limite</option>
             </select>
         </div>
         <%
             if (request.getParameter("search") != null) {
         %>
-        <div class="alert alert-danger" role="alert" id="alert">
-            Devi rimepire tutti i campi per effettuare una ricerca!
-        </div>
+            <div class="alert alert-danger" role="alert" id="alert" style="display:none">
+                Devi riempire tutti i campi per effettuare una ricerca!
+            </div>
         <%
             }
         %>
         <button type="button" class="btn btn-default">Advanced Search</button>
-        <button name="search" onfocus="validation()" type="submit" class="btn btn-primary" value="search" id="search">Search</button>
+        <button name="search" type="submit" class="btn btn-primary" value="search" id="search">Search</button>
 
 
 

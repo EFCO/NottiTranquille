@@ -1,10 +1,7 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.FilteredSearch;
-import it.ispw.efco.nottitranquille.model.Address;
-import it.ispw.efco.nottitranquille.model.CatalogueDAO;
-import it.ispw.efco.nottitranquille.model.Request;
-import it.ispw.efco.nottitranquille.model.Structure;
+import it.ispw.efco.nottitranquille.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -20,7 +17,7 @@ public class SearchBean {
     private DateTime checkin = null;
     private DateTime checkout = null;
     private String pricerange = "";
-    public List<Request> result;
+    public List<Location> result;
 
     public SearchBean() {
     }
@@ -72,7 +69,11 @@ public class SearchBean {
         if(this.nation.equals("") || this.city.equals("") || this.checkin == null|| this.checkout == null) {
             return false;
         }
-        List<Request> result = FilteredSearch.getListOfRequests(this);
+        try {
+            List<Location> result = FilteredSearch.getListOfStructures(this);
+        } catch (Exception e) {
+            return false;
+        }
         return true;
     }
 }

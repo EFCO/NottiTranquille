@@ -1,7 +1,6 @@
 /**
  * Created by Federico on 13/01/2016.
  */
-var w = new Worker(validation())
 
 function validation() {
     var nation = document.getElementById("nation").value();
@@ -9,11 +8,14 @@ function validation() {
     var checkin = document.getElementById("checkin").value();
     var checkout = document.getElementById("checkout").value();
     var alert = document.getElementById("alert");
-
-    if (x.isEqual("") || city.isEqual("") || checkin.isEqual("") || checkin.isEqual("")) {
-            alert.style.visibility = "visible"
+    alert(nation,city,checkin,checkout);
+    if (nation == null || city == null || checkin == null || checkout == null) {
+            window.alert(nation);
+            alert.style.display = "block";
+            return false;
         } else {
-        alert.style.visibility = "none"
-
+        window.alert(nation);
+        alert.style.display = "none";
+        return true;
     }
 }
