@@ -20,6 +20,15 @@ public class Structure {
     public Structure(List<Service> services) {
         this.services = services;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
     /**
      * 
      */
@@ -71,8 +80,8 @@ public class Structure {
     @OneToMany
     private List<Service> services;
 
-    @OneToMany
-    private List<Location> locations;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Location> locations = new ArrayList<Location>();
 
     public void setRequest(Request request) {
         this.request = request;
@@ -101,6 +110,10 @@ public class Structure {
                 ", services=" + services +
                 ", id=" + id +
                 '}';
+    }
+
+    public void addLocation(Location location) {
+        this.locations.add(location);
     }
 
     @Id

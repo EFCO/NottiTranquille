@@ -19,6 +19,12 @@ public class Location {
     public Location() {
     }
 
+    public Location(List<Interval> booking, Structure structure) {
+        this.booking = booking;
+        this.structure = structure;
+        structure.addLocation(this);
+    }
+
     /**
      * 
      */
@@ -70,7 +76,8 @@ public class Location {
     private Structure structure;
 
     @ElementCollection(targetClass = Interval.class)
-    private List<Interval> booking;
+    @Column(length=100000) //for the Data too long error
+    private List<Interval> booking = new ArrayList<Interval>();
 
     /**
      * @param date 
@@ -128,5 +135,9 @@ public class Location {
 
     public Long getId() {
         return id;
+    }
+
+    public Structure getStructure() {
+        return structure;
     }
 }

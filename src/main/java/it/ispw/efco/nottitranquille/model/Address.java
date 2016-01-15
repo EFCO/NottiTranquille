@@ -38,4 +38,8 @@ public class Address {
     public Long getId() {
         return id;
     }
+
+    public String getAddress() {
+        return address;
+    }
 }

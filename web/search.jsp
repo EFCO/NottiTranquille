@@ -1,6 +1,9 @@
 <%@ page import="org.joda.time.format.DateTimeFormat" %>
 <%@ page import="org.joda.time.format.DateTimeFormatter" %>
 <%@ page import="org.joda.time.DateTime" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.Location" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -24,13 +27,6 @@
         if (!request.getParameter("checkin").equals("") && !request.getParameter("checkout").equals("")) {
             basicSearchBean.setCheckin(request.getParameter("checkin"));
             basicSearchBean.setCheckout(request.getParameter("checkout"));
-        }
-
-        if (basicSearchBean.validate()) {
-            %>
-            <!-- Passa il controllo alla nuova pagina -->
-            <jsp:forward page="RiassuntoLogin.jsp" />
-            <%
         }
     }
 %>
@@ -83,6 +79,47 @@
         %>
         <button type="button" class="btn btn-default">Advanced Search</button>
         <button name="search" type="submit" class="btn btn-primary" value="search" id="search">Search</button>
+        <%
+            List<Location> result = new ArrayList<>();
+            if (basicSearchBean.validate()) {
+                result = basicSearchBean.getResult();
+            }
+        pageContext.setAttribute("result", result);
+    %>
+    <div style="width: 800px; margin-left: 50px; margin-top: 30px;">
+
+        <%
+            if ( result.size() > 0 ) {
+        %>
+
+        <div class="col-md-11">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="icon-calendar"></i>
+                    <h3 class="panel-title">Location list</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover col-md-11">
+                        <thead>
+                        <tr>
+                            <th class="col-md-2">Locartion name</th>
+                            <th class="col-md-2">Address</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${result}" var="location">
+                            <td><c:out value="${location.structure.name}"/></td>
+                            <td><c:out value="${location.structure.address.address}"/></td>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <%
+            }
+        %>
+    </div>
 
 
 

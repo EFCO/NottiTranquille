@@ -45,7 +45,7 @@ public class FilteredSearch {
                 }
             }
         }
-        return null;
+        return final_result;
     }
 
 
