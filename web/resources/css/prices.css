@@ -1,0 +1,37 @@
+.under-navbar {
+    padding-top: 80px;
+}
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+#show {
+    margin: 8px;
+}
+#perPage {
+    margin: 8px;
+}
+.second {
+    margin-left: 10px;
+}
+footer {
+    clear:both;
+}
+#items-counter {
+    margin: 27px auto;
+}
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+    text-align:center;
+    vertical-align:middle;
+}
+
+.first-radio {
+    margin-top: 0;
+}

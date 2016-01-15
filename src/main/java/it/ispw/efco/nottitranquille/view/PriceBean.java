@@ -4,6 +4,7 @@ import it.ispw.efco.nottitranquille.model.enumeration.Day;
 import it.ispw.efco.nottitranquille.model.enumeration.RepetitionType;
 import org.joda.time.Interval;
 
+import javax.management.MXBean;
 import java.util.*;
 
 /**
@@ -35,7 +36,7 @@ public class PriceBean {
 	/**
 	 * 
 	 */
-	private Set<Day> days;
+	private List<Day> days;
 
 	/**
 	 * 
@@ -43,79 +44,44 @@ public class PriceBean {
 	private RepetitionType repetitionType;
 
 
-	/**
-	 * @return
-	 */
 	public Interval getInterval() {
-		// TODO implement here
-		return null;
+		return interval;
 	}
 
-	/**
-	 * @return
-	 */
-	public int getTimes() {
-		// TODO implement here
-		return 0;
-	}
-
-	/**
-	 * @return
-	 */
-	public int getOccurencies() {
-		// TODO implement here
-		return 0;
-	}
-
-	/**
-	 * @return
-	 */
-	public Set<Day> getDays() {
-		// TODO implement here
-		return null;
-	}
-
-	/**
-	 * @return
-	 */
-	public RepetitionType getRepetitionType() {
-		// TODO implement here
-		return null;
-	}
-
-	/**
-	 * @param interval
-	 */
 	public void setInterval(Interval interval) {
-		// TODO implement here
+		this.interval = interval;
 	}
 
-	/**
-	 * @param times
-	 */
+	public int getTimes() {
+		return times;
+	}
+
 	public void setTimes(int times) {
-		// TODO implement here
+		this.times = times;
 	}
 
-	/**
-	 * @param occurencies
-	 */
-	public void setOccurencies(int occurencies) {
-		// TODO implement here
+	public int getOccurrencies() {
+		return occurrencies;
 	}
 
-	/**
-	 * @param days
-	 */
+	public void setOccurrencies(int occurrencies) {
+		this.occurrencies = occurrencies;
+	}
+
+	public List<Day> getDays() {
+		return days;
+	}
+
 	public void setDays(List<Day> days) {
-		// TODO implement here
+		this.days = days;
 	}
 
-	/**
-	 * @param repetitionType
-	 */
+	public RepetitionType getRepetitionType() {
+		return repetitionType;
+	}
+
 	public void setRepetitionType(RepetitionType repetitionType) {
-		// TODO implement here
+		this.repetitionType = repetitionType;
 	}
 
 	/**

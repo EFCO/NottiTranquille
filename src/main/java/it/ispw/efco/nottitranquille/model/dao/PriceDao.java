@@ -5,6 +5,8 @@ import it.ispw.efco.nottitranquille.model.*;
 import org.joda.time.Interval;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 /**
@@ -68,13 +70,133 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link Price}s from persistent system.
+     * Returns the count of all {@link Price}s into persistent system.
+     *
+     * @return the number of the Prices
+     */
+    public static long countAllPrices() {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
+        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(Price.class)));
+
+        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+    }
+
+    /**
+     * Returns the count of all {@link BasePrice}s into persistent system.
+     *
+     * @return the number of the BasePrices
+     */
+    public static long countAllBasePrices() {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
+        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(BasePrice.class)));
+
+        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+    }
+
+    /**
+     * Returns the count of all {@link Discount}s into persistent system.
+     *
+     * @return the number of the Discounts
+     */
+    public static long countAllDiscounts() {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
+        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(Discount.class)));
+
+        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+    }
+
+    /**
+     * Returns the count of all {@link Fee}s into persistent system.
+     *
+     * @return the number of the Fees
+     */
+    public static long countAllFees() {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
+        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(Fee.class)));
+
+        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+    }
+
+    /**
+     * Returns the count of all {@link FixDiscount}s into persistent system.
+     *
+     * @return the number of the FixDiscounts
+     */
+    public static long countAllFixDiscounts() {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
+        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(FixDiscount.class)));
+
+        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+    }
+
+    /**
+     * Returns the count of all {@link FixFee}s into persistent system.
+     *
+     * @return the number of the FixFees
+     */
+    public static long countAllFixFees() {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
+        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(FixFee.class)));
+
+        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+    }
+
+    /**
+     * Returns the count of all {@link PercentageDiscount}s into persistent system.
+     *
+     * @return the number of the PercentageDiscounts
+     */
+    public static long countAllPercentageDiscounts() {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
+        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(PercentageDiscount.class)));
+
+        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+    }
+
+    /**
+     * Returns the count of all {@link PercentageFee}s into persistent system.
+     *
+     * @return the number of the PercentageFees
+     */
+    public static long countAllPercentageFees() {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
+        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(PercentageFee.class)));
+
+        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+    }
+
+    /**
+     * Retrieves {@link Price}s from persistent system.
      *
      * @param startPosition the offset of result
      * @param maxResult the maximum number of results
      * @return the list of maxResult Prices into persistent system from startPosition
      */
-    public static List<Price> retrieveAllPrices(int startPosition, int maxResult) {
+    public static List<Price> retrievePrices(int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -85,7 +207,7 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link Price}s that intersect a given {@link Interval} from persistent system.
+     * Retrieves {@link Price}s that intersect a given {@link Interval} from persistent system.
      *
      * @param interval  the interval in which we are interested to retrieve Prices
      * @param startPosition the offset of result
@@ -93,7 +215,7 @@ public class PriceDao {
      * @return the list of all Prices into persistent system valid in the given Interval
      */
     @SuppressWarnings("JpaQlInspection")
-    public static List<Price> retrieveAllPrices(Interval interval, int startPosition, int maxResult) {
+    public static List<Price> retrievePrices(Interval interval, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -110,13 +232,13 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link BasePrice} from persistent system.
+     * Retrieves {@link BasePrice} from persistent system.
      *
      * @param startPosition the offset of result
      * @param maxResult the maximum number of results
      * @return the list of all BasePrice into persistent system
      */
-    public static List<BasePrice> retrieveAllBasePrices(int startPosition, int maxResult) {
+    public static List<BasePrice> retrieveBasePrices(int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -127,7 +249,7 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link BasePrice}s that intersect a given {@link Interval} from persistent system.
+     * Retrieves {@link BasePrice}s that intersect a given {@link Interval} from persistent system.
      *
      * @param interval  the interval in which we are interested to retrieve Prices
      * @param startPosition the offset of result
@@ -135,7 +257,7 @@ public class PriceDao {
      * @return the list of all BasePrices into persistent system valid in the given Interval
      */
     @SuppressWarnings("JpaQlInspection")
-    public static List<Price> findAllBasePrices(Interval interval, int startPosition, int maxResult) {
+    public static List<Price> retrieveBasePrices(Interval interval, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -152,13 +274,13 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link Fee}s from persistent system.
+     * Retrieves {@link Fee}s from persistent system.
      *
      * @param startPosition the offset of result
      * @param maxResult the maximum number of results
      * @return the list of all Fees into persistent system
      */
-    public static List<Fee> findAllFees(int startPosition, int maxResult) {
+    public static List<Fee> retrieveFees(int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -169,7 +291,7 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link Fee}s that intersect a given {@link Interval} from persistent system.
+     * Retrieves {@link Fee}s that intersect a given {@link Interval} from persistent system.
      *
      * @param interval  the interval in which we are interested to retrieve Prices
      * @param startPosition the offset of result
@@ -177,7 +299,7 @@ public class PriceDao {
      * @return the list of all Fees into persistent system valid in the given Interval
      */
     @SuppressWarnings("JpaQlInspection")
-    public static List<Fee> findAllFees(Interval interval, int startPosition, int maxResult) {
+    public static List<Fee> retrieveFees(Interval interval, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -194,13 +316,13 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link Discount}s from persistent system.
+     * Retrieves {@link Discount}s from persistent system.
      *
      * @param startPosition the offset of result
      * @param maxResult the maximum number of results
      * @return the list of all Discounts into persistent system
      */
-    public static List<Discount> findAllDiscounts(int startPosition, int maxResult) {
+    public static List<Discount> retrieveDiscounts(int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -211,7 +333,7 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link Discount}s that intersect a given {@link Interval} from persistent system.
+     * Retrieves {@link Discount}s that intersect a given {@link Interval} from persistent system.
      *
      * @param interval  the interval in which we are interested to retrieve Prices
      * @param startPosition the offset of result
@@ -219,7 +341,7 @@ public class PriceDao {
      * @return the list of all Discounts into persistent system valid in the given Interval
      */
     @SuppressWarnings("JpaQlInspection")
-    public static List<Discount> findAllDiscounts(Interval interval, int startPosition, int maxResult) {
+    public static List<Discount> retrieveDiscounts(Interval interval, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -236,13 +358,13 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link FixDiscount}s from persistent system.
+     * Retrieves {@link FixDiscount}s from persistent system.
      *
      * @param startPosition the offset of result
      * @param maxResult the maximum number of results
      * @return the list of all FixDiscounts into persistent system
      */
-    public static List<FixDiscount> findAllFixDiscounts(int startPosition, int maxResult) {
+    public static List<FixDiscount> retrieveFixDiscounts(int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -253,7 +375,7 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link FixDiscount}s that intersect a given {@link Interval} from persistent system.
+     * Retrieves {@link FixDiscount}s that intersect a given {@link Interval} from persistent system.
      *
      * @param interval  the interval in which we are interested to retrieve Prices
      * @param startPosition the offset of result
@@ -261,7 +383,7 @@ public class PriceDao {
      * @return the list of all FixDiscounts into persistent system valid in the given Interval
      */
     @SuppressWarnings("JpaQlInspection")
-    public static List<FixDiscount> findAllFixDiscounts(Interval interval, int startPosition, int maxResult) {
+    public static List<FixDiscount> retrieveFixDiscounts(Interval interval, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -278,13 +400,13 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link FixFee}s from persistent system.
+     * Retrieves {@link FixFee}s from persistent system.
      *
      * @param startPosition the offset of result
      * @param maxResult the maximum number of results
      * @return the list of all FixFees into persistent system
      */
-    public static List<FixFee> findAllFixFees(int startPosition, int maxResult) {
+    public static List<FixFee> retrieveFixFees(int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -295,7 +417,7 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link FixFee}s that intersect a given {@link Interval} from persistent system.
+     * Retrieves {@link FixFee}s that intersect a given {@link Interval} from persistent system.
      *
      * @param interval  the interval in which we are interested to retrieve Prices
      * @param startPosition the offset of result
@@ -303,7 +425,7 @@ public class PriceDao {
      * @return the list of all FixFees into persistent system valid in the given Interval
      */
     @SuppressWarnings("JpaQlInspection")
-    public static List<FixFee> findAllFixFees(Interval interval, int startPosition, int maxResult) {
+    public static List<FixFee> retrieveFixFees(Interval interval, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -320,13 +442,13 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link PercentageFee}s from persistent system.
+     * Retrieves {@link PercentageFee}s from persistent system.
      *
      * @param startPosition the offset of result
      * @param maxResult the maximum number of results
      * @return the list of all PercentageFees into persistent system
      */
-    public static List<PercentageFee> findAllPercentageFees(int startPosition, int maxResult) {
+    public static List<PercentageFee> retrievePercentageFees(int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -337,7 +459,7 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link PercentageFee}s that intersect a given {@link Interval} from persistent system.
+     * Retrieves {@link PercentageFee}s that intersect a given {@link Interval} from persistent system.
      *
      * @param interval  the interval in which we are interested to retrieve Prices
      * @param startPosition the offset of result
@@ -345,7 +467,7 @@ public class PriceDao {
      * @return the list of all PercentageFees into persistent system valid in the given Interval
      */
     @SuppressWarnings("JpaQlInspection")
-    public static List<PercentageFee> findAllPercentageFees(Interval interval, int startPosition, int maxResult) {
+    public static List<PercentageFee> retrievePercentageFees(Interval interval, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -362,13 +484,13 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link PercentageDiscount}s from persistent system.
+     * Retrieves {@link PercentageDiscount}s from persistent system.
      *
      * @param startPosition the offset of result
      * @param maxResult the maximum number of results
      * @return the list of all PercentageDiscounts into persistent system
      */
-    public static List<PercentageDiscount> findAllPercentageDiscounts(int startPosition, int maxResult) {
+    public static List<PercentageDiscount> retrievePercentageDiscounts(int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -379,7 +501,7 @@ public class PriceDao {
     }
 
     /**
-     * Retrieves all {@link PercentageDiscount}s that intersect a given {@link Interval} from persistent system.
+     * Retrieves {@link PercentageDiscount}s that intersect a given {@link Interval} from persistent system.
      *
      * @param interval  the interval in which we are interested to retrieve Prices
      * @param startPosition the offset of result
@@ -387,7 +509,7 @@ public class PriceDao {
      * @return the list of all PercentageDiscounts into persistent system valid in the given Interval
      */
     @SuppressWarnings("JpaQlInspection")
-    public static List<PercentageDiscount> findAllPercentageDiscounts(Interval interval, int startPosition, int maxResult) {
+    public static List<PercentageDiscount> retrievePercentageDiscounts(Interval interval, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager

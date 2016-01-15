@@ -37,7 +37,6 @@ import java.util.List;
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="priceType", discriminatorType = DiscriminatorType.STRING, length = 20)

@@ -8,7 +8,6 @@
     <artifactId>nottitranquille</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-
     <dependencies>
         <!-- The JavaServer Pages Standard Tag Library (JSTL) -->
         <!-- is a collection of useful JSP tags which encapsulates core functionality common to many JSP applications. -->
@@ -16,6 +15,15 @@
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
+        </dependency>
+
+        <!-- JavaServer Pages(TM) API -->
+        <!-- JavaServer Pages(TM) API -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Hibernate JPA Support -->
@@ -55,6 +63,15 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.38</version>
+        </dependency>
+
+        <!-- JUnit -->
+        <!-- JUnit is a unit testing framework for Java, created by Erich Gamma and Kent Beck. -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
