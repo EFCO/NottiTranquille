@@ -5,7 +5,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
- * Created by Federico on 03/01/2016.
+ * This class initializes a static entity manager of JPA for the entire project.
+ * @author Manuel Mastrofini
  */
 public class JPAInitializer {
     /**

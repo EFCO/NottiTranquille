@@ -1,5 +1,7 @@
 package it.ispw.efco.nottitranquille.model;
 
+import org.joda.time.DateTime;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -52,12 +54,12 @@ public class Structure {
     /**
      * 
      */
-    private Date checkIn;
+    private DateTime checkIn;
 
     /**
      * 
      */
-    private Date checkOut;
+    private DateTime checkOut;
 
     @ManyToOne
     private Manager managedBy;

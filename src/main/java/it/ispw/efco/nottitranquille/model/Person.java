@@ -1,18 +1,18 @@
 package it.ispw.efco.nottitranquille.model;
 
 import it.ispw.efco.nottitranquille.model.enumeration.Gender;
+import org.joda.time.DateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.*;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
-public class Person {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@SuppressWarnings("JpaDataSourceORMInspection")
+public abstract class Person {
 
     /**
      * Default constructor
@@ -23,7 +23,6 @@ public class Person {
     /**
      * 
      */
-    @Column
     private String firstName;
 
     /**
@@ -39,7 +38,7 @@ public class Person {
     /**
      * 
      */
-    private Date birthdate;
+    private DateTime birthdate;
 
     /**
      * 
@@ -51,10 +50,10 @@ public class Person {
     private Gender gender;
 
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Id
-    @GeneratedValue
     public Long getId() {
         return id;
     }
