@@ -4,6 +4,9 @@ import it.ispw.efco.nottitranquille.model.JPAInitializer;
 import it.ispw.efco.nottitranquille.model.Reservation;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
 
 /**
  * DAO for {@link Reservation} entity.
@@ -56,6 +59,33 @@ public class ReservationDAO {
 
         entityManager.getTransaction().commit();
     }
+
+
+    public static List<Reservation> findAllReservation() {
+        EntityManager em = JPAInitializer.getEntityManager();
+        List<Reservation> events = em.createQuery("from Reservation", Reservation.class)
+                .getResultList();
+        return events;
+    }
+
+    @SuppressWarnings("JpaQlInspection")
+    public static List<Reservation> findPaidReservation() {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+
+        return entityManager.createQuery("from Reservation where " +
+                                " (state = Paid) ", Reservation.class).getResultList();
+
+    }
+
+    @SuppressWarnings("JpaQlInspection")
+    public static List<Reservation> findToPayReservation() {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+
+        return entityManager.createQuery("from Reservation where " +
+                " (state = ToPay) ", Reservation.class).getResultList();
+    }
+
+
 
 
 
