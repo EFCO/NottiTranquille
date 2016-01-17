@@ -42,6 +42,14 @@
           <version>2.9.1</version>
         </dependency>
 
+        <!-- Joda Time JSP Tags Support -->
+        <!-- Contribution to Joda-Time that adds JSP tags support -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time-jsptags</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
         <!-- Classes utilising Java 7 and/or 8 that add Hibernate support for types such as Moneta -->
         <dependency>
             <groupId>org.jadira.usertype</groupId>

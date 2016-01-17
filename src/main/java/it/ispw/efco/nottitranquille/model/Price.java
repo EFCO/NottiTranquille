@@ -54,12 +54,12 @@ public abstract class Price {
     protected Interval interval;
 
 	/**
-	 * The number of times the Price must be repeated
+	 * The number of times that the Price must be repeated
 	 */
     protected int times;
 
 	/**
-	 * The number of the occurrences the Price must be repeated
+	 * The number of the occurrences that the Price must be repeated
 	 */
     protected int occurrences;
 
@@ -144,6 +144,78 @@ public abstract class Price {
      */
     public Long getId() {
         return this.id;
+    }
+
+    /**
+     * Gets the interval in which the Price is valid.
+     *
+     * @return the interval
+     */
+    public Interval getInterval() {
+        return interval;
+    }
+
+    /**
+     * Gets the start date of the interval in which the Price is valid.
+     *
+     * @return the start date
+     */
+    public DateTime getStartDate() {
+        return interval.getStart();
+    }
+
+    /**
+     * Gets the end date of the interval in which the Price is valid.
+     *
+     * @return the end date
+     */
+    public DateTime getEndDate() {
+        return interval.getEnd();
+    }
+
+    /**
+     * Gets the number of the times that the Price must be repeated.
+     *
+     * @return the times
+     */
+    public int getTimes() {
+        return times;
+    }
+
+    /**
+     * Gets the occurrences before the price is not valid anymore.
+     *
+     * @return the occurrences
+     */
+    public int getOccurrences() {
+        return occurrences;
+    }
+
+    /**
+     * Gets the days in which the Price must be valid.
+     *
+     * @return the days
+     */
+    public List<Day> getDays() {
+        return days;
+    }
+
+    /**
+     * Gets the type of the Price's repetition.
+     *
+     * @return the repetition type
+     */
+    public RepetitionType getRepetitionType() {
+        return repetitionType;
+    }
+
+    /**
+     * Gets the value of Price.
+     *
+     * @return the value
+     */
+    public double getValue() {
+        return value;
     }
 
     /**

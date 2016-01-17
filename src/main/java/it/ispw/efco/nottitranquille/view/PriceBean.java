@@ -4,8 +4,7 @@ import it.ispw.efco.nottitranquille.model.enumeration.Day;
 import it.ispw.efco.nottitranquille.model.enumeration.RepetitionType;
 import org.joda.time.Interval;
 
-import javax.management.MXBean;
-import java.util.*;
+import java.util.List;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
