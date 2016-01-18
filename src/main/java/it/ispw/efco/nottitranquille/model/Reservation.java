@@ -1,7 +1,6 @@
 package it.ispw.efco.nottitranquille.model;
 
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
-import org.hibernate.annotations.Type;
 import org.joda.time.Interval;
 
 import javax.persistence.*;
@@ -19,10 +18,16 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @ManyToOne
+    private Tenant tenant;
+
+    @ManyToMany
+    private List<Person> buyers;
+
     private Interval period;
 
     /**
-     *
+     * Also {@link Location} has services: here we indicate services bought.
      */
     @ManyToMany
     @JoinTable(name="Reservation_Service",
@@ -41,6 +46,9 @@ public class Reservation {
      */
     @OneToOne
     private Request request;
+
+    @ManyToOne
+    private Location location;
 
     /**
      * Default constructor
@@ -119,5 +127,6 @@ public class Reservation {
         this.services = toUpdate.getServices();
         this.state = toUpdate.getState();
     }
+
 
 }

@@ -30,11 +30,4 @@ public class Tenant extends RegisteredUser {
 
 
 
-    /**
-     * @param location
-     */
-    public void reserve(Location location) {
-        // TODO implement here
-    }
-
 }

@@ -4,7 +4,6 @@ import it.ispw.efco.nottitranquille.model.enumeration.Gender;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
-import java.util.*;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
@@ -21,27 +20,27 @@ public abstract class Person {
     }
 
     /**
-     * 
+     *
      */
     private String firstName;
 
     /**
-     * 
+     *
      */
     private String lastName;
 
     /**
-     * 
+     *
      */
     private String email;
 
     /**
-     * 
+     *
      */
     private DateTime birthdate;
 
     /**
-     * 
+     *
      */
     private String phoneNumber;
 

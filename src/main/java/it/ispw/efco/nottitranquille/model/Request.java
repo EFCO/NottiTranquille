@@ -11,25 +11,13 @@ import java.util.*;
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
+@SuppressWarnings("JpaDataSourceORMInspection")
 public class Request {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    /**
-     *
-     */
-    private Interval requestDate;
-
-    /**
-     *
-     */
-    private Interval acceptedDate;
-
-    /**
-     *
-     */
     private DateTime lastModified;
 
     @ManyToOne
@@ -38,11 +26,11 @@ public class Request {
     @ManyToOne
     private Scout reviewedBy;
 
-    @ManyToOne
-    private Structure structure;
-
     @Enumerated
     private RequestStatus status;
+
+    @ManyToOne
+    private Structure structure;
 
     /**
      * Default constructor
