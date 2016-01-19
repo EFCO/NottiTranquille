@@ -37,8 +37,8 @@ public class LocationDAO {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
 
-        Location reservationLoaded = entityManager.find(Location.class, locationToUpdate.getId());
-        reservationLoaded.update(locationToUpdate);
+        Location locationLoaded = entityManager.find(Location.class, locationToUpdate.getId());
+        locationLoaded.update(locationToUpdate);
 
         entityManager.getTransaction().commit();
     }

@@ -42,7 +42,7 @@ public class LocationTypeDAO {
     /**
      * Deletes {@link LocationType } from persistent system.
      *
-     * @param toDelete the Reservation to remove
+     * @param toDelete the LocationType to remove
      */
     public static void delete(LocationType toDelete) {
         EntityManager entityManager = JPAInitializer.getEntityManager();

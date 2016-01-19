@@ -1,12 +1,14 @@
 package it.ispw.efco.nottitranquille.model;
 
+import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
+import org.hibernate.annotations.CollectionType;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
+import org.jadira.usertype.dateandtime.joda.PersistentInterval;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import javax.persistence.*;
-import java.sql.Struct;
 import java.util.*;
 
 /**
@@ -24,19 +26,18 @@ public class Location {
 
     private String name;
 
-    @OneToOne
+    @ManyToOne
     private LocationType type;
 
     @ManyToOne
     private Structure structure;
 
-    /*@ElementCollection*/
-    @Transient
-    private List<Interval> requestDate;
+    @ElementCollection(targetClass = Interval.class)
+    @Column(length = 100000)
+    private List<Interval> booking;
 
-
-    /* @ElementCollection*/
-    @Transient
+    @ElementCollection(targetClass = Interval.class)
+    @Column(length = 100000)
     private List<Interval> AvailableDate;
 
 
@@ -61,7 +62,7 @@ public class Location {
     private Integer maxGuestsNumber;
 
     /**
-     * Number of Bedroom in the Location
+     * Number of Bedrooms in the Location
      */
     private Integer numberOfBedrooms;
 
@@ -94,7 +95,27 @@ public class Location {
         this.structure = structure;
     }
 
+    /**
+     * @param interval : contiguous range of days that we want to test are available
+     * @return bool
+     */
+    public boolean isAvailable(Interval interval) {
+        for (Interval inter : this.booking) {
+            if (interval.isEqual(inter) || (inter.getStart().isBefore(interval.getStart())
+                    && inter.getEnd().isAfter(interval.getEnd()))) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    /**
+     * Method needs to update Location in the Database.
+     * We have to instantiate a new Location with update attributes
+     *
+     * @param toUpdate: Location to update in database
+     * @see it.ispw.efco.nottitranquille.model.dao.LocationDAO
+     */
     public void update(Location toUpdate) {
         this.id = toUpdate.getId();
         this.name = toUpdate.getName();
@@ -115,12 +136,10 @@ public class Location {
         return structure;
     }
 
-    @Transient
-    public List<Interval> getRequestDate() {
-        return requestDate;
+    public List<Interval> getBooking() {
+        return booking;
     }
 
-    @Transient
     public List<Interval> getAvailableDate() {
         return AvailableDate;
     }
@@ -177,8 +196,8 @@ public class Location {
         this.structure = structure;
     }
 
-    public void setRequestDate(List<Interval> requestDate) {
-        this.requestDate = requestDate;
+    public void setBooking(List<Interval> booking) {
+        this.booking = booking;
     }
 
     public void setAvailableDate(List<Interval> availableDate) {

@@ -17,6 +17,7 @@
 <body>
 
 <% JPAInitializer.getEntityManager(); %>
+
 <!-- NAVBAR
 ================================================== -->
 <%@include file="navbar.html" %>

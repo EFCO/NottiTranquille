@@ -28,7 +28,7 @@ public class Structure {
     /**
      *
      */
-    private String numberOfLocations;
+    private Integer numberOfLocations;
 
     @OneToMany
     @JoinTable(name = "Structure_Location",
@@ -135,56 +135,8 @@ public class Structure {
         numberOfLocations += 1;
     }
 
-    /**
-     * Not Tested
-     *
-     * @param period: Interval of date through research Location in databse
-     * @return List of Locations that respect criteria of time.
-     */
-    public List<Location> findLocationByDate(Interval period) {
-        List<Location> foundLocations = new ArrayList<Location>();
 
-        DateTime start = period.getStart();
-        DateTime end = period.getEnd();
-
-        for (Location l : this.locations) {
-            List<Interval> availableDates = l.getAvailableDate();
-
-            for (Interval interval : availableDates) {
-                DateTime availableStart = interval.getStart();
-                DateTime availableEnd = interval.getEnd();
-
-                if (start.isAfter(availableStart) && end.isBefore(availableEnd)) {
-                    foundLocations.add(l);
-                    break;
-                }
-
-            }
-
-        }
-        return foundLocations;
-    }
-
-    /**
-     * Not Tested
-     *
-     * @param beds: Number of beds through research Location in database
-     * @return List of Locations that respect criteria of bed's number.
-     */
-    public List<Location> findLocationByBed(Integer beds) {
-        List<Location> foundLocations = new ArrayList<Location>();
-
-        for (Location l : this.locations) {
-            if (l.getNumberOfBeds().equals(beds)) {
-                foundLocations.add(l);
-            }
-        }
-
-        return foundLocations;
-    }
-
-
-    /* Getter and Setter */
+    /* GETTER AND SETTER */
 
     public Long getId() {
         return id;
@@ -206,11 +158,11 @@ public class Structure {
         this.description = description;
     }
 
-    public String getNumberOfLocations() {
+    public Integer getNumberOfLocations() {
         return numberOfLocations;
     }
 
-    public void setNumberOfLocations(String numberOfLocations) {
+    public void setNumberOfLocations(Integer numberOfLocations) {
         this.numberOfLocations = numberOfLocations;
     }
 

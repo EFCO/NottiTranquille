@@ -1,7 +1,7 @@
 package it.ispw.efco.nottitranquille.model;
 
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
-import org.hibernate.annotations.CollectionType;
+import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
 import org.joda.time.Interval;
 
@@ -26,28 +26,22 @@ public class Reservation {
     @ManyToOne
     private Tenant tenant;
 
-    @Transient
+    @ManyToMany
     private List<Person> buyers;
 
-    @Transient
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentInterval")
+    @Columns(columns = { @Column(name = "startDate"), @Column(name = "endDate") })
     private Interval period;
 
-    /**
-     * Also {@link Location} has services: here we indicate services bought.
-     */
+
     @ManyToMany
     @JoinTable(name = "Reservation_Service",
             joinColumns = {@JoinColumn(name = "ReservationId", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "ServiceId", referencedColumnName = "id")})
     private List<Service> services;
 
-
     @Enumerated
     private ReservationState state;
-
-
-    @OneToOne
-    private Request request;
 
 
     /**
@@ -61,12 +55,12 @@ public class Reservation {
         this(null, location);
     }
 
-    public Reservation(Tenant tentant, Location location) {
-        this(tentant, location, null);
+    public Reservation(Tenant tenant, Location location) {
+        this(tenant, location, null);
     }
 
-    public Reservation(Tenant tentant, Location location, Interval interval) {
-        this.tenant = tentant;
+    public Reservation(Tenant tenant, Location location, Interval interval) {
+        this.tenant = tenant;
         this.location = location;
         this.period = interval;
 
@@ -99,43 +93,78 @@ public class Reservation {
     /**
      *
      */
-    public void remoseService() {
+    public void removeService() {
         // TODO implement here
     }
+
 
     /**
+     * Method needs to update Reservation in the Database.
+     * We have to instantiate a new Reservation with update attributes
      *
+     * @see it.ispw.efco.nottitranquille.model.dao.ReservationDAO
+     * @param toUpdate: Reservation to update in database
      */
-    public void changeState() {
-        // TODO implement here
-    }
-
-    /**
-     *
-     */
-    public void reservationNotify() {
-        // TODO implement here
-    }
-
     public void update(Reservation toUpdate) {
         this.id = toUpdate.getId();
-       /* this.services = toUpdate.getServices();
-        this.state = toUpdate.getState();*/
     }
 
     /* Getter and Setter */
 
     public Long getId() {
-        return this.id;
+        return id;
     }
 
-    /* public ReservationState getState() {
-        return this.state;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Tenant getTenant() {
+        return tenant;
+    }
+
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
+    }
+
+    public List<Person> getBuyers() {
+        return buyers;
+    }
+
+    public void setBuyers(List<Person> buyers) {
+        this.buyers = buyers;
+    }
+
+    public Interval getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Interval period) {
+        this.period = period;
     }
 
     public List<Service> getServices() {
-        return this.services;
-    }*/
+        return services;
+    }
 
+    public void setServices(List<Service> services) {
+        this.services = services;
+    }
+
+    public ReservationState getState() {
+        return state;
+    }
+
+    public void setState(ReservationState state) {
+        this.state = state;
+    }
 
 }

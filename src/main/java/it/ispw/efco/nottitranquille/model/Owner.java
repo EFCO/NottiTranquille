@@ -12,10 +12,6 @@ import java.util.*;
 @Entity
 public class Owner extends Person {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     /**
      * Default constructor
      */
