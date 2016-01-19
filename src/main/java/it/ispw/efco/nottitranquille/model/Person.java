@@ -8,9 +8,6 @@ import javax.persistence.*;
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@SuppressWarnings("JpaDataSourceORMInspection")
 public abstract class Person {
 
     /**
@@ -49,15 +46,31 @@ public abstract class Person {
     private Gender gender;
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    public Long getId() {
-        return id;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setBirthdate(DateTime birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 }

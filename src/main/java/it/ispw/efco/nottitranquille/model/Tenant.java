@@ -28,6 +28,10 @@ public class Tenant extends RegisteredUser {
             inverseJoinColumns={@JoinColumn(name="TenantsId", referencedColumnName="id")})
     public List<Reservation> reservations;
 
+    public void update(Tenant toUpdate) {
+        super.setId(toUpdate.getId());
+
+    }
 
 
 }

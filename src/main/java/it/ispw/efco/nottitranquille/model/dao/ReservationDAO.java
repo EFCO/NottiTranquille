@@ -19,7 +19,7 @@ public class ReservationDAO {
     /**
      * Stores {@link Reservation} into persistent system.
      *
-     * @param reservation the Price to persist
+     * @param reservation the Reservation to persist
      */
     public static void store(Reservation reservation) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
@@ -33,7 +33,7 @@ public class ReservationDAO {
     /**
      * Updates {@link Reservation} into persistent system
      *
-     * @param reservationToUpdate the Price to update with the new state
+     * @param reservationToUpdate the Reservation to update with the new state
      */
     public static void update(Reservation reservationToUpdate) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
@@ -48,7 +48,7 @@ public class ReservationDAO {
     /**
      * Deletes {@link Reservation } from persistent system.
      *
-     * @param reservationToDelete the Price to remove
+     * @param reservationToDelete the Reservation to remove
      */
     public static void delete(Reservation reservationToDelete) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
@@ -62,10 +62,9 @@ public class ReservationDAO {
 
 
     public static List<Reservation> findAllReservation() {
-        EntityManager em = JPAInitializer.getEntityManager();
-        List<Reservation> events = em.createQuery("from Reservation", Reservation.class)
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        return entityManager.createQuery("from Reservation", Reservation.class)
                 .getResultList();
-        return events;
     }
 
     @SuppressWarnings("JpaQlInspection")

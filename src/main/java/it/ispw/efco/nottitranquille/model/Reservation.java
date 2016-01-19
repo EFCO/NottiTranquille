@@ -1,6 +1,8 @@
 package it.ispw.efco.nottitranquille.model;
 
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
+import org.hibernate.annotations.CollectionType;
+import org.hibernate.annotations.Type;
 import org.joda.time.Interval;
 
 import javax.persistence.*;
@@ -18,47 +20,57 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @OneToOne
+    private Location location;
+
     @ManyToOne
     private Tenant tenant;
 
-    @ManyToMany
+    @Transient
     private List<Person> buyers;
 
+    @Transient
     private Interval period;
 
     /**
      * Also {@link Location} has services: here we indicate services bought.
      */
     @ManyToMany
-    @JoinTable(name="Reservation_Service",
-            joinColumns={@JoinColumn(name="ReservationId", referencedColumnName="id")},
-            inverseJoinColumns={@JoinColumn(name="ServiceId", referencedColumnName="id")})
+    @JoinTable(name = "Reservation_Service",
+            joinColumns = {@JoinColumn(name = "ReservationId", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "ServiceId", referencedColumnName = "id")})
     private List<Service> services;
 
-    /**
-     *
-     */
+
     @Enumerated
     private ReservationState state;
 
-    /**
-     *
-     */
+
     @OneToOne
     private Request request;
 
-    @ManyToOne
-    private Location location;
 
     /**
      * Default constructor
      */
     public Reservation() {
+        this(null);
     }
 
-    public Reservation(Request req, ReservationState state){
-        this.request=req;
-        this.state=state;
+    public Reservation(Location location) {
+        this(null, location);
+    }
+
+    public Reservation(Tenant tentant, Location location) {
+        this(tentant, location, null);
+    }
+
+    public Reservation(Tenant tentant, Location location, Interval interval) {
+        this.tenant = tentant;
+        this.location = location;
+        this.period = interval;
+
+        this.state= ReservationState.Unknown;
     }
 
 
@@ -105,28 +117,25 @@ public class Reservation {
         // TODO implement here
     }
 
-    public Request getRequest() {
-        return this.request;
+    public void update(Reservation toUpdate) {
+        this.id = toUpdate.getId();
+       /* this.services = toUpdate.getServices();
+        this.state = toUpdate.getState();*/
     }
 
-    public ReservationState getState() {
-        return this.state;
-    }
-
-    public List<Service> getServices() {
-        return this.services;
-    }
+    /* Getter and Setter */
 
     public Long getId() {
         return this.id;
     }
 
-    public void update(Reservation toUpdate) {
-        this.id = toUpdate.getId();
-        this.request = toUpdate.getRequest();
-        this.services = toUpdate.getServices();
-        this.state = toUpdate.getState();
+    /* public ReservationState getState() {
+        return this.state;
     }
+
+    public List<Service> getServices() {
+        return this.services;
+    }*/
 
 
 }

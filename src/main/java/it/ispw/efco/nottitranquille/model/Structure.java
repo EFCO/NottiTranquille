@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import javax.persistence.*;
+import java.sql.Struct;
 import java.util.*;
 
 /**
@@ -12,18 +13,6 @@ import java.util.*;
 @Entity
 @SuppressWarnings("JpaDataSourceORMInspection")
 public class Structure {
-
-    public Structure(String name, Address address) {
-        this.name = name;
-        this.address = address;
-    }
-
-    /**
-     * Default constructor
-     */
-    protected Structure() {
-
-    }
 
     /**
      *
@@ -66,11 +55,13 @@ public class Structure {
     /**
      *
      */
+    @Transient
     private DateTime checkIn;
 
     /**
      *
      */
+    @Transient
     private DateTime checkOut;
 
     @ManyToOne
@@ -106,6 +97,25 @@ public class Structure {
     @Id
     @GeneratedValue
     private Long id;
+
+    /**
+     * Default constructor
+     */
+    public Structure() {
+        this(null);
+    }
+
+    public Structure(String name){
+        this(name, null);
+    }
+
+    public Structure(String name, Address address) {
+        this.name = name;
+        this.address = address;
+
+        locations= new ArrayList<Location>();
+
+    }
 
 
     public void addLocations(List<Location> newLocations) {

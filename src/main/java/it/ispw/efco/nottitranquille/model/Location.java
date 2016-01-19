@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import javax.persistence.*;
+import java.sql.Struct;
 import java.util.*;
 
 /**
@@ -29,11 +30,13 @@ public class Location {
     @ManyToOne
     private Structure structure;
 
-    @ElementCollection
+    /*@ElementCollection*/
+    @Transient
     private List<Interval> requestDate;
 
 
-    @ElementCollection
+    /* @ElementCollection*/
+    @Transient
     private List<Interval> AvailableDate;
 
 
@@ -84,13 +87,21 @@ public class Location {
      * Default constructor
      */
     public Location() {
+        this(null);
     }
 
-    public Location(String name, String description){
-        this.name=name;
-        this.description=description;
+    public Location(Structure structure) {
+        this.structure = structure;
     }
 
+
+    public void update(Location toUpdate) {
+        this.id = toUpdate.getId();
+        this.name = toUpdate.getName();
+    }
+
+
+    /* Getter and Setter */
 
     public Long getId() {
         return id;
@@ -104,10 +115,12 @@ public class Location {
         return structure;
     }
 
+    @Transient
     public List<Interval> getRequestDate() {
         return requestDate;
     }
 
+    @Transient
     public List<Interval> getAvailableDate() {
         return AvailableDate;
     }
@@ -203,4 +216,6 @@ public class Location {
     public void setPrice(float price) {
         this.price = price;
     }
+
+
 }

@@ -20,11 +20,12 @@ public class LocationType {
     private Long id;
 
     @ManyToMany
-    @JoinTable(name = "Location_Service",
-            joinColumns = {@JoinColumn(name = "LocationId", referencedColumnName = "id")},
+    @JoinTable(name = "LocationType_Service",
+            joinColumns = {@JoinColumn(name = "LocationTypeId", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "ServiceId", referencedColumnName = "id")})
     private List<Service> services;
 
+    @Enumerated
     private ReservationType reservationType;
 
     /**
@@ -44,4 +45,33 @@ public class LocationType {
     }
 
 
+    public void update(LocationType toUpdate) {
+        this.id = toUpdate.getId();
+        //TODO
+    }
+
+    /* Getter and Setter */
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
+    }
+    public ReservationType getReservationType() {
+        return reservationType;
+    }
+
+    public void setReservationType(ReservationType reservationType) {
+        this.reservationType = reservationType;
+    }
 }
