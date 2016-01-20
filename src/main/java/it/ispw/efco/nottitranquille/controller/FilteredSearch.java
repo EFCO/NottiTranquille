@@ -1,9 +1,19 @@
 package it.ispw.efco.nottitranquille.controller;
 
+import it.ispw.efco.nottitranquille.model.Catalogue;
 import it.ispw.efco.nottitranquille.model.CatalogueDAO;
 import it.ispw.efco.nottitranquille.model.Location;
 import it.ispw.efco.nottitranquille.model.Request;
+import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
 import it.ispw.efco.nottitranquille.view.SearchBean;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
@@ -19,6 +29,41 @@ public class FilteredSearch {
      */
     public FilteredSearch() {
     }
+
+    private Stage stage;
+
+    @FXML
+    private TextField address;
+
+    @FXML
+    private TextField nation;
+
+    @FXML
+    private TextField city;
+
+    @FXML
+    private MenuButton status;
+
+
+    public void setStatusMenuButton() {
+        for (RequestStatus state : RequestStatus.values()) {
+            CheckMenuItem menuItem = new CheckMenuItem(state.name());
+            this.status.getItems().add(menuItem);
+        }
+        status.setText(status.getItems().get(0).getText());
+
+    }
+
+    @FXML
+    protected void handleSearchButtonAction(ActionEvent event) {
+        System.out.println(address.getText());
+        CatalogueDAO catalogueDAO = new CatalogueDAO();
+        List<Request> results = catalogueDAO.selectAllRequestsByFilter(nation.getText(),city.getText(), RequestStatus.valueOf("Accepted"));
+        System.out.println(results);
+
+    }
+
+
 
     public static List<Location> getListOfStructures(SearchBean searchBean) throws Exception {
         if (searchBean.getCheckin().isAfter(searchBean.getCheckout()) && searchBean.getCheckin().isBeforeNow()) {

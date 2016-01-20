@@ -140,4 +140,16 @@ public class Location {
     public Structure getStructure() {
         return structure;
     }
+
+    public List<String> getPhotos() {
+        return photos;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getLocationAddress() {
+        return this.structure.getStructureAddress().getAddress();
+    }
 }

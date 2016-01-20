@@ -7,6 +7,9 @@
         <element id="directory" name="classes">
           <element id="module-output" name="NottiTranquille" />
           <element id="jpa-descriptors" facet="NottiTranquille/jpa/JPA" />
+          <element id="library" level="application" name="daterangepicker" />
+          <element id="library" level="application" name="jquery" />
+          <element id="library" level="application" name="moment" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
@@ -23,6 +26,7 @@
           <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.0.b2" />
           <element id="library" level="project" name="Maven: javax.transaction:jta:1.1" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.38" />
+          <element id="library" level="project" name="Maven: joda-time:joda-time-jsptags:1.1.1" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="NottiTranquille/javaeeApplication/javaEEApplication" />

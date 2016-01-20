@@ -11,6 +11,9 @@
         <element id="library" level="project" name="JPA 2.0-2.0" />
       </element>
       <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
+      <element id="library" level="application" name="daterangepicker" />
+      <element id="library" level="application" name="jquery" />
+      <element id="library" level="application" name="moment" />
     </root>
   </artifact>
 </component>

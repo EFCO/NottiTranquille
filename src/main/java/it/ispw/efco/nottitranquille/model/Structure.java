@@ -25,7 +25,7 @@ public class Structure {
         return name;
     }
 
-    public Address getAddress() {
+    public Address getStructureAddress() {
         return address;
     }
 

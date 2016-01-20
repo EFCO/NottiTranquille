@@ -30,8 +30,16 @@ public class CatalogueDAO {
         entityManager.getTransaction().commit();
     }
 
-    public void selectAllRequestsByFilter() {
-        // TODO implement here
+    public List<Request> selectAllRequestsByFilter(String nation, String city, RequestStatus status) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        TypedQuery<Request> query = entityManager.createQuery(
+                "FROM Request r WHERE r.status=:s AND (r.structure.address.nation = :n AND r.structure.address.city = :c)",Request.class);
+        query.setParameter("n",nation);
+        query.setParameter("s", status);
+        query.setParameter("c",city);
+        List<Request> result;
+        result = query.getResultList();
+        return result;
     }
 
     public List<Request> selectAcceptedRequests(String nation, String city) {

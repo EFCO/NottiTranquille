@@ -64,15 +64,15 @@ public class SearchBean {
     }
 
     public void setCheckin(String checkin) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-mm-dd");
+        System.out.println(checkin);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-MM-yyyy");
         this.checkin = DateTime.parse(checkin, dateTimeFormatter);
-        System.out.println("checkin " + this.checkin.toString());
     }
 
     public void setCheckout(String checkout) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-mm-dd");
+        System.out.println(checkout);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-MM-yyyy");
         this.checkout = DateTime.parse(checkout, dateTimeFormatter);
-        System.out.println("checkout " + this.checkout.toString());
     }
 
     public void setPricerange(String pricerange) {
@@ -86,9 +86,9 @@ public class SearchBean {
 //        Address a = new Address("Roma","Zagarolo","piazza di casa mia","00039");
 //        Structure s = new Structure("casa mia", a);
 //        List<Interval> booking = new ArrayList<Interval>();
-//        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-mm-dd");
-//        DateTime start = DateTime.parse("2016-01-01", dateTimeFormatter);
-//        DateTime end = DateTime.parse("2016-12-30", dateTimeFormatter);
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-MM-yyyy");
+//        DateTime start = DateTime.parse("01-01-2016", dateTimeFormatter);
+//        DateTime end = DateTime.parse("30-12-2016", dateTimeFormatter);
 //        booking.add(new Interval(start,end));
 //        Location loc = new Location(booking,s);
 //        Request r = new Request(s);
@@ -96,9 +96,6 @@ public class SearchBean {
 //        catalogueDAO.saveRequest(r);
         try {
             this.result = FilteredSearch.getListOfStructures(this);
-            for (Location location : result) {
-                System.out.println("i risultati" + location.getStructure().toString());
-            }
         } catch (Exception e) {
             return false;
         }
