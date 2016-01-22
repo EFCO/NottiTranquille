@@ -19,9 +19,11 @@ public class Location {
     public Location() {
     }
 
-    public Location(List<Interval> booking, Structure structure) {
+    public Location(List<Interval> booking, Structure structure, Integer maxGuestsNumber, LocationType type) {
         this.booking = booking;
         this.structure = structure;
+        this.type = type;
+        this.maxGuestsNumber = maxGuestsNumber;
         structure.addLocation(this);
     }
 
@@ -39,6 +41,10 @@ public class Location {
      * 
      */
     private Integer numberOfBathrooms;
+
+    public Integer getMaxGuestsNumber() {
+        return maxGuestsNumber;
+    }
 
     /**
      * 
@@ -64,6 +70,10 @@ public class Location {
     //TODO @OneToMany
     @Transient
     private Prices prices;
+
+    public LocationType getType() {
+        return type;
+    }
 
     @Enumerated
     private LocationType type;

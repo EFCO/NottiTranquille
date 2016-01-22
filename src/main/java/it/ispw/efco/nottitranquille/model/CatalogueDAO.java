@@ -1,10 +1,12 @@
 package it.ispw.efco.nottitranquille.model;
 
+import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
 import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
 import it.ispw.efco.nottitranquille.view.SearchBean;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.*;
@@ -51,6 +53,15 @@ public class CatalogueDAO {
         query.setParameter("c",city);
         List<Request> result;
         result = query.getResultList();
+        return result;
+    }
+
+    public Location selectLocationWithId(Long id) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        TypedQuery<Location> query = entityManager.createQuery("FROM Location l WHERE l.id=:id",Location.class);
+        query.setParameter("id",id);
+        Location result;
+        result = query.getSingleResult();
         return result;
     }
 }

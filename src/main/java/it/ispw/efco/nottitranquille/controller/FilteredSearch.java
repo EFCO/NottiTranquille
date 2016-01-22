@@ -4,6 +4,7 @@ import it.ispw.efco.nottitranquille.model.Catalogue;
 import it.ispw.efco.nottitranquille.model.CatalogueDAO;
 import it.ispw.efco.nottitranquille.model.Location;
 import it.ispw.efco.nottitranquille.model.Request;
+import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
 import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
 import it.ispw.efco.nottitranquille.view.SearchBean;
 import javafx.event.ActionEvent;
@@ -56,10 +57,8 @@ public class FilteredSearch {
 
     @FXML
     protected void handleSearchButtonAction(ActionEvent event) {
-        System.out.println(address.getText());
         CatalogueDAO catalogueDAO = new CatalogueDAO();
         List<Request> results = catalogueDAO.selectAllRequestsByFilter(nation.getText(),city.getText(), RequestStatus.valueOf("Accepted"));
-        System.out.println(results);
 
     }
 
@@ -80,12 +79,15 @@ public class FilteredSearch {
             maxPrice = 500;
         }
         Interval inteval = new Interval(searchBean.getCheckin(),searchBean.getCheckout());
+        LocationType type = LocationType.valueOf(searchBean.getLocationtype());
+        int maxTenant = Integer.valueOf(searchBean.getMaxtenant());
+
         CatalogueDAO catalogueDAO = new CatalogueDAO();
         List<Request> result = catalogueDAO.selectAcceptedRequests(searchBean.getNation(),searchBean.getCity());
         List<Location> final_result = new ArrayList<Location>();
         for (Request candidate : result) {
             for (Location location : candidate.getStructure().getLocations()) {
-                if (location.isAvailable(inteval)) { //TODO price check to be added
+                if (location.isAvailable(inteval) && location.getType() == type && location.getMaxGuestsNumber() >= maxTenant) { //TODO price check to be added
                     final_result.add(location);
                 }
             }
@@ -93,6 +95,10 @@ public class FilteredSearch {
         return final_result;
     }
 
-
+    public static Location getLocationWithId(Long id) {
+        CatalogueDAO catalogueDAO = new CatalogueDAO();
+        Location results = catalogueDAO.selectLocationWithId(id);
+        return results;
+    }
 
 }

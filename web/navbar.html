@@ -61,7 +61,7 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default">Advanced Search</button>
+                <button type="submit" class="btn btn-default">Advanced Search</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="submit" name="search" class="btn btn-primary" id="search" value="search">Search</button>
             </div>
@@ -78,11 +78,17 @@
                 <h4 class="modal-title" id="myModalLabel2">Sign In</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="E-mail">
-                    <input type="text" class="form-control" placeholder="Password">
-                </div>
-                <button type="submit" class="btn btn-default">Submit</button>
+                <form action="search.jsp" name="myform" method="GET">
+                    <div class="form-group">
+                        <label for="user">User :</label>
+                        <input name="user" id="user" type="text" class="form-control" placeholder="fede93.vagnoni@gmail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password :</label>
+                        <input name="password" id="password" type="password" class="password-field form-control" placeholder="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
             </div>
         </div>
     </div>

@@ -2,6 +2,7 @@ package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.FilteredSearch;
 import it.ispw.efco.nottitranquille.model.*;
+import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
@@ -19,6 +20,9 @@ public class SearchBean {
     private DateTime checkin = null;
     private DateTime checkout = null;
     private String pricerange = "";
+    private String locationtype = "";
+    private String maxtenant = "";
+    //TODO Implement a way to retrieve commodities
     private List<Location> result = new ArrayList<Location>();
 
 
@@ -64,13 +68,11 @@ public class SearchBean {
     }
 
     public void setCheckin(String checkin) {
-        System.out.println(checkin);
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-MM-yyyy");
         this.checkin = DateTime.parse(checkin, dateTimeFormatter);
     }
 
     public void setCheckout(String checkout) {
-        System.out.println(checkout);
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-MM-yyyy");
         this.checkout = DateTime.parse(checkout, dateTimeFormatter);
     }
@@ -79,7 +81,7 @@ public class SearchBean {
         this.pricerange = pricerange;
     }
 
-    public boolean validate() {
+       public boolean validate() {
         if(this.nation.equals("") || this.city.equals("") || this.checkin == null|| this.checkout == null) {
             return false;
         }
@@ -90,7 +92,7 @@ public class SearchBean {
 //        DateTime start = DateTime.parse("01-01-2016", dateTimeFormatter);
 //        DateTime end = DateTime.parse("30-12-2016", dateTimeFormatter);
 //        booking.add(new Interval(start,end));
-//        Location loc = new Location(booking,s);
+//        Location loc = new Location(booking,s,5, LocationType.Hotel);
 //        Request r = new Request(s);
 //        CatalogueDAO catalogueDAO = new CatalogueDAO();
 //        catalogueDAO.saveRequest(r);
@@ -100,5 +102,21 @@ public class SearchBean {
             return false;
         }
         return true;
+    }
+
+    public String getMaxtenant() {
+        return maxtenant;
+    }
+
+    public void setMaxtenant(String maxtenant) {
+        this.maxtenant = maxtenant;
+    }
+
+    public String getLocationtype() {
+        return locationtype;
+    }
+
+    public void setLocationtype(String locationtype) {
+        this.locationtype = locationtype;
     }
 }
