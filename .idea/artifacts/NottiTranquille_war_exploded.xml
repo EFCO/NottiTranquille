@@ -23,6 +23,11 @@
           <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.0.b2" />
           <element id="library" level="project" name="Maven: javax.transaction:jta:1.1" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.38" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/usertype.core-5.0.0.GA.jar" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.12" />
+          <element id="library" level="project" name="Maven: org.jadira.usertype:usertype.spi:5.0.0.GA" />
+          <element id="library" level="project" name="Maven: org.jadira.usertype:usertype.core:5.0.0.GA" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/joda-time-jsptags-1.1.1.jar" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="NottiTranquille/javaeeApplication/javaEEApplication" />

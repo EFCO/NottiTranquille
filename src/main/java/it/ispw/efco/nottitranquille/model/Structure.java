@@ -15,10 +15,29 @@ import java.util.*;
 public class Structure {
 
     /**
+     * Default constructor
+     */
+    public Structure() {
+        this(null);
+    }
+
+    public Structure(String name){
+        this(name, null);
+    }
+
+    public Structure(String name, Address address) {
+        this.name = name;
+        this.address = address;
+
+        locations= new ArrayList<Location>();
+
+    }
+
+
+    /**
      *
      */
     private String name;
-
 
     /**
      *
@@ -97,25 +116,6 @@ public class Structure {
     @Id
     @GeneratedValue
     private Long id;
-
-    /**
-     * Default constructor
-     */
-    public Structure() {
-        this(null);
-    }
-
-    public Structure(String name){
-        this(name, null);
-    }
-
-    public Structure(String name, Address address) {
-        this.name = name;
-        this.address = address;
-
-        locations= new ArrayList<Location>();
-
-    }
 
 
     public void addLocations(List<Location> newLocations) {

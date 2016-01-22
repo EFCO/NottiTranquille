@@ -20,6 +20,22 @@ import java.util.*;
 @Entity
 public class Location {
 
+    /**
+     * Default constructor
+     */
+    public Location() {
+        this(null);
+    }
+
+    public Location(Structure structure) {
+        this.structure = structure;
+
+        booking = new ArrayList<Interval>();
+        availableDate = new ArrayList<Interval>();
+        services = new ArrayList<Service>();
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -36,10 +52,10 @@ public class Location {
     @Column(length = 100000)
     private List<Interval> booking;
 
+
     @ElementCollection(targetClass = Interval.class)
     @Column(length = 100000)
-    private List<Interval> AvailableDate;
-
+    private List<Interval> availableDate;
 
     /**
      * Description of the Location entered by the Manager
@@ -84,16 +100,18 @@ public class Location {
     @Transient
     private float price;
 
+    @Transient
+    List<Service> services;
+
     /**
-     * Default constructor
+     *
      */
-    public Location() {
-        this(null);
+    public void addBookingDate(Interval date){
+        booking.add(date);
+        getAvailableDate().add(date);
+        //TODO check if date is already present
     }
 
-    public Location(Structure structure) {
-        this.structure = structure;
-    }
 
     /**
      * @param interval : contiguous range of days that we want to test are available
@@ -141,7 +159,7 @@ public class Location {
     }
 
     public List<Interval> getAvailableDate() {
-        return AvailableDate;
+        return availableDate;
     }
 
     public String getDescription() {
@@ -201,7 +219,7 @@ public class Location {
     }
 
     public void setAvailableDate(List<Interval> availableDate) {
-        AvailableDate = availableDate;
+        availableDate = availableDate;
     }
 
     public void setDescription(String description) {
@@ -236,5 +254,11 @@ public class Location {
         this.price = price;
     }
 
+    public List<Service> getServices() {
+        return services;
+    }
 
+    public void setServices(List<Service> services) {
+        this.services = services;
+    }
 }

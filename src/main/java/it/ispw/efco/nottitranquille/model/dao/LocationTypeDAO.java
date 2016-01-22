@@ -2,8 +2,10 @@ package it.ispw.efco.nottitranquille.model.dao;
 
 import it.ispw.efco.nottitranquille.model.JPAInitializer;
 import it.ispw.efco.nottitranquille.model.LocationType;
+import it.ispw.efco.nottitranquille.model.Reservation;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
@@ -52,6 +54,12 @@ public class LocationTypeDAO {
         entityManager.remove(locationTypeLoaded);
 
         entityManager.getTransaction().commit();
+    }
+
+    public static List<LocationType> findAllLocationType() {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        return entityManager.createQuery("from LocationType ", LocationType.class)
+                .getResultList();
     }
 
 }

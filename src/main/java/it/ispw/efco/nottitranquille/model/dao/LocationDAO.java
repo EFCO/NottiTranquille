@@ -3,8 +3,10 @@ package it.ispw.efco.nottitranquille.model.dao;
 
 import it.ispw.efco.nottitranquille.model.JPAInitializer;
 import it.ispw.efco.nottitranquille.model.Location;
+import it.ispw.efco.nottitranquille.model.Reservation;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 /**
  * DAO for {@link it.ispw.efco.nottitranquille.model.Location} entity.
@@ -58,4 +60,9 @@ public class LocationDAO {
         entityManager.getTransaction().commit();
     }
 
+    public static List<Location> findAllLocation() {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        return entityManager.createQuery("from Location", Location.class)
+                .getResultList();
+    }
 }

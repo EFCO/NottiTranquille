@@ -2,9 +2,11 @@ package it.ispw.efco.nottitranquille.model.dao;
 
 import it.ispw.efco.nottitranquille.model.JPAInitializer;
 import it.ispw.efco.nottitranquille.model.Location;
+import it.ispw.efco.nottitranquille.model.Reservation;
 import it.ispw.efco.nottitranquille.model.Tenant;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
@@ -53,6 +55,12 @@ public class TenantDao {
         entityManager.remove(tenantLoaded);
 
         entityManager.getTransaction().commit();
+    }
+
+    public static List<Tenant> findAllTenant() {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        return entityManager.createQuery("from Tenant", Tenant.class)
+                .getResultList();
     }
 
 
