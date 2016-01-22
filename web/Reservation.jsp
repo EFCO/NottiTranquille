@@ -1,4 +1,10 @@
-<%@ page import="it.ispw.efco.nottitranquille.view.TenantFormReservation" %><%--
+<%@ page import="it.ispw.efco.nottitranquille.model.Location" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.dao.LocationDAO" %>
+<%@ page import="java.util.List" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.Tenant" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.dao.TenantDao" %>
+<%@ page import="org.joda.time.Interval" %>
+<%--
   Created by IntelliJ IDEA.
   User: emanuele
   Date: 16/01/16
@@ -8,22 +14,50 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%-- Use JSTL joda lib in order to format joda's DataTime --%>
+<%@ taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
+
 <jsp:useBean id="ReservationBean" scope="request"
              class="it.ispw.efco.nottitranquille.view.TenantFormReservation"/>
 
 <jsp:setProperty name="ReservationBean" property="*"/>
 
 
-<%--
+<%
+    List<Location> locations = LocationDAO.findAllLocation();
+    Location location = locations.get(0);
+
+    ReservationBean.setLocation(location);
+    request.setAttribute("location", location);
+
+    List<Tenant> tenants = TenantDao.findAllTenant();
+    Tenant tenant = tenants.get(0);
+
+    ReservationBean.setTenant(tenant);
+    request.setAttribute("tenant", tenant);
+
+%>
+
 <%
     if (request.getParameter("Reserve") != null) {
-        if (TenantFormReservation.validate()) {
-            %>
-            <jsp:forward page="RiassuntoPrenotazione.jsp" />
-            <%
+
+        for (int i = 0; request.getParameter("firstname" + i) != null && request.getParameter("surname" + i) != null; i++) {
+
+            if (request.getParameter("firstname") + i != null && request.getParameter("firstname" + i) != "" &&
+                    request.getParameter("surname" + i) != null && request.getParameter("surname" + i) != "") {
+                ReservationBean.addBuyer(request.getParameter("firstname" + i), request.getParameter("surname" + i));
+            }
         }
+    }
+
+
+    if (ReservationBean.validate()) {
 %>
---%>
+<!-- Passa il controllo alla nuova pagina -->
+<jsp:forward page="RiassuntoLogin.jsp"/>
+<%
+    }
+%>
 
 
 <html>
@@ -67,11 +101,13 @@
 <div class="container">
     <div class="jumbotron">
         <div class="page-header">
-            <h2>Location Name</h2>
+            <h2>${location.getName()}</h2>
         </div>
-        <p>Description</p>
-        <p>... ... ... ...</p>
+        <p>${location.getDescription()}</p>
     </div>
+    <%
+        if (location.getServices() != null && location.getServices().size() > 0) {
+    %>
     <div>
         <p>Elenco Servizi</p>
         <ul type=”Servizi”>
@@ -80,17 +116,20 @@
             <li>terzo</li>
         </ul>
     </div>
+    <% } %>
 </div>
 
 <!-- TENANT AND OTHER PEOPLE INFO
 ================================================== -->
 
-<div class="container">
-
-    <h2>Personal Info</h2>
-    <p>Please enter your info to complete reservation</p>
+<form action="Reservation.jsp" id="myform" method="post" class="form-horizontal">
 
     <div class="container">
+
+        <h2>Personal Info</h2>
+        <p>Please enter your info to complete reservation</p>
+
+
         <div class="row clearfix">
             <div class="col-md-6 column">
                 <table class="table table-hove table-condensed" id="tab_logic">
@@ -106,16 +145,25 @@
                     </thead>
 
                     <tbody>
-                    <tr id='addr0'>
-                        <td>
-                            <input type="text" name='Firstname0' placeholder='Firstname' class="form-control"/>
-                        </td>
-                        <td>
-                            <input type="text" name='Surname0' placeholder='Surname' class="form-control"/>
-                        </td>
-                    </tr>
-                    <tr id='addr1'></tr>
+
+                    <div class="form-group">
+
+                        <tr id='addr0'>
+                            <td>
+                                <input type="text" id="firstname0" name='firstname0' class='form-control input-md'
+                                       required/>
+                            </td>
+                            <td>
+                                <input type="text" id="surname0" name='surname0' class='form-control input-md'
+                                       required/>
+                            </td>
+                        </tr>
+                        <tr id='addr1'></tr>
+
+                    </div>
+
                     </tbody>
+
                 </table>
             </div>
         </div>
@@ -129,8 +177,8 @@
         var i = 1;
         $("#add_row").click(function () {
             $('#addr' + i).html(
-                    "<td><input name='Firstname" + i + "' type='text' placeholder='Firstname' class='form-control input-md'  /></td>" +
-                    "<td><input  name='Surname" + i + "' type='text' placeholder='Surname'  class='form-control input-md'></td>");
+                    "<td><input name='firstname" + i + "' type='text'  class='form-control input-md' required /></td>" +
+                    "<td><input  name='surname" + i + "' type='text'   class='form-control input-md' required /></td>");
 
             $('#tab_logic').append('<tr id="addr' + (i + 1) + '"></tr>');
             i++;
@@ -142,19 +190,19 @@
             }
         });
 
+
     </script>
-</div>
 
-</br></br>
+    </br></br>
 
-<!-- CHOOSE DATE
-================================================== -->
+    <!-- CHOOSE DATE
+    ================================================== -->
 
-<div class="container">
+    <div class="container">
         <div class='col-sm-5'>
-            <form id="pickDateForm" method="post" class="form-horizontal">
-                <div class="form-group">
 
+
+                <div class="form-group">
                     <label class="col-xs-3 control-label">start date</label>
                     <div class="col-xs-5">
                         <input type="text" class="form-control" name="startDate" id="startDate"/>
@@ -171,16 +219,11 @@
 
                 </div>
 
-                <%-- <div class="form-group">
-                    <div class="col-xs-5 col-xs-offset-3">
-                        <button type="submit" class="btn btn-default">Validate</button>
-                    </div>
-                </div>--%>
-
-            </form>
         </div>
 
         <script>
+            var yesterday = new Date((new Date()).valueOf()-1000*60*60*24);
+
             $(document).ready(function () {
                 $('#startDate').pickadate({
                     format: 'mm/dd/yyyy',
@@ -188,73 +231,44 @@
                     hiddenName: true,
 
                     disable: [
-                        { from: [2016,0,14], to: [2016,0,27] }
+                        { from: [0,0,0], to: yesterday }
                     ]
 
                 });
 
-                $('#startDate')
-                        .pickadate('picker')
-                        .on('render', function () {
-                            // http://amsul.ca/pickadate.js/api.htm#events-callbacks
-                            // Revalidate the date of birth field
-                            $('#pickDateForm').formValidation('revalidateField', 'startDate');
-                        });
 
                 $('#endDate').pickadate({
                     format: 'mm/dd/yyyy',
                     formatSubmit: 'mm/dd/yyyy',
-                    hiddenName: true
+                    hiddenName: true,
+
+                    disable: [
+                        { from: [0,0,0], to: yesterday }
+                    ]
+
                 });
 
-                $('#endDate')
-                        .pickadate('picker')
-                        .on('render', function () {
-                            // http://amsul.ca/pickadate.js/api.htm#events-callbacks
-                            // Revalidate the date of birth field
-                            $('#pickDateForm').formValidation('revalidateField', 'endDate');
-                        });
-
-                $('#pickDateForm').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    excluded: ':disabled',
-                    fields: {
-                        startDate: {
-                            validators: {
-                                notEmpty: {
-                                    message: 'The start date is required'
-                                },
-                                date: {
-                                    format: 'MM/DD/YYYY',
-                                    message: 'The date is not a valid date'
-                                }
-                            }
-                        }
-                    }
-                });
             });
         </script>
-</div>
+    </div>
 
-<!-- BUTTON
-================================================== -->
 
-<div class="container" action="Reservation.jsp" align="right" align="bottom">
-    <button type="button" class="btn btn-default">Back</button>
-    <button type="button" type="submit" class="btn btn-primary" id="Reserve">Conferma prenotazione</button>
-</div>
+    <!-- BUTTON
+    ================================================== -->
+
+    <div class="container" align="right" align="bottom">
+        <button type="button" class="btn btn-default">Back</button>
+        <button type="submit" class="btn btn-primary" name="Reserve" id="Reserve">Conferma prenotazione</button>
+    </div>
+
+</form>
 
 
 <!-- IF NOT VALID INPUT
 ================================================== -->
 <%
     if (request.getParameter("Reserve") != null) { %>
-<div class="alert alert-danger" role="alert">Sceglie una data valida!</div>
+<div class="alert alert-danger" role="alert">Immetti tutti i dati!</div>
 <% } %>
 
 

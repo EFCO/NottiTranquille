@@ -1,10 +1,6 @@
 package it.ispw.efco.nottitranquille.model;
 
-import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
-import org.hibernate.annotations.CollectionType;
-import org.hibernate.annotations.Columns;
-import org.hibernate.annotations.Type;
-import org.jadira.usertype.dateandtime.joda.PersistentInterval;
+
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
@@ -18,7 +14,7 @@ import java.util.*;
  */
 
 @Entity
-public class Location {
+public class Location extends Observer {
 
     /**
      * Default constructor
@@ -103,10 +99,62 @@ public class Location {
     @Transient
     List<Service> services;
 
+
+    /**
+     * @param reservation the Subject to observe. If reservatio's interval of days changes the Location
+     *                    must update its available date.
+     * @param arg the interval of days that now is not available for reservation.
+     */
+    @Override
+    public void update(Subject reservation, Object arg) {
+        if (!reservation.hasChanged())
+            return;
+
+        Interval notAvailable = (Interval) arg;
+
+        List<Interval> newIntervals = new ArrayList<Interval>();
+
+        DateTime notAvStart = notAvailable.getStart();
+        DateTime notAvEnd = notAvailable.getEnd();
+
+        Iterator iterator = availableDate.iterator();
+        while (iterator.hasNext()) {
+            Interval interval = (Interval) iterator.next();
+
+            DateTime oldStart = interval.getStart();
+            DateTime oldEnd = interval.getEnd();
+
+            if ((oldStart.isEqual(notAvStart) && oldEnd.isEqual(notAvEnd)) ||
+                    (oldStart.isBefore(notAvStart)) || (oldEnd.isAfter(notAvEnd))) {
+                iterator.remove();
+            }
+
+            if (oldStart.isBefore(notAvStart)) {
+
+                DateTime newEnd = notAvStart.minusDays(1);
+                Interval newFirstInterval = new Interval(oldStart, newEnd);
+
+                newIntervals.add(newFirstInterval);
+            }
+
+            if (oldEnd.isAfter(notAvEnd)) {
+
+                DateTime newStart = notAvEnd.plusDays(1);
+                Interval newSecondInterval = new Interval(newStart, oldEnd);
+
+                newIntervals.add(newSecondInterval);
+
+            }
+        }
+
+        availableDate.addAll(newIntervals);
+    }
+
+
     /**
      *
      */
-    public void addBookingDate(Interval date){
+    public void addBookingDate(Interval date) {
         booking.add(date);
         getAvailableDate().add(date);
         //TODO check if date is already present
@@ -126,6 +174,7 @@ public class Location {
         }
         return false;
     }
+
 
     /**
      * Method needs to update Location in the Database.
@@ -261,4 +310,5 @@ public class Location {
     public void setServices(List<Service> services) {
         this.services = services;
     }
+
 }

@@ -14,35 +14,7 @@ import java.util.*;
 
 @Entity
 @SuppressWarnings("JpaDataSourceORMInspection")
-public class Reservation {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @OneToOne
-    private Location location;
-
-    @ManyToOne
-    private Tenant tenant;
-
-    @ManyToMany
-    private List<Person> buyers;
-
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentInterval")
-    @Columns(columns = { @Column(name = "startDate"), @Column(name = "endDate") })
-    private Interval period;
-
-
-    @ManyToMany
-    @JoinTable(name = "Reservation_Service",
-            joinColumns = {@JoinColumn(name = "ReservationId", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "ServiceId", referencedColumnName = "id")})
-    private List<Service> services;
-
-    @Enumerated
-    private ReservationState state;
-
+public class Reservation extends Subject {
 
     /**
      * Default constructor
@@ -64,30 +36,53 @@ public class Reservation {
         this.location = location;
         this.period = interval;
 
-        this.state= ReservationState.Unknown;
+        this.state = ReservationState.Unknown;
+        this.hasChanged = true;
+
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @OneToOne
+    private Location location;
+
+    @ManyToOne
+    private Tenant tenant;
+
+    @ManyToMany
+    private List<Person> buyers;
+
+
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentInterval")
+    @Columns(columns = {@Column(name = "startDate"), @Column(name = "endDate")})
+    private Interval period;
+
+    @ManyToMany
+    @JoinTable(name = "Reservation_Service",
+            joinColumns = {@JoinColumn(name = "ReservationId", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "ServiceId", referencedColumnName = "id")})
+    private List<Service> services;
+
+
+    @Enumerated
+    private ReservationState state;
+
+
+    public boolean hasChanged() {
+        return false;
+    }
+
+    public void notifyObserver() {
+        location.update(this, period);
+    }
 
     /**
      *
      */
-    public void pay() {
-        // TODO implement here
-    }
-
-    /**
-     * @return Prices
-     */
-    public Prices CalculatePrice() {
-        // TODO implement here
-        return null;
-    }
-
-    /**
-     *
-     */
-    public void addService() {
-        // TODO implement here
+    public void addService(Service service) {
+        // TODO  impelemnt here
     }
 
     /**
@@ -102,14 +97,22 @@ public class Reservation {
      * Method needs to update Reservation in the Database.
      * We have to instantiate a new Reservation with update attributes
      *
-     * @see it.ispw.efco.nottitranquille.model.dao.ReservationDAO
      * @param toUpdate: Reservation to update in database
+     * @see it.ispw.efco.nottitranquille.model.dao.ReservationDAO
      */
     public void update(Reservation toUpdate) {
         this.id = toUpdate.getId();
+        this.location = toUpdate.getLocation();
+        this.tenant = toUpdate.getTenant();
+        this.buyers = toUpdate.getBuyers();
+        this.period = toUpdate.getPeriod();
+        this.services = toUpdate.getServices();
+        this.state = toUpdate.getState();
+
+
     }
 
-    /* Getter and Setter */
+    /* GETTER AND SETTER */
 
     public Long getId() {
         return id;
