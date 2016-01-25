@@ -5,6 +5,7 @@ import it.ispw.efco.nottitranquille.model.Person;
 import it.ispw.efco.nottitranquille.model.Reservation;
 import it.ispw.efco.nottitranquille.model.Tenant;
 import it.ispw.efco.nottitranquille.model.dao.ReservationDAO;
+import it.ispw.efco.nottitranquille.model.dao.TenantDao;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
 import org.joda.time.Interval;
@@ -33,11 +34,12 @@ public class ReservationController {
 
     public void createReservation(Tenant tenant, Location location, Interval period, List<Person> buyers){
         Reservation reservation = new Reservation(tenant, location, period);
-        //TODO throw Exception if period not available
         reservation.setBuyers(buyers);
 
         reservation.notifyObserver();
-        ReservationDAO.store(reservation);
+
+        tenant.addReservation(reservation);
+        TenantDao.update(tenant);
 
         if(location.getType().getReservationType() == ReservationType.Direct)
             this.reserveDirect(reservation);
@@ -51,9 +53,8 @@ public class ReservationController {
     }
 
     private void reserveDirect(Reservation reservation){
-        //TODO set only if in state of Unknown
         reservation.setState(ReservationState.ToPay);
-        ReservationDAO.update(reservation);
+
     }
 
 

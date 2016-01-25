@@ -5,12 +5,12 @@ import java.util.*;
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-public class Notification {
+public class PaymentMethod {
 
     /**
      * Default constructor
      */
-    public Notification() {
+    public PaymentMethod() {
     }
 
 }

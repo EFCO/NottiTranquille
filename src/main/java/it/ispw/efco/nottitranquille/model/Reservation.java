@@ -38,7 +38,6 @@ public class Reservation extends Subject {
 
         this.state = ReservationState.Unknown;
         this.hasChanged = true;
-
     }
 
     @Id
@@ -59,15 +58,18 @@ public class Reservation extends Subject {
     @Columns(columns = {@Column(name = "startDate"), @Column(name = "endDate")})
     private Interval period;
 
+/*
     @ManyToMany
     @JoinTable(name = "Reservation_Service",
             joinColumns = {@JoinColumn(name = "ReservationId", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "ServiceId", referencedColumnName = "id")})
     private List<Service> services;
-
+*/
 
     @Enumerated
     private ReservationState state;
+
+    private Float price;
 
 
     public boolean hasChanged() {
@@ -77,21 +79,6 @@ public class Reservation extends Subject {
     public void notifyObserver() {
         location.update(this, period);
     }
-
-    /**
-     *
-     */
-    public void addService(Service service) {
-        // TODO  impelemnt here
-    }
-
-    /**
-     *
-     */
-    public void removeService() {
-        // TODO implement here
-    }
-
 
     /**
      * Method needs to update Reservation in the Database.
@@ -106,7 +93,6 @@ public class Reservation extends Subject {
         this.tenant = toUpdate.getTenant();
         this.buyers = toUpdate.getBuyers();
         this.period = toUpdate.getPeriod();
-        this.services = toUpdate.getServices();
         this.state = toUpdate.getState();
 
 
@@ -154,13 +140,6 @@ public class Reservation extends Subject {
         this.period = period;
     }
 
-    public List<Service> getServices() {
-        return services;
-    }
-
-    public void setServices(List<Service> services) {
-        this.services = services;
-    }
 
     public ReservationState getState() {
         return state;
@@ -170,4 +149,11 @@ public class Reservation extends Subject {
         this.state = state;
     }
 
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
 }
