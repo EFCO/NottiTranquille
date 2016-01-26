@@ -1,6 +1,5 @@
 package it.ispw.efco.nottitranquille.model;
 
-import javax.management.Notification;
 import javax.persistence.*;
 import java.util.*;
 
@@ -16,12 +15,12 @@ public class Tenant extends RegisteredUser implements Notifiable {
      */
     public Tenant() {
         reservations = new ArrayList<Reservation>();
-        notifications = new ArrayList<Notification>();
+        notifications = new ArrayDeque<Notification>();
     }
 
 
     @Transient
-    List<Notification> notifications;
+    private Deque<Notification> notifications;
 
     @OneToMany
     @JoinTable(name = "Tenant_Reservation",
@@ -38,7 +37,6 @@ public class Tenant extends RegisteredUser implements Notifiable {
 
         this.reservations = toUpdate.getReservations();
 
-
     }
 
     public void addReservation(Reservation reservation) {
@@ -49,13 +47,9 @@ public class Tenant extends RegisteredUser implements Notifiable {
         return reservations;
     }
 
-    public boolean sendNotification(Notification notification) {
+    public void sendNotification(Notification notification) {
         //TODO Select Type of Notification from property file
-        if (notification.getType() == "ReservationNotify") {
-            notifications.add(notification);
-            return true;
-        }
-
-        return false;
+        notifications.push(notification);
     }
+
 }

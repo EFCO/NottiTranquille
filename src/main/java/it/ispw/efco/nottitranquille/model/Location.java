@@ -84,17 +84,19 @@ public class Location extends Observer {
     private Integer numberOfBeds;
 
     /**
+     * Basic price for Location. It can be decorated with fee or discount
+     */
+    private float price;
+
+    @ManyToOne
+    private Manager manager;
+
+    /**
      * Not Used
      * photo of the Location
      */
     @Transient
     private String[] photos;
-
-    /**
-     * Basic price for Location. It can be decorated with fee or discount
-     */
-    @Transient
-    private float price;
 
     @Transient
     List<Service> services;
@@ -268,7 +270,7 @@ public class Location extends Observer {
     }
 
     public void setAvailableDate(List<Interval> availableDate) {
-        availableDate = availableDate;
+        this.availableDate = availableDate;
     }
 
     public void setDescription(String description) {
@@ -311,4 +313,11 @@ public class Location extends Observer {
         this.services = services;
     }
 
+    public Manager getManager() {
+        return manager;
+    }
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
+    }
 }

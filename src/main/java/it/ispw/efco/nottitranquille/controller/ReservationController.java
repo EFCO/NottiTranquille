@@ -1,9 +1,6 @@
 package it.ispw.efco.nottitranquille.controller;
 
-import it.ispw.efco.nottitranquille.model.Location;
-import it.ispw.efco.nottitranquille.model.Person;
-import it.ispw.efco.nottitranquille.model.Reservation;
-import it.ispw.efco.nottitranquille.model.Tenant;
+import it.ispw.efco.nottitranquille.model.*;
 import it.ispw.efco.nottitranquille.model.dao.ReservationDAO;
 import it.ispw.efco.nottitranquille.model.dao.TenantDao;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
@@ -44,19 +41,42 @@ public class ReservationController {
         if(location.getType().getReservationType() == ReservationType.Direct)
             this.reserveDirect(reservation);
         else if (location.getType().getReservationType() == ReservationType.WithConfirmation)
-            this.reserveWithConfirmation(reservation);
-
+            this.reserveWithConfirmation(reservation, location.getManager());
 
     }
-    private void reserveWithConfirmation(Reservation reservation){
 
+
+    private void reserveWithConfirmation(Reservation reservation, Manager manager) {
+            Notification notify = new Notification("ReservationNotify");
+            notify.setMessage("you have a new reservation to apprive!");
+            manager.sendNotification(notify);
+
+            manager.addReservationToApprove(reservation);
     }
 
     private void reserveDirect(Reservation reservation){
         reservation.setState(ReservationState.ToPay);
-
     }
 
+    public void approveReservation(Reservation reservation, Manager manager){
+        reservation.setState(ReservationState.ToPay);
+
+        Notification notify = new Notification("ReservationConfirmed");
+        notify.setMessage("Your reservation has been confirmed! Now you can pay within 3 days!");
+
+        reservation.getTenant().sendNotification(notify);
+    }
+
+    public void declineReservation(Reservation reservation, Manager manager){
+
+        Notification notify = new Notification("ReservationDeclined");
+        notify.setMessage("you reservation has been declined by the owner. We are sorry!");
+        reservation.getTenant().sendNotification(notify);
+
+        reservation.setState(ReservationState.Declined);
+        ReservationDAO.delete(reservation);
+
+    }
 
 
 }
