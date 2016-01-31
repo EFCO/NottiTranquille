@@ -17,13 +17,11 @@ import org.joda.time.format.DateTimeFormatter;
 public class Demo {
 
     public static void main(String args[]) {
-
         LocationType hostelRoom = new LocationType(ReservationType.Direct);
         LocationTypeDAO.store(hostelRoom);
 
         LocationTypeDAO.store(hostelRoom);
 
-        /* Instantiate Location */
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-mm-dd");
 
@@ -43,17 +41,16 @@ public class Demo {
 
         LocationDAO.store(myLocation);
 
-        /* Istantiate Tenant */
 
         Tenant me = new Tenant();
         me.setFirstName("Emanuele");
         me.setLastName("Vannacci");
 
-        me.setUserName("Zanna");
+        me.setUsername("Zanna");
+        me.setPassword("password");
 
         TenantDao.store(me);
 
-       /* System.out.println(LocationDAO.findAllLocation().get(0).getDescription());*/
 
     }
 

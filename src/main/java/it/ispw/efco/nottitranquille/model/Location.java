@@ -210,7 +210,7 @@ public class Location extends Observer {
     }
 
     public List<Interval> getAvailableDate() {
-        return availableDate;
+        return this.availableDate;
     }
 
     public String getDescription() {

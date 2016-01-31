@@ -42,13 +42,12 @@ public class ReservationController {
             this.reserveDirect(reservation);
         else if (location.getType().getReservationType() == ReservationType.WithConfirmation)
             this.reserveWithConfirmation(reservation, location.getManager());
-
     }
 
 
     private void reserveWithConfirmation(Reservation reservation, Manager manager) {
             Notification notify = new Notification("ReservationNotify");
-            notify.setMessage("you have a new reservation to apprive!");
+            notify.setMessage("you have a new reservation to approve!");
             manager.sendNotification(notify);
 
             manager.addReservationToApprove(reservation);

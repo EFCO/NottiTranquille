@@ -4,6 +4,8 @@
 <%@ page import="it.ispw.efco.nottitranquille.model.Tenant" %>
 <%@ page import="it.ispw.efco.nottitranquille.model.dao.TenantDao" %>
 <%@ page import="org.joda.time.Interval" %>
+<%@ page import="org.joda.time.DateTime" %>
+<%@ page import="java.util.Iterator" %>
 <%--
   Created by IntelliJ IDEA.
   User: emanuele
@@ -30,6 +32,7 @@
     ReservationBean.setLocation(location);
     request.setAttribute("location", location);
 
+
     List<Tenant> tenants = TenantDao.findAllTenant();
     Tenant tenant = tenants.get(0);
 
@@ -49,7 +52,6 @@
             }
         }
     }
-
 
     if (ReservationBean.validate()) {
 %>
@@ -202,27 +204,52 @@
         <div class='col-sm-5'>
 
 
-                <div class="form-group">
-                    <label class="col-xs-3 control-label">start date</label>
-                    <div class="col-xs-5">
-                        <input type="text" class="form-control" name="startDate" id="startDate"/>
-                    </div>
-
+            <div class="form-group">
+                <label class="col-xs-3 control-label">start date</label>
+                <div class="col-xs-5">
+                    <input type="text" class="form-control" name="startDate" id="startDate"/>
                 </div>
 
-                <div class="form-group">
+            </div>
 
-                    <label class="col-xs-3 control-label">end date</label>
-                    <div class="col-xs-5">
-                        <input type="text" class="form-control" name="endDate" id="endDate"/>
-                    </div>
+            <div class="form-group">
 
+                <label class="col-xs-3 control-label">end date</label>
+                <div class="col-xs-5">
+                    <input type="text" class="form-control" name="endDate" id="endDate"/>
                 </div>
+
+            </div>
 
         </div>
 
+        <%
+            String enable = "";
+
+            List<Interval> intervals = location.getAvailableDate();
+
+            Iterator<Interval> availableInterval = intervals.iterator();
+            while(availableInterval.hasNext()){
+                Interval interval = availableInterval.next();
+                DateTime start= interval.getStart();
+                DateTime end = interval.getEnd();
+
+                enable+= String.format(" {from : [ %d, %d, %d ] , to [%d,%d,%d] }",
+                        start.getYear(), start.getMonthOfYear()-1, start.getDayOfMonth()-1,
+                        end.getYear(), end.getMonthOfYear()-1, end.getDayOfMonth()-1);
+
+
+                if(availableInterval.hasNext())
+                    enable+=" , ";
+            }
+
+
+
+            request.setAttribute("enablesDate", enable);
+        %>
+
         <script>
-            var yesterday = new Date((new Date()).valueOf()-1000*60*60*24);
+            var yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
 
             $(document).ready(function () {
                 $('#startDate').pickadate({
@@ -231,7 +258,12 @@
                     hiddenName: true,
 
                     disable: [
-                        { from: [0,0,0], to: yesterday }
+                        {from: [0, 0, 0], to: yesterday}
+                    ],
+
+                    enable: [
+
+                            ${enablesDate}
                     ]
 
                 });
@@ -243,7 +275,11 @@
                     hiddenName: true,
 
                     disable: [
-                        { from: [0,0,0], to: yesterday }
+                        {from: [0, 0, 0], to: yesterday}
+                    ],
+
+                    enable:[
+                            ${enablesDate}
                     ]
 
                 });

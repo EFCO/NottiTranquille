@@ -28,13 +28,12 @@ public class Tenant extends RegisteredUser implements Notifiable {
             inverseJoinColumns = {@JoinColumn(name = "TenantsId", referencedColumnName = "id")})
     public List<Reservation> reservations;
 
+    /**
+     * method for TenantDAO: Needs to update information in database
+     * @param toUpdate: Class to update
+     */
     public void update(Tenant toUpdate) {
-        this.setId(toUpdate.getId());
-        this.setFirstName(toUpdate.getFirstName());
-        this.setLastName(toUpdate.getLastName());
-        this.setUserName(toUpdate.getUserName());
-        this.setPassword(toUpdate.getPassword());
-
+        super.update(toUpdate);
         this.reservations = toUpdate.getReservations();
 
     }
