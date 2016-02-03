@@ -30,16 +30,21 @@ public class Tenant extends RegisteredUser implements Notifiable {
 
     /**
      * method for TenantDAO: Needs to update information in database
+     *
      * @param toUpdate: Class to update
      */
     public void update(Tenant toUpdate) {
         super.update(toUpdate);
         this.reservations = toUpdate.getReservations();
-
     }
 
     public void addReservation(Reservation reservation) {
         reservations.add(reservation);
+    }
+
+    //TODO exception if it not exist
+    public void deleteReservation(Reservation reservation) {
+        reservations.remove(reservation);
     }
 
     public List<Reservation> getReservations() {

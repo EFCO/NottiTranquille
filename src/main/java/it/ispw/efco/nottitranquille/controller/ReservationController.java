@@ -1,6 +1,7 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.*;
+import it.ispw.efco.nottitranquille.model.dao.LocationDAO;
 import it.ispw.efco.nottitranquille.model.dao.ReservationDAO;
 import it.ispw.efco.nottitranquille.model.dao.TenantDao;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
@@ -13,10 +14,9 @@ import java.util.*;
 /**
  * ReservationController Class implements design pattern Singleton.
  *
- * @see  Reservation
- * @see ReservationDAO
- *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
+ * @see Reservation
+ * @see ReservationDAO
  */
 public class ReservationController {
 
@@ -29,52 +29,45 @@ public class ReservationController {
     private ReservationController() {
     }
 
-    public void createReservation(Tenant tenant, Location location, Interval period, List<Person> buyers){
-        Reservation reservation = new Reservation(tenant, location, period);
-        reservation.setBuyers(buyers);
+    public void createReservation(Tenant tenant, Location location, Interval period, List<Person> buyers) {
 
-        reservation.notifyObserver();
+            Reservation reservation = new Reservation(tenant, location, period);
 
-        tenant.addReservation(reservation);
-        TenantDao.update(tenant);
+            if (buyers != null)
+                reservation.setBuyers(buyers);
 
-        if(location.getType().getReservationType() == ReservationType.Direct)
-            this.reserveDirect(reservation);
-        else if (location.getType().getReservationType() == ReservationType.WithConfirmation)
-            this.reserveWithConfirmation(reservation, location.getManager());
+            if (location.getType().getReservationType() == ReservationType.Direct)
+                this.reserveDirect(reservation);
+            else if (location.getType().getReservationType() == ReservationType.WithConfirmation)
+                this.reserveWithConfirmation(reservation, location.getManager());
+
+            tenant.addReservation(reservation);
+            reservation.notifyObserver();
+
+            ReservationDAO.store(reservation);
+            TenantDao.update(tenant);
+            LocationDAO.update(location);
+
     }
 
 
     private void reserveWithConfirmation(Reservation reservation, Manager manager) {
-            Notification notify = new Notification("ReservationNotify");
-            notify.setMessage("you have a new reservation to approve!");
-            manager.sendNotification(notify);
-
-            manager.addReservationToApprove(reservation);
+        manager.addReservationToApprove(reservation);
+        reservation.setState(ReservationState.ToApprove);
     }
 
-    private void reserveDirect(Reservation reservation){
+    private void reserveDirect(Reservation reservation) {
         reservation.setState(ReservationState.ToPay);
     }
 
-    public void approveReservation(Reservation reservation, Manager manager){
+    public void approveReservation(Reservation reservation, Manager manager) {
         reservation.setState(ReservationState.ToPay);
-
-        Notification notify = new Notification("ReservationConfirmed");
-        notify.setMessage("Your reservation has been confirmed! Now you can pay within 3 days!");
-
-        reservation.getTenant().sendNotification(notify);
+        ReservationDAO.update(reservation);
     }
 
-    public void declineReservation(Reservation reservation, Manager manager){
-
-        Notification notify = new Notification("ReservationDeclined");
-        notify.setMessage("you reservation has been declined by the owner. We are sorry!");
-        reservation.getTenant().sendNotification(notify);
-
+    public void declineReservation(Reservation reservation, Manager manager) {
         reservation.setState(ReservationState.Declined);
         ReservationDAO.delete(reservation);
-
     }
 
 

@@ -20,15 +20,7 @@ public class Reservation extends Subject {
      * Default constructor
      */
     public Reservation() {
-        this(null);
-    }
-
-    public Reservation(Location location) {
-        this(null, location);
-    }
-
-    public Reservation(Tenant tenant, Location location) {
-        this(tenant, location, null);
+        this(null, null ,null);
     }
 
     public Reservation(Tenant tenant, Location location, Interval interval) {
@@ -38,6 +30,12 @@ public class Reservation extends Subject {
 
         this.state = ReservationState.Unknown;
         this.hasChanged = true;
+
+        try{
+            this.price = location.getPrice();
+        }catch(NullPointerException e){
+            this.price = 0;
+        }
     }
 
     @Id
@@ -69,7 +67,7 @@ public class Reservation extends Subject {
     @Enumerated
     private ReservationState state;
 
-    private Float price;
+    private float price;
 
 
     public boolean hasChanged() {
@@ -149,11 +147,11 @@ public class Reservation extends Subject {
         this.state = state;
     }
 
-    public Float getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 }

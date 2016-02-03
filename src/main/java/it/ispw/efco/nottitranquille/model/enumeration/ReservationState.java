@@ -8,5 +8,6 @@ public enum ReservationState {
     ToPay,
     Timeout,
     Unknown,
-    Declined
+    Declined,
+    ToApprove
 }

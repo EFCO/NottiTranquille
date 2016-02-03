@@ -9,6 +9,15 @@
 
 <jsp:setProperty name="Login" property="*"/>
 
+<%
+    if (request.getParameter("sign") != null) {
+        Login.validate();
+    }
+
+    session.setAttribute("Login", Login);
+%>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,13 +28,6 @@
     <title>Notti Tranquille</title>
 
 </head>
-
-
-<%
-    if (request.getParameter("sign") != null) {
-        Login.validate();
-    }
-%>
 
 
 <body>

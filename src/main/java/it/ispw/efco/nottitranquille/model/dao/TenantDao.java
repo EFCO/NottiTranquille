@@ -36,7 +36,7 @@ public class TenantDao {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
 
-       Tenant tenantLoaded = entityManager.find(Tenant.class, toUpdate.getId());
+        Tenant tenantLoaded = entityManager.find(Tenant.class, toUpdate.getId());
         tenantLoaded.update(toUpdate);
 
         entityManager.getTransaction().commit();
@@ -63,14 +63,6 @@ public class TenantDao {
                 .getResultList();
     }
 
-
-/*    @SuppressWarnings("JpaQlInspection")
-    public static Tenant findByName(String firstname, String lastname){
-        EntityManager entityManager = JPAInitializer.getEntityManager();
-        return entityManager.createQuery("from Tenant where (firstName = firstname)" +
-                "and (lastName = lastname) ", Tenant.class)
-                .getSingleResult();
-    }*/
 
     @SuppressWarnings("JpaQlInspection")
     public static Tenant findByNameAndPassword(String username, String passWord)

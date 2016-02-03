@@ -30,6 +30,8 @@ public class Location extends Observer {
         availableDate = new ArrayList<Interval>();
         services = new ArrayList<Service>();
 
+        price = 0;
+
     }
 
     @Id

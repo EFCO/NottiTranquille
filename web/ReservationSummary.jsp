@@ -1,4 +1,8 @@
-<%--
+<%@ page import="it.ispw.efco.nottitranquille.model.dao.TenantDao" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.Tenant" %>
+<%@ page import="it.ispw.efco.nottitranquille.view.LoginBean" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.Reservation" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: emanuele
   Date: 31/01/16
@@ -12,10 +16,9 @@
 <%-- Use JSTL joda lib in order to format joda's DataTime --%>
 <%@ taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
 
-<jsp:useBean id="Login" scope="session"
-             class="it.ispw.efco.nottitranquille.view.LoginBean"/>
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,11 +46,69 @@
 <br/><br/>
 
 
-<div class="container">
+<div class="container"></div>
+
+<%--User must be logged--%>
+<c:if test="${ Login==null or Login.getRole()==null}">
+    <c:redirect url="./index.jsp"></c:redirect>
+</c:if>
+
+
+<c:if test="${ Login!= null and Login.getRole()!= null}">
+    <p>
+    <h2> Benvenuto ${Login.getUsername()}!</h2></p>
+
+
+    <p><h4> Ecco il resoconto delle tue prenotazioni!</h4></p>
+    <br/>
+
+
+    <%
+
+        LoginBean login = (LoginBean) session.getAttribute("Login");
+        if (login.getRole() == "Tenant") {
+
+            Tenant tenant = TenantDao.findByNameAndPassword(
+                    login.getUsername(), login.getPassword());
+
+            List<Reservation> reservations = tenant.getReservations();
+            int resValue = reservations.size();
+
+    %>
+
+    <div class="container">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Location</th>
+                <th>date</th>
+                <th>price</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <c:forEach items="${reservations}" var="reservation">
+
+                <tr>
+                    <td>${reservation.getLocation().getName()}</td>
+                    <td>Doe</td>
+                    <td>${reservation.getLocation().getPrice()}</td>
+                </tr>
+
+            </c:forEach>
+
+
+            </tbody>
+        </table>
+    </div>
+
+    <%
+        }
+    %>
+</c:if>
 
 
 </div>
-
 
 </body>
 </html>

@@ -61,8 +61,8 @@
     }
 %>
 
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 
     <!-- meta for image gallery

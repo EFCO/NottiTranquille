@@ -29,31 +29,31 @@ public class Manager extends Applicant implements Notifiable {
         notifications = new ArrayDeque<Notification>();
         toApprove = new ArrayList<Reservation>();
 
-        newNotification=0;
-        reservationToApprove=0;
+        newNotification = 0;
+        reservationToApprove = 0;
     }
 
-    public boolean addReservationToApprove(Reservation reservation){
+    public boolean addReservationToApprove(Reservation reservation) {
         //TODO EXCEPTION
-        for(Reservation r : toApprove){
-            if(r.equals(reservation)){
+        for (Reservation r : toApprove) {
+
+            if (r.equals(reservation))
                 return false;
-            }
+
         }
 
-        LinkedList<Reservation> r = (LinkedList<Reservation>) toApprove;
-        r.addLast(reservation);
+        toApprove.add(reservation);
+        reservationToApprove += 1;
 
-        reservationToApprove+=1;
-        return  true;
+        return true;
     }
 
-    public boolean deleteReservationToApprove(Reservation reservation){
+    public boolean deleteReservationToApprove(Reservation reservation) {
         Iterator list = toApprove.iterator();
-        while(list.hasNext()){
+        while (list.hasNext()) {
             Reservation r = (Reservation) list.next();
 
-            if(r.equals(reservation)){
+            if (r.equals(reservation)) {
                 list.remove();
                 return true;
             }
@@ -62,13 +62,13 @@ public class Manager extends Applicant implements Notifiable {
         return false;
     }
 
-    public void sendNotification(Notification notification){
+    public void sendNotification(Notification notification) {
         //TODO Select Type of Notification from property file
         notifications.push(notification);
-        newNotification+=1;
+        newNotification += 1;
     }
 
-    public void update(Manager toUpdate){
+    public void update(Manager toUpdate) {
         super.update(toUpdate);
         this.newNotification = toUpdate.getNewNotification();
         this.reservationToApprove = toUpdate.getReservationToApprove();
