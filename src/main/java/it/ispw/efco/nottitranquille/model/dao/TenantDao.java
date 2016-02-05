@@ -57,23 +57,54 @@ public class TenantDao {
         entityManager.getTransaction().commit();
     }
 
-    public static List<Tenant> findAllTenant(){
+    public static List<Tenant> findAllTenant() {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         return entityManager.createQuery("from Tenant", Tenant.class)
                 .getResultList();
     }
 
 
+    /**
+     * retrieve a Istance of Tenant Entity through username and password;
+     * if result is not unique then method returns the first found record.
+     * @param userName
+     * @param passWord
+     * @return
+     * @throws NoResultException
+     */
     @SuppressWarnings("JpaQlInspection")
-    public static Tenant findByNameAndPassword(String username, String passWord)
-            throws NoResultException{
+    public static Tenant findByNameAndPassword(String userName, String passWord)
+            throws NoResultException {
 
+        try {
             EntityManager entityManager = JPAInitializer.getEntityManager();
             return entityManager.createQuery("from Tenant where" +
-                    " (userName = username) and (password = passWord) ", Tenant.class)
+                    " (username = :name) and (password = :pass) ", Tenant.class)
+                    .setParameter("name",userName)
+                    .setParameter("pass",passWord)
                     .getSingleResult();
+
+        } catch (NonUniqueResultException e) {
+            List<Tenant> tenants = multFindByNameAndPassword(userName, passWord);
+            return tenants.get(0);
+        }
+
+    }
+
+
+    @SuppressWarnings("JpaQlInspection")
+    public static List<Tenant> multFindByNameAndPassword(String userName, String passWord)
+            throws NoResultException {
+
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        return entityManager.createQuery("from Tenant where" +
+                " (userName = :name) and (password = :pass) ", Tenant.class)
+                .setParameter("name", userName)
+                .setParameter("pass", passWord)
+                .getResultList();
 
 
     }
+
 
 }

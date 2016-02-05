@@ -84,6 +84,17 @@ public class ReservationDAO {
                 " (state = ToPay) ", Reservation.class).getResultList();
     }
 
+    public static Reservation findByID(Long id){
+
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+
+        return entityManager.createQuery("from Reservation where " +
+                " (id = :ID) ", Reservation.class)
+                .setParameter("ID", id)
+                .getSingleResult();
+
+    }
+
 
 
 

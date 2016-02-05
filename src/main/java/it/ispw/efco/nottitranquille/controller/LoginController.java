@@ -32,17 +32,24 @@ public class LoginController {
     public RegisteredUser login(String username, String password) {
 
         try {
-            Tenant tenant = TenantDao.findByNameAndPassword(username, password);
-            return tenant;
-        }catch (NoResultException e1){
 
-            try{
-                Manager manager = ManagerDAO.findByNameAndPassword(username,password);
-                return manager;
-            }catch (NoResultException e2){
-                throw new NoResultException();
+            Manager manager = ManagerDAO.findByNameAndPassword(username, password);
+            System.out.println(manager.getFirstName());
+            return manager;
+
+        } catch (NoResultException e1) {
+
+            try {
+                Tenant tenant = TenantDao.findByNameAndPassword(username, password);
+                return tenant;
+            } catch (NoResultException e2) {
+                return null;
             }
 
         }
+
+
     }
+
 }
+

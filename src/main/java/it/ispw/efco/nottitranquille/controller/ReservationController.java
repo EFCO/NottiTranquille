@@ -60,9 +60,10 @@ public class ReservationController {
         reservation.setState(ReservationState.ToPay);
     }
 
-    public void approveReservation(Reservation reservation, Manager manager) {
+    public void approveReservation(Reservation reservation) {
         reservation.setState(ReservationState.ToPay);
         ReservationDAO.update(reservation);
+        System.out.println("approata");
     }
 
     public void declineReservation(Reservation reservation, Manager manager) {

@@ -73,11 +73,12 @@ public class LoginBean {
             RegisteredUser found = controller.login(this.username, this.password);
 
 
-            if (found instanceof Applicant)
+            if (found instanceof Manager)
                 this.setRole("Manager");
             else if (found instanceof Tenant)
                 this.setRole("Tenant");
 
+            System.out.println(role);
 
             return (found != null);
 

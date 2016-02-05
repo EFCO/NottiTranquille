@@ -58,29 +58,28 @@ public class ManagerDAO {
         entityManager.getTransaction().commit();
     }
 
-    public static List<Manager> findAllTenant() {
+    public static List<Manager> findAllManager() {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         return entityManager.createQuery("from Manager ", Manager.class)
                 .getResultList();
     }
 
-/*
-    @SuppressWarnings("JpaQlInspection")
-    public static Manager findByName(String firstname, String surname){
-        EntityManager entityManager = JPAInitializer.getEntityManager();
-        return entityManager.createQuery("from Tenant where (firstName = firstname)" +
-                "and (lastName = surname) ", Manager.class)
-                .getSingleResult();
-    }*/
 
     @SuppressWarnings("JpaQlInspection")
-    public static Manager findByNameAndPassword(String username, String passWord)
+    public static Manager findByNameAndPassword(String userName, String passWord)
             throws NoResultException{
 
+        try {
+
             EntityManager entityManager = JPAInitializer.getEntityManager();
-            return entityManager.createQuery("from Tenant where " +
-                    " (userName = username) and (password = passWord) ", Manager.class)
+            return entityManager.createQuery("from Manager where " +
+                    " (username = :name) and (password = :pass) ", Manager.class)
+                    .setParameter("name", userName)
+                    .setParameter("pass", passWord)
                     .getSingleResult();
+        }catch(NoResultException e){
+            throw new NoResultException();
+        }
 
     }
 

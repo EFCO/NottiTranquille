@@ -9,7 +9,7 @@ import javax.persistence.*;
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @SuppressWarnings("JpaDataSourceORMInspection")
 public class Person {
 

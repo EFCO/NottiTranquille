@@ -3,6 +3,7 @@ package it.ispw.efco.nottitranquille.model;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import javax.persistence.*;
@@ -136,6 +137,14 @@ public class Reservation extends Subject {
 
     public void setPeriod(Interval period) {
         this.period = period;
+    }
+
+    public DateTime getStartDate(){
+        return period.getStart();
+    }
+
+    public DateTime getEndDate(){
+        return period.getEnd();
     }
 
 
