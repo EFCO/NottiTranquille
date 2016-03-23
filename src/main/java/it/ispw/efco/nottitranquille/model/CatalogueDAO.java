@@ -30,6 +30,7 @@ public class CatalogueDAO {
         entityManager.getTransaction().begin();
         entityManager.persist(request);
         entityManager.getTransaction().commit();
+        JPAInitializer.shutdown();
     }
 
     public List<Request> selectAllRequestsByFilter(String nation, String city, RequestStatus status) {

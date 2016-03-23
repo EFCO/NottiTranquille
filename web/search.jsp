@@ -42,10 +42,11 @@
 
 
     <style>
-        body {
-            padding-top: 50px;
+        #searchForm {
+            padding-top: 30px;
             padding-left: 10px;
             padding-right: 10px;
+            padding-bottom: 20px;
             /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0fb4e7+0,a9e4f7+100 */
             /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#76d8f6+0,cff0fb+100 */
             background: #76d8f6; /* Old browsers */
@@ -55,6 +56,9 @@
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#76d8f6', endColorstr='#cff0fb',GradientType=0 ); /* IE6-9 */
         }
 
+        #resultSet {
+            padding-top: 20px;
+        }
     </style>
 
 </head>
@@ -118,7 +122,7 @@
                         </div>
                     </div>
                 </div>
-                <div class='col-md-6 col-xs-5'>
+                <div class='col-md-6 col-xs-6'>
                     <div class="form-group">
                         <div class='input-group date' id='checkoutpicker'>
                             <input type='text' name="checkout" id="checkout" class="form-control" placeholder="Check Out" required value="${checkout}"/>
@@ -148,7 +152,7 @@
             </script>
         </div>
         <div class="collapse row" id="collapseSearch">
-            <div class="form-group col-xs-2 col-md-2">
+            <div class="form-group col-xs-4 col-md-4">
                 <label for="locationtype">Tipo di alloggio :</label>
                 <select name="locationtype" id="locationtype" class="form-control">
                     <% pageContext.setAttribute("LocationTypes", LocationType.values()); %>
@@ -157,7 +161,7 @@
                     </c:forEach>
                 </select>
             </div>
-            <div class="form-group col-xs-2 col-md-2">
+            <div class="form-group col-xs-4 col-md-4">
                 <label for="maxtenant">Numero di ospiti :</label>
                 <select name="maxtenant" id="maxtenant" class="form-control">
                     <c:forEach begin="1" end="5" step="1" var="num">
@@ -166,7 +170,7 @@
                 </select>
             </div>
             <div class="row">
-                <div class="form-group col-xs-2 col-md-2">
+                <div class="form-group col-xs-4 col-md-4">
                     <% pageContext.setAttribute("Commodites", Commodities.values()); %>
                     <c:forEach items="${Commodites}" var="commodity">
                         <label class="checkbox">
@@ -196,9 +200,9 @@
                 <button name="search" type="submit" class="btn btn-primary" value="search" id="search"><span class="glyphicon glyphicon-search"></span> Search</button>
             </div>
         </div>
-
     </form>
-
+</div>
+<div id="resultSet" >
     <%
         List<Location> result = new ArrayList<>();
         if (request.getParameter("search") != null) {

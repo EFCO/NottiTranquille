@@ -31,7 +31,7 @@ public class ScoutFilteredSearchForm extends Application{
         stage.show();
 
         FilteredSearch controller = loader.getController();
-        controller.setStatusMenuButton();
+//        controller.setStatusMenuButton();
     }
 
     public static void main(String[] args) {

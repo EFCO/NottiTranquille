@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="425.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.ispw.efco.nottitranquille.controller.FilteredSearch">
+<AnchorPane prefHeight="425.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.ispw.efco.nottitranquille.controller.FilteredSearchFX">
    <children>
       <MenuBar prefHeight="25.0" prefWidth="600.0">
         <menus>
@@ -41,13 +41,13 @@
          </children>
       </Pane>
       <TableView fx:id="tableview" layoutY="174.0" prefHeight="251.0" prefWidth="606.0">
-        <columns>
-          <TableColumn prefWidth="122.0" text="Name" />
-            <TableColumn prefWidth="75.0" text="Address" />
-          <TableColumn minWidth="0.0" prefWidth="115.0" text="RequestedBy" />
-            <TableColumn prefWidth="102.0" text="ManagedBy" />
-            <TableColumn prefWidth="75.0" text="Status" />
-        </columns>
+        <!--<columns>-->
+          <!--<TableColumn prefWidth="122.0" text="Name" />-->
+            <!--<TableColumn prefWidth="75.0" text="Address" />-->
+          <!--<TableColumn minWidth="0.0" prefWidth="115.0" text="RequestedBy" />-->
+            <!--<TableColumn prefWidth="102.0" text="ManagedBy" />-->
+            <!--<TableColumn prefWidth="75.0" text="Status" />-->
+        <!--</columns>-->
       </TableView>
    </children>
 </AnchorPane>

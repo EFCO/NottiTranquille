@@ -82,4 +82,8 @@ public class Request {
     public Structure getStructure() {
         return structure;
     }
+
+    public RequestStatus getStatus() {
+        return status;
+    }
 }

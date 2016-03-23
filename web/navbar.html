@@ -42,10 +42,10 @@
                                 useCurrent: false //Important! See issue #1075
                             });
                             $("#checkinpickermodal").on("dp.change", function (e) {
-                                $('#checkinpickermodal').data("DateTimePicker").minDate(e.date);
+                                $('#checkoutpickermodal').data("DateTimePicker").minDate(e.date);
                             });
                             $("#checkoutpickermodal").on("dp.change", function (e) {
-                                $('#checkoutpickermodal').data("DateTimePicker").maxDate(e.date);
+                                $('#checkinpickermodal').data("DateTimePicker").maxDate(e.date);
                             });
                         });
 
@@ -78,7 +78,7 @@
                 <h4 class="modal-title" id="myModalLabel2">Sign In</h4>
             </div>
             <div class="modal-body">
-                <form action="search.jsp" name="myform" method="GET">
+                <form action="login.jsp" name="myform" method="GET">
                     <div class="form-group">
                         <label for="user">User :</label>
                         <input name="user" id="user" type="text" class="form-control" placeholder="fede93.vagnoni@gmail.com" required>

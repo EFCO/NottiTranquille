@@ -2,9 +2,7 @@ package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.FilteredSearch;
 import it.ispw.efco.nottitranquille.model.*;
-import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
 import org.joda.time.DateTime;
-import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -81,7 +79,7 @@ public class SearchBean {
         this.pricerange = pricerange;
     }
 
-       public boolean validate() {
+    public boolean validate() {
         if(this.nation.equals("") || this.city.equals("") || this.checkin == null|| this.checkout == null) {
             return false;
         }
