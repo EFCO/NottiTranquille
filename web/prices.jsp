@@ -1,4 +1,6 @@
 <%@ page import="it.ispw.efco.nottitranquille.model.dao.PriceDao" %>
+<%@ page import="java.lang.reflect.Field" %>
+<%@ page import="java.util.Date" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%-- Use JSTL core lib in order to add some useful feature --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -9,6 +11,10 @@
 <%-- Use JSTL custom lib in order to add some useful feature (replaceParam for customize URL with parameter) --%>
 <%@ taglib prefix="custom" tagdir="/WEB-INF/tags" %>
 
+<jsp:useBean id="priceBean" class="it.ispw.efco.nottitranquille.view.PriceBean" />
+<jsp:setProperty name="priceBean" property="*" />
+
+<c:set var="today" value="<%=new Date()%>"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,6 +38,11 @@
     <!-- Data picker JS -->
     <script type="text/javascript" src="<c:url value="resources/js/bootstrap-datepicker.min.js" />"></script>
 
+    <!-- Custom JS-DWR -->
+    <script type="text/javascript" src="<c:url value="/dwr/engine.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/util.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/dwr/interface/PriceBean.js"/>"></script>
+
     <!-- Custom JS -->
     <script src="<c:url value="resources/js/prices.js" />"></script>
 
@@ -41,6 +52,30 @@
 
 <%-- All requests are of the form: prices.jsp?locationId=id&type=type&page=page&limit=limit --%>
 <%
+    if (request.getParameter("create") != null) {
+
+        priceBean.setPriceType(null);
+
+        System.out.println(priceBean.toString());
+
+        try {
+            if (priceBean.validate()) {
+                System.out.println("valid");
+            } else {
+                for (Field field : priceBean.getErrorFields()) {
+                    field.setAccessible(true);
+                    try {
+                        System.out.println(String.format("FieldValue: %s Message: %s", field.get(priceBean), priceBean.getErrorMessage(field)));
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Gets pageNumber from request
     Integer pageNumber;
     try {
@@ -189,7 +224,7 @@
                             ${limit}
                         </c:otherwise>
                     </c:choose>
-                     <span class="caret"></span>
+                    <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
                     <li><a href="<custom:replaceParam name='limit' value='25'/>">25</a></li>
@@ -257,38 +292,38 @@
     <table id="prices-table" class="tablesorter table table-bordered table-hover table-striped">
         <caption>Ini adalah data biodata anda</caption>
         <thead>
-            <tr>
-                <th>#</th>
-                <th>Price Type</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Value</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th>#</th>
+            <th>Price Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Value</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
-            <c:choose>
-                <c:when test="${prices.size() > 0}">
-                    <c:forEach items="${prices}" var="price">
-                        <tr>
-                            <td>${price.id}</td>
-                            <td>${price['class'].simpleName}</td>
-                            <td><joda:format value="${price.startDate}" locale="en_US" style="SM" pattern="dd MMM, yyyy HH:mm"/></td>
-                            <td><joda:format value="${price.endDate}" locale="en_US" style="SM" pattern="dd MMM, yyyy HH:mm"/></td>
-                            <td><fmt:setLocale value="it_IT"/><fmt:formatNumber value="${price.value}" type="currency"/></td>
-                            <td>
-                                <button class='btn btn-warning btn-sm' data-toggle="modal" data-target="#updateModal"><span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></button>
-                                <button class='btn btn-danger btn-sm' role='button' data-toggle="modal" data-target="#deleteModal"><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </c:when>
-                <c:otherwise>
+        <c:choose>
+            <c:when test="${prices.size() > 0}">
+                <c:forEach items="${prices}" var="price">
                     <tr>
-                        <td colspan="6">There are no prices</td>
+                        <td>${price.id}</td>
+                        <td>${price['class'].simpleName}</td>
+                        <td><joda:format value="${price.startDate}" locale="en_US" style="SM" pattern="dd MMM, yyyy HH:mm"/></td>
+                        <td><joda:format value="${price.endDate}" locale="en_US" style="SM" pattern="dd MMM, yyyy HH:mm"/></td>
+                        <td><fmt:setLocale value="it_IT"/><fmt:formatNumber value="${price.value}" type="currency"/></td>
+                        <td>
+                            <button class='btn btn-warning btn-sm' data-toggle="modal" data-target="#updateModal"><span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></button>
+                            <button class='btn btn-danger btn-sm' role='button' data-toggle="modal" data-target="#deleteModal"><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button>
+                        </td>
                     </tr>
-                </c:otherwise>
-            </c:choose>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <tr>
+                    <td colspan="6">There are no prices</td>
+                </tr>
+            </c:otherwise>
+        </c:choose>
         </tbody>
     </table>
 
@@ -321,13 +356,13 @@
                 Items <b>
                 <c:choose>
                     <c:when test="${counts == 0}">
-                       0
+                        0
                     </c:when>
                     <c:otherwise>
                         ${startPosition + 1}
                     </c:otherwise>
                 </c:choose>
-                </b> to <b>
+            </b> to <b>
                 <c:choose>
                     <c:when test="${limit eq -1}">
                         ${counts}
@@ -343,226 +378,191 @@
                         </c:choose>
                     </c:otherwise>
                 </c:choose>
-                </b> of <b>${counts}</b>.
+            </b> of <b>${counts}</b>.
             </p>
         </div>
     </div>
 
-    <!-- Create Modal -->
-    <div class="modal fade in" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document" style="
-    width: 480px;
-">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                    <h4 class="modal-title" id="createModalLabel">Create price</h4>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group" style="
-">
-                            <label style="
-    display: block;
-">Price type</label>
-                            <div style="
-    /* margin-left: 25px; */
-    /* margin-right: 50px; */
-    display: flex;
-    justify-content: initial;
-">
-                                <div style="
-    margin-top: 10px;
-    margin-right: 20px;
-    float: left;
-">
-                                    <div class="radio first-radio">
-                                        <label>
-                                            <input type="radio" name="inlineRadioOptions" id="inlineRadioBasePrice" value="basePrice"> Base Price
-                                        </label>
-                                    </div>
-                                </div>
-                                <div style="
-    margin-left: 20px;
-    margin-right: 20px;
-    float: left;
-">
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="inlineRadioOptions" id="inlineRadioFixDiscount" value="fixDiscount"> Fix Discount
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="inlineRadioOptions" id="inlineRadioFixFee" value="fixFee">Percentage Discount
-                                        </label>
-                                    </div>
-                                </div>
-                                <div style="
-    float: left;
-    margin-left: 20px;
-">
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="inlineRadioOptions" id="inlineRadioPercentageDiscount" value="percentageDiscount"> Fix Fee
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="inlineRadioOptions" id="inlineRadioPercentageFee" value="percentageFee"> Percentage Fee
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="
-    display: flex;
-    justify-content: space-between;
-    clear: both;
-">
-
-                            <div class="form-group left" style="
-    align-self: center;
-">
-
-                                <label>Repeat it</label>
-                                <select class="form-control" title="Every days">
-                                    <option>Every days</option>
-                                    <option>Every weeks</option>
-                                    <option>Every months</option>
-                                    <option>Every years</option>
-                                    <option>Every weekends</option>
-                                    <option>Every workdays</option>
-                                    <option>Every no workdays</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group right" style="
-    align-self: center;
-    margin-right: 70px;
-">
-
-                                <label>Times</label>
-                                <select class="form-control" title="1">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    <option>6</option>
-                                    <option>7</option>
-                                </select>
-                            </div>
-
-                        </div>
-
-                        <div class="form-group">
-                            <label for="priceValue">Percentage value</label>
-                            <div class="input-group" style="
-    width: 440px;
-">
-                                <div class="input-group-addon">%</div>
-                                <input type="text" class="form-control" id="priceValue" placeholder="Percentage">
-                                <div class="input-group-addon">.00</div>
-                            </div>
-                        </div>
-
-                        <div class="form-group date">
-                            <label for="startDate">Start</label>
-                            <div class="input-group date" style="
-    width: 440px;
-">
-                                <input type="text" class="form-control" id="startDate" placeholder="20/01/2016"><div class="input-group-addon" style="
-    width: 45px;
-"><i class="glyphicon glyphicon-th"></i></div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>End</label>
-                            <div class="radio" style="
-    height: 39px;">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="never" checked="">Never</label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2"><div class="input-group" style="
-">
-
-                                    <div class="input-group" style="
-    width: 420px;
-">
-                                        <input type="number" class="form-control" value="10"><span class="input-group-addon" id="sizing-addon1">occurrences</span>
-                                    </div>
-                                </div></label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3"><div class="input-group">
-
-                                    <div class="input-group date" style="
-    width: 420px;
-">
-                                        <input type="text" class="form-control" id="endDate" placeholder="20/01/2016" style="
-"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-                                    </div>
-                                </div></label>
-                            </div>
-
-                        </div></form>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Create price</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="editModalLabel">Update price</h4>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="deleteModalLabel">Delete price</h4>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- FOOTER -->
     <%@include file="footer.html" %>
 
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade in" id="createModal" tabindex="-1" role="dialog" aria-labelledby="Create">
+    <div class="modal-dialog modal-dialog-prices" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="createModalLabel">Create price</h4>
+            </div>
+            <div class="modal-body">
+                <form id="create-price-form" method="post" action="prices.jsp">
+                    <div class="form-group">
+                        <label>Price type</label>
+                        <div id="price-type-div">
+                            <div id="first-column-radio-price-type">
+                                <div class="radio first-radio">
+                                    <label>
+                                        <input type="radio" name="priceType" id="option-radio-base-price" value="basePrice" checked="checked"> Base Price
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="second-column-radio-price-type">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="priceType" id="option-radio-fix-discount" value="fixDiscount"> Fix Discount
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="priceType" id="option-radio-fix-fee" value="percentageDiscount"> Percentage Discount
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="third-column-radio-price-type">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="priceType" id="option-radio-percentage-discount" value="fixFee"> Fix Fee
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="priceType" id="option-radio-percentage-fee" value="percentageFee"> Percentage Fee
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="div-repeat" class="form-group">
+
+                        <div id="div-repeat-select" class="form-group left">
+
+                            <label>Repeat it</label>
+                            <select class="form-control" name="repetitionType" required>
+                                <option value='everyDays' selected="selected">Every days</option>
+                                <option value='everyWeeks'>Every weeks</option>
+                                <option value='everyMonths'>Every months</option>
+                                <option value='everyYears'>Every years</option>
+                                <option value='everyWeekEnds'>Every weekends</option>
+                                <option value='everyWorkDays'>Every workdays</option>
+                                <option value='everyNoWorkDays'>Every noworkdays</option>
+                            </select>
+                        </div>
+
+                        <div id="div-times" class="form-group right">
+
+                            <label>Times</label>
+                            <select class="form-control" name="times">
+                                <option selected="selected">1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-price">Price value</label>
+                        <div class="input-group">
+                            <div id="addon-input-price" class="input-group-addon">€</div>
+                            <input type="number" class="form-control" name="value" id="input-price" placeholder="Price" required>
+                            <div class="input-group-addon">.00</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group date">
+                        <label for="input-start-date">Start</label>
+                        <div class="input-group date">
+                            <input type="text" class="form-control" name="startDate" id="input-start-date" value="<fmt:formatDate type="date" value="${today}" pattern="dd/MM/yyyy"/>" required><div class="input-group-addon"><i class="glyphicon glyphicon-th"></i></div>
+                        </div>
+                    </div>
+
+                    <div id="end-div" class="form-group">
+                        <label>End</label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="option-radio-end" id="option-radio-never" value="never" checked="checked">Never</label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="option-radio-end" id="option-radio-occurrences" value="occurrences"><div class="input-group">
+
+                                <div class="input-group">
+                                    <input name="occurrences" id="input-occurrences" type="number" min="1" class="form-control" value="1"><span class="input-group-addon" id="sizing-addon1">occurrences</span>
+                                </div>
+                            </div></label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="option-radio-end" id="option-radio-end-date" value="endDate"><div class="input-group">
+
+                                <div class="input-group date">
+                                    <input type="text" class="form-control" name="endDate" id="input-end-date" value="<fmt:formatDate type="date" value="${today}" pattern="dd/MM/yyyy"/>"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                </div>
+                            </div></label>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>Summary</label>
+                        <p id="summary"></p>
+                    </div>
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="create-price-form" id="create" name="create" value="create">Create price</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="editModalLabel">Update price</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="deleteModalLabel">Delete price</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Bootstrap core JavaScript -->
