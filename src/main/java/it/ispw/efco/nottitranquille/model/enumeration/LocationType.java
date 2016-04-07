@@ -7,5 +7,6 @@ package it.ispw.efco.nottitranquille.model.enumeration;
 public enum LocationType {
     BedBreakfast,
     Hotel,
-    Agriturismo
+    Agriturismo,
+    NessunaPreferenza
 }

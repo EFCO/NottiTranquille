@@ -20,6 +20,17 @@ public class SearchBean {
     private String pricerange = "";
     private String locationtype = "";
     private String maxtenant = "";
+    private String search="";
+
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
+    }
+
     //TODO Implement a way to retrieve commodities
     private List<Location> result = new ArrayList<Location>();
 
@@ -80,7 +91,9 @@ public class SearchBean {
     }
 
     public boolean validate() {
-        if(this.nation.equals("") || this.city.equals("") || this.checkin == null|| this.checkout == null) {
+        //If the search is a basic one I have to check the presence of all the fields.
+        this.result = new ArrayList<Location>();
+        if(search == "search" && (this.nation.equals("") && this.city.equals("") && this.checkin == null && this.checkout == null)) {
             return false;
         }
 //        Address a = new Address("Roma","Zagarolo","piazza di casa mia","00039");

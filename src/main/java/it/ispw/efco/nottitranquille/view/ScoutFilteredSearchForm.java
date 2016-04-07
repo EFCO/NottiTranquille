@@ -1,6 +1,7 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.FilteredSearch;
+import it.ispw.efco.nottitranquille.controller.FilteredSearchFX;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,7 +31,7 @@ public class ScoutFilteredSearchForm extends Application{
         stage.setScene(new Scene(root));
         stage.show();
 
-        FilteredSearch controller = loader.getController();
+        FilteredSearchFX controller = loader.getController();
 //        controller.setStatusMenuButton();
     }
 

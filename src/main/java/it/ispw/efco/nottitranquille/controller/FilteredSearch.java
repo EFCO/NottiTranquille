@@ -37,15 +37,24 @@ public class FilteredSearch {
         Interval interval = new Interval(searchBean.getCheckin(),searchBean.getCheckout());
         LocationType type = LocationType.valueOf(searchBean.getLocationtype());
         int maxTenant = Integer.valueOf(searchBean.getMaxtenant());
-
         CatalogueDAO catalogueDAO = new CatalogueDAO();
         List<Request> result = catalogueDAO.selectAcceptedRequests(searchBean.getNation(),searchBean.getCity());
-        System.out.println(result);
         List<Location> final_result = new ArrayList<Location>();
         for (Request candidate : result) {
             for (Location location : candidate.getStructure().getLocations()) {
-                if (location.isAvailable(interval) && location.getType() == type && location.getMaxGuestsNumber() >= maxTenant) { //TODO price check to be added
-                    final_result.add(location);
+                if (location.isAvailable(interval)) {
+                    //in case of advanced search
+                    if (searchBean.getSearch().equals("advsearch")) {
+                        if (location.getMaxGuestsNumber() >= maxTenant) {
+                            if (type == LocationType.NessunaPreferenza) {
+                                final_result.add(location);
+                            } else if (type == location.getType()) {
+                                final_result.add(location);
+                            }
+                        }
+                    } else {
+                        final_result.add(location);
+                    }
                 }
             }
         }

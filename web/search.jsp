@@ -71,6 +71,7 @@
 <c:set var="pricerange"  value="${param.pricerange}"/>
 <c:set var="checkin"  value="${param.checkin}"/>
 <c:set var="checkout"  value="${param.checkout}"/>
+<c:set var="search" value="${param.search}"/>
 
 
 <c:if test="${nation == null}">
@@ -88,17 +89,22 @@
 <c:if test="${checkout == null}">
     <c:set var="checkout" value=""/>
 </c:if>
+<c:if test="${search == null}">
+    <c:set var="search" value="search"/>
+</c:if>
+
+
 
 <div id="searchForm" >
     <form action="search.jsp" name="myform" method="POST" id="searchForm">
         <div class="row">
             <div class="form-group col-xs-4 col-md-4">
                 <label for="nation">Nazione :</label>
-                <input name="nation" id="nation" type="text" class="form-control" placeholder="Roma" required value="${nation}"/>
+                <input name="nation" id="nation" type="text" class="form-control" placeholder="Roma" value="${nation}"/>
             </div>
             <div class="form-group col-xs-4 col-md-4">
                 <label for="city">Città :</label>
-                <input name="city" id="city" type="text" class="form-control" placeholder="Zagarolo" required value="${city}"/>
+                <input name="city" id="city" type="text" class="form-control" placeholder="Zagarolo" value="${city}"/>
             </div>
             <div class="form-group col-xs-4 col-md-4">
                 <label for="pricerange">Prezzo :</label>
@@ -115,7 +121,7 @@
                 <div class='col-md-6 col-xs-6'>
                     <div class="form-group">
                         <div class='input-group date' id='checkinpicker'>
-                            <input type='text' name="checkin" id ="checkin" class="form-control" placeholder="Check In" required value="${checkin}"/>
+                            <input type='text' name="checkin" id ="checkin" class="form-control" placeholder="Check In" value="${checkin}"/>
                             <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -125,7 +131,7 @@
                 <div class='col-md-6 col-xs-6'>
                     <div class="form-group">
                         <div class='input-group date' id='checkoutpicker'>
-                            <input type='text' name="checkout" id="checkout" class="form-control" placeholder="Check Out" required value="${checkout}"/>
+                            <input type='text' name="checkout" id="checkout" class="form-control" placeholder="Check Out" value="${checkout}"/>
                             <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -193,11 +199,25 @@
         %>
         <div class="btn-group btn-group-justified">
             <div class="btn-group">
-                <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">Advanced Search</button>
+                <script>
+                    var search = '${search}';
+                    if (search == 'advsearch') {
+                        $('#collapseSearch').collapse();
+                    }
+                </script>
+                <script>
+                    function prova() {
+                        if (document.getElementById("searchbutton").value == 'search') {
+                            document.getElementById("searchbutton").value = 'advsearch';
+                        } else {
+                            document.getElementById("searchbutton").value = 'search';
+                        }
+                    }
+                </script>
+                <button type="button" onclick="prova()" id=advsearchbutton" class="btn btn-default" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">Advanced Search</button>
             </div>
-
             <div class="btn-group">
-                <button name="search" type="submit" class="btn btn-primary" value="search" id="search"><span class="glyphicon glyphicon-search"></span> Search</button>
+                <button name="search" type="submit" class="btn btn-primary" value='${search}' id="searchbutton"><span class="glyphicon glyphicon-search"></span> Search</button>
             </div>
         </div>
     </form>
