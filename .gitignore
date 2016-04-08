@@ -3,7 +3,7 @@
 .idea/workspace.xml
 lib/
 out/
-/.idea/runConfigurations/WebApp.xml
-/.idea/runConfigurations/LaptopApp.xml
-/.idea/compiler.xml
+/.idea/runConfigurations/*.xml
+/.idea/*.xml
 target/
+*iml

@@ -28,6 +28,7 @@
           <element id="library" level="project" name="Maven: org.jadira.usertype:usertype.spi:5.0.0.GA" />
           <element id="library" level="project" name="Maven: org.jadira.usertype:usertype.core:5.0.0.GA" />
           <element id="file-copy" path="$PROJECT_DIR$/lib/joda-time-jsptags-1.1.1.jar" />
+          <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.5" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="NottiTranquille/javaeeApplication/javaEEApplication" />
