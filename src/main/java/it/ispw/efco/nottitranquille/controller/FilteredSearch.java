@@ -35,8 +35,12 @@ public class FilteredSearch {
             maxPrice = 500;
         }
         Interval interval = new Interval(searchBean.getCheckin(),searchBean.getCheckout());
-        LocationType type = LocationType.valueOf(searchBean.getLocationtype());
-        int maxTenant = Integer.valueOf(searchBean.getMaxtenant());
+        LocationType type = null;
+        int maxTenant = 0;
+        if (searchBean.getSearch().equals("advsearch")) {
+            type = LocationType.valueOf(searchBean.getLocationtype());
+            maxTenant = Integer.valueOf(searchBean.getMaxtenant());
+        }
         CatalogueDAO catalogueDAO = new CatalogueDAO();
         List<Request> result = catalogueDAO.selectAcceptedRequests(searchBean.getNation(),searchBean.getCity());
         List<Location> final_result = new ArrayList<Location>();

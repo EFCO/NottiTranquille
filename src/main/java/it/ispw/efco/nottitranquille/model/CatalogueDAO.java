@@ -35,11 +35,21 @@ public class CatalogueDAO {
 
     public List<Request> selectAllRequestsByFilter(String nation, String city, RequestStatus status) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
-        TypedQuery<Request> query = entityManager.createQuery(
-                "FROM Request r WHERE r.status=:s AND (r.structure.address.nation = :n AND r.structure.address.city = :c)",Request.class);
-        query.setParameter("n",nation);
+        String querystring = "FROM Request r WHERE r.status = :s";
+        if (!nation.equals("")) {
+            querystring += " AND r.structure.address.nation = :n";
+        }
+        if (!city.equals("")) {
+            querystring += " AND r.structure.address.city = :c";
+        }
+        TypedQuery<Request> query = entityManager.createQuery(querystring,Request.class);
+        if (!nation.equals("")) {
+            query.setParameter("n", nation);
+        }
+        if (!city.equals("")) {
+            query.setParameter("c", city);
+        }
         query.setParameter("s", status);
-        query.setParameter("c",city);
         List<Request> result;
         result = query.getResultList();
         return result;
@@ -47,11 +57,20 @@ public class CatalogueDAO {
 
     public List<Request> selectAcceptedRequests(String nation, String city) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
-        TypedQuery<Request> query = entityManager.createQuery(
-                "FROM Request r WHERE r.status=:s AND (r.structure.address.nation = :n AND r.structure.address.city = :c)",Request.class);
-        query.setParameter("n",nation);
-        query.setParameter("s", RequestStatus.Accepted);
-        query.setParameter("c",city);
+        String querystring = "FROM Request r WHERE r.status = 0";
+        if (!nation.equals("")) {
+            querystring += " AND r.structure.address.nation = :n";
+        }
+        if (!city.equals("")) {
+                querystring += " AND r.structure.address.city = :c";
+            }
+        TypedQuery<Request> query = entityManager.createQuery(querystring,Request.class);
+        if (!nation.equals("")) {
+            query.setParameter("n", nation);
+        }
+        if (!city.equals("")) {
+            query.setParameter("c", city);
+        }
         List<Request> result;
         result = query.getResultList();
         return result;

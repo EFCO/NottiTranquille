@@ -68,11 +68,15 @@
 
 <c:set var="nation"  value="${param.nation}"/>
 <c:set var="city"  value="${param.city}"/>
-<c:set var="pricerange"  value="${param.pricerange}"/>
+<c:set var="pricerange" value="${param.pricerange}"/>
 <c:set var="checkin"  value="${param.checkin}"/>
 <c:set var="checkout"  value="${param.checkout}"/>
 <c:set var="search" value="${param.search}"/>
-
+<c:set var="locationtype" value = "${param.locationtype}"/>
+<c:set var="maxtenant" value = "${param.maxtenant}"/>
+<c:set var="wifi" value = "${param.wifi}"/>
+<c:set var="airconditioner" value = "${param.airconditioner}"/>
+<c:set var="strongbox" value = "${param.strongbox}"/>
 
 <c:if test="${nation == null}">
     <c:set var="nation" value=""/>
@@ -83,15 +87,31 @@
 <c:if test="${pricerange == null}">
     <c:set var="pricerange" value=""/>
 </c:if>
-<c:if test="${checkin == null}">
-    <c:set var="checkin" value=""/>
-</c:if>
-<c:if test="${checkout == null}">
-    <c:set var="checkout" value=""/>
-</c:if>
 <c:if test="${search == null}">
     <c:set var="search" value="search"/>
 </c:if>
+<c:if test="${locationtype == null}">
+    <c:set var="locationtype" value=""/>
+</c:if>
+<c:if test="${maxtenant == null}">
+    <c:set var="maxtenant" value=""/>
+</c:if>
+<c:if test="${wifi == null}">
+    <c:set var="wifi" value=""/>
+</c:if>
+<c:if test="${airconditioner == null}">
+    <c:set var="airconditioner" value=""/>
+</c:if>
+<c:if test="${strongbox == null}">
+    <c:set var="strongbox" value=""/>
+</c:if>
+<%--<c:if test="${checkin == null}">--%>
+    <%--<c:set var="checkin" value=""/>--%>
+<%--</c:if>--%>
+<%--<c:if test="${checkout == null}">--%>
+    <%--<c:set var="checkout" value=""/>--%>
+<%--</c:if>--%>
+
 
 
 
@@ -109,33 +129,29 @@
             <div class="form-group col-xs-4 col-md-4">
                 <label for="pricerange">Prezzo :</label>
                 <select name="pricerange" id="pricerange" class="form-control" value="${pricerange}">
-                    <option>Fino a 100 euro</option>
-                    <option>Fino a 200 euro</option>
-                    <option>Fino a 500 euro</option>
-                    <option>Nessun limite</option>
+                    <option ${pricerange == "Fino a 100 euro" ? "selected='selected'" : ''}>Fino a 100 euro</option>
+                    <option ${pricerange == "Fino a 200 euro" ? "selected='selected'" : ''}>Fino a 200 euro</option>
+                    <option ${pricerange == "Fino a 500 euro" ? "selected='selected'" : ''}>Fino a 500 euro</option>
+                    <option ${pricerange == "Nessun limite" ? "selected='selected'" : ''}>Nessun limite</option>
                 </select>
             </div>
         </div>
         <div class="row">
             <div class="container">
-                <div class='col-md-6 col-xs-6'>
-                    <div class="form-group">
-                        <div class='input-group date' id='checkinpicker'>
-                            <input type='text' name="checkin" id ="checkin" class="form-control" placeholder="Check In" value="${checkin}"/>
-                            <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
+                <div class='form-group col-md-6 col-xs-6'>
+                    <div class='input-group date' id='checkinpicker'>
+                        <input type='text' name="checkin" id ="checkin" class="form-control" placeholder="Check In" value="${checkin}" required/>
+                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
                     </div>
                 </div>
-                <div class='col-md-6 col-xs-6'>
-                    <div class="form-group">
-                        <div class='input-group date' id='checkoutpicker'>
-                            <input type='text' name="checkout" id="checkout" class="form-control" placeholder="Check Out" value="${checkout}"/>
-                            <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
+                <div class='form-group col-md-6 col-xs-6'>
+                    <div class='input-group date' id='checkoutpicker'>
+                        <input type='text' name="checkout" id="checkout" class="form-control" placeholder="Check Out" value="${checkout}" required/>
+                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -163,7 +179,7 @@
                 <select name="locationtype" id="locationtype" class="form-control">
                     <% pageContext.setAttribute("LocationTypes", LocationType.values()); %>
                     <c:forEach items="${LocationTypes}" var="type">
-                        <option>${type.name()}</option>
+                        <option ${locationtype == type.name() ? "selected='selected'" : ''}>${type.name()}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -171,7 +187,7 @@
                 <label for="maxtenant">Numero di ospiti :</label>
                 <select name="maxtenant" id="maxtenant" class="form-control">
                     <c:forEach begin="1" end="5" step="1" var="num">
-                        <option>${num}</option>
+                        <option ${maxtenant == num ? "selected='selected'" : ''}>${num}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -180,7 +196,7 @@
                     <% pageContext.setAttribute("Commodites", Commodities.values()); %>
                     <c:forEach items="${Commodites}" var="commodity">
                         <label class="checkbox">
-                            <input type="checkbox"> ${commodity.name()}
+                            <input id="${commodity.name().toLowerCase()}" name ="${commodity.name().toLowerCase()}" type="checkbox" ${param[commodity.name().toLowerCase()] == 'on' ? 'checked' : ''}> ${commodity.name().trim()}
                         </label>
                     </c:forEach>
                 </div>

@@ -21,7 +21,11 @@ public class SearchBean {
     private String locationtype = "";
     private String maxtenant = "";
     private String search="";
+    private String[] commodities = null;
 
+    public void setCommodities(String[] commodities) {
+        this.commodities = commodities;
+    }
 
     public String getSearch() {
         return search;
@@ -96,6 +100,7 @@ public class SearchBean {
         if(search == "search" && (this.nation.equals("") && this.city.equals("") && this.checkin == null && this.checkout == null)) {
             return false;
         }
+        System.out.println("commodities = " + commodities.toString());
 //        Address a = new Address("Roma","Zagarolo","piazza di casa mia","00039");
 //        Structure s = new Structure("casa mia", a);
 //        List<Interval> booking = new ArrayList<Interval>();
@@ -129,5 +134,9 @@ public class SearchBean {
 
     public void setLocationtype(String locationtype) {
         this.locationtype = locationtype;
+    }
+
+    public String[] getCommodities() {
+        return commodities;
     }
 }
