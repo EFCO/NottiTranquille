@@ -43,7 +43,7 @@
 </head>
 
 <%
-    if(request.getParameter("Approve")!=null){
+    if (request.getParameter("Approve") != null) {
 
         LoginBean login = (LoginBean) session.getAttribute("Login");
 
@@ -121,16 +121,16 @@
                     <td>${reservations.get(i).getPrice()}</td>
 
                     <c:choose>
-                        <c:when test="${reservations.get(i).getState() == 'Paid'}">
+                        <c:when test="${reservations.get(i).state() == 'Paid'}">
                             <td>Paid</td>
                         </c:when>
-                        <c:when test="${reservations.get(i).getState() == 'ToApprove'}">
+                        <c:when test="${reservations.get(i).state() == 'ToApprove'}">
                             <td>to be approve</td>
                         </c:when>
-                        <c:when test="${reservations.get(i).getState() == 'Declined'}">
+                        <c:when test="${reservations.get(i).state() == 'Declined'}">
                             <td>Declined</td>
                         </c:when>
-                        <c:when test="${reservations.get(i).getState() == 'ToPay'}">
+                        <c:when test="${reservations.get(i).state() == 'ToPay'}">
                             <td>
                                 <button type="submit" class="btn btn-primary" name="Pay" id="Pay"
                                         value="${reservations.get(i).getId()}">Pay
@@ -189,7 +189,7 @@
                                  pattern="dd MMM, yyyy HH:mm"/></td>
 
                 <td><c:out value=" ${reservations.get(i).getTenant().getFirstName()} ${
-                reservations.get(i).getTenant().getLastName()}"> </c:out> </td>
+                reservations.get(i).getTenant().getLastName()}"> </c:out></td>
 
                 <c:choose>
                     <c:when test="${reservations.get(i).getState() == 'Paid'}">

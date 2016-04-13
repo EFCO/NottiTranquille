@@ -54,6 +54,7 @@ public class ReservationController {
     private void reserveWithConfirmation(Reservation reservation, Manager manager) {
         manager.addReservationToApprove(reservation);
         reservation.setState(ReservationState.ToApprove);
+        //TODO send email to manager to inform him that he must confirm a reservation
     }
 
     private void reserveDirect(Reservation reservation) {

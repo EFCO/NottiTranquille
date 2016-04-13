@@ -21,7 +21,7 @@ public class Reservation extends Subject {
      * Default constructor
      */
     public Reservation() {
-        this(null, null ,null);
+        this(null, null, null);
     }
 
     public Reservation(Tenant tenant, Location location, Interval interval) {
@@ -32,9 +32,9 @@ public class Reservation extends Subject {
         this.state = ReservationState.Unknown;
         this.hasChanged = true;
 
-        try{
+        try {
             this.price = location.getPrice();
-        }catch(NullPointerException e){
+        } catch (NullPointerException e) {
             this.price = 0;
         }
     }
@@ -139,17 +139,35 @@ public class Reservation extends Subject {
         this.period = period;
     }
 
-    public DateTime getStartDate(){
+    public DateTime getStartDate() {
         return period.getStart();
     }
 
-    public DateTime getEndDate(){
+    public DateTime getEndDate() {
         return period.getEnd();
     }
 
-
     public ReservationState getState() {
         return state;
+    }
+
+    public String state() {
+        switch (this.state) {
+            case Paid:
+                return "Paid";
+            case ToPay:
+                return "ToPay";
+            case Timeout:
+                return "Timeout";
+            case Unknown:
+                return "Unknown";
+            case Declined:
+                return "Declined";
+            case ToApprove:
+                return "ToApprove";
+        }
+
+        return null;
     }
 
     public void setState(ReservationState state) {

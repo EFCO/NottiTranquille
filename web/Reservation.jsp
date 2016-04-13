@@ -32,7 +32,6 @@
     ReservationBean.setLocation(location);
     request.setAttribute("location", location);
 
-
     List<Tenant> tenants = TenantDao.findAllTenant();
     Tenant tenant = tenants.get(0);
 

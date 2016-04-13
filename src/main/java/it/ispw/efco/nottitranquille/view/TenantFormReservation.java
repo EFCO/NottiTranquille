@@ -80,7 +80,7 @@ public class TenantFormReservation {
     }
 
     public boolean validate() {
-        if (startDate == null || startDate == "" || endDate == null || endDate == "")
+        if (startDate == null || startDate.equals("") || endDate == null || endDate.equals(""))
             return false;
 
         if (buyers == null)
