@@ -90,17 +90,6 @@
                         </li>
                     </ul>
 
-                    <%--<c:if test="${ Login.getUsername() != null && Login.getUsername() != '' }">--%>
-
-                    <%--<form class="navbar-form navbar-right" role="reservation">--%>
-                    <%--<div id="browse_app">--%>
-                    <%--<a class="btn btn-default" href="./ReservationSummary.jsp">Reservation</a>--%>
-                    <%--</div>--%>
-                    <%--</form>--%>
-
-                    <%--</c:if>--%>
-
-
                     <form class="navbar-form navbar-right" role="search">
                         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#searchModal">
                             Search
