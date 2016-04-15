@@ -1,6 +1,6 @@
 <!--Search modal-->
 
-<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="searchModal" tabindex="-3" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -46,27 +46,9 @@
 </div>
 
 <!--Sign in Modal-->
+<%@include file="sign.jsp" %>
 
-<div class="modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel2">Sign In</h4>
-            </div>
-            <form action="index.jsp" name="loginForm" method="POST">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="E-mail" name="username">
-                        <input type="password" class="form-control" placeholder="Password" name="password">
-                    </div>
-                    <button type="submit" class="btn btn-default" name="sign" id="sign">Submit</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<%@include file="ReservationSummary.jsp" %>
 
 
 <!--Button NavBar-->
@@ -107,11 +89,17 @@
                             </ul>
                         </li>
                     </ul>
-                    <form class="navbar-form navbar-right" role="reservation">
-                        <div id="browse_app">
-                            <a class="btn btn-default" href="./ReservationSummary.jsp">Reservation</a>
-                        </div>
-                    </form>
+
+                    <%--<c:if test="${ Login.getUsername() != null && Login.getUsername() != '' }">--%>
+
+                    <%--<form class="navbar-form navbar-right" role="reservation">--%>
+                    <%--<div id="browse_app">--%>
+                    <%--<a class="btn btn-default" href="./ReservationSummary.jsp">Reservation</a>--%>
+                    <%--</div>--%>
+                    <%--</form>--%>
+
+                    <%--</c:if>--%>
+
 
                     <form class="navbar-form navbar-right" role="search">
                         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#searchModal">
@@ -119,6 +107,10 @@
                         </button>
                         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#signModal">Sign
                             In/Sign Up
+                        </button>
+                        <button type="button" class="btn btn-default" data-toggle="modal"
+                                data-target="#reservationModal">
+                            Reservations
                         </button>
                     </form>
                 </div><!-- /.navbar-collapse -->

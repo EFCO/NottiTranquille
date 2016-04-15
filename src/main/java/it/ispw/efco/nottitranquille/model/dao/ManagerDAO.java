@@ -67,20 +67,35 @@ public class ManagerDAO {
 
     @SuppressWarnings("JpaQlInspection")
     public static Manager findByNameAndPassword(String userName, String passWord)
-            throws NoResultException{
+            throws NoResultException {
 
         try {
-
             EntityManager entityManager = JPAInitializer.getEntityManager();
             return entityManager.createQuery("from Manager where " +
                     " (username = :name) and (password = :pass) ", Manager.class)
                     .setParameter("name", userName)
                     .setParameter("pass", passWord)
                     .getSingleResult();
-        }catch(NoResultException e){
+        } catch (NoResultException e) {
             throw new NoResultException();
+
+        } catch (NonUniqueResultException e2) {
+            List<Manager> managers = multFindByNameAndPassword(userName, passWord);
+            return managers.get(0);
         }
 
+    }
+
+    @SuppressWarnings("JpaQlInspection")
+    public static List<Manager> multFindByNameAndPassword(String userName, String passWord)
+            throws NoResultException {
+
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        return entityManager.createQuery("from Manager where" +
+                " (userName = :name) and (password = :pass) ", Manager.class)
+                .setParameter("name", userName)
+                .setParameter("pass", passWord)
+                .getResultList();
     }
 
 

@@ -6,6 +6,7 @@ import it.ispw.efco.nottitranquille.model.dao.ReservationDAO;
 import it.ispw.efco.nottitranquille.model.dao.TenantDao;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
+import it.ispw.efco.nottitranquille.model.mail.Mail;
 import org.joda.time.Interval;
 
 import java.util.*;
@@ -54,7 +55,10 @@ public class ReservationController {
     private void reserveWithConfirmation(Reservation reservation, Manager manager) {
         manager.addReservationToApprove(reservation);
         reservation.setState(ReservationState.ToApprove);
-        //TODO send email to manager to inform him that he must confirm a reservation
+
+        Mail mailer = new Mail();
+        mailer.send(manager.getEmail(), "[NottiTranquille:] Nuova prenotazione", "Hai una nuova prenotazione da controllare!",
+                null);
     }
 
     private void reserveDirect(Reservation reservation) {
@@ -64,7 +68,6 @@ public class ReservationController {
     public void approveReservation(Reservation reservation) {
         reservation.setState(ReservationState.ToPay);
         ReservationDAO.update(reservation);
-        System.out.println("approata");
     }
 
     public void declineReservation(Reservation reservation, Manager manager) {

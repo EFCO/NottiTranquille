@@ -78,10 +78,7 @@ public class LoginBean {
             else if (found instanceof Tenant)
                 this.setRole("Tenant");
 
-            System.out.println(role);
-
             return (found != null);
-
 
         } catch (NoResultException e) {
             return false;
