@@ -74,9 +74,18 @@
 <c:set var="search" value="${param.search}"/>
 <c:set var="locationtype" value = "${param.locationtype}"/>
 <c:set var="maxtenant" value = "${param.maxtenant}"/>
-<c:set var="wifi" value = "${param.wifi}"/>
-<c:set var="airconditioner" value = "${param.airconditioner}"/>
-<c:set var="strongbox" value = "${param.strongbox}"/>
+
+<%
+    for (Commodities elem : Commodities.values()) {
+        if (request.getParameter(elem.name().toLowerCase()) != null) {
+            pageContext.setAttribute(elem.name().toLowerCase(), request.getParameter(elem.name().toLowerCase()));
+        } else {
+            pageContext.setAttribute(elem.name().toLowerCase(),"");
+        }
+    }
+    //It useful for checkbox setting later
+    pageContext.setAttribute("Commodities", Commodities.values());
+%>
 
 <c:if test="${nation == null}">
     <c:set var="nation" value=""/>
@@ -96,23 +105,6 @@
 <c:if test="${maxtenant == null}">
     <c:set var="maxtenant" value=""/>
 </c:if>
-<c:if test="${wifi == null}">
-    <c:set var="wifi" value=""/>
-</c:if>
-<c:if test="${airconditioner == null}">
-    <c:set var="airconditioner" value=""/>
-</c:if>
-<c:if test="${strongbox == null}">
-    <c:set var="strongbox" value=""/>
-</c:if>
-<%--<c:if test="${checkin == null}">--%>
-    <%--<c:set var="checkin" value=""/>--%>
-<%--</c:if>--%>
-<%--<c:if test="${checkout == null}">--%>
-    <%--<c:set var="checkout" value=""/>--%>
-<%--</c:if>--%>
-
-
 
 
 <div id="searchForm" >
@@ -193,10 +185,22 @@
             </div>
             <div class="row">
                 <div class="form-group col-xs-4 col-md-4">
-                    <% pageContext.setAttribute("Commodites", Commodities.values()); %>
-                    <c:forEach items="${Commodites}" var="commodity">
+                    <c:forEach items="${Commodities}" var="commodity">
                         <label class="checkbox">
                             <input id="${commodity.name().toLowerCase()}" name ="${commodity.name().toLowerCase()}" type="checkbox" ${param[commodity.name().toLowerCase()] == 'on' ? 'checked' : ''}> ${commodity.name().trim()}
+                            <%
+                                int[] array = new int[Commodities.values().length];
+                                for (Commodities elem : Commodities.values()) {
+                                    if (request.getParameter(elem.name().toLowerCase()) != null) {
+                                        if (request.getParameter(elem.name().toLowerCase()).equals("on")) {
+                                            array[Commodities.valueOf(elem.name()).ordinal()] = 1;
+                                        } else {
+                                            array[Commodities.valueOf(elem.name()).ordinal()] = 0;
+                                        }
+                                    }
+                                }
+                                basicSearchBean.setCommodities(array);
+                            %>
                         </label>
                     </c:forEach>
                 </div>
@@ -205,11 +209,9 @@
         <%
             if (request.getParameter("search") != null) {
         %>
-        <%--<c:if test="${param.search != null}">--%>
             <div class="alert alert-danger" role="alert" id="alert" style="display:none">
                 Devi riempire tutti i campi per effettuare una ricerca!
             </div>
-        <%--</c:if>--%>
         <%
             }
         %>
@@ -248,16 +250,9 @@
         }
         pageContext.setAttribute("result", result);
     %>
-    <%--<c:if test="${basicSearchBean.validate()}">--%>
-        <%--<c:set var="result" value="${basicSearchBean.result}"/>--%>
-    <%--</c:if>--%>
-
-    <%--&lt;%&ndash;<div style="width: 800px; margin-left: 50px; margin-top: 30px;">&ndash;%&gt;--%>
         <%
             if (result.size() > 0) {
         %>
-    <%--<c:choose>--%>
-        <%--<c:when test="${result.size > 0}">--%>
             <div class="container">
                 <c:forEach items="${result}" var="location">
                     <div class="row">
@@ -274,15 +269,11 @@
                     </div>
                 </c:forEach>
             </div>
-        <%--</c:when>--%>
         <%
             } else if (request.getParameter("search") != null && result.size() == 0) {
         %>
-        <%--<c:when test="${param.search != null && result.size() == 0}">--%>
                 <div class="alert alert-danger" role="alert">Nessun risultato trovato!</div>
-        <%--</c:when>--%>
-        <%--<c:otherwise></c:otherwise>--%>
-    <%--</c:choose>--%>
+
     <%
         } else {
         }

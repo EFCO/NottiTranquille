@@ -2,6 +2,7 @@ package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.FilteredSearch;
 import it.ispw.efco.nottitranquille.model.*;
+import it.ispw.efco.nottitranquille.model.enumeration.Commodities;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -21,9 +22,9 @@ public class SearchBean {
     private String locationtype = "";
     private String maxtenant = "";
     private String search="";
-    private String[] commodities = null;
+    private int[] commodities = null; //new String[Commodities.values().length];
 
-    public void setCommodities(String[] commodities) {
+    public void setCommodities(int[] commodities) {
         this.commodities = commodities;
     }
 
@@ -35,7 +36,6 @@ public class SearchBean {
         this.search = search;
     }
 
-    //TODO Implement a way to retrieve commodities
     private List<Location> result = new ArrayList<Location>();
 
 
@@ -100,7 +100,6 @@ public class SearchBean {
         if(search == "search" && (this.nation.equals("") && this.city.equals("") && this.checkin == null && this.checkout == null)) {
             return false;
         }
-        System.out.println("commodities = " + commodities.toString());
 //        Address a = new Address("Roma","Zagarolo","piazza di casa mia","00039");
 //        Structure s = new Structure("casa mia", a);
 //        List<Interval> booking = new ArrayList<Interval>();
@@ -136,7 +135,7 @@ public class SearchBean {
         this.locationtype = locationtype;
     }
 
-    public String[] getCommodities() {
+    public int[] getCommodities() {
         return commodities;
     }
 }
