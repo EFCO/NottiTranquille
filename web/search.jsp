@@ -26,6 +26,15 @@
 
 <%
     if (request.getParameter("search") != null) {
+//       This two checks are required beacuse the bean does not override a previously set variable if it is empty
+//       e.g.: if city was "Cagliari" the bean has cagliari as city, but if a clean the textfiled and make a new search
+//       it remain "Cagliari" and it is not overridden.
+        if(request.getParameter("nation").equals("")) {
+            basicSearchBean.setNation("");
+        }
+        if(request.getParameter("city").equals("")) {
+            basicSearchBean.setCity("");
+        }
         if (!request.getParameter("checkin").equals("") && !request.getParameter("checkout").equals("")) {
             basicSearchBean.setCheckin(request.getParameter("checkin"));
             basicSearchBean.setCheckout(request.getParameter("checkout"));
