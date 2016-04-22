@@ -34,7 +34,6 @@ public class LoginController {
         try {
 
             Manager manager = ManagerDAO.findByNameAndPassword(username, password);
-            System.out.println(manager.getFirstName());
             return manager;
 
         } catch (NoResultException e1) {

@@ -1,8 +1,6 @@
 <%@ page import="it.ispw.efco.nottitranquille.model.Location" %>
 <%@ page import="it.ispw.efco.nottitranquille.model.dao.LocationDAO" %>
 <%@ page import="java.util.List" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.Tenant" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.dao.TenantDao" %>
 <%@ page import="org.joda.time.Interval" %>
 <%@ page import="org.joda.time.DateTime" %>
 <%@ page import="java.util.Iterator" %>
@@ -21,23 +19,15 @@
 
 <jsp:useBean id="ReservationBean" scope="request"
              class="it.ispw.efco.nottitranquille.view.TenantFormReservation"/>
+<jsp:useBean id="locationBean" scope="request"
+             class="it.ispw.efco.nottitranquille.view.LocationBean"/>
 
 <jsp:setProperty name="ReservationBean" property="*"/>
-
-
 <%
-    List<Location> locations = LocationDAO.findAllLocation();
-    Location location = locations.get(0);
-
-    ReservationBean.setLocation(location);
-    request.setAttribute("location", location);
-
-    List<Tenant> tenants = TenantDao.findAllTenant();
-    Tenant tenant = tenants.get(0);
-
-    ReservationBean.setTenant(tenant);
-    request.setAttribute("tenant", tenant);
-
+    // Assuming the id of the location we want to see is in the URL
+    // because a GET request is made.
+    // Pull model of mvc architecture
+    locationBean.populate(request.getParameter("id"));
 %>
 
 <%
@@ -45,7 +35,7 @@
 
         for (int i = 0; request.getParameter("firstname" + i) != null && request.getParameter("surname" + i) != null; i++) {
 
-            if (request.getParameter("firstname") + i != null && request.getParameter("firstname" + i) != "" &&
+            if (request.getParameter("firstname" + i) != null && request.getParameter("firstname" + i) != "" &&
                     request.getParameter("surname" + i) != null && request.getParameter("surname" + i) != "") {
                 ReservationBean.addBuyer(request.getParameter("firstname" + i), request.getParameter("surname" + i));
             }
@@ -55,7 +45,7 @@
     if (ReservationBean.validate()) {
 %>
 <!-- Passa il controllo alla nuova pagina -->
-<jsp:forward page="RiassuntoLogin.jsp"/>
+<jsp:forward page="index.jsp"/>
 <%
     }
 %>
@@ -102,22 +92,20 @@
 <div class="container">
     <div class="jumbotron">
         <div class="page-header">
-            <h2>${location.getName()}</h2>
+            <h2>${locationBean.name}</h2>
         </div>
-        <p>${location.getDescription()}</p>
+        <p>${locationBean.description}</p>
     </div>
-    <%
-        if (location.getServices() != null && location.getServices().size() > 0) {
-    %>
-    <div>
-        <p>Elenco Servizi</p>
-        <ul type=”Servizi”>
-            <li>primo</li>
-            <li>secondo</li>
-            <li>terzo</li>
-        </ul>
-    </div>
-    <% } %>
+    <c:if test="${locationBean.services!=null and locationBean.services.size() > 0}">
+        <div>
+            <p>Elenco Servizi</p>
+            <ul type=”Servizi”>
+                <li>primo</li>
+                <li>secondo</li>
+                <li>terzo</li>
+            </ul>
+        </div>
+    </c:if>
 </div>
 
 <!-- TENANT AND OTHER PEOPLE INFO
@@ -222,30 +210,31 @@
 
         </div>
 
-        <%
-            String enable = "";
+        <%--<%--%>
 
-            List<Interval> intervals = location.getAvailableDate();
+            <%--String enable = "";--%>
 
-            Iterator<Interval> availableInterval = intervals.iterator();
-            while(availableInterval.hasNext()){
-                Interval interval = availableInterval.next();
-                DateTime start= interval.getStart();
-                DateTime end = interval.getEnd();
+            <%--List<Interval> intervals = location.getAvailableDate();--%>
 
-                enable+= String.format(" {from : [ %d, %d, %d ] , to [%d,%d,%d] }",
-                        start.getYear(), start.getMonthOfYear()-1, start.getDayOfMonth()-1,
-                        end.getYear(), end.getMonthOfYear()-1, end.getDayOfMonth()-1);
+            <%--Iterator<Interval> availableInterval = intervals.iterator();--%>
+            <%--while (availableInterval.hasNext()) {--%>
+                <%--Interval interval = availableInterval.next();--%>
+                <%--DateTime start = interval.getStart();--%>
+                <%--DateTime end = interval.getEnd();--%>
 
-
-                if(availableInterval.hasNext())
-                    enable+=" , ";
-            }
+                <%--enable += String.format(" {from : [ %d, %d, %d ] , to [%d,%d,%d] }",--%>
+                        <%--start.getYear(), start.getMonthOfYear() - 1, start.getDayOfMonth() - 1,--%>
+                        <%--end.getYear(), end.getMonthOfYear() - 1, end.getDayOfMonth() - 1);--%>
 
 
+                <%--if (availableInterval.hasNext())--%>
+                    <%--enable += " , ";--%>
+            <%--}--%>
 
-            request.setAttribute("enablesDate", enable);
-        %>
+
+            <%--request.setAttribute("enablesDate", enable);--%>
+
+        <%--%>--%>
 
         <script>
             var yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
@@ -262,7 +251,7 @@
 
                     enable: [
 
-                            ${enablesDate}
+                        ${locationBean.enablesDate}
                     ]
 
                 });
@@ -277,8 +266,8 @@
                         {from: [0, 0, 0], to: yesterday}
                     ],
 
-                    enable:[
-                            ${enablesDate}
+                    enable: [
+                        ${enablesDate}
                     ]
 
                 });
@@ -302,7 +291,9 @@
 <!-- IF NOT VALID INPUT
 ================================================== -->
 <%
-    if (request.getParameter("Reserve") != null) { %>
+
+    if (request.getParameter("Reserve") != null) {
+%>
 <div class="alert alert-danger" role="alert">Immetti tutti i dati!</div>
 <% } %>
 

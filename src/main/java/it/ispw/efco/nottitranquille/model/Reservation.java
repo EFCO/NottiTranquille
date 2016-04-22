@@ -93,8 +93,7 @@ public class Reservation extends Subject {
         this.buyers = toUpdate.getBuyers();
         this.period = toUpdate.getPeriod();
         this.state = toUpdate.getState();
-
-
+        this.price = toUpdate.getPrice();
     }
 
     /* GETTER AND SETTER */

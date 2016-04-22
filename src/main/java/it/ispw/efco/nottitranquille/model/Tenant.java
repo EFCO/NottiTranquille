@@ -26,7 +26,7 @@ public class Tenant extends RegisteredUser implements Notifiable {
     @JoinTable(name = "Tenant_Reservation",
             joinColumns = {@JoinColumn(name = "ReservationId", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "TenantsId", referencedColumnName = "id")})
-    public List<Reservation> reservations;
+    private List<Reservation> reservations;
 
     /**
      * method for TenantDAO: Needs to update information in database

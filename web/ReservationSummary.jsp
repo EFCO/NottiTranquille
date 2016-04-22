@@ -1,15 +1,16 @@
-<%@ page import="it.ispw.efco.nottitranquille.model.Manager" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.Reservation" %>
-<%@ page import="java.util.List" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.dao.ManagerDAO" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.Tenant" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.dao.TenantDao" %>
-<%@ page import="it.ispw.efco.nottitranquille.view.LoginBean" %>
-
 <%-- Use JSTL joda lib in order to format joda's DataTime --%>
 <%@ taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
 
-<c:if test="${ Login != null && Login.getUsername() != '' }">
+<jsp:useBean id="ListBean" scope="session"
+             class="it.ispw.efco.nottitranquille.view.ListReservationBean"/>
+
+<%
+    // Populate bean with information about reservation of the logged user
+    ListBean.populate(Login.getUsername(), Login.getPassword(), Login.getRole());
+
+%>
+
+<c:if test="${ Login != null && Login.username != '' }">
 
     <div style=" max-height: 420px; overflow-y: auto;" class=" modal fade" id="reservationModal" tabindex="-1"
          role="dialog"
@@ -17,206 +18,188 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
 
-                <%
-                    // if user is a Tenant
-                    LoginBean login = (LoginBean) session.getAttribute("Login");
-
-                    if (login.getRole() == "Tenant") {
-
-                        Tenant tenant = TenantDao.findByNameAndPassword(
-                                login.getUsername(), login.getPassword());
-
-                        List<Reservation> reservations = tenant.getReservations();
-                        request.setAttribute("reservations", reservations);
-
-                        int resValue = reservations.size();
-                        request.setAttribute("resValue", resValue);
-                %>
-
-                <c:if test='${resValue > 0 }'>
+                <c:choose>
+                    <c:when test="${Login.role== 'Tenant'}">
 
 
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-
-                        <h2> Ciao
-                            <jsp:getProperty name="Login" property="username"></jsp:getProperty>
-                            !</h2>
-                        <h4> Scegli cosa fare con le tue prenotazioni!</h4>
-                    </div>
-
-                    <div class="modal-body">
+                        <c:if test='${ListBean.nRes > 0 }'>
 
 
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>Location</th>
-                                <th>from</th>
-                                <th>to</th>
-                                <th>price</th>
-                                <th>pay</th>
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
 
-                            </tr>
-                            </thead>
-                            <tbody>
+                                <h2> Ciao
+                                        ${Login.username}
+                                    !</h2>
+                                <h4> Scegli cosa fare con le tue prenotazioni!</h4>
+                            </div>
 
-                            <c:forEach var="i" begin="0" end="${resValue-1}">
+                            <div class="modal-body">
 
-                                <form action="Payment.jsp">
+
+                                <table class="table table-bordered table-striped">
+                                    <thead>
                                     <tr>
-                                        <td>${reservations.get(i).getLocation().getName()}</td>
-                                        <td><joda:format value="${reservations.get(i).getStartDate()}" locale="en_US"
-                                                         style="SM"
-                                                         pattern="dd MMM, yyyy HH:mm"/></td>
-                                        <td><joda:format value="${reservations.get(i).getEndDate()}" locale="en_US"
-                                                         style="SM"
-                                                         pattern="dd MMM, yyyy HH:mm"/></td>
-                                        <td>${reservations.get(i).getPrice()}</td>
-
-                                        <c:choose>
-                                            <c:when test="${reservations.get(i).state() == 'Paid'}">
-                                                <td>Paid</td>
-                                            </c:when>
-                                            <c:when test="${reservations.get(i).state() == 'ToApprove'}">
-                                                <td>to be approve</td>
-                                            </c:when>
-                                            <c:when test="${reservations.get(i).state() == 'Declined'}">
-                                                <td>Declined</td>
-                                            </c:when>
-                                            <c:when test="${reservations.get(i).state() == 'ToPay'}">
-                                                <td>
-                                                    <button type="submit" class="btn btn-primary" name="Pay" id="Pay"
-                                                            value="${reservations.get(i).getId()}">Pay
-                                                    </button>
-                                                </td>
-                                            </c:when>
-                                        </c:choose>
-
+                                        <th>Location</th>
+                                        <th>from</th>
+                                        <th>to</th>
+                                        <th>price</th>
+                                        <th>pay</th>
 
                                     </tr>
-                                </form>
+                                    </thead>
+                                    <tbody>
 
-                            </c:forEach>
 
-                            </tbody>
-                        </table>
+                                    <c:forEach items="${ListBean.beans}" var="entry">
+                                        <c:set var="resBean" scope="session" value="${entry.value}"/>
 
-                    </div>
-                    <!-- ./modal-body -->
+                                        <form action="Payment.jsp">
+                                            <tr>
+                                                <td>${resBean.name}</td>
+                                                <td><joda:format value="${resBean.startDate}"
+                                                                 locale="en_US"
+                                                                 style="SM"
+                                                                 pattern="dd MMM, yyyy HH:mm"/></td>
+                                                <td><joda:format value="${resBean.endDate}" locale="en_US"
+                                                                 style="SM"
+                                                                 pattern="dd MMM, yyyy HH:mm"/></td>
+                                                <td>${resBean.price}</td>
 
-                </c:if>
+                                                <c:choose>
+                                                    <c:when test="${resBean.state == 'Paid'}">
+                                                        <td>Paid</td>
+                                                    </c:when>
+                                                    <c:when test="${resBean.state == 'ToApprove'}">
+                                                        <td>to be approve</td>
+                                                    </c:when>
+                                                    <c:when test="${resBean.state == 'Declined'}">
+                                                        <td>Declined</td>
+                                                    </c:when>
+                                                    <c:when test="${resBean.state == 'ToPay'}">
+                                                        <td>
+                                                            <button type="submit" class="btn btn-primary" name="Pay"
+                                                                    id="Pay"
+                                                                    value="${resBean.id}">Pay
+                                                            </button>
+                                                        </td>
+                                                    </c:when>
+                                                </c:choose>
 
-                <c:if test='${resValue == 0 }'>
-                    <div class="modal-body">
-                        <h4>Non sono presenti prenotazioni</h4>
-                    </div>
-                </c:if>
 
-                <%
-                    //if user if a Manager
-                } else if (login.getRole() == "Manager") {
+                                            </tr>
+                                        </form>
 
-                    Manager manager = ManagerDAO.findByNameAndPassword(login.getUsername(),
-                            login.getPassword());
+                                    </c:forEach>
 
-                    List<Reservation> reservations = manager.getToApprove();
-                    request.setAttribute("reservations", reservations);
+                                    </tbody>
+                                </table>
 
-                    int resValue = reservations.size();
-                    request.setAttribute("resValue", resValue);
+                            </div>
+                            <!-- ./modal-body -->
 
-                %>
+                        </c:if>
 
-                <c:if test='${resValue > 0 }'>
+                        <c:if test='${ListBean.nRes == 0 }'>
+                            <div class="modal-body">
+                                <h4>Non sono presenti prenotazioni</h4>
+                            </div>
+                        </c:if>
 
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
+                    </c:when>
+                    <c:when test="${Login.role=='Manager'}">
 
-                        <h2> Ciao
-                            <jsp:getProperty name="Login" property="username"></jsp:getProperty>
-                            !</h2>
-                        <h4> Scegli cosa fare con le tue prenotazioni!</h4>
-                    </div>
+                        <c:if test='${ListBean.nRes > 0 }'>
 
-                    <div class="modal-body">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
 
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>Location</th>
-                                <th>from</th>
-                                <th>to</th>
-                                <th>Tenant</th>
-                                <th>Approve</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+                                <h2> Ciao
+                                        ${Login.username}
+                                    !</h2>
+                                <h4> Scegli cosa fare con le tue prenotazioni!</h4>
+                            </div>
 
-                            <c:forEach var="i" begin="0" end="${resValue-1}">
+                            <div class="modal-body">
 
-                                <form action="ReservationSummary.jsp">
+                                <table class="table table-bordered">
+                                    <thead>
                                     <tr>
-                                        <td>${reservations.get(i).getLocation().getName()}</td>
-                                        <td><joda:format value="${reservations.get(i).getStartDate()}" locale="en_US"
-                                                         style="SM"
-                                                         pattern="dd MMM, yyyy HH:mm"/></td>
-                                        <td><joda:format value="${reservations.get(i).getEndDate()}" locale="en_US"
-                                                         style="SM"
-                                                         pattern="dd MMM, yyyy HH:mm"/></td>
+                                        <th>Location</th>
+                                        <th>from</th>
+                                        <th>to</th>
+                                        <th>Tenant</th>
+                                        <th>Approve</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
 
-                                        <td>
-                                            <c:out value=" ${reservations.get(i).getTenant().getFirstName()} ${reservations.get(i).getTenant().getLastName()}"> </c:out>
-                                        </td>
+                                    <c:forEach items="${ListBean.beans}" var="entry">
+                                        <c:set var="resBean" scope="session" value="${entry.value}"/>
 
-                                        <c:choose>
-                                            <c:when test="${reservations.get(i).getState() == 'Paid'}">
-                                                <td>Paid</td>
-                                            </c:when>
-                                            <c:when test="${reservations.get(i).getState() == 'ToApprove'}">
+                                        <form action="index.jsp">
+                                            <tr>
+                                                <td>${resBean.name}</td>
+                                                <td><joda:format value="${resBean.startDate}"
+                                                                 locale="en_US"
+                                                                 style="SM"
+                                                                 pattern="dd MMM, yyyy HH:mm"/></td>
+                                                <td><joda:format value="${resBean.endDate}" locale="en_US"
+                                                                 style="SM"
+                                                                 pattern="dd MMM, yyyy HH:mm"/></td>
+
                                                 <td>
-                                                    <button type="submit" class="btn btn-primary" name="Approve"
-                                                            id="Approve"
-                                                            value="${reservations.get(i).getId()}">Approve
-                                                    </button>
+                                                    <c:out value=" ${resBean.tenant} "> </c:out>
                                                 </td>
-                                            </c:when>
-                                            <c:when test="${reservations.get(i).getState() == 'Declined'}">
-                                                <td>Declined</td>
-                                            </c:when>
-                                            <c:when test="${reservations.get(i).getState() == 'ToPay'}">
-                                                <td>To pay</td>
-                                            </c:when>
-                                        </c:choose>
-                                    </tr>
-                                    </tr>
-                                </form>
 
-                            </c:forEach>
+                                                <c:choose>
+                                                    <c:when test="${resBean.state == 'Paid'}">
+                                                        <td>Paid</td>
+                                                    </c:when>
+                                                    <c:when test="${resBean.state == 'ToApprove'}">
+                                                        <td>
+                                                            <button type="submit" class="btn btn-primary" name="Approve"
+                                                                    id="Approve"
+                                                                    value="${resBean.id}">Approve
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary" name="Decline"
+                                                                    id="Decline"
+                                                                    value="${resBean.id}">Decline
+                                                            </button>
+                                                        </td>
+                                                    </c:when>
+                                                    <c:when test="${resBean.state== 'Declined'}">
+                                                        <td>Declined</td>
+                                                    </c:when>
+                                                    <c:when test="${resBean.state == 'ToPay'}">
+                                                        <td>To pay</td>
+                                                    </c:when>
+                                                </c:choose>
+                                            </tr>
+                                        </form>
 
-                            </tbody>
-                        </table>
+                                    </c:forEach>
 
-                    </div>
-                    <!-- ./modal-body -->
+                                    </tbody>
+                                </table>
 
-                </c:if>
+                            </div>
+                            <!-- ./modal-body -->
 
-                <c:if test="${resValue == 0}">
+                        </c:if>
 
-                    <div class="modal-body">
-                        <h4>Non sono presenti prenotazioni</h4>
-                    </div>
+                        <c:if test="${ListBean.nRes == 0}">
 
-                </c:if>
+                            <div class="modal-body">
+                                <h4>Non sono presenti prenotazioni</h4>
+                            </div>
 
-                <%
-                    }
+                        </c:if>
 
-                %>
-
+                    </c:when>
+                </c:choose>
             </div>
         </div>
     </div>
@@ -224,7 +207,7 @@
 </c:if>
 
 
-<c:if test="${ Login == null or Login.getUsername() == '' }">
+<c:if test="${ Login == null or Login.username == '' }">
     <div style=" max-height: 420px; overflow-y: auto;" class=" modal fade" id="reservationModal" tabindex="-1"
          role="dialog"
          aria-labelledby="myModalLabel">
@@ -233,7 +216,6 @@
                 <div class="modal-body">
 
                     <h4>
-
                         Questa funzionalita' e' disponibile solo per utenti Registrati!
                         <br><br>
                         Se possiedi un account qui potrai visualizzare le prenotazioni da te effettuate!

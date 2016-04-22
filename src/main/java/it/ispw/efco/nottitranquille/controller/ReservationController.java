@@ -9,6 +9,7 @@ import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
 import it.ispw.efco.nottitranquille.model.mail.Mail;
 import org.joda.time.Interval;
 
+import javax.persistence.NoResultException;
 import java.util.*;
 
 
@@ -32,22 +33,22 @@ public class ReservationController {
 
     public void createReservation(Tenant tenant, Location location, Interval period, List<Person> buyers) {
 
-            Reservation reservation = new Reservation(tenant, location, period);
+        Reservation reservation = new Reservation(tenant, location, period);
 
-            if (buyers != null)
-                reservation.setBuyers(buyers);
+        if (buyers != null)
+            reservation.setBuyers(buyers);
 
-            if (location.getType().getReservationType() == ReservationType.Direct)
-                this.reserveDirect(reservation);
-            else if (location.getType().getReservationType() == ReservationType.WithConfirmation)
-                this.reserveWithConfirmation(reservation, location.getManager());
+        if (location.getType().getReservationType() == ReservationType.Direct)
+            this.reserveDirect(reservation);
+        else if (location.getType().getReservationType() == ReservationType.WithConfirmation)
+            this.reserveWithConfirmation(reservation, location.getManager());
 
-            tenant.addReservation(reservation);
-            reservation.notifyObserver();
+        tenant.addReservation(reservation);
+        reservation.notifyObserver();
 
-            ReservationDAO.store(reservation);
-            TenantDao.update(tenant);
-            LocationDAO.update(location);
+        ReservationDAO.store(reservation);
+        TenantDao.update(tenant);
+        LocationDAO.update(location);
 
     }
 
@@ -56,9 +57,11 @@ public class ReservationController {
         manager.addReservationToApprove(reservation);
         reservation.setState(ReservationState.ToApprove);
 
-        Mail mailer = new Mail();
-        mailer.send(manager.getEmail(), "[NottiTranquille:] Nuova prenotazione", "Hai una nuova prenotazione da controllare!",
-                null);
+        if (manager.getEmail() != null) {
+            Mail mailer = new Mail();
+            mailer.send(manager.getEmail(), "[NottiTranquille:] Nuova prenotazione", "Hai una nuova prenotazione da controllare!",
+                    null);
+        }
     }
 
     private void reserveDirect(Reservation reservation) {
@@ -75,5 +78,32 @@ public class ReservationController {
         ReservationDAO.delete(reservation);
     }
 
+    public boolean approveReservation(Long id) {
+        try {
+            Reservation reservation = ReservationDAO.findByID(id);
+
+            reservation.setState(ReservationState.ToPay);
+            ReservationDAO.update(reservation);
+
+        } catch (NoResultException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean declineReservation(Long id){
+        try {
+            Reservation reservation = ReservationDAO.findByID(id);
+
+            reservation.setState(ReservationState.Declined);
+            ReservationDAO.update(reservation);
+
+        } catch (NoResultException e) {
+            return false;
+        }
+
+        return true;
+    }
 
 }

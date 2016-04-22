@@ -65,4 +65,14 @@ public class LocationDAO {
         return entityManager.createQuery("from Location", Location.class)
                 .getResultList();
     }
+
+    public static Location findByID(Long id){
+
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+
+        return entityManager.createQuery("from Location where " +
+                " (id = :ID) ", Location.class)
+                .setParameter("ID", id)
+                .getSingleResult();
+    }
 }

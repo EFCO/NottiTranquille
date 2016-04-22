@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source name="MySQL - notti_tranquille@localhost" uuid="7328eba3-e762-49f5-a8a0-7990949888af">
-    <database-info product="MySQL" version="5.7.11" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+  <data-source name="MySQL - notti_tranquille@localhost" uuid="19799ee4-a38e-4aca-858f-01fcaa586d59">
+    <database-info product="MySQL" version="5.6.28-0ubuntu0.14.04.1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
       <extra-name-characters>#@</extra-name-characters>
       <identifier-quote-string>`</identifier-quote-string>
     </database-info>
     <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
-    <database-model serializer="dbm" rdbms="MYSQL" format-version="2.4">
+    <database-model serializer="dbm" rdbms="MYSQL" format-version="2.5">
       <schema id="1" name="notti_tranquille"/>
       <table id="2" parent="1" name="Location"/>
       <table id="3" parent="1" name="LocationType"/>
@@ -15,20 +15,20 @@
       <table id="6" parent="1" name="Location_booking"/>
       <table id="7" parent="1" name="Manager"/>
       <table id="8" parent="1" name="Manager_Reservation"/>
-      <table id="9" parent="1" name="Owner"/>
-      <table id="10" parent="1" name="Person"/>
-      <table id="11" parent="1" name="RegisteredUser"/>
-      <table id="12" parent="1" name="Request"/>
-      <table id="13" parent="1" name="Reservation"/>
-      <table id="14" parent="1" name="Reservation_Person"/>
-      <table id="15" parent="1" name="Scout"/>
-      <table id="16" parent="1" name="Service"/>
-      <table id="17" parent="1" name="Structure"/>
+      <table id="9" parent="1" name="hibernate_sequence"/>
+      <table id="10" parent="1" name="Owner"/>
+      <table id="11" parent="1" name="Person"/>
+      <table id="12" parent="1" name="RegisteredUser"/>
+      <table id="13" parent="1" name="Request"/>
+      <table id="14" parent="1" name="Reservation"/>
+      <table id="15" parent="1" name="Reservation_Person"/>
+      <table id="16" parent="1" name="Scout"/>
+      <table id="17" parent="1" name="Service"/>
       <table id="18" parent="1" name="StructureType"/>
       <table id="19" parent="1" name="Structure_Location"/>
       <table id="20" parent="1" name="Tenant"/>
       <table id="21" parent="1" name="Tenant_Reservation"/>
-      <table id="22" parent="1" name="hibernate_sequence"/>
+      <table id="22" parent="1" name="Structure"/>
       <column id="23" parent="2" name="id">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
@@ -259,490 +259,490 @@
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="82" parent="9" name="id">
+      <column id="82" parent="9" name="next_val">
+        <data-type>bigint(20)</data-type>
+      </column>
+      <column id="83" parent="10" name="id">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="83" parent="9" name="address">
+      <column id="84" parent="10" name="address">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="84" parent="9" name="city">
+      <column id="85" parent="10" name="city">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="85" parent="9" name="nation">
+      <column id="86" parent="10" name="nation">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="86" parent="9" name="postalcode">
+      <column id="87" parent="10" name="postalcode">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="87" parent="9" name="birthdate">
+      <column id="88" parent="10" name="birthdate">
         <data-type>tinyblob</data-type>
       </column>
-      <column id="88" parent="9" name="email">
+      <column id="89" parent="10" name="email">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="89" parent="9" name="firstName">
+      <column id="90" parent="10" name="firstName">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="90" parent="9" name="gender">
+      <column id="91" parent="10" name="gender">
         <data-type>int(11)</data-type>
       </column>
-      <column id="91" parent="9" name="lastName">
+      <column id="92" parent="10" name="lastName">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="92" parent="9" name="phoneNumber">
+      <column id="93" parent="10" name="phoneNumber">
         <data-type>varchar(255)</data-type>
       </column>
-      <key id="93" parent="9" name="PRIMARY">
+      <key id="94" parent="10" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <column id="94" parent="10" name="id">
+      <column id="95" parent="11" name="id">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="95" parent="10" name="address">
+      <column id="96" parent="11" name="address">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="96" parent="10" name="city">
+      <column id="97" parent="11" name="city">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="97" parent="10" name="nation">
+      <column id="98" parent="11" name="nation">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="98" parent="10" name="postalcode">
+      <column id="99" parent="11" name="postalcode">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="99" parent="10" name="birthdate">
+      <column id="100" parent="11" name="birthdate">
         <data-type>tinyblob</data-type>
       </column>
-      <column id="100" parent="10" name="email">
+      <column id="101" parent="11" name="email">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="101" parent="10" name="firstName">
+      <column id="102" parent="11" name="firstName">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="102" parent="10" name="gender">
+      <column id="103" parent="11" name="gender">
         <data-type>int(11)</data-type>
       </column>
-      <column id="103" parent="10" name="lastName">
+      <column id="104" parent="11" name="lastName">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="104" parent="10" name="phoneNumber">
+      <column id="105" parent="11" name="phoneNumber">
         <data-type>varchar(255)</data-type>
       </column>
-      <key id="105" parent="10" name="PRIMARY">
+      <key id="106" parent="11" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <column id="106" parent="11" name="id">
+      <column id="107" parent="12" name="id">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="107" parent="11" name="address">
+      <column id="108" parent="12" name="address">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="108" parent="11" name="city">
+      <column id="109" parent="12" name="city">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="109" parent="11" name="nation">
+      <column id="110" parent="12" name="nation">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="110" parent="11" name="postalcode">
+      <column id="111" parent="12" name="postalcode">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="111" parent="11" name="birthdate">
+      <column id="112" parent="12" name="birthdate">
         <data-type>tinyblob</data-type>
       </column>
-      <column id="112" parent="11" name="email">
+      <column id="113" parent="12" name="email">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="113" parent="11" name="firstName">
+      <column id="114" parent="12" name="firstName">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="114" parent="11" name="gender">
+      <column id="115" parent="12" name="gender">
         <data-type>int(11)</data-type>
       </column>
-      <column id="115" parent="11" name="lastName">
+      <column id="116" parent="12" name="lastName">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="116" parent="11" name="phoneNumber">
+      <column id="117" parent="12" name="phoneNumber">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="117" parent="11" name="password">
+      <column id="118" parent="12" name="password">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="118" parent="11" name="username">
+      <column id="119" parent="12" name="username">
         <data-type>varchar(255)</data-type>
       </column>
-      <key id="119" parent="11" name="PRIMARY">
+      <key id="120" parent="12" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <column id="120" parent="12" name="id">
+      <column id="121" parent="13" name="id">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="121" parent="12" name="lastModified">
+      <column id="122" parent="13" name="lastModified">
         <data-type>tinyblob</data-type>
       </column>
-      <column id="122" parent="12" name="status">
+      <column id="123" parent="13" name="status">
         <data-type>int(11)</data-type>
       </column>
-      <column id="123" parent="12" name="requestedBy_id">
+      <column id="124" parent="13" name="requestedBy_id">
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="124" parent="12" name="reviewedBy_id">
+      <column id="125" parent="13" name="reviewedBy_id">
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="125" parent="12" name="structure_id">
+      <column id="126" parent="13" name="structure_id">
         <data-type>bigint(20)</data-type>
       </column>
-      <index id="126" parent="12" name="FKs2txdnkqqm2mhppx73fc32u6m">
+      <index id="127" parent="13" name="FKs2txdnkqqm2mhppx73fc32u6m">
         <columns>reviewedBy_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="127" parent="12" name="FKx0lt3hk4m7gnxcomt8me12f2">
+      <index id="128" parent="13" name="FKx0lt3hk4m7gnxcomt8me12f2">
         <columns>structure_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="128" parent="12" name="PRIMARY">
+      <key id="129" parent="13" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <foreign-key id="129" parent="12" name="FKs2txdnkqqm2mhppx73fc32u6m">
+      <foreign-key id="130" parent="13" name="FKs2txdnkqqm2mhppx73fc32u6m">
         <columns>reviewedBy_id</columns>
         <ref-key>~.Scout.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="130" parent="12" name="FKx0lt3hk4m7gnxcomt8me12f2">
+      <foreign-key id="131" parent="13" name="FKx0lt3hk4m7gnxcomt8me12f2">
         <columns>structure_id</columns>
         <ref-key>~.Structure.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="131" parent="13" name="id">
+      <column id="132" parent="14" name="id">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="132" parent="13" name="startDate">
+      <column id="133" parent="14" name="startDate">
         <data-type>datetime</data-type>
       </column>
-      <column id="133" parent="13" name="endDate">
+      <column id="134" parent="14" name="endDate">
         <data-type>datetime</data-type>
       </column>
-      <column id="134" parent="13" name="price">
+      <column id="135" parent="14" name="price">
         <mandatory>1</mandatory>
         <data-type>float</data-type>
       </column>
-      <column id="135" parent="13" name="state">
+      <column id="136" parent="14" name="state">
         <data-type>int(11)</data-type>
       </column>
-      <column id="136" parent="13" name="location_id">
+      <column id="137" parent="14" name="location_id">
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="137" parent="13" name="tenant_id">
+      <column id="138" parent="14" name="tenant_id">
         <data-type>bigint(20)</data-type>
       </column>
-      <index id="138" parent="13" name="FK5v3vvwucuxxl4fkebygxfm3oa">
+      <index id="139" parent="14" name="FK5v3vvwucuxxl4fkebygxfm3oa">
         <columns>tenant_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="139" parent="13" name="FKc2wcdnhk3dluo57q4pjk2mxnt">
+      <index id="140" parent="14" name="FKc2wcdnhk3dluo57q4pjk2mxnt">
         <columns>location_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <key id="140" parent="13" name="PRIMARY">
+      <key id="141" parent="14" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <foreign-key id="141" parent="13" name="FK5v3vvwucuxxl4fkebygxfm3oa">
+      <foreign-key id="142" parent="14" name="FK5v3vvwucuxxl4fkebygxfm3oa">
         <columns>tenant_id</columns>
         <ref-key>~.Tenant.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="142" parent="13" name="FKc2wcdnhk3dluo57q4pjk2mxnt">
+      <foreign-key id="143" parent="14" name="FKc2wcdnhk3dluo57q4pjk2mxnt">
         <columns>location_id</columns>
         <ref-key>~.Location.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="143" parent="14" name="Reservation_id">
+      <column id="144" parent="15" name="Reservation_id">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="144" parent="14" name="buyers_id">
+      <column id="145" parent="15" name="buyers_id">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <index id="145" parent="14" name="FKga1778ja9lq3vyohddhed1wyx">
+      <index id="146" parent="15" name="FKga1778ja9lq3vyohddhed1wyx">
         <columns>Reservation_id</columns>
         <desc-columns></desc-columns>
       </index>
-      <foreign-key id="146" parent="14" name="FKga1778ja9lq3vyohddhed1wyx">
+      <foreign-key id="147" parent="15" name="FKga1778ja9lq3vyohddhed1wyx">
         <columns>Reservation_id</columns>
         <ref-key>~.Reservation.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="147" parent="15" name="id">
+      <column id="148" parent="16" name="id">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="148" parent="15" name="address">
+      <column id="149" parent="16" name="address">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="149" parent="15" name="city">
+      <column id="150" parent="16" name="city">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="150" parent="15" name="nation">
+      <column id="151" parent="16" name="nation">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="151" parent="15" name="postalcode">
+      <column id="152" parent="16" name="postalcode">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="152" parent="15" name="birthdate">
+      <column id="153" parent="16" name="birthdate">
         <data-type>tinyblob</data-type>
       </column>
-      <column id="153" parent="15" name="email">
+      <column id="154" parent="16" name="email">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="154" parent="15" name="firstName">
+      <column id="155" parent="16" name="firstName">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="155" parent="15" name="gender">
+      <column id="156" parent="16" name="gender">
         <data-type>int(11)</data-type>
       </column>
-      <column id="156" parent="15" name="lastName">
+      <column id="157" parent="16" name="lastName">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="157" parent="15" name="phoneNumber">
+      <column id="158" parent="16" name="phoneNumber">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="158" parent="15" name="password">
+      <column id="159" parent="16" name="password">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="159" parent="15" name="username">
+      <column id="160" parent="16" name="username">
         <data-type>varchar(255)</data-type>
       </column>
-      <key id="160" parent="15" name="PRIMARY">
+      <key id="161" parent="16" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <column id="161" parent="16" name="id">
+      <column id="162" parent="17" name="id">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="162" parent="16" name="selectable">
+      <column id="163" parent="17" name="selectable">
         <data-type>bit(1)</data-type>
       </column>
-      <column id="163" parent="16" name="serviceName">
+      <column id="164" parent="17" name="serviceName">
         <data-type>varchar(255)</data-type>
       </column>
-      <key id="164" parent="16" name="PRIMARY">
+      <key id="165" parent="17" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <column id="165" parent="17" name="id">
+      <column id="166" parent="18" name="id">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="166" parent="17" name="address">
+      <column id="167" parent="18" name="type">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="167" parent="17" name="city">
-        <data-type>varchar(255)</data-type>
-      </column>
-      <column id="168" parent="17" name="nation">
-        <data-type>varchar(255)</data-type>
-      </column>
-      <column id="169" parent="17" name="postalcode">
-        <data-type>varchar(255)</data-type>
-      </column>
-      <column id="170" parent="17" name="description">
-        <data-type>varchar(255)</data-type>
-      </column>
-      <column id="171" parent="17" name="name">
-        <data-type>varchar(255)</data-type>
-      </column>
-      <column id="172" parent="17" name="numberOfLocations">
-        <data-type>int(11)</data-type>
-      </column>
-      <column id="173" parent="17" name="termsOfCancellation">
-        <data-type>varchar(255)</data-type>
-      </column>
-      <column id="174" parent="17" name="termsOfService">
-        <data-type>varchar(255)</data-type>
-      </column>
-      <column id="175" parent="17" name="managedBy_id">
-        <data-type>bigint(20)</data-type>
-      </column>
-      <column id="176" parent="17" name="owner_id">
-        <data-type>bigint(20)</data-type>
-      </column>
-      <column id="177" parent="17" name="type_id">
-        <data-type>bigint(20)</data-type>
-      </column>
-      <index id="178" parent="17" name="FK9larfdvt10wy51a4p323wonoi">
-        <columns>type_id</columns>
-        <desc-columns></desc-columns>
-      </index>
-      <index id="179" parent="17" name="FKe2npag0kjoj9hrmqhpxs25yds">
-        <columns>owner_id</columns>
-        <desc-columns></desc-columns>
-      </index>
-      <index id="180" parent="17" name="FKqeg4svo3s54k2v2lkdsjqn856">
-        <columns>managedBy_id</columns>
-        <desc-columns></desc-columns>
-      </index>
-      <key id="181" parent="17" name="PRIMARY">
+      <key id="168" parent="18" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <foreign-key id="182" parent="17" name="FK9larfdvt10wy51a4p323wonoi">
-        <columns>type_id</columns>
-        <ref-key>~.StructureType.PRIMARY</ref-key>
-        <cascade-update-rule>restrict</cascade-update-rule>
-        <cascade-delete-rule>restrict</cascade-delete-rule>
-      </foreign-key>
-      <foreign-key id="183" parent="17" name="FKe2npag0kjoj9hrmqhpxs25yds">
-        <columns>owner_id</columns>
-        <ref-key>~.Owner.PRIMARY</ref-key>
-        <cascade-update-rule>restrict</cascade-update-rule>
-        <cascade-delete-rule>restrict</cascade-delete-rule>
-      </foreign-key>
-      <foreign-key id="184" parent="17" name="FKqeg4svo3s54k2v2lkdsjqn856">
-        <columns>managedBy_id</columns>
-        <ref-key>~.Manager.PRIMARY</ref-key>
-        <cascade-update-rule>restrict</cascade-update-rule>
-        <cascade-delete-rule>restrict</cascade-delete-rule>
-      </foreign-key>
-      <column id="185" parent="18" name="id">
+      <column id="169" parent="19" name="StructureId">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="186" parent="18" name="type">
-        <data-type>varchar(255)</data-type>
-      </column>
-      <key id="187" parent="18" name="PRIMARY">
-        <columns>id</columns>
-        <primary>1</primary>
-      </key>
-      <column id="188" parent="19" name="StructureId">
+      <column id="170" parent="19" name="LocationId">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="189" parent="19" name="LocationId">
-        <mandatory>1</mandatory>
-        <data-type>bigint(20)</data-type>
-      </column>
-      <index id="190" parent="19" name="FKa4lqws1sjy7woffs0olcflnh1">
+      <index id="171" parent="19" name="FKa4lqws1sjy7woffs0olcflnh1">
         <columns>StructureId</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="191" parent="19" name="UK_pp2yhr8g4mi86rlvkh51stekb">
+      <index id="172" parent="19" name="UK_pp2yhr8g4mi86rlvkh51stekb">
         <columns>LocationId</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="192" parent="19" name="UK_pp2yhr8g4mi86rlvkh51stekb">
+      <key id="173" parent="19" name="UK_pp2yhr8g4mi86rlvkh51stekb">
         <columns>LocationId</columns>
         <underlying-index>UK_pp2yhr8g4mi86rlvkh51stekb</underlying-index>
       </key>
-      <foreign-key id="193" parent="19" name="FKa4lqws1sjy7woffs0olcflnh1">
+      <foreign-key id="174" parent="19" name="FKa4lqws1sjy7woffs0olcflnh1">
         <columns>StructureId</columns>
         <ref-key>~.Structure.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="194" parent="19" name="FKgl1r8swdhxanewo6944lfrkse">
+      <foreign-key id="175" parent="19" name="FKgl1r8swdhxanewo6944lfrkse">
         <columns>LocationId</columns>
         <ref-key>~.Location.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="195" parent="20" name="id">
+      <column id="176" parent="20" name="id">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="196" parent="20" name="address">
+      <column id="177" parent="20" name="address">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="197" parent="20" name="city">
+      <column id="178" parent="20" name="city">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="198" parent="20" name="nation">
+      <column id="179" parent="20" name="nation">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="199" parent="20" name="postalcode">
+      <column id="180" parent="20" name="postalcode">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="200" parent="20" name="birthdate">
+      <column id="181" parent="20" name="birthdate">
         <data-type>tinyblob</data-type>
       </column>
-      <column id="201" parent="20" name="email">
+      <column id="182" parent="20" name="email">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="202" parent="20" name="firstName">
+      <column id="183" parent="20" name="firstName">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="203" parent="20" name="gender">
+      <column id="184" parent="20" name="gender">
         <data-type>int(11)</data-type>
       </column>
-      <column id="204" parent="20" name="lastName">
+      <column id="185" parent="20" name="lastName">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="205" parent="20" name="phoneNumber">
+      <column id="186" parent="20" name="phoneNumber">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="206" parent="20" name="password">
+      <column id="187" parent="20" name="password">
         <data-type>varchar(255)</data-type>
       </column>
-      <column id="207" parent="20" name="username">
+      <column id="188" parent="20" name="username">
         <data-type>varchar(255)</data-type>
       </column>
-      <key id="208" parent="20" name="PRIMARY">
+      <key id="189" parent="20" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>
-      <column id="209" parent="21" name="ReservationId">
+      <column id="190" parent="21" name="ReservationId">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="210" parent="21" name="TenantsId">
+      <column id="191" parent="21" name="TenantsId">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <index id="211" parent="21" name="FKj1u97cp0v7qt3sk8qac8ay1v4">
+      <index id="192" parent="21" name="FKj1u97cp0v7qt3sk8qac8ay1v4">
         <columns>ReservationId</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="212" parent="21" name="UK_jmuw9a9o27d3dqlregp8ngb0m">
+      <index id="193" parent="21" name="UK_jmuw9a9o27d3dqlregp8ngb0m">
         <columns>TenantsId</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="213" parent="21" name="UK_jmuw9a9o27d3dqlregp8ngb0m">
+      <key id="194" parent="21" name="UK_jmuw9a9o27d3dqlregp8ngb0m">
         <columns>TenantsId</columns>
         <underlying-index>UK_jmuw9a9o27d3dqlregp8ngb0m</underlying-index>
       </key>
-      <foreign-key id="214" parent="21" name="FK57g0e50thggpncqr8dk70kw6q">
+      <foreign-key id="195" parent="21" name="FK57g0e50thggpncqr8dk70kw6q">
         <columns>TenantsId</columns>
         <ref-key>~.Reservation.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="215" parent="21" name="FKj1u97cp0v7qt3sk8qac8ay1v4">
+      <foreign-key id="196" parent="21" name="FKj1u97cp0v7qt3sk8qac8ay1v4">
         <columns>ReservationId</columns>
         <ref-key>~.Tenant.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="216" parent="22" name="next_val">
+      <column id="197" parent="22" name="id">
+        <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
+      <column id="198" parent="22" name="address">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="199" parent="22" name="city">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="200" parent="22" name="nation">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="201" parent="22" name="postalcode">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="202" parent="22" name="description">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="203" parent="22" name="name">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="204" parent="22" name="numberOfLocations">
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="205" parent="22" name="termsOfCancellation">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="206" parent="22" name="termsOfService">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="207" parent="22" name="managedBy_id">
+        <data-type>bigint(20)</data-type>
+      </column>
+      <column id="208" parent="22" name="owner_id">
+        <data-type>bigint(20)</data-type>
+      </column>
+      <column id="209" parent="22" name="type_id">
+        <data-type>bigint(20)</data-type>
+      </column>
+      <index id="210" parent="22" name="FK9larfdvt10wy51a4p323wonoi">
+        <columns>type_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="211" parent="22" name="FKe2npag0kjoj9hrmqhpxs25yds">
+        <columns>owner_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="212" parent="22" name="FKqeg4svo3s54k2v2lkdsjqn856">
+        <columns>managedBy_id</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="213" parent="22" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="214" parent="22" name="FK9larfdvt10wy51a4p323wonoi">
+        <columns>type_id</columns>
+        <ref-key>~.StructureType.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <foreign-key id="215" parent="22" name="FKe2npag0kjoj9hrmqhpxs25yds">
+        <columns>owner_id</columns>
+        <ref-key>~.Owner.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <foreign-key id="216" parent="22" name="FKqeg4svo3s54k2v2lkdsjqn856">
+        <columns>managedBy_id</columns>
+        <ref-key>~.Manager.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
     </database-model>
   </data-source>
 </component>

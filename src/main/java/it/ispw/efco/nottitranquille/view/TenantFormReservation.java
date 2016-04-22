@@ -19,13 +19,13 @@ import java.util.*;
  */
 public class TenantFormReservation {
 
-    Tenant tenant;
-    Location location;
+    private Tenant tenant;
+    private Location location;
 
-    List<Person> buyers;
+    private List<Person> buyers;
 
-    String startDate;
-    String endDate;
+    private String startDate;
+    private String endDate;
 
     public void addBuyer(String firstname, String surname) {
 

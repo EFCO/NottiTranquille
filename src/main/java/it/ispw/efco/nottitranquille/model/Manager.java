@@ -35,12 +35,9 @@ public class Manager extends Applicant implements Notifiable {
 
     public boolean addReservationToApprove(Reservation reservation) {
         //TODO EXCEPTION
-        for (Reservation r : toApprove) {
-
+        for (Reservation r : toApprove)
             if (r.equals(reservation))
                 return false;
-
-        }
 
         toApprove.add(reservation);
         reservationToApprove += 1;
