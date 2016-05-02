@@ -22,13 +22,15 @@
 <jsp:useBean id="basicSearchBean" scope="session"
              class="it.ispw.efco.nottitranquille.view.SearchBean" />
 
+<jsp:useBean id="userBean" scope="session" class="it.ispw.efco.nottitranquille.view.UserBean"/>
+
 <jsp:setProperty name="basicSearchBean" property="*" />
 
 <%
     if (request.getParameter("search") != null) {
 //       This two checks are required beacuse the bean does not override a previously set variable if it is empty
-//       e.g.: if city was "Cagliari" the bean has cagliari as city, but if a clean the textfiled and make a new search
-//       it remain "Cagliari" and it is not overridden.
+//       e.g.: if city was "Cagliari" the bean has "Cagliari" as value for its city attribute, but if I clean the textfield and make a new search
+//       it remains "Cagliari" and it is not overridden.
         if(request.getParameter("nation").equals("")) {
             basicSearchBean.setNation("");
         }
