@@ -19,4 +19,12 @@ public class AccessController {
             return true;
         }
     }
+
+    public static boolean registration(UserBean userBean) {
+        //TODO need to cypher password before saving it maybe changing the existing one inside the attribute of the bean
+        //TODO email verification should be done too
+        AccessDAO accessDAO = new AccessDAO();
+        accessDAO.register(userBean);
+        return true;
+    }
 }

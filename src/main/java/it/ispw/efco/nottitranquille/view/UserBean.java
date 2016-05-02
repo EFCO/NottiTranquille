@@ -16,6 +16,34 @@ public class UserBean {
 
     private String username = "";
     private String password = "";
+    private String name = "Federico Vagnoni";
+    private String address = "Piazza Ciao";
+    private String dateofbirth = "duemilamai";
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getDateofbirth() {
+        return dateofbirth;
+    }
+
+    public void setDateofbirth(String dateofbirth) {
+        this.dateofbirth = dateofbirth;
+    }
+
 
     @Transient
     private boolean logged = false;
@@ -49,10 +77,18 @@ public class UserBean {
     //-------------------------------------------------------------------//
     public boolean validate() {
         if (!this.username.equals("") && !this.password.equals("")) {
-            AccessDAO accessDAO = new AccessDAO();
-            accessDAO.register(this);
+//            AccessDAO accessDAO = new AccessDAO();
+//            accessDAO.register(this);
             this.logged = true;
             return AccessController.loginValidation(this.username,this.password);
+        } else {
+            return false;
+        }
+    }
+
+    public boolean register() {
+        if (!this.username.equals("") && !this.password.equals("") && !this.name.equals("") && !this.address.equals("") && !this.dateofbirth.equals("")) {
+            return AccessController.registration(this);
         } else {
             return false;
         }
