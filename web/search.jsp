@@ -71,7 +71,35 @@
             padding-top: 20px;
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        //Per funzionamento guarda nota su Google Keep (Federico)
+        $("#orderBy").click(function () {
+            var order = {};
+            var keys = {};
+            var appoggio = [];
+            $("div.panel-body").each(function (j,elem) {
+                keys[j] = $(elem).text();
+                appoggio[j] = keys[j];
+            });
+            $("div.paneldiv").each(function (i,elem) {
+                order[i] = $(elem).html();
+            });
 
+            $("#row").empty();
+
+            appoggio.sort();
+            for (var i = 0; i < appoggio.length; i++) {
+                for (var key in keys) {
+                    if (keys[key] == appoggio[i]) {
+                        $("#row").append(order[key]);
+                    }
+                }
+            }
+        });
+    });
+    </script>
 </head>
 <body>
 
@@ -251,6 +279,9 @@
         </div>
     </form>
 </div>
+
+<button id="orderBy">Order by Price</button>
+
 <div id="resultSet" >
     <%
         List<Location> result = new ArrayList<>();
@@ -265,20 +296,28 @@
             if (result.size() > 0) {
         %>
             <div class="container">
-                <c:forEach items="${result}" var="location">
-                    <div class="row">
-                        <div class="col-sm-6 col-xs-6 col-md-4">
-                            <div class="thumbnail">
-                                <img src="${location.photos}" alt="...">
-                                <div class="caption">
-                                    <h3>${location.structure.name}</h3>
-                                    <p>${location.locationAddress}</p>
-                                    <p><a href="<c:url value="showOffer.jsp"><c:param name="id" value="${result.indexOf(result)}"/></c:url>" type="submit" class="btn btn-primary" role="button">Mostra</a></p>
+                <div class="row" id="row">
+                    <c:forEach items="${result}" var="location">
+                    <div class = "paneldiv">
+                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                            <div class="panel price panel-red">
+                                <div class="thumbnail">
+                                    <%--${location.photos}--%>
+                                    <img src="resources/img/piscine-di-albergo-Medulin-2.jpg" alt="...">
+                                    <div class="panel-heading text-center"><h3>${location.structure.name}</h3></div>
+                                            <%--${location.locationAddress}--%>
+                                    <div class="panel-body text-center"><p class="lead"><strong>28 &euro; a notte</strong></p></div>
+                                        <%--<ul class="list-group list-group-flush text-center">--%>
+                                            <%--<li class="list-group-item"><i class="icon-ok text-danger"></i> Personal use</li>--%>
+                                            <%--<li class="list-group-item"><i class="icon-ok text-danger"></i> Unlimited projects</li>--%>
+                                            <%--<li class="list-group-item"><i class="icon-ok text-danger"></i> 27/7 support</li>--%>
+                                    <div class="panel-footer text-center"><a href="<c:url value="showOffer.jsp"><c:param name="id" value="${result.indexOf(result)}"/></c:url>" type="submit" class="btn btn-lg btn-block" role="button">Mostra</a></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </c:forEach>
+                    </c:forEach>
+                </div>
             </div>
         <%
             } else if (request.getParameter("search") != null && result.size() == 0) {
