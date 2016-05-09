@@ -38,7 +38,7 @@ public class ListReservationBean {
 
         try {
 
-            List<Reservation> reservations= new ArrayList<Reservation>();
+            List<Reservation> reservations = new ArrayList<Reservation>();
 
             // retrieve User corrisponding to username and password and
             // Reservervations of the User
@@ -72,15 +72,31 @@ public class ListReservationBean {
         return beans;
     }
 
-
+    /**
+     * Get the number of Reservation created by the Tenant or asked to the Manager
+     *
+     * @return Integer
+     */
     public Integer getnRes() {
         return nRes;
     }
 
+    /**
+     * Get ReservationBean in relation to the Reservation's id
+     *
+     * @param resId
+     * @return
+     */
     public ReservationBean get(Long resId) {
         return beans.get(resId);
     }
 
+    /**
+     * Manager approves a Reservation
+     *
+     * @param id: Reservation's id
+     * @return boolean
+     */
     public boolean approve(String id) {
         Long ID = new Long(id);
 
@@ -90,7 +106,13 @@ public class ListReservationBean {
 
     }
 
-    public boolean decline(String id){
+    /**
+     * Manager declines a Reservation
+     *
+     * @param id: Reservation's id
+     * @return boolean
+     */
+    public boolean decline(String id) {
         Long ID = new Long(id);
 
         ReservationController controller = ReservationController.getInstance();

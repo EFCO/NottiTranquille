@@ -6,7 +6,14 @@
 
 <%
     // Populate bean with information about reservation of the logged user
-    ListBean.populate(Login.getUsername(), Login.getPassword(), Login.getRole());
+    if (Login != null && Login.getUsername() != "")
+        ListBean.populate(Login.getUsername(), Login.getPassword(), Login.getRole());
+
+    if (request.getParameter("Decline") != null)
+        ListBean.decline(request.getParameter("Decline"));
+
+    if (request.getParameter("Approve") != null)
+        ListBean.approve(request.getParameter("Approve"));
 
 %>
 

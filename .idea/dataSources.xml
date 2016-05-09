@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="4215027939">
-    <data-source source="LOCAL" name="MySQL - notti_tranquille@localhost" uuid="19799ee4-a38e-4aca-858f-01fcaa586d59">
+  <component name="DataSourceManagerImpl" format="xml" hash="1027417608">
+    <data-source source="LOCAL" name="NottiTranquille/Hibernate" uuid="b0a70563-2fd2-4b33-a89d-2b7217b3b085">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml</remarks>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/notti_tranquille</jdbc-url>
+      <explain-plan-config>
+        <provider>com.intellij.database.plan.ExplainPlanProvider.NullExplainPlanProvider</provider>
+      </explain-plan-config>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />

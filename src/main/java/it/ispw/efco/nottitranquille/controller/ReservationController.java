@@ -31,6 +31,14 @@ public class ReservationController {
     private ReservationController() {
     }
 
+    /**
+     * It Instantiates and saves a new Reservation.
+     *
+     * @param tenant:   Tenant has reserved a Location
+     * @param location: reserved Location
+     * @param period:   Interval of time in which the Location is reserver
+     * @param buyers:   Other Person will stay in the Location for the respective period
+     */
     public void createReservation(Tenant tenant, Location location, Interval period, List<Person> buyers) {
 
         Reservation reservation = new Reservation(tenant, location, period);
@@ -53,6 +61,13 @@ public class ReservationController {
     }
 
 
+    /**
+     * Reserve the Location with confirmation method: The Manager of the Location must approve the
+     * reservation.
+     *
+     * @param reservation: Reservation to confirm. It has ReservetionType set on 'WithConfirmation'
+     * @param manager:     Manager of the Location
+     */
     private void reserveWithConfirmation(Reservation reservation, Manager manager) {
         manager.addReservationToApprove(reservation);
         reservation.setState(ReservationState.ToApprove);
@@ -64,20 +79,41 @@ public class ReservationController {
         }
     }
 
+    /**
+     * Reserve the Location with direct method. Reservation has ReservationType set on 'Direct'
+     *
+     * @param reservation: Reservation is set on the 'ToPay' state without Manager confirmation
+     */
     private void reserveDirect(Reservation reservation) {
         reservation.setState(ReservationState.ToPay);
     }
 
+    /**
+     * The Manager can confirm Reservation created by a Tenant.
+     *
+     * @param reservation: Reservation confirmed
+     */
     public void approveReservation(Reservation reservation) {
         reservation.setState(ReservationState.ToPay);
         ReservationDAO.update(reservation);
     }
 
-    public void declineReservation(Reservation reservation, Manager manager) {
+    /**
+     * The Manager can decline Reservation created by a Tenant.
+     *
+     * @param reservation: Reservation declined
+     */
+    public void declineReservation(Reservation reservation) {
         reservation.setState(ReservationState.Declined);
         ReservationDAO.delete(reservation);
     }
 
+    /**
+     * The Manager can confirm Reservation created by a Tenant.
+     *
+     * @param id: confirmed Reservation's id
+     * @return boolean
+     */
     public boolean approveReservation(Long id) {
         try {
             Reservation reservation = ReservationDAO.findByID(id);
@@ -92,7 +128,13 @@ public class ReservationController {
         return true;
     }
 
-    public boolean declineReservation(Long id){
+    /**
+     * The Manager can decline Reservation created by a Tenant.
+     *
+     * @param id: declined Reservation's id
+     * @return boolean
+     */
+    public boolean declineReservation(Long id) {
         try {
             Reservation reservation = ReservationDAO.findByID(id);
 

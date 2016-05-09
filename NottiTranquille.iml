@@ -34,7 +34,7 @@
         <setting name="provider-name" value="" />
         <datasource-mapping>
           <factory-entry name="NewPersistenceUnit" />
-          <factory-entry name="NottiTranquille" value="a758cd47-a057-4f2d-ba46-8378fa8dfa59" />
+          <factory-entry name="NottiTranquille" value="b0a70563-2fd2-4b33-a89d-2b7217b3b085" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
       </configuration>
