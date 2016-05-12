@@ -19,15 +19,7 @@ public class PaymentControl {
     private PaymentControl() {
     }
 
-    public void pay(Reservation reservation, PaymentData data){
-        if(BankingSystem.check(data)==true){
-
-            Transaction transaction = new Transaction(reservation.getPrice(), data.getIntestatario());
-            BankingSystem.store(transaction);
-
-        }else{
-            //TODO
-        }
+    public void pay(Reservation reservation, PaymentData data) {
 
     }
 }

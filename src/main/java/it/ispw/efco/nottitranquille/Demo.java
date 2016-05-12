@@ -55,13 +55,13 @@ public class Demo {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
-        DateTime daA = DateTime.parse("2016-04-21", dateTimeFormatter);
-        DateTime aA = DateTime.parse("2016-04-30", dateTimeFormatter);
+        DateTime daA = DateTime.parse("2017-04-21", dateTimeFormatter);
+        DateTime aA = DateTime.parse("2017-04-30", dateTimeFormatter);
 
         Interval intervalA = new Interval(daA, aA);
 
-        DateTime daB = DateTime.parse("2016-02-20" , dateTimeFormatter);
-        DateTime aB = DateTime.parse("2016-03-11" , dateTimeFormatter);
+        DateTime daB = DateTime.parse("2017-02-20" , dateTimeFormatter);
+        DateTime aB = DateTime.parse("2017-03-11" , dateTimeFormatter);
 
         Interval intervalB = new Interval(daB, aB);
 
