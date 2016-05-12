@@ -73,32 +73,33 @@
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script>
-    $(document).ready(function () {
-        //Per funzionamento guarda nota su Google Keep (Federico)
-        $("#orderBy").click(function () {
-            var order = {};
-            var keys = {};
-            var appoggio = [];
-            $("div.panel-body").each(function (j,elem) {
-                keys[j] = $(elem).text();
-                appoggio[j] = keys[j];
-            });
-            $("div.paneldiv").each(function (i,elem) {
-                order[i] = $(elem).html();
-            });
+        jQuery.noConflict();
+        jQuery(document).ready(function () {
+            //Per funzionamento guarda nota su Google Keep (Federico)
+            jQuery("#orderBy").click(function () {
+                var order = {};
+                var keys = {};
+                var appoggio = [];
+                jQuery("div.panel-body").each(function (j,elem) {
+                    keys[j] = $(elem).text();
+                    appoggio[j] = keys[j];
+                });
+                jQuery("div.paneldiv").each(function (i,elem) {
+                    order[i] = $(elem).html();
+                });
 
-            $("#row").empty();
+                jQuery("#row").empty();
 
-            appoggio.sort();
-            for (var i = 0; i < appoggio.length; i++) {
-                for (var key in keys) {
-                    if (keys[key] == appoggio[i]) {
-                        $("#row").append(order[key]);
+                appoggio.sort();
+                for (var i = 0; i < appoggio.length; i++) {
+                    for (var key in keys) {
+                        if (keys[key] == appoggio[i]) {
+                            $("#row").append(order[key]);
+                        }
                     }
                 }
-            }
+            });
         });
-    });
     </script>
 </head>
 <body>
@@ -186,19 +187,19 @@
                     </div>
                 </div>
             </div>
-            <script type="text/javascript">
-                $(function () {
-                    $('#checkinpicker').datetimepicker({
+            <script>
+                jQuery(function () {
+                    jQuery('#checkinpicker').datetimepicker({
                        format: 'DD-MM-YYYY'
                     });
-                    $('#checkoutpicker').datetimepicker({
+                    jQuery('#checkoutpicker').datetimepicker({
                         format: 'DD-MM-YYYY',
                         useCurrent: false //Important! See issue #1075
                     });
-                    $("#checkinpicker").on("dp.change", function (e) {
+                    jQuery("#checkinpicker").on("dp.change", function (e) {
                         $('#checkoutpicker').data("DateTimePicker").minDate(e.date);
                     });
-                    $("#checkoutpicker").on("dp.change", function (e) {
+                    jQuery("#checkoutpicker").on("dp.change", function (e) {
                         $('#checkinpicker').data("DateTimePicker").maxDate(e.date);
                     });
                 });
@@ -263,7 +264,8 @@
                     }
                 </script>
                 <script>
-                    function prova() {
+                    //To alternate 'search' variabile value
+                    function searchSwitcher() {
                         if (document.getElementById("searchbutton").value == 'search') {
                             document.getElementById("searchbutton").value = 'advsearch';
                         } else {
@@ -271,7 +273,7 @@
                         }
                     }
                 </script>
-                <button type="button" onclick="prova()" id=advsearchbutton" class="btn btn-default" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">Advanced Search</button>
+                <button type="button" onclick="searchSwitcher()" id=advsearchbutton" class="btn btn-default" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">Advanced Search</button>
             </div>
             <div class="btn-group">
                 <button name="search" type="submit" class="btn btn-primary" value='${search}' id="searchbutton"><span class="glyphicon glyphicon-search"></span> Search</button>
@@ -307,10 +309,6 @@
                                     <div class="panel-heading text-center"><h3>${location.structure.name}</h3></div>
                                             <%--${location.locationAddress}--%>
                                     <div class="panel-body text-center"><p class="lead"><strong>28 &euro; a notte</strong></p></div>
-                                        <%--<ul class="list-group list-group-flush text-center">--%>
-                                            <%--<li class="list-group-item"><i class="icon-ok text-danger"></i> Personal use</li>--%>
-                                            <%--<li class="list-group-item"><i class="icon-ok text-danger"></i> Unlimited projects</li>--%>
-                                            <%--<li class="list-group-item"><i class="icon-ok text-danger"></i> 27/7 support</li>--%>
                                     <div class="panel-footer text-center"><a href="<c:url value="showOffer.jsp"><c:param name="id" value="${result.indexOf(result)}"/></c:url>" type="submit" class="btn btn-lg btn-block" role="button">Mostra</a></div>
                                     </div>
                                 </div>

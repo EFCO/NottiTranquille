@@ -1,7 +1,7 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.AccessController;
-import it.ispw.efco.nottitranquille.model.AccessDAO;
+import org.json.JSONObject;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +19,9 @@ public class UserBean {
     private String name = "Federico Vagnoni";
     private String address = "Piazza Ciao";
     private String dateofbirth = "duemilamai";
+
+    @Transient
+    private boolean api = false;
 
     public String getName() {
         return name;
@@ -100,6 +103,46 @@ public class UserBean {
 
     public void logout() {
         this.logged = false;
+    }
+
+    public String api_login_response() {
+        if (this.api) {
+            JSONObject response = new JSONObject();
+            if (this.validate()) {
+                response.put("code",1);
+                response.put("message","user_logged");
+                return response.toString();
+            } else {
+                response.put("code",0);
+                response.put("message","user_not_found");
+                return response.toString();
+            }
+        } else {
+            JSONObject response = new JSONObject();
+            response.put("code", 0);
+            response.put("message", "access_denied");
+            return response.toString();
+        }
+    }
+
+    public String api_register_response() {
+        if (this.api) {
+            JSONObject response = new JSONObject();
+            if (this.register()) {
+                response.put("code",1);
+                response.put("message","registration_success");
+                return response.toString();
+            } else {
+                response.put("code",0);
+                response.put("message","registration_failure");
+                return response.toString();
+            }
+        } else {
+            JSONObject response = new JSONObject();
+            response.put("code",0);
+            response.put("message","access_denied");
+            return response.toString();
+        }
     }
 
     //-------------------------------------------------------------------//
