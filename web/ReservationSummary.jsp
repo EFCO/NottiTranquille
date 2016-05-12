@@ -68,10 +68,10 @@
                                                 <td><joda:format value="${resBean.startDate}"
                                                                  locale="en_US"
                                                                  style="SM"
-                                                                 pattern="dd MMM, yyyy HH:mm"/></td>
+                                                                 pattern="dd MMM yyyy"/></td>
                                                 <td><joda:format value="${resBean.endDate}" locale="en_US"
                                                                  style="SM"
-                                                                 pattern="dd MMM, yyyy HH:mm"/></td>
+                                                                 pattern="dd MMM yyyy"/></td>
                                                 <td>${resBean.price}</td>
 
                                                 <c:choose>

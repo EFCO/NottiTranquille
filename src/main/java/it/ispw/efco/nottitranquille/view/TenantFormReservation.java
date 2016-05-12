@@ -5,6 +5,8 @@ import it.ispw.efco.nottitranquille.model.Location;
 import it.ispw.efco.nottitranquille.model.Person;
 import it.ispw.efco.nottitranquille.model.Structure;
 import it.ispw.efco.nottitranquille.model.Tenant;
+import it.ispw.efco.nottitranquille.model.dao.LocationDAO;
+import it.ispw.efco.nottitranquille.model.dao.TenantDao;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
@@ -19,8 +21,10 @@ import java.util.*;
  */
 public class TenantFormReservation {
 
-    private Tenant tenant;
-    private Location location;
+    private String tenantUsername;
+    private String tenantPass;
+
+    private LocationBean locationBean;
 
     private List<Person> buyers;
 
@@ -63,20 +67,24 @@ public class TenantFormReservation {
         this.endDate = endDate;
     }
 
-    public Tenant getTenant() {
-        return tenant;
+    public String getTenantUsername() {
+        return tenantUsername;
     }
 
-    public void setTenant(Tenant tenant) {
-        this.tenant = tenant;
+    public void setTenantUsername(String tenantUsername) {
+        this.tenantUsername = tenantUsername;
     }
 
-    public Location getLocation() {
-        return location;
+    public void setTenantPass(String tenantPass) {
+        this.tenantPass = tenantPass;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public LocationBean getLocationBean() {
+        return locationBean;
+    }
+
+    public void setLocationBean(LocationBean locationBean) {
+        this.locationBean = locationBean;
     }
 
     public boolean validate() {
@@ -93,10 +101,13 @@ public class TenantFormReservation {
             }
         }
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-mm-dd");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-mm-yyyy");
 
         DateTime da = DateTime.parse(startDate, dateTimeFormatter);
         DateTime a = DateTime.parse(endDate, dateTimeFormatter);
+
+        Tenant tenant = TenantDao.findByNameAndPassword(tenantUsername, tenantPass);
+        Location location = LocationDAO.findByID(new Long(locationBean.getId()));
 
         Interval period = new Interval(da, a);
         ReservationController.getInstance().createReservation(tenant, location, period, buyers);

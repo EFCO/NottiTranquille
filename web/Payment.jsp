@@ -14,11 +14,6 @@
 <jsp:setProperty name="PaymentBean" property="*"/>
 
 
-<%--<%
-    Reservation reservation = ReservationDAO.findToPayReservation().get(0);
-    PaymentBean.setReservation(reservation);
-%>--%>
-
 <html>
 <head>
     <title>Title</title>

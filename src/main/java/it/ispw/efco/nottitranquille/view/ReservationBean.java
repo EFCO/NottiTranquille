@@ -30,7 +30,7 @@ public class ReservationBean {
         this.endDate = reservation.getEndDate();
         this.state = reservation.getState();
         this.price = reservation.getPrice();
-        this.tenant = reservation.getTenant().getFirstName() + " " + reservation.getTenant().getLastName();
+        this.tenant = reservation.getTenant().getCompleteName();
         this.id = reservation.getId();
     }
 

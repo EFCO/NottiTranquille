@@ -49,7 +49,7 @@ public class Reservation extends Subject {
     @ManyToOne
     private Tenant tenant;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<Person> buyers;
 
 

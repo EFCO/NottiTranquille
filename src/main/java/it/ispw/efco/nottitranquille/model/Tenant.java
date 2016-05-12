@@ -8,19 +8,14 @@ import java.util.*;
  */
 @Entity
 @SuppressWarnings("JpaDataSourceORMInspection")
-public class Tenant extends RegisteredUser implements Notifiable {
+public class Tenant extends RegisteredUser {
 
     /**
      * Default constructor
      */
     public Tenant() {
         reservations = new ArrayList<Reservation>();
-        notifications = new ArrayDeque<Notification>();
     }
-
-
-    @Transient
-    private Deque<Notification> notifications;
 
     @OneToMany
     @JoinTable(name = "Tenant_Reservation",
@@ -38,22 +33,16 @@ public class Tenant extends RegisteredUser implements Notifiable {
         this.reservations = toUpdate.getReservations();
     }
 
-    public void addReservation(Reservation reservation) {
-        reservations.add(reservation);
+    public boolean addReservation(Reservation reservation) {
+        return reservations.add(reservation);
     }
 
-    //TODO exception if it not exist
-    public void deleteReservation(Reservation reservation) {
-        reservations.remove(reservation);
+    public boolean deleteReservation(Reservation reservation) {
+        return reservations.remove(reservation);
     }
 
     public List<Reservation> getReservations() {
         return reservations;
-    }
-
-    public void sendNotification(Notification notification) {
-        //TODO Select Type of Notification from property file
-        notifications.push(notification);
     }
 
 }

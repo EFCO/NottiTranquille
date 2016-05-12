@@ -8,7 +8,9 @@ import javax.persistence.*;
 @Entity
 public class RegisteredUser extends Person {
 
+    @Column(unique = true)
     private String username;
+
     private String password;
 
     public void setUsername(String username) {
@@ -29,7 +31,7 @@ public class RegisteredUser extends Person {
         return password;
     }
 
-    public void update(RegisteredUser toUpdate){
+    public void update(RegisteredUser toUpdate) {
         this.setId(toUpdate.getId());
         this.setFirstName(toUpdate.getFirstName());
         this.setLastName(toUpdate.getLastName());

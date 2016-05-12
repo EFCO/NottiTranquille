@@ -74,6 +74,10 @@ public class Person {
         return lastName;
     }
 
+    public String getCompleteName() {
+        return firstName + " " + lastName;
+    }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }

@@ -72,7 +72,7 @@ public class LocationBean {
             DateTime start = interval.getStart();
             DateTime end = interval.getEnd();
 
-            enable += String.format(" {from : [ %d, %d, %d ] , to [%d,%d,%d] }",
+            enable += String.format(" {from : [ %d, %d, %d ] , to: [%d,%d,%d] }",
                     start.getYear(), start.getMonthOfYear() - 1, start.getDayOfMonth() - 1,
                     end.getYear(), end.getMonthOfYear() - 1, end.getDayOfMonth() - 1);
 

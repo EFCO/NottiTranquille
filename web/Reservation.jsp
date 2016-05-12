@@ -1,10 +1,4 @@
-<%@ page import="it.ispw.efco.nottitranquille.model.Location" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.dao.LocationDAO" %>
-<%@ page import="java.util.List" %>
-<%@ page import="org.joda.time.Interval" %>
-<%@ page import="org.joda.time.DateTime" %>
-<%@ page import="java.util.Iterator" %>
-<%--
+<%@ page import="it.ispw.efco.nottitranquille.view.LoginBean" %><%--
   Created by IntelliJ IDEA.
   User: emanuele
   Date: 16/01/16
@@ -17,17 +11,24 @@
 <%-- Use JSTL joda lib in order to format joda's DataTime --%>
 <%@ taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
 
-<jsp:useBean id="ReservationBean" scope="request"
+<jsp:useBean id="reservationBean" scope="request"
              class="it.ispw.efco.nottitranquille.view.TenantFormReservation"/>
-<jsp:useBean id="locationBean" scope="request"
+<jsp:useBean id="locationBean" scope="session"
              class="it.ispw.efco.nottitranquille.view.LocationBean"/>
 
-<jsp:setProperty name="ReservationBean" property="*"/>
+<jsp:setProperty name="reservationBean" property="*"/>
+
 <%
+    //Needs because compiler not resolve variable Login in ReservationSummary.
+    //Cause it recompiles when url for Reservation.jsp is entered
+    LoginBean Login = (LoginBean) session.getAttribute("Login");
+
     // Assuming the id of the location we want to see is in the URL
     // because a GET request is made.
     // Pull model of mvc architecture
-    locationBean.populate(request.getParameter("id"));
+    if (request.getParameter("id") != null)
+        locationBean.populate(request.getParameter("id"));
+
 %>
 
 <%
@@ -37,12 +38,16 @@
 
             if (request.getParameter("firstname" + i) != null && request.getParameter("firstname" + i) != "" &&
                     request.getParameter("surname" + i) != null && request.getParameter("surname" + i) != "") {
-                ReservationBean.addBuyer(request.getParameter("firstname" + i), request.getParameter("surname" + i));
+                reservationBean.addBuyer(request.getParameter("firstname" + i), request.getParameter("surname" + i));
             }
         }
+
+        reservationBean.setTenantUsername(Login.getUsername());
+        reservationBean.setTenantPass(Login.getPassword());
+        reservationBean.setLocationBean(locationBean);
     }
 
-    if (ReservationBean.validate()) {
+    if (reservationBean.validate()) {
 %>
 <!-- Passa il controllo alla nuova pagina -->
 <jsp:forward page="index.jsp"/>
@@ -210,39 +215,16 @@
 
         </div>
 
-        <%--<%--%>
-
-            <%--String enable = "";--%>
-
-            <%--List<Interval> intervals = location.getAvailableDate();--%>
-
-            <%--Iterator<Interval> availableInterval = intervals.iterator();--%>
-            <%--while (availableInterval.hasNext()) {--%>
-                <%--Interval interval = availableInterval.next();--%>
-                <%--DateTime start = interval.getStart();--%>
-                <%--DateTime end = interval.getEnd();--%>
-
-                <%--enable += String.format(" {from : [ %d, %d, %d ] , to [%d,%d,%d] }",--%>
-                        <%--start.getYear(), start.getMonthOfYear() - 1, start.getDayOfMonth() - 1,--%>
-                        <%--end.getYear(), end.getMonthOfYear() - 1, end.getDayOfMonth() - 1);--%>
-
-
-                <%--if (availableInterval.hasNext())--%>
-                    <%--enable += " , ";--%>
-            <%--}--%>
-
-
-            <%--request.setAttribute("enablesDate", enable);--%>
-
-        <%--%>--%>
-
         <script>
             var yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
 
             $(document).ready(function () {
+
                 $('#startDate').pickadate({
-                    format: 'mm/dd/yyyy',
-                    formatSubmit: 'mm/dd/yyyy',
+                    weekdaysShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                    showMonthsShort: true,
+                    format: 'dd-mm-yyyy',
+                    formatSubmit: 'dd-mm-yyyy',
                     hiddenName: true,
 
                     disable: [
@@ -250,16 +232,16 @@
                     ],
 
                     enable: [
-
                         ${locationBean.enablesDate}
                     ]
 
-                });
-
+                })
 
                 $('#endDate').pickadate({
-                    format: 'mm/dd/yyyy',
-                    formatSubmit: 'mm/dd/yyyy',
+                    weekdaysShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                    showMonthsShort: true,
+                    format: 'dd-mm-yyyy',
+                    formatSubmit: 'dd-mm-yyyy',
                     hiddenName: true,
 
                     disable: [
@@ -267,11 +249,10 @@
                     ],
 
                     enable: [
-                        ${enablesDate}
+                        ${locationBean.enablesDate}
                     ]
 
-                });
-
+                })
             });
         </script>
     </div>

@@ -9,12 +9,12 @@
 <jsp:setProperty name="Login" property="*"/>
 
 <%
-    if (request.getParameter("sign") != null) {
-        Login.validate();
-    }
 
     session.setAttribute("Login", Login);
 
+    if (request.getParameter("sign") != null) {
+        Login.validate();
+    }
 
     if (request.getParameter("Approve") != null) {
 
