@@ -17,11 +17,12 @@ public class UserBean {
     private String username = "";
     private String password = "";
     private String name = "Federico Vagnoni";
+    private String email = "fede93.vagnoni@gmail.com";
     private String address = "Piazza Ciao";
     private String dateofbirth = "duemilamai";
 
-    @Transient
-    private boolean api = false;
+//    @Transient
+//    private boolean api = false;
 
     public String getName() {
         return name;
@@ -94,7 +95,7 @@ public class UserBean {
     }
 
     public boolean register() {
-        if (!this.username.equals("") && !this.password.equals("") && !this.name.equals("") && !this.address.equals("") && !this.dateofbirth.equals("")) {
+        if (!this.username.equals("") && !this.password.equals("") && !this.name.equals("") && !this.address.equals("") && !this.dateofbirth.equals("") && !this.email.equals("")) {
             return AccessController.registration(this);
         } else {
             return false;
@@ -106,41 +107,27 @@ public class UserBean {
     }
 
     public String api_login_response() {
-        if (this.api) {
-            JSONObject response = new JSONObject();
-            if (this.validate()) {
-                response.put("code",1);
-                response.put("message","user_logged");
-                return response.toString();
-            } else {
-                response.put("code",0);
-                response.put("message","user_not_found");
-                return response.toString();
-            }
+        JSONObject response = new JSONObject();
+        if (this.validate()) {
+            response.put("code",1);
+            response.put("message","user_logged");
+            return response.toString();
         } else {
-            JSONObject response = new JSONObject();
-            response.put("code", 0);
-            response.put("message", "access_denied");
+            response.put("code",0);
+            response.put("message","user_not_found");
             return response.toString();
         }
     }
 
     public String api_register_response() {
-        if (this.api) {
-            JSONObject response = new JSONObject();
-            if (this.register()) {
-                response.put("code",1);
-                response.put("message","registration_success");
-                return response.toString();
-            } else {
-                response.put("code",0);
-                response.put("message","registration_failure");
-                return response.toString();
-            }
+        JSONObject response = new JSONObject();
+        if (this.register()) {
+            response.put("code",1);
+            response.put("message","registration_success");
+            return response.toString();
         } else {
-            JSONObject response = new JSONObject();
             response.put("code",0);
-            response.put("message","access_denied");
+            response.put("message","registration_failure");
             return response.toString();
         }
     }
@@ -156,5 +143,13 @@ public class UserBean {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

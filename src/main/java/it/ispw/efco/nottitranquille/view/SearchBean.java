@@ -2,10 +2,11 @@ package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.FilteredSearch;
 import it.ispw.efco.nottitranquille.model.*;
-import it.ispw.efco.nottitranquille.model.enumeration.Commodities;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,6 +118,34 @@ public class SearchBean {
             return false;
         }
         return true;
+    }
+
+    public String api_result() {
+        JSONObject jsonObject = new JSONObject();
+        if (this.validate()) {
+            jsonObject.put("code",1);
+            JSONArray jsonArray = new JSONArray();
+            for (int i = 0; i < result.size(); i++) {
+                JSONObject obj = new JSONObject();
+                obj.put("id",result.get(i).getId());
+                obj.put("name",result.get(i).getStructure().getName());
+                obj.put("type",result.get(i).getType().toString());
+                obj.put("address",result.get(i).getLocationAddress());
+                obj.put("nation",result.get(i).getStructure().getStructureAddress().getNation());
+                obj.put("city",result.get(i).getStructure().getStructureAddress().getCity());
+                obj.put("price",(25 + i)% 5);//TODO use the right price
+                jsonArray.put(obj);
+
+            }
+            jsonObject.put("results",jsonArray);
+            return jsonObject.toString();
+        } else {
+            //restituirà semplicemente un array vuoto
+            jsonObject.put("code",0);
+            JSONArray jsonArray = new JSONArray(result);
+            jsonObject.put("results",jsonArray);
+            return jsonObject.toString();
+        }
     }
 
     public String getMaxtenant() {
