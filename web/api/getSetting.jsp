@@ -9,11 +9,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+
 <%
     if (request.getParameter("setting").equals("commodities")) {
         JSONObject jsonObject = new JSONObject();
@@ -31,6 +27,3 @@
         out.println(jsonObject.toString());
     }
 %>
-
-</body>
-</html>

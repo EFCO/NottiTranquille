@@ -13,21 +13,18 @@
 <jsp:setProperty name="basicSearchBean" property="*" />
 
 <%
-
-%>
-
-<html>
-<head>
-    <title>Search Page</title>
-</head>
-
-<body>
-<%
     if (request.getParameter("search") != null) {
+        if(request.getParameter("nation").equals("")) {
+            basicSearchBean.setNation("");
+        }
+        if(request.getParameter("city").equals("")) {
+            basicSearchBean.setCity("");
+        }
+        if (!request.getParameter("checkin").equals("") && !request.getParameter("checkout").equals("")) {
+            basicSearchBean.setCheckin(request.getParameter("checkin"));
+            basicSearchBean.setCheckout(request.getParameter("checkout"));
+        }
         out.println(basicSearchBean.api_result());
     }
 %>
 
-</body>
-
-</html>

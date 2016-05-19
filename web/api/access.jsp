@@ -9,14 +9,7 @@
 
 <jsp:useBean id="userBean" scope="session" class="it.ispw.efco.nottitranquille.view.UserBean"/>
 <jsp:setProperty name="userBean" property="*" />
-
-<html>
-<head>
-    <title>Access Page</title>
-</head>
-<body>
-
-    <%
+ <%
         if (request.getParameter("login") != null) {
             out.println(userBean.api_login_response());
         }
@@ -25,6 +18,4 @@
             out.println(userBean.api_register_response());
 
         }
-    %>
-</body>
-</html>
+ %>
