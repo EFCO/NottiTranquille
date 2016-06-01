@@ -162,4 +162,40 @@ public class Location {
     public String getLocationAddress() {
         return this.structure.getStructureAddress().getAddress();
     }
+
+    public Integer getNumberOfBathrooms() {
+        return numberOfBathrooms;
+    }
+
+    public void setNumberOfBathrooms(Integer numberOfBathrooms) {
+        this.numberOfBathrooms = numberOfBathrooms;
+    }
+
+    public Integer getNumberOfBeds() {
+        return numberOfBeds;
+    }
+
+    public void setNumberOfBeds(Integer numberOfBeds) {
+        this.numberOfBeds = numberOfBeds;
+    }
+
+    public Integer getNumberOfRooms() {
+        return numberOfRooms;
+    }
+
+    public void setNumberOfRooms(Integer numberOfRooms) {
+        this.numberOfRooms = numberOfRooms;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getNumberOfBedrooms() {
+        return numberOfBedrooms;
+    }
+
+    public void setNumberOfBedrooms(Integer numberOfBedrooms) {
+        this.numberOfBedrooms = numberOfBedrooms;
+    }
 }

@@ -127,4 +127,40 @@ public class Structure {
     public List<Location> getLocations() {
         return locations;
     }
+
+    public void setNumberOfLocations(String numberOfLocations) {
+        this.numberOfLocations = numberOfLocations;
+    }
+
+    public void setTermsOfService(String termsOfService) {
+        this.termsOfService = termsOfService;
+    }
+
+    public void setTermsOfCancellation(String termsOfCancellation) {
+        this.termsOfCancellation = termsOfCancellation;
+    }
+
+    public void setCheckIn(DateTime checkIn) {
+        this.checkIn = checkIn;
+    }
+
+    public void setCheckOut(DateTime checkOut) {
+        this.checkOut = checkOut;
+    }
+
+    public void setManagedBy(Manager managedBy) {
+        this.managedBy = managedBy;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
+
+    public void setType(StructureType type) {
+        this.type = type;
+    }
+
+    public Request getRequest() {
+        return request;
+    }
 }

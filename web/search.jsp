@@ -53,6 +53,9 @@
 
 
     <style>
+        body {
+            padding-top: 50px;
+        }
         #searchForm {
             padding-top: 30px;
             padding-left: 10px;
@@ -147,7 +150,7 @@
 </c:if>
 
 
-<div id="searchForm" >
+<div id="searchForm">
     <form action="search.jsp" name="myform" method="POST" id="searchForm">
         <div class="row">
             <div class="form-group col-xs-4 col-md-4">
@@ -309,7 +312,7 @@
                                     <div class="panel-heading text-center"><h3>${location.structure.name}</h3></div>
                                             <%--${location.locationAddress}--%>
                                     <div class="panel-body text-center"><p class="lead"><strong>28 &euro; a notte</strong></p></div>
-                                    <div class="panel-footer text-center"><a href="<c:url value="showOffer.jsp"><c:param name="id" value="${result.indexOf(result)}"/></c:url>" type="submit" class="btn btn-lg btn-block" role="button">Mostra</a></div>
+                                    <div class="panel-footer text-center"><a href="<c:url value="showOffer.jsp"><c:param name="id" value="${result.indexOf(location)}"/></c:url>" type="submit" class="btn btn-lg btn-block" role="button">Mostra</a></div>
                                     </div>
                                 </div>
                             </div>

@@ -112,6 +112,7 @@ public class SearchBean {
 //        Request r = new Request(s);
 //        CatalogueDAO catalogueDAO = new CatalogueDAO();
 //        catalogueDAO.saveRequest(r);
+
         try {
             this.result = FilteredSearch.getListOfStructures(this);
         } catch (Exception e) {
@@ -127,12 +128,13 @@ public class SearchBean {
             JSONArray jsonArray = new JSONArray();
             for (int i = 0; i < result.size(); i++) {
                 JSONObject obj = new JSONObject();
-                obj.put("id",result.get(i).getId());
-                obj.put("name",result.get(i).getStructure().getName());
-                obj.put("type",result.get(i).getType().toString());
-                obj.put("address",result.get(i).getLocationAddress());
-                obj.put("nation",result.get(i).getStructure().getStructureAddress().getNation());
-                obj.put("city",result.get(i).getStructure().getStructureAddress().getCity());
+                Location currentElem = result.get(i);
+                obj.put("id",i);
+                obj.put("name",currentElem.getStructure().getName());
+                obj.put("type",currentElem.getType().toString());
+                obj.put("address",currentElem.getLocationAddress());
+                obj.put("nation",currentElem.getStructure().getStructureAddress().getNation());
+                obj.put("city",currentElem.getStructure().getStructureAddress().getCity());
                 obj.put("price",(25 + i)% 5);//TODO use the right price
                 jsonArray.put(obj);
 
