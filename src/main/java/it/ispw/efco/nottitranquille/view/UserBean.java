@@ -83,9 +83,14 @@ public class UserBean {
         if (!this.username.equals("") && !this.password.equals("")) {
 //            AccessDAO accessDAO = new AccessDAO();
 //            accessDAO.register(this);
-            if(AccessController.loginValidation(this.username,this.password)) {
-                this.logged = true;
-                return true;
+            if(AccessController.registrationValidation(this)) {
+                if (AccessController.loginSetter(this.id)) {
+                    this.logged = true;
+                    return true;
+                }
+                else {
+                    return false;
+                }
             } else {
                 return false;
             }
@@ -103,6 +108,7 @@ public class UserBean {
     }
 
     public void logout() {
+        AccessController.logoutSetter(this.id);
         this.logged = false;
     }
 

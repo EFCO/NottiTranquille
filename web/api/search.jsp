@@ -5,10 +5,10 @@
   Time: 11:40
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="basicSearchBean" scope="session"
-             class="it.ispw.efco.nottitranquille.view.SearchBean" />
+<%@ page contentType="text/html;charset=UTF-8" language="java" session="true" %>
+<jsp:useBean id="basicSearchBean" scope="session" class="it.ispw.efco.nottitranquille.view.SearchBean" />
 
+<jsp:useBean id="userBean" scope="session" class="it.ispw.efco.nottitranquille.view.UserBean"/>
 
 <jsp:setProperty name="basicSearchBean" property="*" />
 

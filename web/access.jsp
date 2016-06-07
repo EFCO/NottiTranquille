@@ -22,6 +22,9 @@
                 String referer = request.getHeader("Referer");
                 // handle empty referer.....
                 response.sendRedirect(referer);
+            } else {
+                // handle empty referer.....
+                response.sendRedirect("errorPage.jsp");
             }
         }
         if (request.getParameter("logout") != null) {

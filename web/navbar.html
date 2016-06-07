@@ -163,15 +163,15 @@
                         </li>
                     </ul>
                     <form class="navbar-form navbar-right" role="search">
-                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#searchModal" >Search</button>
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#searchModal">Search</button>
                         <%
                             if (!userBean.isLogged()) {
                         %>
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#signModal" >Sign In/Sign Up</button>
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#signModal">Sign In/Sign Up</button>
                         <%
                             } else {
                         %>
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#profileModal" >${userBean.getUsername()}</button>
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#profileModal" style="-fx-font-weight: 300">${userBean.getUsername()}</button>
                         <%
                             }
                         %>

@@ -129,7 +129,7 @@ public class SearchBean {
             for (int i = 0; i < result.size(); i++) {
                 JSONObject obj = new JSONObject();
                 Location currentElem = result.get(i);
-                obj.put("id",i);
+                obj.put("id",String.valueOf(i));
                 obj.put("name",currentElem.getStructure().getName());
                 obj.put("type",currentElem.getType().toString());
                 obj.put("address",currentElem.getLocationAddress());

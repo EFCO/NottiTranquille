@@ -10,17 +10,29 @@ import java.util.List;
  */
 public class AccessController {
 
-    public static boolean loginValidation(String username,String password) {
+    public static boolean registrationValidation(UserBean ub) {
         AccessDAO accessDAO = new AccessDAO();
-        List<UserBean> result = accessDAO.login(username,password);
+        List<UserBean> result = accessDAO.isRegistered(ub.getUsername(),ub.getPassword());
         if (result.isEmpty()) {
             return false;
         } else {
+            ub.setId(result.get(0).getId());
             return true;
         }
     }
 
-    public static boolean registration(UserBean userBean) {
+    public static boolean loginSetter(Long id) {
+        AccessDAO accessDAO = new AccessDAO();
+        return accessDAO.login(id); //TODO da migliorare il controllo dell'errore
+    }
+
+    public static boolean logoutSetter(Long id) {
+        AccessDAO accessDAO = new AccessDAO();
+        accessDAO.logout(id); //TODO da migliorare il controllo dell'errore
+        return true;
+    }
+
+        public static boolean registration(UserBean userBean) {
         //TODO need to cypher password before saving it maybe changing the existing one inside the attribute of the bean
         //TODO email verification should be done too
         AccessDAO accessDAO = new AccessDAO();

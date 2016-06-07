@@ -6,12 +6,11 @@
   Time: 18:25
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=ISO-8859-1" language="java" pageEncoding="ISO-8859-1" %>
+<%@ page contentType="text/html;charset=ISO-8859-1" language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--@ elvariable id="location" type="it.ispw.efco.nottitranquille.model.Location.java"--%>
 
-<jsp:useBean id="basicSearchBean" scope="session"
-             class="it.ispw.efco.nottitranquille.view.SearchBean"/>
+<jsp:useBean id="basicSearchBean" scope="session" class="it.ispw.efco.nottitranquille.view.SearchBean"/>
 
 <jsp:useBean id="userBean" scope="session" class="it.ispw.efco.nottitranquille.view.UserBean"/>
 
