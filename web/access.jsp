@@ -1,3 +1,5 @@
+<%@ page import="it.ispw.efco.nottitranquille.view.LoginBean" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Federico
@@ -7,8 +9,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<jsp:useBean id="userBean" scope="session" class="it.ispw.efco.nottitranquille.view.UserBean"/>
-<jsp:setProperty name="userBean" property="*" />
+<jsp:useBean id="registrationBean" scope="session" class="it.ispw.efco.nottitranquille.view.RegistrationBean"/>
+<jsp:useBean id="loginBean" scope="session" class="it.ispw.efco.nottitranquille.view.LoginBean"/>
+<jsp:setProperty name="registrationBean" property="*" />
+<jsp:setProperty name="loginBean" property="*" />
+
 
 <html>
 <head>
@@ -18,7 +23,7 @@
 
     <%
         if (request.getParameter("login") != null) {
-            if (userBean.validate()) {
+            if (loginBean.login()) {
                 String referer = request.getHeader("Referer");
                 // handle empty referer.....
                 response.sendRedirect(referer);
@@ -28,22 +33,21 @@
             }
         }
         if (request.getParameter("logout") != null) {
-            userBean.logout();
+            loginBean.logout();
+            session.removeAttribute("loginBean");
+            session.setAttribute("loginBean", new LoginBean());
             String referer = request.getHeader("Referer");
             // handle empty referer.....
             response.sendRedirect(referer);
         }
 
         if (request.getParameter("register") != null) {
-            userBean.register();
+            registrationBean.register();
             String referer = request.getHeader("Referer");
             // handle empty referer.....
             response.sendRedirect(referer);
         }
-
-
-
-
     %>
+
 </body>
 </html>

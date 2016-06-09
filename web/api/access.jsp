@@ -7,15 +7,19 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<jsp:useBean id="userBean" scope="session" class="it.ispw.efco.nottitranquille.view.UserBean"/>
-<jsp:setProperty name="userBean" property="*" />
+<jsp:useBean id="registrationBean" scope="session" class="it.ispw.efco.nottitranquille.view.RegistrationBean"/>
+<jsp:useBean id="loginBean" scope="session" class="it.ispw.efco.nottitranquille.view.LoginBean"/>
+
+<jsp:setProperty name="registrationBean" property="*" />
+<jsp:setProperty name="loginBean" property="*"/>
+
  <%
         if (request.getParameter("login") != null) {
-            out.println(userBean.api_login_response());
+            out.println(loginBean.api_login_response());
         }
 
         if (request.getParameter("register") != null) {
-            out.println(userBean.api_register_response());
+            out.println(registrationBean.api_register_response());
 
         }
  %>

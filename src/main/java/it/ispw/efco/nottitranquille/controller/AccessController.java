@@ -1,7 +1,9 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.AccessDAO;
-import it.ispw.efco.nottitranquille.view.UserBean;
+import it.ispw.efco.nottitranquille.view.LoginBean;
+import it.ispw.efco.nottitranquille.view.RegistrationBean;
+import sun.rmi.runtime.Log;
 
 import java.util.List;
 
@@ -10,33 +12,42 @@ import java.util.List;
  */
 public class AccessController {
 
-    public static boolean registrationValidation(UserBean ub) {
+    public static long getRegisteredUserId(String username, String password) {
         AccessDAO accessDAO = new AccessDAO();
-        List<UserBean> result = accessDAO.isRegistered(ub.getUsername(),ub.getPassword());
+        List<RegistrationBean> result = accessDAO.isRegistered(username, password);
         if (result.isEmpty()) {
-            return false;
+            return -1;
         } else {
-            ub.setId(result.get(0).getId());
-            return true;
+            return result.get(0).getId();
         }
     }
 
-    public static boolean loginSetter(Long id) {
+    public static void login(LoginBean lb) {
         AccessDAO accessDAO = new AccessDAO();
-        return accessDAO.login(id); //TODO da migliorare il controllo dell'errore
+        accessDAO.saveLogin(lb);
     }
 
-    public static boolean logoutSetter(Long id) {
+    public static boolean isAlreadyLogged(LoginBean lb) {
         AccessDAO accessDAO = new AccessDAO();
-        accessDAO.logout(id); //TODO da migliorare il controllo dell'errore
-        return true;
+        LoginBean lbr = accessDAO.getLoggedUser(lb);                       //TODO da migliorare il controllo dell'errore
+        if (lbr != null) {
+            return true;
+        } else {
+            //if the user is not logged simply return false
+            return false;
+        }
     }
 
-        public static boolean registration(UserBean userBean) {
+    public static boolean setLogout(Long id) {
+        AccessDAO accessDAO = new AccessDAO();
+        return accessDAO.removeLoggedUser(id); //TODO da migliorare il controllo dell'errore
+    }
+
+        public static boolean registration(RegistrationBean registrationBean) {
         //TODO need to cypher password before saving it maybe changing the existing one inside the attribute of the bean
         //TODO email verification should be done too
         AccessDAO accessDAO = new AccessDAO();
-        accessDAO.register(userBean);
+        accessDAO.register(registrationBean);
         return true;
     }
 }

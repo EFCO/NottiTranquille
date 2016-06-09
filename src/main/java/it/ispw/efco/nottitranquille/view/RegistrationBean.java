@@ -11,8 +11,8 @@ import javax.persistence.Transient;
 /**
  * Created by Federico on 02/05/2016.
  */
-@Entity(name = "usersdata")
-public class UserBean {
+@Entity(name = "registeredusersdata")
+public class RegistrationBean {
 
     private String username = "";
     private String password = "";
@@ -48,10 +48,6 @@ public class UserBean {
         this.dateofbirth = dateofbirth;
     }
 
-
-    @Transient
-    private boolean logged = false;
-
     //-------------------------------------------------------------------//
 
     public String getUsername() {
@@ -70,58 +66,17 @@ public class UserBean {
         this.password = password;
     }
 
-    public boolean isLogged() {
-        return logged;
-    }
-
-    public void setLogged(boolean logged) {
-        this.logged = logged;
-    }
-
     //-------------------------------------------------------------------//
-    public boolean validate() {
-        if (!this.username.equals("") && !this.password.equals("")) {
-//            AccessDAO accessDAO = new AccessDAO();
-//            accessDAO.register(this);
-            if(AccessController.registrationValidation(this)) {
-                if (AccessController.loginSetter(this.id)) {
-                    this.logged = true;
-                    return true;
-                }
-                else {
-                    return false;
-                }
+
+    public boolean register() {
+        if (!this.username.equals("") && !this.password.equals("") && !this.name.equals("") && !this.address.equals("") && !this.dateofbirth.equals("") && !this.email.equals("")) {
+            if (AccessController.getRegisteredUserId(this.username,this.password) == -1) {
+                return AccessController.registration(this);
             } else {
                 return false;
             }
         } else {
             return false;
-        }
-    }
-
-    public boolean register() {
-        if (!this.username.equals("") && !this.password.equals("") && !this.name.equals("") && !this.address.equals("") && !this.dateofbirth.equals("") && !this.email.equals("")) {
-            return AccessController.registration(this);
-        } else {
-            return false;
-        }
-    }
-
-    public void logout() {
-        AccessController.logoutSetter(this.id);
-        this.logged = false;
-    }
-
-    public String api_login_response() {
-        JSONObject response = new JSONObject();
-        if (this.validate()) {
-            response.put("code",1);
-            response.put("message","user_logged");
-            return response.toString();
-        } else {
-            response.put("code",0);
-            response.put("message","user_not_found");
-            return response.toString();
         }
     }
 
