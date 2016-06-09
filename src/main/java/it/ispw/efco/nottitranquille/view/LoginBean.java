@@ -29,24 +29,32 @@ public class LoginBean {
 
 
     public boolean login() {
-        Long id = AccessController.getRegisteredUserId(this.username,this.password);
-        if (id == -1) {
-            return false;
-        } else {
-            if (LoggedIn()) {
-                //you can not perform login if you are already logged
+        if (!this.username.equals("") && !this.password.equals("")) {
+            Long id = AccessController.getRegisteredUserId(this.username, this.password);
+            if (id == -1) {
                 return false;
             } else {
-                this.user_id = id;
-                AccessController.login(this);
-                return true;
-            }
+                if (LoggedIn()) {
+                    //you can not perform login if you are already logged
+                    return false;
+                } else {
+                    this.user_id = id;
+                    AccessController.login(this);
+                    return true;
+                }
 
+            }
+        } else {
+            return false;
         }
     }
 
     public boolean LoggedIn() {
-        return AccessController.isAlreadyLogged(this);
+        if (!this.username.equals("") && !this.password.equals("")) {
+            return AccessController.isAlreadyLogged(this.username, this.password);
+        } else {
+            return false;
+        }
     }
 
     public void logout() {

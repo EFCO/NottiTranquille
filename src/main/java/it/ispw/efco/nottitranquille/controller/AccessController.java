@@ -27,9 +27,9 @@ public class AccessController {
         accessDAO.saveLogin(lb);
     }
 
-    public static boolean isAlreadyLogged(LoginBean lb) {
+    public static boolean isAlreadyLogged(String username, String password) {
         AccessDAO accessDAO = new AccessDAO();
-        LoginBean lbr = accessDAO.getLoggedUser(lb);                       //TODO da migliorare il controllo dell'errore
+        LoginBean lbr = accessDAO.getLoggedUser(username,password);                       //TODO da migliorare il controllo dell'errore
         if (lbr != null) {
             return true;
         } else {

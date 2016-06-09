@@ -29,13 +29,13 @@
                 response.sendRedirect(referer);
             } else {
                 // handle empty referer.....
+                session.removeAttribute("loginBean");
                 response.sendRedirect("errorPage.jsp");
             }
         }
         if (request.getParameter("logout") != null) {
             loginBean.logout();
             session.removeAttribute("loginBean");
-            session.setAttribute("loginBean", new LoginBean());
             String referer = request.getHeader("Referer");
             // handle empty referer.....
             response.sendRedirect(referer);

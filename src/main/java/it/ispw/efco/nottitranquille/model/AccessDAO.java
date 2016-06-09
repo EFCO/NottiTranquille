@@ -34,12 +34,12 @@ public class AccessDAO {
             entityManager.getTransaction().commit();
     }
 
-    public LoginBean getLoggedUser(LoginBean lb){
+    public LoginBean getLoggedUser(String username, String password){
         EntityManager entityManager = JPAInitializer.getEntityManager();
         String querystring = "FROM loggedusers WHERE username = :u AND password = :p";
         TypedQuery<LoginBean> query = entityManager.createQuery(querystring,LoginBean.class);
-        query.setParameter("u",lb.getUsername());
-        query.setParameter("p",lb.getPassword());
+        query.setParameter("u",username);
+        query.setParameter("p",password);
         List<LoginBean> result = query.getResultList();
         if (result.size() == 0) {
             return null;
