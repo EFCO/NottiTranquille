@@ -12,13 +12,13 @@ import java.util.List;
  */
 public class AccessController {
 
-    public static long getRegisteredUserId(String username, String password) {
+    public static RegistrationBean getRegisteredUserId(String username, String password) {
         AccessDAO accessDAO = new AccessDAO();
         List<RegistrationBean> result = accessDAO.isRegistered(username, password);
         if (result.isEmpty()) {
-            return -1;
+            return null;
         } else {
-            return result.get(0).getId();
+            return result.get(0);
         }
     }
 

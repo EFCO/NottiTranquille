@@ -19,7 +19,7 @@ public class AccessDAO {
 
     public List<RegistrationBean> isRegistered(String username, String password) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
-        String querystring = "FROM registeredusersdata WHERE username = :u AND password = :p";
+        String querystring = "FROM registeredusersdata WHERE (username = :u OR email =:u) AND password = :p";
         TypedQuery<RegistrationBean> query = entityManager.createQuery(querystring,RegistrationBean.class);
         query.setParameter("u",username);
         query.setParameter("p",password);
@@ -28,10 +28,10 @@ public class AccessDAO {
     }
 
     public void saveLogin(LoginBean lb) {
-            EntityManager entityManager = JPAInitializer.getEntityManager();
-            entityManager.getTransaction().begin();
-            entityManager.persist(lb);
-            entityManager.getTransaction().commit();
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.persist(lb);
+        entityManager.getTransaction().commit();
     }
 
     public void setExpired(String cookie) {

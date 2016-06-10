@@ -80,7 +80,7 @@
             <div class="modal-body">
                 <form action="access.jsp" name="loginForm" id="regLogForm" method="GET">
                     <div class="form-group">
-                        <label for="username">User :</label>
+                        <label for="username" id="userlabel">Username or Email:</label>
                         <input name="username" id="username" type="text" class="form-control" placeholder="fede" required>
                     </div>
                     <div class="form-group">
@@ -114,6 +114,7 @@
 
                             switchButton.click(function () {
                                 if (jQuery("#regLogForm").attr("name") == "loginForm") {
+                                    jQuery('#userlabel').text("Username :");
                                     switchButton.text("or Log In");
                                     actionButton.text("Register");
                                     jQuery("#regLogForm :input").each(function () {
@@ -125,6 +126,7 @@
                                     actionButton.attr("name",'register');
 
                                 } else {
+                                    jQuery('#userlabel').text("Username or Email :");
                                     jQuery("#regLogForm").attr("name", "loginForm");
                                     switchButton.text("or Register");
                                     actionButton.text("Log in");

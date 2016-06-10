@@ -30,10 +30,11 @@ public class LoginBean {
 
     public int login() {
         if (!this.username.equals("") && !this.password.equals("")) {
-            Long id = AccessController.getRegisteredUserId(this.username, this.password);
-            if (id == -1) {
+            RegistrationBean rb = AccessController.getRegisteredUserId(this.username, this.password);
+            if (rb == null) {
                 return 0;
             } else {
+                this.username = rb.getUsername();
                 int value = LoggedIn();
                 if (value != 2) {
                     //you can not perform login if you are already logged

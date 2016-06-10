@@ -70,7 +70,7 @@ public class RegistrationBean {
 
     public boolean register() {
         if (!this.username.equals("") && !this.password.equals("") && !this.name.equals("") && !this.address.equals("") && !this.dateofbirth.equals("") && !this.email.equals("")) {
-            if (AccessController.getRegisteredUserId(this.username,this.password) == -1) {
+            if (AccessController.getRegisteredUserId(this.username,this.password) == null) {
                 return AccessController.registration(this);
             } else {
                 return false;
