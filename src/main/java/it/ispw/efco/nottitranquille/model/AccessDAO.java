@@ -34,6 +34,18 @@ public class AccessDAO {
             entityManager.getTransaction().commit();
     }
 
+    public void setExpired(String cookie) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        String querystring = "FROM loggedusers WHERE cookie = :c";
+        TypedQuery<LoginBean> query = entityManager.createQuery(querystring,LoginBean.class);
+        query.setParameter("c",cookie);
+        List<LoginBean> result = query.getResultList();
+        LoginBean lb = entityManager.find(LoginBean.class,result.get(0).getId());
+        entityManager.getTransaction().begin();
+        lb.setExpired(true);
+        entityManager.getTransaction().commit();
+    }
+
     public LoginBean getLoggedUser(String username, String password){
         EntityManager entityManager = JPAInitializer.getEntityManager();
         String querystring = "FROM loggedusers WHERE username = :u AND password = :p";
@@ -52,6 +64,7 @@ public class AccessDAO {
         LoginBean lb = entityManager.find(LoginBean.class,id);
         entityManager.getTransaction().begin();
         lb.setCookie(cookie);
+        lb.setExpired(false);
         entityManager.getTransaction().commit();
     }
 
@@ -62,16 +75,6 @@ public class AccessDAO {
         entityManager.remove(lb);
         entityManager.getTransaction().commit();
         return true;
-//        entityManager.getTransaction().begin();
-//        String querystring = "DELETE FROM loggedusers WHERE id = :id";
-//        Query query = entityManager.createQuery(querystring);
-//        query.setParameter("id",id);
-//        if (query.executeUpdate() == 1) {
-//            entityManager.getTransaction().commit();
-//            return true;
-//        }
-//        entityManager.getTransaction().commit();
-//        return false;
     }
 
     public void register(RegistrationBean registrationBean) {

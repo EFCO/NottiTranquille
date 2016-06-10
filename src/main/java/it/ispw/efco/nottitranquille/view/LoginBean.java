@@ -17,7 +17,7 @@ public class LoginBean {
     private String username = "";
     private String password = "";
     private String cookie = "";
-    private Long user_id;
+//    private Long user_id;
 
 
     public boolean isExpired() {
@@ -28,42 +28,45 @@ public class LoginBean {
     private boolean expired;
 
 
-    public boolean login() {
+    public int login() {
         if (!this.username.equals("") && !this.password.equals("")) {
             Long id = AccessController.getRegisteredUserId(this.username, this.password);
             if (id == -1) {
-                return false;
+                return 0;
             } else {
-                if (LoggedIn()) {
+                int value = LoggedIn();
+                if (value != 2) {
                     //you can not perform login if you are already logged
-                    return false;
+                    return value;
                 } else {
-                    this.user_id = id;
-                    AccessController.login(this);
-                    return true;
+//                    this.user_id = id;
+                    AccessController.logNewUser(this);
+                    return value;
                 }
 
             }
         } else {
-            return false;
+            return 0;
         }
     }
 
-    public boolean LoggedIn() {
-        if (!this.username.equals("") && !this.password.equals("")) {
-            return AccessController.isAlreadyLogged(this.username, this.password);
+    public int LoggedIn() {
+        if (!this.username.equals("") && !this.password.equals("") && !this.cookie.equals("")) {
+            return AccessController.isAlreadyLogged(this,cookie);
         } else {
-            return false;
+            return 2;
         }
     }
 
     public void logout() {
-        AccessController.setLogout(this.id);
+        if (this.id != null) {
+            AccessController.setLogout(this.id);
+        }
     }
 
     public String api_login_response() {
         JSONObject response = new JSONObject();
-        if (this.login()) {
+        if (this.login() == 2) {
             response.put("code",1);
             response.put("message","user_logged");
             return response.toString();
@@ -115,13 +118,13 @@ public class LoginBean {
         this.expired = expired;
     }
 
-    public Long getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
-    }
+//    public Long getUser_id() {
+//        return user_id;
+//    }
+//
+//    public void setUser_id(Long user_id) {
+//        this.user_id = user_id;
+//    }
 
     @Override
     public String toString() {
@@ -129,7 +132,7 @@ public class LoginBean {
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", cookie='" + cookie + '\'' +
-                ", user_id=" + user_id +
+//                ", user_id=" + user_id +
                 ", expired=" + expired +
                 ", id=" + id +
                 '}';

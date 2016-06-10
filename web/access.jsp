@@ -23,7 +23,8 @@
 
     <%
         if (request.getParameter("login") != null) {
-            if (loginBean.login()) {
+            loginBean.setCookie(request.getCookies()[0].getValue());
+            if (loginBean.login() != 0) {
                 String referer = request.getHeader("Referer");
                 // handle empty referer.....
                 response.sendRedirect(referer);
