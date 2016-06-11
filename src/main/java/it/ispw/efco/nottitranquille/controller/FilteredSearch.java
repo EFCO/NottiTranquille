@@ -20,7 +20,7 @@ public class FilteredSearch {
     public FilteredSearch() {
     }
 
-    public static List<Location> getListOfStructures(SearchBean searchBean) throws Exception {
+    public static List<Location> getListOfLocations(SearchBean searchBean) throws Exception {
         if (searchBean.getCheckin().isAfter(searchBean.getCheckout()) && searchBean.getCheckin().isBeforeNow()) {
             throw new Exception(); //TODO to improve
         }

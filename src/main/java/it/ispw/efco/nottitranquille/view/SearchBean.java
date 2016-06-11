@@ -114,7 +114,7 @@ public class SearchBean {
 //        catalogueDAO.saveRequest(r);
 
         try {
-            this.result = FilteredSearch.getListOfStructures(this);
+            this.result = FilteredSearch.getListOfLocations(this);
         } catch (Exception e) {
             return false;
         }
