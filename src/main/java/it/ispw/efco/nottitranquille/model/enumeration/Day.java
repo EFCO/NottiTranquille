@@ -97,7 +97,7 @@ public enum Day {
     MONDAY,
 
     /**
-     * Specifies the third day of the week
+     * Specifies the second day of the week
      */
     TUESDAY,
 

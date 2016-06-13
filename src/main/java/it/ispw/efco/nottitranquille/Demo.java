@@ -5,13 +5,13 @@ import it.ispw.efco.nottitranquille.model.dao.PriceDao;
 import it.ispw.efco.nottitranquille.model.enumeration.Day;
 import it.ispw.efco.nottitranquille.model.enumeration.RepetitionType;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.Interval;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Demo {
     private Price price;
@@ -252,5 +252,58 @@ public class Demo {
         demo.setPrice(priceWithFixDiscountAndPercentageDiscountAndPercentageFee);
         System.out.printf("Cost with a fee of %.0f%%: ", percentageFee);
         demo.display();*/
+
+/*
+
+        Location location = new Location();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+        location.getPrice(DateTime.parse("2016-01-13", dateTimeFormatter), DateTime.parse("2016-06-12", dateTimeFormatter));
+*/
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+
+        DateTime da = DateTime.parse("2016-06-01", dateTimeFormatter);
+        DateTime a = DateTime.parse("2016-06-15", dateTimeFormatter);
+/*
+        BasePrice basePrice = new BasePrice.Builder()
+                .setInterval(new Interval(da, a))
+                .setPrice(100)
+                .build();
+
+        PriceDao.store(basePrice);
+
+        da = DateTime.parse("2016-06-16", dateTimeFormatter);
+        a = DateTime.parse("2016-06-30", dateTimeFormatter);
+
+        basePrice = new BasePrice.Builder()
+                .setInterval(new Interval(da, a))
+                .setPrice(200)
+                .build();
+
+        PriceDao.store(basePrice);
+
+        double percentageFee = 21;
+        PercentageFee fee = new PercentageFee.Builder()
+                .setFee(percentageFee)
+                .setRepetitionType(RepetitionType.EVERY_DAY)
+                .build();
+
+        PriceDao.store(fee);
+
+        double percentageDiscount = 50;
+        PercentageDiscount discount = new PercentageDiscount.Builder()
+                .setDiscount(percentageDiscount)
+                .setRepetitionType(RepetitionType.EVERY_WEEK)
+                .setDays(Collections.singletonList(Day.SUNDAY))
+                .build();
+
+        PriceDao.store(discount);*/
+
+        da = DateTime.parse("2016-06-14", dateTimeFormatter);
+        a = DateTime.parse("2016-06-17", dateTimeFormatter);
+
+        Location location = new Location();
+        System.out.printf("The price for the location between %s - %s is: %f", da.toString(), a.toString(), location.getPrice(new Interval(da, a)));
+
     }
 }

@@ -1,12 +1,11 @@
 package it.ispw.efco.nottitranquille.model;
 
+import it.ispw.efco.nottitranquille.DateUtils;
 import it.ispw.efco.nottitranquille.model.enumeration.Day;
 import it.ispw.efco.nottitranquille.model.enumeration.RepetitionType;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Interval;
+import org.joda.time.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -237,6 +236,59 @@ public abstract class Price {
         this.repetitionType = priceToUpdate.repetitionType;
         this.days = priceToUpdate.days;
         this.value = priceToUpdate.value;
+    }
+
+    /**
+     * Checks if the price is eligible for a given date.
+     *
+     * @param date the date to check
+     * @return true if the price is eligible to the date, false otherwise
+     */
+    public boolean isEligible(DateTime date) {
+        // If date is not in the price's interval IS NOT eligible
+        if (!interval.contains(date)) {
+            return false;
+        }
+        // If date is in the price's interval
+        if (repetitionType != null) {
+            // and the price will be repeated every days IS eligible
+            if (repetitionType.equals(RepetitionType.EVERY_DAY)) {
+                return true;
+            }
+            // the price will be repeated every work day and the date is a work day, then it IS eligible
+            if (repetitionType == RepetitionType.EVERY_WORKDAY && (date.getDayOfWeek() == 1 || date.getDayOfWeek() == 1 || date.getDayOfWeek() == 2 || date.getDayOfWeek() == 3 || date.getDayOfWeek() == 4 || date.getDayOfWeek() == 5)) {
+                return true;
+            }
+            // the price will be repeated every not work day and the date is not a work day, then it IS eligible
+            if (repetitionType == RepetitionType.EVERY_NOT_WORKDAY && (date.getDayOfWeek() == 6 || date.getDayOfWeek() == 7)) {
+                return true;
+            }
+
+            if (repetitionType == RepetitionType.EVERY_WEEK || repetitionType == RepetitionType.EVERY_MONTH || repetitionType == RepetitionType.EVERY_YEAR) {
+                for (Day day : days) {
+                    int dayNumber = day.ordinal() + 1;
+                    if (dayNumber == date.getDayOfWeek()) {
+                        return true;
+                    }
+                    if (dayNumber - 7 == date.getDayOfMonth()) {
+                        return true;
+                    }
+                    DateTime startDate = interval.getStart();
+                    for (int i = 37; i < 37 + (7 * 5); i++) {
+                        int nth = (i - 36) % 7;
+                        if (nth == 0) {
+                            nth = 7;
+                        }
+                        int dayOfWeek = (i - 37) % 7 + 1;
+                        if (day == Day.values()[i] && DateTimeComparator.getDateOnlyInstance().compare(date, DateUtils.getNthOfMonth(nth, dayOfWeek, startDate.getMonthOfYear(), startDate.getYear())) == 0) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
     @Override

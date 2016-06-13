@@ -261,7 +261,7 @@ public class PriceDao {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
-                .createQuery("from Price where " +
+                .createQuery("from BasePrice where " +
                                 "(interval.begin >= :startDate and interval.begin <= :endDate) or " +
                                 "(interval.end >= :startDate and interval.end <= :endDate) or " +
                                 "(interval.begin <= :startDate and interval.end >= :endDate)",
