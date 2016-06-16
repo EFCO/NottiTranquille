@@ -5,8 +5,7 @@ import javax.persistence.*;
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-@Entity
-public class RegisteredUser extends Person {
+public abstract class RegisteredUser extends Person {
 
     @Column(unique = true)
     private String username;

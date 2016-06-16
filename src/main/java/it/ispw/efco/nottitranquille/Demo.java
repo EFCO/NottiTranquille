@@ -69,7 +69,7 @@ public class Demo {
         /* Location */
 
         Location myLocationA = new Location();
-        myLocationA.addBookingDate(intervalA);
+        myLocationA.addBooked(intervalA);
 
         myLocationA.setType(hostelRoom);
 
@@ -81,7 +81,7 @@ public class Demo {
         myLocationA.setManager(manager);
 
         Location myLocationB = new Location();
-        myLocationB.addBookingDate(intervalB);
+        myLocationB.addBooked(intervalB);
 
         myLocationB.setType(apartment);
 
@@ -100,9 +100,8 @@ public class Demo {
 
         ReservationController controller = ReservationController.getInstance();
 
-        controller.createReservation(me, myLocationA, intervalA, null);
-        controller.createReservation(me, myLocationB, intervalB, null);
-
+        controller.createReservation(me.getUsername(), myLocationA.getId(), intervalA, null);
+        controller.createReservation(me.getUsername(), myLocationB.getId(), intervalB, null);
 
     }
 

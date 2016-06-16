@@ -1,5 +1,6 @@
 package it.ispw.efco.nottitranquille.view;
 
+import it.ispw.efco.nottitranquille.controller.ReservationController;
 import it.ispw.efco.nottitranquille.model.Location;
 import it.ispw.efco.nottitranquille.model.Service;
 import it.ispw.efco.nottitranquille.model.dao.LocationDAO;
@@ -10,7 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Bean for Location. View Class contains Location class
+ * Bean for Location. Boundary class that contains information for {@link Location}
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
@@ -18,25 +19,33 @@ public class LocationBean {
 
     private String id;
 
+    /**
+     * @see Location#name
+     */
     private String name;
+
+    /**
+     * @see Location#description
+     */
     private String description;
 
+    /**
+     * @see Location#availableDate
+     */
     private List<Interval> enablesDate;
 
+    /**
+     * @see Location#services
+     */
     private List<Service> services;
 
     public void populate(String id) {
 
         Long ID = new Long(id);
 
-        //find Location from database to show it's details
-        Location location = LocationDAO.findByID(ID);
+        ReservationController controller = ReservationController.getInstance();
+        controller.fillLocationBean(this, ID);
 
-        this.id = id;
-        this.name = location.getName();
-        this.description = location.getDescription();
-        this.enablesDate = location.getAvailableDate();
-        this.services = location.getServices();
     }
 
     public String getId() {
@@ -84,7 +93,15 @@ public class LocationBean {
         return enable;
     }
 
+    public void setEnablesDate(List<Interval> enablesDate) {
+        this.enablesDate = enablesDate;
+    }
+
     public List<Service> getServices() {
         return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
     }
 }

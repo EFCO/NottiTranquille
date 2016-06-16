@@ -8,13 +8,14 @@ import javax.persistence.*;
 import java.util.*;
 
 /**
+ * This class represents an habitable building that can be booked.
  * {@See LocationType}
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 
 @Entity
-public class Location extends Observer {
+public class Location {
 
     /**
      * Default constructor
@@ -26,7 +27,7 @@ public class Location extends Observer {
     public Location(Structure structure) {
         this.structure = structure;
 
-        booking = new ArrayList<Interval>();
+        booked = new ArrayList<Interval>();
         availableDate = new ArrayList<Interval>();
         services = new ArrayList<Service>();
 
@@ -34,23 +35,44 @@ public class Location extends Observer {
 
     }
 
+    private class locationDao{
+
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    /**
+     * Name of the Location
+     */
     private String name;
-
+    /**
+     * A type contains service for a specific class of location and
+     * the method with it can be booked
+     *
+     * @see it.ispw.efco.nottitranquille.model.enumeration.ReservationType
+     */
     @ManyToOne
     private LocationType type;
 
+    /**
+     * A structure is a set of locations
+     */
     @ManyToOne
     private Structure structure;
 
+    /**
+     * List of interval of days in which this Location is occupied
+     */
     @ElementCollection(targetClass = Interval.class)
     @Column(length = 100000)
-    private List<Interval> booking;
+    private List<Interval> booked;
 
-
+    /**
+     * List of interval of days in which this Location is still available
+     */
     @ElementCollection(targetClass = Interval.class)
     @Column(length = 100000)
     private List<Interval> availableDate;
@@ -86,7 +108,7 @@ public class Location extends Observer {
     private Integer numberOfBeds;
 
     /**
-     * Basic price for Location. It can be decorated with fee or discount
+     * Basic price for Location. It can be decorated with fee or discount.
      */
     private float price;
 
@@ -103,19 +125,15 @@ public class Location extends Observer {
     @Transient
     List<Service> services;
 
-
     /**
-     * @param reservation the Subject to observe. If reservatio's interval of days changes the Location
-     *                    must update its available date.
-     * @param arg the interval of days that now is not available for reservation.
+     * If a Tenant reserved this Location, the system has to update the intervals of day still
+     * available
+     *
+     * @param reservation  the Subject to observe. If reservation's interval of days changes then the Location
+     *                     must update its available date.
+     * @param notAvailable the interval of days that now is not available for reservation.
      */
-    @Override
-    public void update(Subject reservation, Object arg) {
-        if (!reservation.hasChanged())
-            return;
-
-        Interval notAvailable = (Interval) arg;
-
+    public void update(Reservation reservation, Interval notAvailable) {
         List<Interval> newIntervals = new ArrayList<Interval>();
 
         DateTime notAvStart = notAvailable.getStart();
@@ -154,23 +172,22 @@ public class Location extends Observer {
         availableDate.addAll(newIntervals);
     }
 
-
     /**
+     * Add a new period of time in the list of the booked days for this Location
      *
+     * @param date: days when the location will be occupied
      */
-    public void addBookingDate(Interval date) {
-        booking.add(date);
+    public void addBooked(Interval date) {
+        booked.add(date);
         getAvailableDate().add(date);
-        //TODO check if date is already present
     }
-
 
     /**
      * @param interval : contiguous range of days that we want to test are available
      * @return bool
      */
     public boolean isAvailable(Interval interval) {
-        for (Interval inter : this.booking) {
+        for (Interval inter : this.booked) {
             if (interval.isEqual(inter) || (inter.getStart().isBefore(interval.getStart())
                     && inter.getEnd().isAfter(interval.getEnd()))) {
                 return true;
@@ -178,7 +195,6 @@ public class Location extends Observer {
         }
         return false;
     }
-
 
     /**
      * Method needs to update Location in the Database.
@@ -190,8 +206,17 @@ public class Location extends Observer {
     public void update(Location toUpdate) {
         this.id = toUpdate.getId();
         this.name = toUpdate.getName();
+        this.type = toUpdate.type;
+        this.price = toUpdate.price;
+        this.availableDate = toUpdate.availableDate;
+        this.booked = toUpdate.booked;
+        this.description = toUpdate.description;
+        this.maxGuestsNumber = toUpdate.maxGuestsNumber;
+        this.numberOfBathrooms = toUpdate.numberOfBathrooms;
+        this.numberOfBedrooms = toUpdate.numberOfBedrooms;
+        this.numberOfBeds = toUpdate.numberOfBeds;
+        this.numberOfRooms = toUpdate.numberOfRooms;
     }
-
 
     /* Getter and Setter */
 
@@ -207,8 +232,8 @@ public class Location extends Observer {
         return structure;
     }
 
-    public List<Interval> getBooking() {
-        return booking;
+    public List<Interval> getBooked() {
+        return booked;
     }
 
     public List<Interval> getAvailableDate() {
@@ -267,8 +292,8 @@ public class Location extends Observer {
         this.structure = structure;
     }
 
-    public void setBooking(List<Interval> booking) {
-        this.booking = booking;
+    public void setBooked(List<Interval> booked) {
+        this.booked = booked;
     }
 
     public void setAvailableDate(List<Interval> availableDate) {

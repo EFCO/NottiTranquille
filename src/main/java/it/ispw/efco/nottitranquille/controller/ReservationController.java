@@ -2,12 +2,18 @@ package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.*;
 import it.ispw.efco.nottitranquille.model.dao.LocationDAO;
+import it.ispw.efco.nottitranquille.model.dao.ManagerDAO;
 import it.ispw.efco.nottitranquille.model.dao.ReservationDAO;
 import it.ispw.efco.nottitranquille.model.dao.TenantDao;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
 import it.ispw.efco.nottitranquille.model.mail.Mail;
+import it.ispw.efco.nottitranquille.view.ListReservationBean;
+import it.ispw.efco.nottitranquille.view.LocationBean;
+import it.ispw.efco.nottitranquille.view.ReservationBean;
 import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import javax.persistence.NoResultException;
 import java.util.*;
@@ -34,12 +40,15 @@ public class ReservationController {
     /**
      * It Instantiates and saves a new Reservation.
      *
-     * @param tenant:   Tenant has reserved a Location
-     * @param location: reserved Location
-     * @param period:   Interval of time in which the Location is reserver
-     * @param buyers:   Other Person will stay in the Location for the respective period
+     * @param tenantUsername: Tenant has reserved a Location
+     * @param locationId:     reserved Location
+     * @param period:         Interval of time in which the Location is reserver
+     * @param buyers:         Other Person will stay in the Location for the respective period
      */
-    public void createReservation(Tenant tenant, Location location, Interval period, List<Person> buyers) {
+    public void createReservation(String tenantUsername, Long locationId, Interval period, List<Person> buyers) {
+
+        Tenant tenant = TenantDao.findByUsername(tenantUsername);
+        Location location = LocationDAO.findByID(locationId);
 
         Reservation reservation = new Reservation(tenant, location, period);
 
@@ -52,7 +61,7 @@ public class ReservationController {
             this.reserveWithConfirmation(reservation, location.getManager());
 
         tenant.addReservation(reservation);
-        reservation.notifyObserver();
+        reservation.notifyLocation();
 
         ReservationDAO.store(reservation);
         TenantDao.update(tenant);
@@ -95,17 +104,8 @@ public class ReservationController {
      */
     public void approveReservation(Reservation reservation) {
         reservation.setState(ReservationState.ToPay);
+        reservation.notifyLocation();
         ReservationDAO.update(reservation);
-    }
-
-    /**
-     * The Manager can decline Reservation created by a Tenant.
-     *
-     * @param reservation: Reservation declined
-     */
-    public void declineReservation(Reservation reservation) {
-        reservation.setState(ReservationState.Declined);
-        ReservationDAO.delete(reservation);
     }
 
     /**
@@ -117,8 +117,8 @@ public class ReservationController {
     public boolean approveReservation(Long id) {
         try {
             Reservation reservation = ReservationDAO.findByID(id);
-
             reservation.setState(ReservationState.ToPay);
+            reservation.notifyLocation();
             ReservationDAO.update(reservation);
 
         } catch (NoResultException e) {
@@ -131,14 +131,25 @@ public class ReservationController {
     /**
      * The Manager can decline Reservation created by a Tenant.
      *
+     * @param reservation: Reservation declined
+     */
+    public void declineReservation(Reservation reservation) {
+        reservation.setState(ReservationState.Declined);
+        reservation.notifyLocation();
+        ReservationDAO.delete(reservation);
+    }
+
+    /**
+     * The Manager can decline Reservation created by a Tenant.
+     *
      * @param id: declined Reservation's id
      * @return boolean
      */
     public boolean declineReservation(Long id) {
         try {
             Reservation reservation = ReservationDAO.findByID(id);
-
             reservation.setState(ReservationState.Declined);
+            reservation.notifyLocation();
             ReservationDAO.update(reservation);
 
         } catch (NoResultException e) {
@@ -146,6 +157,73 @@ public class ReservationController {
         }
 
         return true;
+    }
+
+    public List<ReservationBean> fillReservationBeans(String username, String role) {
+
+        /**
+         * List of {@link Reservation} belonging to an User
+         */
+        List<Reservation> reservations = new ArrayList<Reservation>();
+
+        /**
+         * List of beans to fill with the informations of a reservation
+         * @see ReservationBean
+         * @see ListReservationBean
+         * @see LocationBean
+         */
+        List<ReservationBean> beanList = new ArrayList<ReservationBean>();
+
+        // retrieve User corresponding to username and password and
+        // Reservations of the User
+        if (role.equals("Tenant")) {
+            Tenant tenant = TenantDao.findByUsername(username);
+            reservations = tenant.getReservations();
+        } else if (role.equals("Manager")) {
+            Manager manager = ManagerDAO.findByUserName(username);
+            reservations = manager.getToApprove();
+        }
+
+        for (Reservation res : reservations) {
+            ReservationBean bean = new ReservationBean();
+
+            bean.setId(res.getId().toString());
+            bean.setTenantUsername(res.getTenant().getUsername());
+            bean.setTenant(res.getTenant().getCompleteName());
+            bean.setState(res.getState());
+            bean.setBuyers(res.getBuyers());
+
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
+            bean.setStartDate(res.getStartDate().toString(formatter));
+            bean.setEndDate(res.getEndDate().toString(formatter));
+            bean.setPrice(res.getPrice());
+
+            Location loc = res.getLocation();
+            LocationBean locBean = new LocationBean();
+            locBean.setServices(loc.getServices());
+            locBean.setName(loc.getName());
+            locBean.setDescription(loc.getDescription());
+            locBean.setEnablesDate(loc.getAvailableDate());
+            locBean.setId(loc.getId().toString());
+
+            bean.setLocationBean(locBean);
+
+            beanList.add(bean);
+        }
+
+        return beanList;
+    }
+
+    public void fillLocationBean(LocationBean bean, Long id) {
+        //find Location from database to show it's details
+        Location location = LocationDAO.findByID(id);
+
+        bean.setServices(location.getServices());
+        bean.setName(location.getName());
+        bean.setDescription(location.getDescription());
+        bean.setEnablesDate(location.getAvailableDate());
+        bean.setId(location.getId().toString());
+
     }
 
 }

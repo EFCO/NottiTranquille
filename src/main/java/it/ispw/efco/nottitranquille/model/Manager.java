@@ -16,16 +16,12 @@ public class Manager extends Applicant {
     // Bound to use linked list and not Deque because it is not supported from JPA.
     private List<Reservation> toApprove;
 
-    //    private int newNotification;
-    private int reservationToApprove;
-
     /**
      * Default constructor
      */
     public Manager() {
         toApprove = new ArrayList<Reservation>();
 
-        reservationToApprove = 0;
     }
 
     public boolean addReservationToApprove(Reservation reservation) {
@@ -34,8 +30,6 @@ public class Manager extends Applicant {
                 return false;
 
         toApprove.add(reservation);
-        reservationToApprove += 1;
-
         return true;
     }
 
@@ -55,8 +49,6 @@ public class Manager extends Applicant {
 
     public void update(Manager toUpdate) {
         super.update(toUpdate);
-        this.reservationToApprove = toUpdate.getReservationToApprove();
-
         this.toApprove = toUpdate.getToApprove();
     }
 
@@ -64,7 +56,4 @@ public class Manager extends Applicant {
         return toApprove;
     }
 
-    public int getReservationToApprove() {
-        return reservationToApprove;
-    }
 }

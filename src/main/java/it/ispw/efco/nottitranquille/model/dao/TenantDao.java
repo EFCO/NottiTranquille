@@ -1,6 +1,7 @@
 package it.ispw.efco.nottitranquille.model.dao;
 
 import it.ispw.efco.nottitranquille.model.JPAInitializer;
+import it.ispw.efco.nottitranquille.model.Manager;
 import it.ispw.efco.nottitranquille.model.Tenant;
 
 import javax.persistence.EntityManager;
@@ -64,9 +65,27 @@ public class TenantDao {
     }
 
 
+    @SuppressWarnings("JpaQlInspection")
+    public static Tenant findByUsername(String userName)
+            throws NoResultException {
+
+        try {
+            EntityManager entityManager = JPAInitializer.getEntityManager();
+            return entityManager.createQuery("from Tenant where" +
+                    " (username = :name) ", Tenant.class)
+                    .setParameter("name", userName)
+                    .getSingleResult();
+
+        } catch (NoResultException e) {
+            throw new NoResultException();
+        }
+
+    }
+
     /**
      * retrieve a Istance of Tenant Entity through username and password;
      * if result is not unique then method returns the first found record.
+     *
      * @param userName
      * @param passWord
      * @return
@@ -80,8 +99,8 @@ public class TenantDao {
             EntityManager entityManager = JPAInitializer.getEntityManager();
             return entityManager.createQuery("from Tenant where" +
                     " (username = :name) and (password = :pass) ", Tenant.class)
-                    .setParameter("name",userName)
-                    .setParameter("pass",passWord)
+                    .setParameter("name", userName)
+                    .setParameter("pass", passWord)
                     .getSingleResult();
 
         } catch (NonUniqueResultException e) {

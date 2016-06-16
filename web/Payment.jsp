@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <jsp:useBean id="PaymentBean" scope="request"
-             class="it.ispw.efco.nottitranquille.view.PaymentBoundary"/>
+             class="it.ispw.efco.nottitranquille.view.PaymentForm"/>
 
 <jsp:setProperty name="PaymentBean" property="*"/>
 

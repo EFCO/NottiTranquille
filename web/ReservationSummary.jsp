@@ -7,7 +7,7 @@
 <%
     // Populate bean with information about reservation of the logged user
     if (Login != null && Login.getUsername() != "")
-        ListBean.populate(Login.getUsername(), Login.getPassword(), Login.getRole());
+        ListBean.populate(Login.getUsername(), Login.getRole());
 
     if (request.getParameter("Decline") != null)
         ListBean.decline(request.getParameter("Decline"));
@@ -60,18 +60,13 @@
 
 
                                     <c:forEach items="${ListBean.beans}" var="entry">
-                                        <c:set var="resBean" scope="session" value="${entry.value}"/>
+                                        <c:set var="resBean" scope="session" value="${entry}"/>
 
                                         <form action="Payment.jsp">
                                             <tr>
-                                                <td>${resBean.name}</td>
-                                                <td><joda:format value="${resBean.startDate}"
-                                                                 locale="en_US"
-                                                                 style="SM"
-                                                                 pattern="dd MMM yyyy"/></td>
-                                                <td><joda:format value="${resBean.endDate}" locale="en_US"
-                                                                 style="SM"
-                                                                 pattern="dd MMM yyyy"/></td>
+                                                <td>${resBean.locationBean.name}</td>
+                                                <td><${resBean.startDate}</td>
+                                                <td>${resBean.endDate}</td>
                                                 <td>${resBean.price}</td>
 
                                                 <c:choose>
@@ -144,19 +139,13 @@
                                     <tbody>
 
                                     <c:forEach items="${ListBean.beans}" var="entry">
-                                        <c:set var="resBean" scope="session" value="${entry.value}"/>
+                                        <c:set var="resBean" scope="session" value="${entry}"/>
 
                                         <form action="index.jsp">
                                             <tr>
-                                                <td>${resBean.name}</td>
-                                                <td><joda:format value="${resBean.startDate}"
-                                                                 locale="en_US"
-                                                                 style="SM"
-                                                                 pattern="dd MMM, yyyy HH:mm"/></td>
-                                                <td><joda:format value="${resBean.endDate}" locale="en_US"
-                                                                 style="SM"
-                                                                 pattern="dd MMM, yyyy HH:mm"/></td>
-
+                                                <td>${resBean.locationBean.name}</td>
+                                                <td>${resBean.startDate}</td>
+                                                <td>${resBean.endDate}
                                                 <td>
                                                     <c:out value=" ${resBean.tenant} "> </c:out>
                                                 </td>

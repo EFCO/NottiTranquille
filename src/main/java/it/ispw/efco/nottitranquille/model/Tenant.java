@@ -7,7 +7,6 @@ import java.util.*;
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
-@SuppressWarnings("JpaDataSourceORMInspection")
 public class Tenant extends RegisteredUser {
 
     /**

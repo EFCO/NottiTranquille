@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-public class PaymentBoundary {
+public class PaymentForm {
 
     private Reservation reservation;
 
@@ -24,7 +24,7 @@ public class PaymentBoundary {
     /**
      * Default constructor
      */
-    public PaymentBoundary() {
+    public PaymentForm() {
     }
 
 

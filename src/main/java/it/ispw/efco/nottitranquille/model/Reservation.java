@@ -15,7 +15,7 @@ import java.util.*;
 
 @Entity
 @SuppressWarnings("JpaDataSourceORMInspection")
-public class Reservation extends Subject {
+public class Reservation {
 
     /**
      * Default constructor
@@ -30,7 +30,6 @@ public class Reservation extends Subject {
         this.period = interval;
 
         this.state = ReservationState.Unknown;
-        this.hasChanged = true;
 
         try {
             this.price = location.getPrice();
@@ -70,13 +69,15 @@ public class Reservation extends Subject {
 
     private float price;
 
-
-    public boolean hasChanged() {
-        return false;
-    }
-
-    public void notifyObserver() {
-        location.update(this, period);
+    /**
+     * Inform Location corresponding this reservation that some days now are not available
+     * for booking.
+     */
+    public void notifyLocation() {
+        // If state == ToApprove then the location has not yet been actually booked
+        // because there is to wait for the manager's approval
+        if (state != ReservationState.ToApprove)
+            location.update(this, period);
     }
 
     /**
@@ -156,8 +157,6 @@ public class Reservation extends Subject {
                 return "Paid";
             case ToPay:
                 return "ToPay";
-            case Timeout:
-                return "Timeout";
             case Unknown:
                 return "Unknown";
             case Declined:

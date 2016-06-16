@@ -64,6 +64,16 @@ public class ManagerDAO {
                 .getResultList();
     }
 
+    public static Manager findByUserName(String userName) throws NoResultException {
+        try {
+            EntityManager entityManager = JPAInitializer.getEntityManager();
+            return entityManager.createQuery("from Manager where (username = :name)", Manager.class)
+                    .setParameter("name", userName)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            throw new NoResultException();
+        }
+    }
 
     @SuppressWarnings("JpaQlInspection")
     public static Manager findByNameAndPassword(String userName, String passWord)

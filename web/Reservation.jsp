@@ -12,7 +12,7 @@
 <%@ taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
 
 <jsp:useBean id="reservationBean" scope="request"
-             class="it.ispw.efco.nottitranquille.view.TenantFormReservation"/>
+             class="it.ispw.efco.nottitranquille.view.ReservationBean"/>
 <jsp:useBean id="locationBean" scope="session"
              class="it.ispw.efco.nottitranquille.view.LocationBean"/>
 
@@ -43,7 +43,6 @@
         }
 
         reservationBean.setTenantUsername(Login.getUsername());
-        reservationBean.setTenantPass(Login.getPassword());
         reservationBean.setLocationBean(locationBean);
     }
 
