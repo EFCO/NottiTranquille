@@ -1,10 +1,7 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.*;
-import it.ispw.efco.nottitranquille.model.dao.LocationDAO;
-import it.ispw.efco.nottitranquille.model.dao.ManagerDAO;
-import it.ispw.efco.nottitranquille.model.dao.ReservationDAO;
-import it.ispw.efco.nottitranquille.model.dao.TenantDao;
+import it.ispw.efco.nottitranquille.model.dao.*;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
 import it.ispw.efco.nottitranquille.model.mail.Mail;
@@ -47,7 +44,7 @@ public class ReservationController {
      */
     public void createReservation(String tenantUsername, Long locationId, Interval period, List<Person> buyers) {
 
-        Tenant tenant = TenantDao.findByUsername(tenantUsername);
+        Tenant tenant = (Tenant) RegisteredUserDAO.findByUserName(tenantUsername, Tenant.class);
         Location location = LocationDAO.findByID(locationId);
 
         Reservation reservation = new Reservation(tenant, location, period);
@@ -64,7 +61,7 @@ public class ReservationController {
         reservation.notifyLocation();
 
         ReservationDAO.store(reservation);
-        TenantDao.update(tenant);
+        RegisteredUserDAO.update(tenant, Tenant.class);
         LocationDAO.update(location);
 
     }
@@ -177,10 +174,10 @@ public class ReservationController {
         // retrieve User corresponding to username and password and
         // Reservations of the User
         if (role.equals("Tenant")) {
-            Tenant tenant = TenantDao.findByUsername(username);
+            Tenant tenant = (Tenant) RegisteredUserDAO.findByUserName(username, Tenant.class);
             reservations = tenant.getReservations();
         } else if (role.equals("Manager")) {
-            Manager manager = ManagerDAO.findByUserName(username);
+            Manager manager = (Manager) RegisteredUserDAO.findByUserName(username, Manager.class);
             reservations = manager.getToApprove();
         }
 

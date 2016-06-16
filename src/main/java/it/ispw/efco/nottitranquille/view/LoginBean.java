@@ -11,8 +11,6 @@ import javax.persistence.NoResultException;
 public class LoginBean {
     private String username;
     private String password;
-    private String nome;
-    private String cognome;
 
     private String role;
 
@@ -35,22 +33,6 @@ public class LoginBean {
 
     public String getPassword() {
         return this.password;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getNome() {
-        return this.nome;
-    }
-
-    public void setCognome(String cogn) {
-        this.cognome = cogn;
-    }
-
-    public String getCognome() {
-        return this.cognome;
     }
 
     public String getRole() {

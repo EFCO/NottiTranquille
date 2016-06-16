@@ -3,11 +3,9 @@ package it.ispw.efco.nottitranquille.controller;
 import it.ispw.efco.nottitranquille.model.Manager;
 import it.ispw.efco.nottitranquille.model.RegisteredUser;
 import it.ispw.efco.nottitranquille.model.Tenant;
-import it.ispw.efco.nottitranquille.model.dao.ManagerDAO;
-import it.ispw.efco.nottitranquille.model.dao.TenantDao;
+import it.ispw.efco.nottitranquille.model.dao.RegisteredUserDAO;
 
 import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 
 public class LoginController {
 
@@ -30,24 +28,20 @@ public class LoginController {
      * @return l'utente loggato oppure null se nessun utente corrisponde alla coppia username/password
      */
     public RegisteredUser login(String username, String password) {
-
+        RegisteredUser user;
         try {
-
-            Manager manager = ManagerDAO.findByNameAndPassword(username, password);
-            return manager;
-
-        } catch (NoResultException e1) {
+            user = (RegisteredUser) RegisteredUserDAO.findByNameAndPassword(username, password, Tenant.class);
+        } catch (NoResultException e) {
 
             try {
-                Tenant tenant = TenantDao.findByNameAndPassword(username, password);
-                return tenant;
+                user = (RegisteredUser) RegisteredUserDAO.findByNameAndPassword(username, password, Manager.class);
             } catch (NoResultException e2) {
                 return null;
             }
 
         }
 
-
+        return user;
     }
 
 }

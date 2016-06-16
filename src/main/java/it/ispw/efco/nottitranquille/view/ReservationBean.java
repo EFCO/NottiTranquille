@@ -2,8 +2,6 @@ package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.ReservationController;
 import it.ispw.efco.nottitranquille.model.*;
-import it.ispw.efco.nottitranquille.model.dao.LocationDAO;
-import it.ispw.efco.nottitranquille.model.dao.TenantDao;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;

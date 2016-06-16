@@ -2,10 +2,7 @@ package it.ispw.efco.nottitranquille;
 
 import it.ispw.efco.nottitranquille.controller.ReservationController;
 import it.ispw.efco.nottitranquille.model.*;
-import it.ispw.efco.nottitranquille.model.dao.LocationDAO;
-import it.ispw.efco.nottitranquille.model.dao.LocationTypeDAO;
-import it.ispw.efco.nottitranquille.model.dao.ManagerDAO;
-import it.ispw.efco.nottitranquille.model.dao.TenantDao;
+import it.ispw.efco.nottitranquille.model.dao.*;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
@@ -29,7 +26,7 @@ public class Demo {
         manager.setUsername("manager");
         manager.setPassword("password");
 
-        ManagerDAO.store(manager);
+        RegisteredUserDAO.store(manager);
 
         /* Tenant */
 
@@ -40,7 +37,7 @@ public class Demo {
         me.setUsername("Zanna");
         me.setPassword("password");
 
-        TenantDao.store(me);
+        RegisteredUserDAO.store(me);
 
         /*LocationType*/
 

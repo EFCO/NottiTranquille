@@ -1,15 +1,7 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.ReservationController;
-import it.ispw.efco.nottitranquille.model.Manager;
-import it.ispw.efco.nottitranquille.model.Reservation;
-import it.ispw.efco.nottitranquille.model.Tenant;
-import it.ispw.efco.nottitranquille.model.dao.ManagerDAO;
-import it.ispw.efco.nottitranquille.model.dao.TenantDao;
 
-import javax.persistence.NoResultException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
