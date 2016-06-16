@@ -20,31 +20,31 @@ public class Person {
     /**
      *
      */
-    private String firstName;
+    protected String firstName;
 
     /**
      *
      */
-    private String lastName;
+    protected String lastName;
 
     /**
      *
      */
-    private String email;
+    protected String email;
 
     /**
      *
      */
-    private DateTime birthdate;
+    protected DateTime birthdate;
 
     /**
      *
      */
-    private String phoneNumber;
+    protected String phoneNumber;
 
-    private Address address;
+    protected Address address;
 
-    private Gender gender;
+    protected Gender gender;
 
     /**
      * Default constructor
