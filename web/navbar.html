@@ -1,3 +1,7 @@
+<%@ page import="it.ispw.efco.nottitranquille.model.enumeration.PriceRanges" %>
+
+<c:set var="priceranges" value="<%=PriceRanges.values()%>"/>
+
 
 <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -53,10 +57,9 @@
                     <div class="form-group">
                         <label for="pricerange">Prezzo :</label>
                         <select name="pricerange" id="pricerange" class="form-control">
-                            <option>Fino a 100 euro</option>
-                            <option>Fino a 200 euro</option>
-                            <option>Fino a 500 euro</option>
-                            <option>Nessun limite</option>
+                            <c:forEach items="${priceranges}" var="pr">
+                                <option value="${pr.name()}">${pr.text}</option>
+                            </c:forEach>
                         </select>
                     </div>
             </div>
@@ -176,7 +179,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Notti Tranquille</a>
+                    <a class="navbar-brand" href="<c:url value="index.jsp"/>">Notti Tranquille</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->

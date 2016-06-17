@@ -1,6 +1,6 @@
 package it.ispw.efco.nottitranquille.controller;
 
-import it.ispw.efco.nottitranquille.model.CatalogueDAO;
+import it.ispw.efco.nottitranquille.model.RequestDAO;
 import it.ispw.efco.nottitranquille.model.Request;
 import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -50,9 +50,9 @@ public class FilteredSearchFX {
 
     @FXML
     protected void handleSearchButtonAction(ActionEvent event) {
-        CatalogueDAO catalogueDAO = new CatalogueDAO();
+        RequestDAO requestDAO = new RequestDAO();
 
-        List<Request> results = catalogueDAO.selectAllRequestsByFilter(nation.getText(),city.getText(), RequestStatus.valueOf("Accepted"));
+        List<Request> results = requestDAO.selectAllRequestsByFilter(nation.getText(),city.getText(), RequestStatus.valueOf("Accepted"));
         ObservableList rows = FXCollections.observableList(results);
         tableview.setItems(rows);
         TableColumn<Request,String> nameCol = new TableColumn<Request,String>("Name");

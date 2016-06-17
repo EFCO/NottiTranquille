@@ -28,7 +28,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="NewPersistenceUnit" />
-          <factory-entry name="NottiTranquille" value="6dc564ba-d5f1-46a4-ac38-b8bfd5e2d44a" />
+          <factory-entry name="NottiTranquille" value="1554db03-f9bb-49d8-8e77-fb102883aa06" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
       </configuration>

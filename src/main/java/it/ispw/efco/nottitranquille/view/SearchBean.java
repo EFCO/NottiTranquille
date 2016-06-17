@@ -2,13 +2,16 @@ package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.FilteredSearch;
 import it.ispw.efco.nottitranquille.model.*;
+import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
 import org.joda.time.DateTime;
+import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -95,11 +98,27 @@ public class SearchBean {
         this.pricerange = pricerange;
     }
 
-    public boolean validate() {
+    @Override
+    public String toString() {
+        return "SearchBean{" +
+                "nation='" + nation + '\'' +
+                ", city='" + city + '\'' +
+                ", checkin=" + checkin +
+                ", checkout=" + checkout +
+                ", pricerange='" + pricerange + '\'' +
+                ", locationtype='" + locationtype + '\'' +
+                ", maxtenant='" + maxtenant + '\'' +
+                ", search='" + search + '\'' +
+                ", commodities=" + Arrays.toString(commodities) +
+                ", result=" + result +
+                '}';
+    }
+
+    public void validate() throws Exception {
         //If the search is a basic one I have to check the presence of all the fields.
         this.result = new ArrayList<Location>();
         if(search == "search" && (this.nation.equals("") && this.city.equals("") && this.checkin == null && this.checkout == null)) {
-            return false;
+            throw new Exception("Incorrect input data");
         }
 //        Address a = new Address("Roma","Zagarolo","piazza di casa mia","00039");
 //        Structure s = new Structure("casa mia", a);
@@ -110,34 +129,37 @@ public class SearchBean {
 //        booking.add(new Interval(start,end));
 //        Location loc = new Location(booking,s,5, LocationType.Hotel);
 //        Request r = new Request(s);
-//        CatalogueDAO catalogueDAO = new CatalogueDAO();
+//        RequestDAO catalogueDAO = new RequestDAO();
 //        catalogueDAO.saveRequest(r);
 
         try {
             this.result = FilteredSearch.getListOfLocations(this);
         } catch (Exception e) {
-            return false;
+            throw e;
         }
-        return true;
     }
 
-    public String api_result() {
+    public String api_result() throws Exception {
         JSONObject jsonObject = new JSONObject();
-        if (this.validate()) {
+        try {
+            this.validate();
+        } catch (Exception e) {
+            throw e;
+        }
+        if (result.size() != 0) {
             jsonObject.put("code",1);
             JSONArray jsonArray = new JSONArray();
             for (int i = 0; i < result.size(); i++) {
                 JSONObject obj = new JSONObject();
                 Location currentElem = result.get(i);
-                obj.put("id",String.valueOf(i));
-                obj.put("name",currentElem.getStructure().getName());
-                obj.put("type",currentElem.getType().toString());
-                obj.put("address",currentElem.getLocationAddress());
-                obj.put("nation",currentElem.getStructure().getStructureAddress().getNation());
-                obj.put("city",currentElem.getStructure().getStructureAddress().getCity());
-                obj.put("price",(25 + i)% 5);//TODO use the right price
+                obj.put("id", String.valueOf(i));
+                obj.put("name", currentElem.getStructure().getName());
+                obj.put("type", currentElem.getType().toString());
+                obj.put("address", currentElem.getLocationAddress());
+                obj.put("nation", currentElem.getStructure().getStructureAddress().getNation());
+                obj.put("city", currentElem.getStructure().getStructureAddress().getCity());
+                obj.put("price", (25 + i) % 5);//TODO use the right price
                 jsonArray.put(obj);
-
             }
             jsonObject.put("results",jsonArray);
             return jsonObject.toString();

@@ -55,10 +55,7 @@
             padding-top: 50px;
         }
         #searchForm {
-            padding-top: 30px;
-            padding-left: 10px;
-            padding-right: 10px;
-            padding-bottom: 20px;
+            padding: 30px 10px 20px;
             /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0fb4e7+0,a9e4f7+100 */
             /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#76d8f6+0,cff0fb+100 */
             background: #76d8f6; /* Old browsers */
@@ -71,25 +68,24 @@
         #resultSet {
             padding-top: 20px;
         }
+
     </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script>
-        jQuery.noConflict();
-        jQuery(document).ready(function () {
+        $(document).ready(function () {
             //Per funzionamento guarda nota su Google Keep (Federico)
-            jQuery("#orderBy").click(function () {
+            $("#orderBy").click(function () {
                 var order = {};
                 var keys = {};
                 var appoggio = [];
-                jQuery("div.panel-body").each(function (j,elem) {
+                $("div.panel-body").each(function (j,elem) {
                     keys[j] = $(elem).text();
                     appoggio[j] = keys[j];
                 });
-                jQuery("div.paneldiv").each(function (i,elem) {
+                $("div.paneldiv").each(function (i,elem) {
                     order[i] = $(elem).html();
                 });
 
-                jQuery("#row").empty();
+                $("#row").empty();
 
                 appoggio.sort();
                 for (var i = 0; i < appoggio.length; i++) {
@@ -118,15 +114,18 @@
 
 <%
     for (Commodities elem : Commodities.values()) {
-        if (request.getParameter(elem.name().toLowerCase()) != null) {
-            pageContext.setAttribute(elem.name().toLowerCase(), request.getParameter(elem.name().toLowerCase()));
+        //if there are commodities passed as parameters in the URL then set them
+        if (request.getParameter(elem.name()) != null) {
+            pageContext.setAttribute(elem.name(), request.getParameter(elem.name()));
         } else {
-            pageContext.setAttribute(elem.name().toLowerCase(),"");
+            pageContext.setAttribute(elem.name(),"");
         }
     }
     //It useful for checkbox setting later
     pageContext.setAttribute("Commodities", Commodities.values());
 %>
+
+<c:set var="locationtypes" value="<%=LocationType.values()%>"/>
 
 <c:if test="${nation == null}">
     <c:set var="nation" value=""/>
@@ -162,10 +161,9 @@
             <div class="form-group col-xs-4 col-md-4">
                 <label for="pricerange">Prezzo :</label>
                 <select name="pricerange" id="pricerange" class="form-control" value="${pricerange}">
-                    <option ${pricerange == "Fino a 100 euro" ? "selected='selected'" : ''}>Fino a 100 euro</option>
-                    <option ${pricerange == "Fino a 200 euro" ? "selected='selected'" : ''}>Fino a 200 euro</option>
-                    <option ${pricerange == "Fino a 500 euro" ? "selected='selected'" : ''}>Fino a 500 euro</option>
-                    <option ${pricerange == "Nessun limite" ? "selected='selected'" : ''}>Nessun limite</option>
+                    <c:forEach items="${priceranges}" var="pr">
+                        <option value="${pr.name()}" ${pricerange == pr.name() ? "selected='selected'" : ''}>${pr.text}</option>
+                    </c:forEach>
                 </select>
             </div>
         </div>
@@ -189,19 +187,21 @@
                 </div>
             </div>
             <script>
-                jQuery(function () {
-                    jQuery('#checkinpicker').datetimepicker({
+                $(function () {
+                    var checkinpicker = $('#checkinpicker');
+                    var checkoutpricker = $('#checkoutpicker');
+                    checkinpicker.datetimepicker({
                        format: 'DD-MM-YYYY'
                     });
-                    jQuery('#checkoutpicker').datetimepicker({
+                    checkoutpricker.datetimepicker({
                         format: 'DD-MM-YYYY',
                         useCurrent: false //Important! See issue #1075
                     });
-                    jQuery("#checkinpicker").on("dp.change", function (e) {
-                        $('#checkoutpicker').data("DateTimePicker").minDate(e.date);
+                    checkinpicker.on("dp.change", function (e) {
+                        checkoutpricker.data("DateTimePicker").minDate(e.date);
                     });
-                    jQuery("#checkoutpicker").on("dp.change", function (e) {
-                        $('#checkinpicker').data("DateTimePicker").maxDate(e.date);
+                    checkoutpricker.on("dp.change", function (e) {
+                        checkinpicker.data("DateTimePicker").maxDate(e.date);
                     });
                 });
             </script>
@@ -209,16 +209,15 @@
         <div class="collapse row" id="collapseSearch">
             <div class="form-group col-xs-4 col-md-4">
                 <label for="locationtype">Tipo di alloggio :</label>
-                <select name="locationtype" id="locationtype" class="form-control">
-                    <% pageContext.setAttribute("LocationTypes", LocationType.values()); %>
-                    <c:forEach items="${LocationTypes}" var="type">
-                        <option ${locationtype == type.name() ? "selected='selected'" : ''}>${type.name()}</option>
+                <select name="locationtype" id="locationtype" class="form-control" value="${locationtype}">
+                    <c:forEach items="${locationtypes}" var="type">
+                        <option value="${type.name()}" ${locationtype == type.name() ? "selected='selected'" : ''}>${type.text}</option>
                     </c:forEach>
                 </select>
             </div>
             <div class="form-group col-xs-4 col-md-4">
                 <label for="maxtenant">Numero di ospiti :</label>
-                <select name="maxtenant" id="maxtenant" class="form-control">
+                <select name="maxtenant" id="maxtenant" class="form-control" value="${maxtenant}">
                     <c:forEach begin="1" end="5" step="1" var="num">
                         <option ${maxtenant == num ? "selected='selected'" : ''}>${num}</option>
                     </c:forEach>
@@ -228,12 +227,13 @@
                 <div class="form-group col-xs-4 col-md-4">
                     <c:forEach items="${Commodities}" var="commodity">
                         <label class="checkbox">
-                            <input id="${commodity.name().toLowerCase()}" name ="${commodity.name().toLowerCase()}" type="checkbox" ${param[commodity.name().toLowerCase()] == 'on' ? 'checked' : ''}> ${commodity.name().trim()}
+                            <input id="${commodity.name()}" name ="${commodity.name()}" type="checkbox" ${param[commodity.name()] == 'on' ? 'checked' : ''}> ${commodity.text}
                             <%
+                                //I have to set Commodities attribute as an array with 0 or 1 depending on which commodity is checked
                                 int[] array = new int[Commodities.values().length];
                                 for (Commodities elem : Commodities.values()) {
-                                    if (request.getParameter(elem.name().toLowerCase()) != null) {
-                                        if (request.getParameter(elem.name().toLowerCase()).equals("on")) {
+                                    if (request.getParameter(elem.name()) != null) {
+                                        if (request.getParameter(elem.name()).equals("on")) {
                                             array[Commodities.valueOf(elem.name()).ordinal()] = 1;
                                         } else {
                                             array[Commodities.valueOf(elem.name()).ordinal()] = 0;
@@ -267,10 +267,11 @@
                 <script>
                     //To alternate 'search' variabile value
                     function searchSwitcher() {
-                        if (document.getElementById("searchbutton").value == 'search') {
-                            document.getElementById("searchbutton").value = 'advsearch';
+                        var searchbutton = document.getElementById("searchbutton");
+                        if (searchbutton.value == 'search') {
+                            searchbutton.value = 'advsearch';
                         } else {
-                            document.getElementById("searchbutton").value = 'search';
+                            searchbutton.value = 'search';
                         }
                     }
                 </script>
@@ -289,9 +290,15 @@
     <%
         List<Location> result = new ArrayList<>();
         if (request.getParameter("search") != null) {
-            if (basicSearchBean.validate()) {
-                result = basicSearchBean.getResult();
+            try {
+                basicSearchBean.validate();
+            } catch (Exception e) {
+            %>
+                <div class="alert alert-danger" role="alert"><%=e.getLocalizedMessage()%></div>
+            <%
             }
+            result = basicSearchBean.getResult();
+
         }
         pageContext.setAttribute("result", result);
     %>

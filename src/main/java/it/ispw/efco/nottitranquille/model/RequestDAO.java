@@ -8,17 +8,18 @@ import org.joda.time.Interval;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import java.util.*;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-public class CatalogueDAO {
+public class RequestDAO {
     /**
      * Default constructor
      */
-    public CatalogueDAO() {
+    public RequestDAO() {
 
     }
 
@@ -30,7 +31,6 @@ public class CatalogueDAO {
         entityManager.getTransaction().begin();
         entityManager.persist(request);
         entityManager.getTransaction().commit();
-        JPAInitializer.shutdown();
     }
 
     public List<Request> selectAllRequestsByFilter(String nation, String city, RequestStatus status) {
@@ -55,7 +55,7 @@ public class CatalogueDAO {
         return result;
     }
 
-    public List<Request> selectAcceptedRequests(String nation, String city) {
+    public List<Request> selectAcceptedRequests(String nation, String city) throws IllegalArgumentException, PersistenceException {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         String querystring = "FROM Request r WHERE r.status = 0";
         if (!nation.equals("")) {
@@ -64,6 +64,7 @@ public class CatalogueDAO {
         if (!city.equals("")) {
                 querystring += " AND r.structure.address.city = :c";
             }
+        //can throw Illegal Argument exception
         TypedQuery<Request> query = entityManager.createQuery(querystring,Request.class);
         if (!nation.equals("")) {
             query.setParameter("n", nation);
@@ -72,6 +73,7 @@ public class CatalogueDAO {
             query.setParameter("c", city);
         }
         List<Request> result;
+        //TODO tutte le eccezioni dovrebbero essere lanciate?
         result = query.getResultList();
         return result;
     }
