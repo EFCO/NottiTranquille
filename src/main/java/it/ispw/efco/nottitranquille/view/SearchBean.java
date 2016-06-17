@@ -139,14 +139,10 @@ public class SearchBean {
         }
     }
 
-    public String api_result() throws Exception {
+    public String api_result() {
         JSONObject jsonObject = new JSONObject();
         try {
             this.validate();
-        } catch (Exception e) {
-            throw e;
-        }
-        if (result.size() != 0) {
             jsonObject.put("code",1);
             JSONArray jsonArray = new JSONArray();
             for (int i = 0; i < result.size(); i++) {
@@ -163,13 +159,15 @@ public class SearchBean {
             }
             jsonObject.put("results",jsonArray);
             return jsonObject.toString();
-        } else {
-            //restituirà semplicemente un array vuoto
+        } catch (Exception e) {
             jsonObject.put("code",0);
             JSONArray jsonArray = new JSONArray(result);
             jsonObject.put("results",jsonArray);
             return jsonObject.toString();
         }
+
+
+
     }
 
     public String getMaxtenant() {

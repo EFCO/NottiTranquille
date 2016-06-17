@@ -4,6 +4,7 @@ import it.ispw.efco.nottitranquille.view.LoginBean;
 import it.ispw.efco.nottitranquille.view.RegistrationBean;
 import sun.rmi.runtime.Log;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -77,7 +78,7 @@ public class AccessDAO {
         return true;
     }
 
-    public void register(RegistrationBean registrationBean) {
+    public void register(RegistrationBean registrationBean) throws Exception {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(registrationBean);

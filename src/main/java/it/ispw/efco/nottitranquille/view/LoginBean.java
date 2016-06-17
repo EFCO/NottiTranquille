@@ -28,26 +28,25 @@ public class LoginBean {
     private boolean expired;
 
 
-    public int login() {
+    public void login() throws Exception {
         if (!this.username.equals("") && !this.password.equals("")) {
             RegistrationBean rb = AccessController.getRegisteredUserId(this.username, this.password);
             if (rb == null) {
-                return 0;
+                throw new Exception("User not registered");
             } else {
                 this.username = rb.getUsername();
                 int value = LoggedIn();
                 if (value != 2) {
                     //you can not perform login if you are already logged
-                    return value;
+                    throw new Exception("User is already logged");
                 } else {
 //                    this.user_id = id;
                     AccessController.logNewUser(this);
-                    return value;
                 }
 
             }
         } else {
-            return 0;
+            throw new Exception("Invalid data");
         }
     }
 
@@ -59,7 +58,7 @@ public class LoginBean {
         }
     }
 
-    public void logout() {
+    public void logout() throws Exception {
         if (this.id != null) {
             AccessController.setLogout(this.id);
         }
@@ -67,13 +66,14 @@ public class LoginBean {
 
     public String api_login_response() {
         JSONObject response = new JSONObject();
-        if (this.login() == 2) {
+        try {
+            this.login();
             response.put("code",1);
             response.put("message","user_logged");
             return response.toString();
-        } else {
+        } catch (Exception e) {
             response.put("code",0);
-            response.put("message","user_not_found");
+            response.put("message",e.getMessage());
             return response.toString();
         }
     }

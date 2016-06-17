@@ -24,29 +24,40 @@
     <%
         if (request.getParameter("login") != null) {
             loginBean.setCookie(request.getCookies()[0].getValue());
-            if (loginBean.login() != 0) {
+            try {
+                loginBean.login();
                 String referer = request.getHeader("Referer");
                 // handle empty referer.....
                 response.sendRedirect(referer);
-            } else {
-                // handle empty referer.....
+            } catch (Exception e) {
+                 // handle empty referer.....
                 session.removeAttribute("loginBean");
-                response.sendRedirect("errorPage.jsp");
+                response.sendRedirect("errorPage.jsp?" + "error=" + e.getMessage());
             }
         }
         if (request.getParameter("logout") != null) {
-            loginBean.logout();
-            session.removeAttribute("loginBean");
-            String referer = request.getHeader("Referer");
-            // handle empty referer.....
-            response.sendRedirect(referer);
+            try {
+                loginBean.logout();
+                session.removeAttribute("loginBean");
+                String referer = request.getHeader("Referer");
+                // handle empty referer.....
+                response.sendRedirect(referer);
+            } catch (Exception e) {
+                session.removeAttribute("loginBean");
+                response.sendRedirect("errorPage.jsp?" + "error=" + e.getMessage());
+            }
         }
 
         if (request.getParameter("register") != null) {
-            registrationBean.register();
-            String referer = request.getHeader("Referer");
-            // handle empty referer.....
-            response.sendRedirect(referer);
+            try {
+                registrationBean.register();
+                String referer = request.getHeader("Referer");
+                // handle empty referer.....
+                response.sendRedirect(referer);
+            } catch (Exception e) {
+                response.sendRedirect("errorPage.jsp?" + "error=" + e.getMessage());
+            }
+
         }
     %>
 

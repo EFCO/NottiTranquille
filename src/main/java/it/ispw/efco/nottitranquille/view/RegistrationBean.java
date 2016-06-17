@@ -68,27 +68,28 @@ public class RegistrationBean {
 
     //-------------------------------------------------------------------//
 
-    public boolean register() {
+    public void register() throws Exception {
         if (!this.username.equals("") && !this.password.equals("") && !this.name.equals("") && !this.address.equals("") && !this.dateofbirth.equals("") && !this.email.equals("")) {
             if (AccessController.getRegisteredUserId(this.username,this.password) == null) {
-                return AccessController.registration(this);
+                AccessController.registration(this);
             } else {
-                return false;
+                throw new Exception("User already registered");
             }
         } else {
-            return false;
+            throw new Exception("Invalid data");
         }
     }
 
-    public String api_register_response() {
+    public String api_register_response() throws Exception {
         JSONObject response = new JSONObject();
-        if (this.register()) {
+        try {
+            this.register();
             response.put("code",1);
             response.put("message","registration_success");
             return response.toString();
-        } else {
+        } catch (Exception e) {
             response.put("code",0);
-            response.put("message","registration_failure");
+            response.put("message",e.getMessage());
             return response.toString();
         }
     }

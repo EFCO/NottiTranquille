@@ -25,6 +25,7 @@
             basicSearchBean.setCheckout(request.getParameter("checkout"));
         }
         out.println(basicSearchBean.api_result());
+
     }
 %>
 

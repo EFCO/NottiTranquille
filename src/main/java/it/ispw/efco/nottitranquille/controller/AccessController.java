@@ -48,16 +48,15 @@ public class AccessController {
         }
     }
 
-    public static boolean setLogout(Long id) {
+    public static boolean setLogout(Long id) throws Exception {
         AccessDAO accessDAO = new AccessDAO();
         return accessDAO.removeLoggedUser(id); //TODO da migliorare il controllo dell'errore
     }
 
-        public static boolean registration(RegistrationBean registrationBean) {
+        public static void registration(RegistrationBean registrationBean) throws Exception{
         //TODO need to cypher password before saving it maybe changing the existing one inside the attribute of the bean
         //TODO email verification should be done too
         AccessDAO accessDAO = new AccessDAO();
         accessDAO.register(registrationBean);
-        return true;
     }
 }
