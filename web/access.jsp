@@ -57,8 +57,18 @@
             } catch (Exception e) {
                 response.sendRedirect("errorPage.jsp?" + "error=" + e.getMessage());
             }
-
         }
+
+        if (request.getParameter("verify") != null) {
+            try {
+                registrationBean.verify();
+                // handle empty referer.....
+                response.sendRedirect("index.jsp");
+            } catch (Exception e) {
+                response.sendRedirect("errorPage.jsp?" + "error=" + e.getMessage());
+            }
+        }
+
     %>
 
 </body>

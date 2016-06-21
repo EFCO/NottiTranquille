@@ -1,10 +1,13 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.AccessDAO;
+import it.ispw.efco.nottitranquille.model.mail.Mailer;
 import it.ispw.efco.nottitranquille.view.LoginBean;
 import it.ispw.efco.nottitranquille.view.RegistrationBean;
-import sun.rmi.runtime.Log;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -53,10 +56,39 @@ public class AccessController {
         return accessDAO.removeLoggedUser(id); //TODO da migliorare il controllo dell'errore
     }
 
-        public static void registration(RegistrationBean registrationBean) throws Exception{
+    public static void registration(RegistrationBean registrationBean) throws Exception {
         //TODO need to cypher password before saving it maybe changing the existing one inside the attribute of the bean
-        //TODO email verification should be done too
         AccessDAO accessDAO = new AccessDAO();
-        accessDAO.register(registrationBean);
+        if (registrationBean.getHash().equals("")) {
+            Mailer mailer = new Mailer();
+            String code = null;
+            try {
+                MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                byte[] hash = digest.digest(registrationBean.toString().getBytes("UTF-8"));
+                StringBuffer hexString = new StringBuffer();
+
+                //Binary to Hexadecimal
+                for (int i = 0; i < hash.length; i++) {
+                    String hex = Integer.toHexString(0xff & hash[i]);
+                    if (hex.length() == 1) hexString.append('0');
+                    hexString.append(hex);
+                }
+
+                code = hexString.toString();
+
+            } catch (NoSuchAlgorithmException nsae) {
+                nsae.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            String link = "localhost:8080/access.jsp?verify=verify&hash=" + code;
+            mailer.send(registrationBean.getEmail(), "Welcome to Notti Tranquille", "In order to verify your account click on the following link\n" + link, null);
+            registrationBean.setHash(code);
+            registrationBean.setReq_status("pending");
+            accessDAO.register(registrationBean);
+        } else {
+            Long id = accessDAO.verifyPendingStatus(registrationBean.getHash());
+            accessDAO.verify(id);
+        }
     }
 }

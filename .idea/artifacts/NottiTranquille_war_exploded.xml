@@ -29,6 +29,8 @@
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:5.0.6.Final" />
           <element id="library" level="application" name="mysql:mysql-connector-java:5.1.38" />
           <element id="library" level="project" name="Maven: org.json:json:20160212" />
+          <element id="library" level="project" name="Maven: javax.mail:mail:1.4.7" />
+          <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
         </element>
       </element>
       <element id="artifact" artifact-name="NottiTranquille" />

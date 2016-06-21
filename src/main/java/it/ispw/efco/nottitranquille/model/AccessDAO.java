@@ -2,11 +2,8 @@ package it.ispw.efco.nottitranquille.model;
 
 import it.ispw.efco.nottitranquille.view.LoginBean;
 import it.ispw.efco.nottitranquille.view.RegistrationBean;
-import sun.rmi.runtime.Log;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -82,6 +79,24 @@ public class AccessDAO {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(registrationBean);
+        entityManager.getTransaction().commit();
+    }
+
+    public Long verifyPendingStatus(String hash) throws Exception {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        String querystring = "FROM registeredusersdata WHERE hash = :h AND req_status = :rs";
+        TypedQuery<RegistrationBean> query = entityManager.createQuery(querystring,RegistrationBean.class);
+        query.setParameter("h",hash);
+        query.setParameter("rs","pending");
+        List<RegistrationBean> result = query.getResultList();
+        return result.get(0).getId();
+    }
+
+    public void verify(Long id) throws Exception {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        RegistrationBean rb = entityManager.find(RegistrationBean.class,id);
+        entityManager.getTransaction().begin();
+        rb.setReq_status("accepted");
         entityManager.getTransaction().commit();
     }
 }

@@ -6,7 +6,6 @@ import org.json.JSONObject;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 /**
  * Created by Federico on 02/05/2016.
@@ -20,9 +19,18 @@ public class RegistrationBean {
     private String email = "fede93.vagnoni@gmail.com";
     private String address = "Piazza Ciao";
     private String dateofbirth = "duemilamai";
+    private String hash = "";
+    private String req_status = "";
 
-//    @Transient
-//    private boolean api = false;
+
+    public String getReq_status() {
+        return req_status;
+    }
+
+    public void setReq_status(String req_status) {
+        this.req_status = req_status;
+    }
+
 
     public String getName() {
         return name;
@@ -66,6 +74,14 @@ public class RegistrationBean {
         this.password = password;
     }
 
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
     //-------------------------------------------------------------------//
 
     public void register() throws Exception {
@@ -73,11 +89,15 @@ public class RegistrationBean {
             if (AccessController.getRegisteredUserId(this.username,this.password) == null) {
                 AccessController.registration(this);
             } else {
-                throw new Exception("User already registered");
+                throw new Exception("User already registered or waiting for verification");
             }
         } else {
             throw new Exception("Invalid data");
         }
+    }
+
+    public void verify() throws Exception {
+        AccessController.registration(this);
     }
 
     public String api_register_response() throws Exception {
@@ -113,5 +133,17 @@ public class RegistrationBean {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "RegistrationBean{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", dateofbirth='" + dateofbirth + '\'' +
+                '}';
     }
 }

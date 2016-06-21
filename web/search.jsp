@@ -55,7 +55,7 @@
             padding-top: 50px;
         }
         #searchForm {
-            padding: 30px 10px 20px;
+            padding: 15px 15px;
             /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0fb4e7+0,a9e4f7+100 */
             /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#76d8f6+0,cff0fb+100 */
             background: #76d8f6; /* Old browsers */
