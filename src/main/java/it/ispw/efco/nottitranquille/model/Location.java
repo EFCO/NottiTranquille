@@ -31,12 +31,7 @@ public class Location {
         availableDate = new ArrayList<Interval>();
         services = new ArrayList<Service>();
 
-        price = 0;
-
-    }
-
-    private class locationDao{
-
+        price = 0f;
 
     }
 
@@ -110,7 +105,7 @@ public class Location {
     /**
      * Basic price for Location. It can be decorated with fee or discount.
      */
-    private float price;
+    private Float price;
 
     @ManyToOne
     private Manager manager;
@@ -129,62 +124,52 @@ public class Location {
      * If a Tenant reserved this Location, the system has to update the intervals of day still
      * available
      *
-     * @param reservation  the Subject to observe. If reservation's interval of days changes then the Location
-     *                     must update its available date.
-     * @param notAvailable the interval of days that now is not available for reservation.
+     * @param bookingPeriod the interval of days that now is not available for reservation.
      */
-    public void update(Reservation reservation, Interval notAvailable) {
-        List<Interval> newIntervals = new ArrayList<Interval>();
+    public void bookPeriod(Interval bookingPeriod) throws IllegalArgumentException {
+        // TODO: 21/06/16 To test
+        boolean found = false;
 
-        DateTime notAvStart = notAvailable.getStart();
-        DateTime notAvEnd = notAvailable.getEnd();
+        for (Interval avlPeriod : availableDate) {
+            if (!avlPeriod.contains(bookingPeriod))
+                break;
 
-        Iterator iterator = availableDate.iterator();
-        while (iterator.hasNext()) {
-            Interval interval = (Interval) iterator.next();
 
-            DateTime oldStart = interval.getStart();
-            DateTime oldEnd = interval.getEnd();
+            found = true;
 
-            if ((oldStart.isEqual(notAvStart) && oldEnd.isEqual(notAvEnd)) ||
-                    (oldStart.isBefore(notAvStart)) || (oldEnd.isAfter(notAvEnd))) {
-                iterator.remove();
+            DateTime oldStart = avlPeriod.getStart();
+            DateTime oldEnd = avlPeriod.getEnd();
+
+            DateTime bookingStart = bookingPeriod.getStart();
+            DateTime bookingEnd = bookingPeriod.getEnd();
+
+            availableDate.remove(avlPeriod);
+
+            Interval interval1 = new Interval(oldStart, bookingStart);
+            Interval interval2 = new Interval(oldEnd, bookingEnd);
+
+            // Check that they not are zero duration intervals (ex. [29/10/2000 29/10/2000] )
+            if (!interval1.contains(interval1)) {
+                availableDate.add(interval1);
             }
 
-            if (oldStart.isBefore(notAvStart)) {
+            if (!interval2.contains(interval2))
+                availableDate.add(interval2);
 
-                DateTime newEnd = notAvStart.minusDays(1);
-                Interval newFirstInterval = new Interval(oldStart, newEnd);
-
-                newIntervals.add(newFirstInterval);
-            }
-
-            if (oldEnd.isAfter(notAvEnd)) {
-
-                DateTime newStart = notAvEnd.plusDays(1);
-                Interval newSecondInterval = new Interval(newStart, oldEnd);
-
-                newIntervals.add(newSecondInterval);
-
-            }
         }
 
-        availableDate.addAll(newIntervals);
+        if (!found)
+            throw new IllegalArgumentException("Interval of time not available for booking");
+
+        booked.add(bookingPeriod);
+
     }
 
     /**
-     * Add a new period of time in the list of the booked days for this Location
+     * Check if the given interval of time is available to book the Location
      *
-     * @param date: days when the location will be occupied
-     */
-    public void addBooked(Interval date) {
-        booked.add(date);
-        getAvailableDate().add(date);
-    }
-
-    /**
      * @param interval : contiguous range of days that we want to test are available
-     * @return bool
+     * @return bool Return true if interval is available
      */
     public boolean isAvailable(Interval interval) {
         for (Interval inter : this.booked) {
@@ -268,7 +253,7 @@ public class Location {
         return photos;
     }
 
-    public float getPrice() {
+    public Float getPrice() {
         return price;
     }
 
@@ -328,7 +313,7 @@ public class Location {
         this.photos = photos;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 

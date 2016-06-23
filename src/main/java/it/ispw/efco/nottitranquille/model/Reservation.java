@@ -70,17 +70,6 @@ public class Reservation {
     private float price;
 
     /**
-     * Inform Location corresponding this reservation that some days now are not available
-     * for booking.
-     */
-    public void notifyLocation() {
-        // If state == ToApprove then the location has not yet been actually booked
-        // because there is to wait for the manager's approval
-        if (state != ReservationState.ToApprove)
-            location.update(this, period);
-    }
-
-    /**
      * Method needs to update Reservation in the Database.
      * We have to instantiate a new Reservation with update attributes
      *

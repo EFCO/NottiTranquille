@@ -13,14 +13,14 @@
 
 <jsp:useBean id="reservationBean" scope="request"
              class="it.ispw.efco.nottitranquille.view.ReservationBean"/>
-<jsp:useBean id="locationBean" scope="session"
+<jsp:useBean id="locationBean" scope="request"
              class="it.ispw.efco.nottitranquille.view.LocationBean"/>
 
 <jsp:setProperty name="reservationBean" property="*"/>
 
 <%
     //Needs because compiler not resolve variable Login in ReservationSummary.
-    //Cause it recompiles when url for Reservation.jsp is entered
+    //Cause it re-compiles when url for Reservation.jsp is entered
     LoginBean Login = (LoginBean) session.getAttribute("Login");
 
     // Assuming the id of the location we want to see is in the URL
@@ -60,6 +60,15 @@
 
     <!-- meta for image gallery
 ================================================== -->
+
+    <style>
+        .container {
+            margin-right: auto;
+            margin-left: auto;
+            max-width: 950px; /* or 950px */
+        }
+    </style>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

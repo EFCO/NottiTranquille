@@ -39,12 +39,19 @@ public class LocationBean {
      */
     private List<Service> services;
 
+    private Float price;
+
     public void populate(String id) {
 
         Long ID = new Long(id);
 
         ReservationController controller = ReservationController.getInstance();
-        controller.fillLocationBean(this, ID);
+        Location location = controller.findLocation(ID);
+        services = location.getServices();
+        name = location.getName();
+        description = location.getDescription();
+        enablesDate = location.getAvailableDate();
+        price = location.getPrice();
 
     }
 
@@ -103,5 +110,13 @@ public class LocationBean {
 
     public void setServices(List<Service> services) {
         this.services = services;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
     }
 }

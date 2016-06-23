@@ -17,6 +17,9 @@ import java.util.*;
  */
 public class ReservationBean {
 
+    public ReservationBean() {
+    }
+
     private String id;
 
     /**

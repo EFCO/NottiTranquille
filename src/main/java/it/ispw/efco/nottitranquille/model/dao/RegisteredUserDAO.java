@@ -85,6 +85,20 @@ public class RegisteredUserDAO {
 
     }
 
+    public static Object findbyId(Long id, Class<?> type)
+            throws NoResultException {
+
+        try {
+            EntityManager entityManager = JPAInitializer.getEntityManager();
+            return entityManager.createQuery("from Tenant where " +
+                    " (id = :ID) ", type)
+                    .setParameter("ID", id)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            throw new NoResultException();
+        }
+    }
+
 }
 
 

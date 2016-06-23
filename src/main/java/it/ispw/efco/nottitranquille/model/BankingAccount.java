@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class reprensents a banking account for a Person. Usefull to simulate transactions and payment.
+ * Class reprensents a banking account for a Person. Useful to simulate transactions and payment.
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
@@ -18,19 +18,21 @@ public class BankingAccount {
 //    @GeneratedValue(strategy = GenerationType.AUTO)
 //    private Long id;
 
-    private String holderName;
+    private Long holderId;
+
+    private String holderFirstname;
+
+    private String holderLastname;
 
     private float amount;
 
-//    @OneToMany
+    //    @OneToMany
     private List<Transaction> transactions;
 
-    public BankingAccount() {
-        this(null);
-    }
-
-    public BankingAccount(String holder) {
-        this.holderName = holder;
+    public BankingAccount(Long personID, String firstname, String lastname) {
+        this.holderId = personID;
+        this.holderFirstname = firstname;
+        this.holderLastname = lastname;
         amount = 0;
         transactions = new ArrayList<Transaction>();
     }
@@ -39,56 +41,26 @@ public class BankingAccount {
         transactions.add(transaction);
     }
 
-    /**
-     * The holder of the account puts in moneys.
-     *
-     * @param amount: quantity of meneys
-     * @throws InvalidArgumentException
-     */
-    public void payIn(float amount) throws InvalidArgumentException {
-
-        if (amount < 0)
-            throw new InvalidArgumentException(new String[]{"amount < 0"});
-
-        this.amount += amount;
-        transactions.add(new Transaction(amount));
-    }
-
-    /**
-     * The holder of the account gets moneys.
-     *
-     * @param amount: quantity of moneys
-     * @return boolean: true if amount is available
-     * @throws InvalidArgumentException
-     */
-    public boolean payDown(Float amount) throws InvalidArgumentException {
-
-        if (amount < 0)
-            throw new InvalidArgumentException(new String[]{"amount < 0"});
-
-        if (this.amount >= amount) {
-            this.amount -= amount;
-            transactions.add(new Transaction(-amount));
-            return true;
-        }
-
-        return false;
-    }
-
-    public void increaseAmount(float amount) {
+    public void increaseAmount(Float amount) {
         this.amount += amount;
     }
 
-    public void decreaseAmount(float amount) {
+    public void decreaseAmount(Float amount) throws IllegalArgumentException {
+        if (this.amount < amount)
+            throw new IllegalArgumentException(" balance can't be negative ");
         this.amount -= amount;
     }
 
-//    public Long getId() {
-//        return id;
-//    }
+    public Long getHolderId() {
+        return holderId;
+    }
 
-    public String getHolder() {
-        return holderName;
+    public String getHolderFirstname() {
+        return holderFirstname;
+    }
+
+    public String getHolderLastname() {
+        return holderLastname;
     }
 
     public float getAmount() {

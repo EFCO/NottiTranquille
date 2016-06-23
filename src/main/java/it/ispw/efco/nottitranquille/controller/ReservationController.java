@@ -4,13 +4,8 @@ import it.ispw.efco.nottitranquille.model.*;
 import it.ispw.efco.nottitranquille.model.dao.*;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
-import it.ispw.efco.nottitranquille.model.mail.Mail;
-import it.ispw.efco.nottitranquille.view.ListReservationBean;
-import it.ispw.efco.nottitranquille.view.LocationBean;
-import it.ispw.efco.nottitranquille.view.ReservationBean;
+import it.ispw.efco.nottitranquille.model.mail.Mailer;
 import org.joda.time.Interval;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import javax.persistence.NoResultException;
 import java.util.*;
@@ -58,12 +53,9 @@ public class ReservationController {
             this.reserveWithConfirmation(reservation, location.getManager());
 
         tenant.addReservation(reservation);
-        reservation.notifyLocation();
 
         ReservationDAO.store(reservation);
         RegisteredUserDAO.update(tenant, Tenant.class);
-        LocationDAO.update(location);
-
     }
 
 
@@ -79,7 +71,7 @@ public class ReservationController {
         reservation.setState(ReservationState.ToApprove);
 
         if (manager.getEmail() != null) {
-            Mail mailer = new Mail();
+            Mailer mailer = new Mailer();
             mailer.send(manager.getEmail(), "[NottiTranquille:] Nuova prenotazione", "Hai una nuova prenotazione da controllare!",
                     null);
         }
@@ -101,7 +93,6 @@ public class ReservationController {
      */
     public void approveReservation(Reservation reservation) {
         reservation.setState(ReservationState.ToPay);
-        reservation.notifyLocation();
         ReservationDAO.update(reservation);
     }
 
@@ -115,7 +106,7 @@ public class ReservationController {
         try {
             Reservation reservation = ReservationDAO.findByID(id);
             reservation.setState(ReservationState.ToPay);
-            reservation.notifyLocation();
+
             ReservationDAO.update(reservation);
 
         } catch (NoResultException e) {
@@ -132,7 +123,6 @@ public class ReservationController {
      */
     public void declineReservation(Reservation reservation) {
         reservation.setState(ReservationState.Declined);
-        reservation.notifyLocation();
         ReservationDAO.delete(reservation);
     }
 
@@ -146,7 +136,6 @@ public class ReservationController {
         try {
             Reservation reservation = ReservationDAO.findByID(id);
             reservation.setState(ReservationState.Declined);
-            reservation.notifyLocation();
             ReservationDAO.update(reservation);
 
         } catch (NoResultException e) {
@@ -156,22 +145,21 @@ public class ReservationController {
         return true;
     }
 
-    public List<ReservationBean> fillReservationBeans(String username, String role) {
+    /**
+     * Operations used from the View layer to retrieve information from the model and fill the beans
+     *
+     * @param username Username of a {@link RegisteredUser}
+     * @param role     String that describe if a RegisteredUser is a Manager or a Tenant
+     * @return List of Reservations
+     */
+    public List<Reservation> getReservationsForUser(String username, String role) {
 
         /**
          * List of {@link Reservation} belonging to an User
          */
         List<Reservation> reservations = new ArrayList<Reservation>();
 
-        /**
-         * List of beans to fill with the informations of a reservation
-         * @see ReservationBean
-         * @see ListReservationBean
-         * @see LocationBean
-         */
-        List<ReservationBean> beanList = new ArrayList<ReservationBean>();
-
-        // retrieve User corresponding to username and password and
+        // retrieve User corresponding to username and
         // Reservations of the User
         if (role.equals("Tenant")) {
             Tenant tenant = (Tenant) RegisteredUserDAO.findByUserName(username, Tenant.class);
@@ -181,45 +169,19 @@ public class ReservationController {
             reservations = manager.getToApprove();
         }
 
-        for (Reservation res : reservations) {
-            ReservationBean bean = new ReservationBean();
+        return reservations;
 
-            bean.setId(res.getId().toString());
-            bean.setTenantUsername(res.getTenant().getUsername());
-            bean.setTenant(res.getTenant().getCompleteName());
-            bean.setState(res.getState());
-            bean.setBuyers(res.getBuyers());
-
-            DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
-            bean.setStartDate(res.getStartDate().toString(formatter));
-            bean.setEndDate(res.getEndDate().toString(formatter));
-            bean.setPrice(res.getPrice());
-
-            Location loc = res.getLocation();
-            LocationBean locBean = new LocationBean();
-            locBean.setServices(loc.getServices());
-            locBean.setName(loc.getName());
-            locBean.setDescription(loc.getDescription());
-            locBean.setEnablesDate(loc.getAvailableDate());
-            locBean.setId(loc.getId().toString());
-
-            bean.setLocationBean(locBean);
-
-            beanList.add(bean);
-        }
-
-        return beanList;
     }
 
-    public void fillLocationBean(LocationBean bean, Long id) {
+    /**
+     * Return Location to the View
+     *
+     * @param id Location's id
+     * @return {@link Location} corresponding to the given id
+     */
+    public Location findLocation(Long id) {
         //find Location from database to show it's details
-        Location location = LocationDAO.findByID(id);
-
-        bean.setServices(location.getServices());
-        bean.setName(location.getName());
-        bean.setDescription(location.getDescription());
-        bean.setEnablesDate(location.getAvailableDate());
-        bean.setId(location.getId().toString());
+        return LocationDAO.findByID(id);
 
     }
 

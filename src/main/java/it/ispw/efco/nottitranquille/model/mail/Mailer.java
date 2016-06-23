@@ -11,24 +11,24 @@ import javax.activation.*;
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-public class Mail {
+public class Mailer {
 
     private String username = " nottitranquile@gmail.com";
     private String password = "persistencesql";
 
-    public Mail() {
+    public Mailer() {
     }
 
-    public Mail(String username, String password) {
+    public Mailer(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
 
     /**
-     * @param dest: receiver's email address
-     * @param object: object of the message
-     * @param text: body
+     * @param dest:     receiver's email address
+     * @param object:   object of the message
+     * @param text:     body
      * @param filename: optional path for a filename to attach
      */
     public void send(String dest, String object, String text, String filename) {
@@ -68,7 +68,7 @@ public class Mail {
         }
     }
 
-    public void sendHtml( String dest, String object, String html) {
+    public void sendHtml(String dest, String object, String html) {
 
         Session session = setProperties();
 

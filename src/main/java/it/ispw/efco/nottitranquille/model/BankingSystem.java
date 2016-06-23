@@ -18,39 +18,32 @@ public class BankingSystem {
         return ourInstance;
     }
 
-    HashMap<String, BankingAccount> accounts; // Each person matches his account.
+    HashMap<Long, BankingAccount> accounts; // Each person matches his account.
 
     /**
      * Default constructor
      */
     public BankingSystem() {
-        accounts = new HashMap<String, BankingAccount>();
-    }
-
-    /**
-     * @param person: Test if exist an account for this person.
-     * @return boolean
-     */
-    public boolean existAccountFor(String person) {
-        if (accounts.containsKey(person))
-            return true;
-
-        return false;
+        accounts = new HashMap<Long, BankingAccount>();
     }
 
     /**
      * Create a new BankingAccount. The amount of money is set on 0 initially
      *
-     * @param person: holder for the account.
+     * @param id identifies holder for the account.
+     * @return the account created
      */
-    public void createAccount(String person) {
-        accounts.put(person, new BankingAccount(person));
+    public BankingAccount createAccount(Long id, String firstname, String lastname) {
+        BankingAccount account = new BankingAccount(id, firstname, lastname);
+        accounts.put(id, account);
+
+        return account;
     }
 
-    public List<Transaction> getAllTransaction(String holder) throws NoSuchFieldException {
+    public List<Transaction> getAllTransaction(Long holderId) throws NoSuchFieldException {
         ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
-        BankingAccount account = accounts.get(holder);
+        BankingAccount account = accounts.get(holderId);
         if (account == null)
             throw new NoSuchFieldException("holder has no account");
 
@@ -58,25 +51,45 @@ public class BankingSystem {
 
     }
 
-    /**
-     * Move money from an account to another and register a Transaction in them.
-     *
-     * @param from:   account from the moneys are picked up
-     * @param to:     account where the moneys are put
-     * @param amount: quantity of money
-     * @throws IllegalArgumentException
-     */
-    public void transfer(BankingAccount from, BankingAccount to, float amount) throws IllegalArgumentException {
-
-        if (from.getAmount() < amount)
-            throw new IllegalArgumentException("Amount not availabe");
-
-        Transaction transaction = new Transaction(amount, to.getHolder(), from.getHolder());
-        from.appendTransaction(transaction);
-        to.appendTransaction(transaction);
-
-        from.decreaseAmount(amount);
+    public void transfer(BankingAccount from, BankingAccount to, Float amount) {
+        Transaction transaction = new Transaction(amount, to, from);
+        try {
+            from.decreaseAmount(amount);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
         to.increaseAmount(amount);
+        to.appendTransaction(transaction);
+        from.appendTransaction(transaction);
+    }
+
+    public void transfer(Person from, Person to, Float amount) {
+
+        BankingAccount account1;
+        BankingAccount account2;
+
+        if (!existAccountFor(from.getId())) {
+            account1 = createAccount(from.getId(), from.getFirstName(), from.getLastName());
+        } else {
+            account1 = accounts.get(from.getId());
+        }
+
+        if (!existAccountFor(to.getId())) {
+            account2 = createAccount(to.getId(), to.getFirstName(), to.getLastName());
+        } else {
+            account2 = accounts.get(to.getId());
+        }
+
+        this.transfer(from, to, amount);
+
+    }
+
+    /**
+     * @param id: Test if exist an account for this person.
+     * @return boolean
+     */
+    private boolean existAccountFor(Long id) {
+        return accounts.containsKey(id);
     }
 
 }

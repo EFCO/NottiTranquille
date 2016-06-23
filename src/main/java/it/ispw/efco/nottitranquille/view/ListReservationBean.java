@@ -1,7 +1,12 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.ReservationController;
+import it.ispw.efco.nottitranquille.model.Location;
+import it.ispw.efco.nottitranquille.model.Reservation;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,9 +28,44 @@ public class ListReservationBean {
      */
     private int nRes; // number of ReservationBean
 
+    /**
+     * Populate the instance with the information from the model
+     *
+     * @param username Username of a {@link it.ispw.efco.nottitranquille.model.RegisteredUser}
+     * @param role     String that describe if a RegisteredUser is a Manager or a Tenant
+     */
     public void populate(String username, String role) {
+        beans = new ArrayList<ReservationBean>();
+
         ReservationController controller = ReservationController.getInstance();
-        beans = controller.fillReservationBeans(username, role);
+        List<Reservation> reservations = controller.getReservationsForUser(username, role);
+
+        for (Reservation res : reservations) {
+            ReservationBean bean = new ReservationBean();
+
+            bean.setId(res.getId().toString());
+            bean.setTenantUsername(res.getTenant().getUsername());
+            bean.setTenant(res.getTenant().getCompleteName());
+            bean.setState(res.getState());
+            bean.setBuyers(res.getBuyers());
+
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
+            bean.setStartDate(res.getStartDate().toString(formatter));
+            bean.setEndDate(res.getEndDate().toString(formatter));
+            bean.setPrice(res.getPrice());
+
+            Location loc = res.getLocation();
+            LocationBean locBean = new LocationBean();
+            locBean.setServices(loc.getServices());
+            locBean.setName(loc.getName());
+            locBean.setDescription(loc.getDescription());
+            locBean.setEnablesDate(loc.getAvailableDate());
+            locBean.setId(loc.getId().toString());
+
+            bean.setLocationBean(locBean);
+
+            beans.add(bean);
+        }
 
         nRes = beans.size();
     }
