@@ -2,7 +2,6 @@ package it.ispw.efco.nottitranquille.model.dao;
 
 import it.ispw.efco.nottitranquille.model.JPAInitializer;
 import it.ispw.efco.nottitranquille.model.Manager;
-import it.ispw.efco.nottitranquille.model.RegisteredUser;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -10,58 +9,58 @@ import javax.persistence.NoResultException;
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-public class RegisteredUserDAO {
+public class ManagerDAO {
 
     /**
-     * Stores {@link RegisteredUser} into persistent system.
+     * Stores {@link Manager} into persistent system.
      *
-     * @param user the {@link RegisteredUser} to persist
+     * @param manager the {@link Manager} to persist
      */
-    public static void store(RegisteredUser user) {
+    public static void store(Manager manager) throws Exception {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
 
-        entityManager.persist(user);
+        entityManager.persist(manager);
 
         entityManager.getTransaction().commit();
     }
 
     /**
-     * Updates {@link RegisteredUser} into persistent system
+     * Updates {@link Manager} into persistent system
      *
-     * @param toUpdate the {@link RegisteredUser} to update with the new state
+     * @param toUpdate the {@link Manager} to update with the new state
      */
-    public static void update(RegisteredUser toUpdate, Class<?> type) {
+    public static void update(Manager toUpdate) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
 
-        RegisteredUser managerLoaded = (RegisteredUser) entityManager.find(type, toUpdate.getId());
+        Manager managerLoaded = entityManager.find(Manager.class, toUpdate.getId());
         managerLoaded.update(toUpdate);
 
         entityManager.getTransaction().commit();
     }
 
     /**
-     * Deletes {@link RegisteredUser } from persistent system.
+     * Deletes {@link Manager } from persistent system.
      *
-     * @param toDelete the  {@link RegisteredUser} to remove
+     * @param toDelete the  {@link Manager} to remove
      */
-    public static void delete(RegisteredUser toDelete, Class<?> type) {
+    public static void delete(Manager toDelete) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
 
-        RegisteredUser managerLoaded = (RegisteredUser) entityManager.find(type, toDelete.getId());
+        Manager managerLoaded = entityManager.find(Manager.class, toDelete.getId());
         entityManager.remove(managerLoaded);
 
         entityManager.getTransaction().commit();
     }
 
     @SuppressWarnings("JpaQlInspection")
-    public static Object findByUserName(String userName, Class<?> type) throws NoResultException {
+    public static Manager findByUserName(String managerName) throws NoResultException {
         try {
             EntityManager entityManager = JPAInitializer.getEntityManager();
-            return entityManager.createQuery("from " + type.getName() + " where (username = :name)", type)
-                    .setParameter("name", userName)
+            return entityManager.createQuery("from Manager where (username = :name)", Manager.class)
+                    .setParameter("name", managerName)
                     .getSingleResult();
         } catch (NoResultException e) {
             throw new NoResultException();
@@ -69,31 +68,27 @@ public class RegisteredUserDAO {
     }
 
     @SuppressWarnings("JpaQlInspection")
-    public static Object findByNameAndPassword(String userName, String passWord, Class<?> type)
+    public static Manager findByNameAndPassword(String managerName, String passWord)
             throws NoResultException {
 
         try {
             EntityManager entityManager = JPAInitializer.getEntityManager();
-            return entityManager.createQuery("from " + type.getName() + " where " +
-                    " (username = :name) and (password = :pass) ", type)
-                    .setParameter("name", userName)
+            return entityManager.createQuery("from Manager where " +
+                    " (managername = :name) and (password = :pass) ", Manager.class)
+                    .setParameter("name", managerName)
                     .setParameter("pass", passWord)
                     .getSingleResult();
         } catch (NoResultException e) {
             throw new NoResultException();
         }
-
     }
 
-    public static Object findbyId(Long id, Class<?> type)
-            throws NoResultException {
+    public static Manager findbyId(Long id) throws NoResultException {
 
         try {
             EntityManager entityManager = JPAInitializer.getEntityManager();
-            return entityManager.createQuery("from Tenant where " +
-                    " (id = :ID) ", type)
-                    .setParameter("ID", id)
-                    .getSingleResult();
+            return entityManager.find(Manager.class, id);
+
         } catch (NoResultException e) {
             throw new NoResultException();
         }

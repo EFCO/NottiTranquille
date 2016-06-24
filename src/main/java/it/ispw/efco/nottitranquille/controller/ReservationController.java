@@ -39,7 +39,7 @@ public class ReservationController {
      */
     public void createReservation(String tenantUsername, Long locationId, Interval period, List<Person> buyers) {
 
-        Tenant tenant = (Tenant) RegisteredUserDAO.findByUserName(tenantUsername, Tenant.class);
+        Tenant tenant = TenantDAO.findByUserName(tenantUsername);
         Location location = LocationDAO.findByID(locationId);
 
         Reservation reservation = new Reservation(tenant, location, period);
@@ -55,7 +55,7 @@ public class ReservationController {
         tenant.addReservation(reservation);
 
         ReservationDAO.store(reservation);
-        RegisteredUserDAO.update(tenant, Tenant.class);
+        TenantDAO.update(tenant);
     }
 
 
@@ -162,10 +162,10 @@ public class ReservationController {
         // retrieve User corresponding to username and
         // Reservations of the User
         if (role.equals("Tenant")) {
-            Tenant tenant = (Tenant) RegisteredUserDAO.findByUserName(username, Tenant.class);
+            Tenant tenant = TenantDAO.findByUserName(username);
             reservations = tenant.getReservations();
         } else if (role.equals("Manager")) {
-            Manager manager = (Manager) RegisteredUserDAO.findByUserName(username, Manager.class);
+            Manager manager = ManagerDAO.findByUserName(username);
             reservations = manager.getToApprove();
         }
 

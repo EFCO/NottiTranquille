@@ -49,7 +49,7 @@
     if (reservationBean.validate()) {
 %>
 <!-- Passa il controllo alla nuova pagina -->
-<jsp:forward page="index.jsp"/>
+<jsp:forward page="Payment.jsp"/>
 <%
     }
 %>
@@ -271,7 +271,7 @@
 
     <div class="container" align="right" align="bottom">
         <button type="button" class="btn btn-default">Back</button>
-        <button type="submit" class="btn btn-primary" name="Reserve" id="Reserve">Conferma prenotazione</button>
+        <button type="submit" class="btn btn-primary" name="Reserve" id="Reserve">Conferma</button>
     </div>
 
 </form>

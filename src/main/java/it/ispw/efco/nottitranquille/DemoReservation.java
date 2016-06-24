@@ -17,8 +17,8 @@ public class DemoReservation {
 
     public static void main(String args[]) {
 
-        Manager manager = (Manager) RegisteredUserDAO.findByUserName("manager", Manager.class);
-        Tenant zanna = (Tenant) RegisteredUserDAO.findByUserName("Zanna", Tenant.class);
+        Manager manager = ManagerDAO.findByUserName("manager");
+        Tenant zanna = TenantDAO.findByUserName("Zanna");
 
         /*LocationType*/
 

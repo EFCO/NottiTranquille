@@ -1,8 +1,8 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.*;
-import it.ispw.efco.nottitranquille.model.dao.RegisteredUserDAO;
 import it.ispw.efco.nottitranquille.model.dao.ReservationDAO;
+import it.ispw.efco.nottitranquille.model.dao.TenantDAO;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
 
 /**
@@ -19,7 +19,7 @@ public class PaymentControl {
     }
 
     public void pay(Long ReservationId, Long TenantId) {
-        Person tenant = (Person) RegisteredUserDAO.findbyId(TenantId, Tenant.class);
+        Person tenant = TenantDAO.findbyId(TenantId);
         Reservation reservation = ReservationDAO.findByID(ReservationId);
 
         BankingSystem bank = BankingSystem.getInstance();

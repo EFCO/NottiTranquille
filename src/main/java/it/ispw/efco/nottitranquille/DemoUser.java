@@ -3,7 +3,8 @@ package it.ispw.efco.nottitranquille;
 
 import it.ispw.efco.nottitranquille.model.Manager;
 import it.ispw.efco.nottitranquille.model.Tenant;
-import it.ispw.efco.nottitranquille.model.dao.RegisteredUserDAO;
+import it.ispw.efco.nottitranquille.model.dao.ManagerDAO;
+import it.ispw.efco.nottitranquille.model.dao.TenantDAO;
 
 public class DemoUser {
 
@@ -18,7 +19,12 @@ public class DemoUser {
         manager.setUsername("manager");
         manager.setPassword("password");
 
-        RegisteredUserDAO.store(manager);
+        try {
+            ManagerDAO.store(manager);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
 
         /* Tenant */
 
@@ -29,6 +35,11 @@ public class DemoUser {
         me.setUsername("Zanna");
         me.setPassword("password");
 
-        RegisteredUserDAO.store(me);
+        try {
+            TenantDAO.store(me);
+        } catch (Exception e2) {
+            e2.printStackTrace();
+            System.exit(1);
+        }
     }
 }

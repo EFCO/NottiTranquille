@@ -6,12 +6,21 @@ import javax.persistence.*;
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
-public abstract class RegisteredUser extends Person {
+public abstract class RegisteredUser extends Person implements Applicant {
 
-    @Column(unique = true)
     protected String username;
 
     protected String password;
+
+    public RegisteredUser() {
+        super();
+    }
+
+    public RegisteredUser(String username, String password) {
+        super();
+        this.username = username;
+        this.password = password;
+    }
 
     public void setUsername(String username) {
         this.username = username;

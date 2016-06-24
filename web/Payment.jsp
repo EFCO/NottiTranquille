@@ -11,6 +11,8 @@
 
 <jsp:useBean id="PaymentBean" scope="request"
              class="it.ispw.efco.nottitranquille.view.PaymentForm"/>
+<jsp:useBean id="reservationBean" scope="request"
+             class="it.ispw.efco.nottitranquille.view.ReservationBean"/>
 
 <jsp:setProperty name="PaymentBean" property="*"/>
 
@@ -18,6 +20,7 @@
     //Needs because compiler not resolve variable Login in ReservationSummary.
     //Cause it re-compiles when url for Reservation.jsp is entered
     LoginBean Login = (LoginBean) session.getAttribute("Login");
+
 %>
 
 <html>

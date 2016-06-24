@@ -29,7 +29,7 @@ public class Reservation {
         this.location = location;
         this.period = interval;
 
-        this.state = ReservationState.Unknown;
+        this.state = ReservationState.Init;
 
         try {
             this.price = location.getPrice();
@@ -146,7 +146,7 @@ public class Reservation {
                 return "Paid";
             case ToPay:
                 return "ToPay";
-            case Unknown:
+            case Init:
                 return "Unknown";
             case Declined:
                 return "Declined";

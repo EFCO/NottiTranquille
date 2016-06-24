@@ -1,8 +1,6 @@
 package it.ispw.efco.nottitranquille.model;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.*;
 
 
@@ -10,7 +8,8 @@ import java.util.*;
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
-public class Manager extends Applicant {
+@SuppressWarnings("JpaDataSourceORMInspection")
+public class Manager extends RegisteredUser implements Applicant {
 
     @OneToMany
     // Bound to use linked list and not Deque because it is not supported from JPA.
@@ -55,5 +54,4 @@ public class Manager extends Applicant {
     public List<Reservation> getToApprove() {
         return toApprove;
     }
-
 }

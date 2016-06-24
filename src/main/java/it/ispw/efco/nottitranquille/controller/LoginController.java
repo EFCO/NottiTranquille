@@ -1,9 +1,8 @@
 package it.ispw.efco.nottitranquille.controller;
 
-import it.ispw.efco.nottitranquille.model.Manager;
 import it.ispw.efco.nottitranquille.model.RegisteredUser;
-import it.ispw.efco.nottitranquille.model.Tenant;
-import it.ispw.efco.nottitranquille.model.dao.RegisteredUserDAO;
+import it.ispw.efco.nottitranquille.model.dao.ManagerDAO;
+import it.ispw.efco.nottitranquille.model.dao.TenantDAO;
 
 import javax.persistence.NoResultException;
 
@@ -30,11 +29,11 @@ public class LoginController {
     public RegisteredUser login(String username, String password) {
         RegisteredUser user;
         try {
-            user = (RegisteredUser) RegisteredUserDAO.findByNameAndPassword(username, password, Tenant.class);
+            user = TenantDAO.findByNameAndPassword(username, password);
         } catch (NoResultException e) {
 
             try {
-                user = (RegisteredUser) RegisteredUserDAO.findByNameAndPassword(username, password, Manager.class);
+                user = ManagerDAO.findByNameAndPassword(username, password);
             } catch (NoResultException e2) {
                 return null;
             }

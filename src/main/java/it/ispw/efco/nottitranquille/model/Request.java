@@ -20,11 +20,9 @@ public class Request {
 
     private DateTime lastModified;
 
-    @ManyToOne
-    private Applicant requestedBy;
+    private String ApplicantUsername;
 
-    @ManyToOne
-    private Scout reviewedBy;
+    private String reviewedBy;
 
     @Enumerated
     private RequestStatus status;
@@ -37,10 +35,6 @@ public class Request {
      */
     public Request() {
     }
-
-
-
-
 
 
 }
