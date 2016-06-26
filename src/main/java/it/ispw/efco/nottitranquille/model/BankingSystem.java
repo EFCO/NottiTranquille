@@ -65,22 +65,22 @@ public class BankingSystem {
 
     public void transfer(Person from, Person to, Float amount) {
 
-        BankingAccount account1;
-        BankingAccount account2;
+        BankingAccount accountFrom;
+        BankingAccount accountTo;
 
         if (!existAccountFor(from.getId())) {
-            account1 = createAccount(from.getId(), from.getFirstName(), from.getLastName());
+            accountFrom = createAccount(from.getId(), from.getFirstName(), from.getLastName());
         } else {
-            account1 = accounts.get(from.getId());
+            accountFrom = accounts.get(from.getId());
         }
 
         if (!existAccountFor(to.getId())) {
-            account2 = createAccount(to.getId(), to.getFirstName(), to.getLastName());
+            accountTo = createAccount(to.getId(), to.getFirstName(), to.getLastName());
         } else {
-            account2 = accounts.get(to.getId());
+            accountTo = accounts.get(to.getId());
         }
 
-        this.transfer(from, to, amount);
+        this.transfer(accountFrom, accountTo, amount);
 
     }
 

@@ -11,7 +11,7 @@ import org.joda.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
- * Bean for Reservation. Boundary class that contains all Tenant informations entered by himself
+ * JavaBean for {@link Reservation}.
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
@@ -22,9 +22,6 @@ public class ReservationBean {
 
     private String id;
 
-    /**
-     * Tenant username used and memorized in the system
-     */
     private String tenantUsername;
 
     /**
@@ -47,23 +44,15 @@ public class ReservationBean {
      */
     private List<Person> buyers;
 
-    /**
-     * Day when the reservation begins
-     */
     private String startDate;
 
-    /**
-     * Day when the reservation ends
-     */
     private String endDate;
 
-    /**
-     * Amount paid or to pay for location in the corresponding interval of days
-     */
     private Float price;
 
     /**
-     * This method is called whene a Tenant confirms the end of the booking procedure
+     * Method called when a Tenant confirms the end of the booking procedure.
+     * Conversion and verification of the data.
      *
      * @return true if all information are syntactically correct
      */
@@ -71,15 +60,17 @@ public class ReservationBean {
         if (startDate == null || startDate.equals("") || endDate == null || endDate.equals(""))
             return false;
 
-        if (buyers == null)
-            return false;
+        // Buyers not required
 
-        for (Person buyer : buyers) {
-            if (buyer.getFirstName() == null || buyer.getFirstName().equals("") ||
-                    buyer.getLastName() == null || buyer.getLastName().equals("")) {
-                return false;
-            }
-        }
+//        if (buyers == null)
+//            return false;
+//
+//        for (Person buyer : buyers) {
+//            if (buyer.getFirstName() == null || buyer.getFirstName().equals("") ||
+//                    buyer.getLastName() == null || buyer.getLastName().equals("")) {
+//                return false;
+//            }
+//        }
 
         /* format date */
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-mm-yyyy");

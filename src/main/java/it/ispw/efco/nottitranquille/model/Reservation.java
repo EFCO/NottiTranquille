@@ -49,6 +49,9 @@ public class Reservation {
     private Tenant tenant;
 
     @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "Reservation_buyers",
+            joinColumns = {@JoinColumn(name = "ReservationId", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "BuyerId", referencedColumnName = "id")})
     private List<Person> buyers;
 
 

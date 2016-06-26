@@ -6,10 +6,9 @@ import javax.persistence.*;
 import java.util.*;
 
 /**
+ * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  * @see ReservationType
  * @see Location
- *
- * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
 @SuppressWarnings("JpaDataSourceORMInspection")
@@ -47,7 +46,8 @@ public class LocationType {
 
     public void update(LocationType toUpdate) {
         this.id = toUpdate.getId();
-        //TODO
+        this.services = toUpdate.getServices();
+        this.reservationType = toUpdate.getReservationType();
     }
 
     /* Getter and Setter */
@@ -67,6 +67,7 @@ public class LocationType {
     public void setServices(List<Service> services) {
         this.services = services;
     }
+
     public ReservationType getReservationType() {
         return reservationType;
     }

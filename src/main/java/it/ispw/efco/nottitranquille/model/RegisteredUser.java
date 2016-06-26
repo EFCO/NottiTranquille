@@ -1,6 +1,9 @@
 package it.ispw.efco.nottitranquille.model;
 
-import javax.persistence.*;
+import com.sun.javafx.beans.annotations.NonNull;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
@@ -8,6 +11,8 @@ import javax.persistence.*;
 @Entity
 public abstract class RegisteredUser extends Person implements Applicant {
 
+    @NonNull
+    @Column(unique = true)
     protected String username;
 
     protected String password;

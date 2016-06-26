@@ -1,26 +1,25 @@
-<%@ page import="it.ispw.efco.nottitranquille.model.dao.ReservationDAO" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.Reservation" %>
-<%@ page import="it.ispw.efco.nottitranquille.view.LoginBean" %><%--
-  Created by IntelliJ IDEA.
-  User: emanuele
-  Date: 25/01/16
-  Time: 15.21
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:useBean id="PaymentBean" scope="request"
+
+<jsp:useBean id="paymentBean" scope="session"
              class="it.ispw.efco.nottitranquille.view.PaymentForm"/>
-<jsp:useBean id="reservationBean" scope="request"
-             class="it.ispw.efco.nottitranquille.view.ReservationBean"/>
-
-<jsp:setProperty name="PaymentBean" property="*"/>
+<jsp:useBean id="Login" scope="session"
+             class="it.ispw.efco.nottitranquille.view.LoginBean"/>
 
 <%
-    //Needs because compiler not resolve variable Login in ReservationSummary.
-    //Cause it re-compiles when url for Reservation.jsp is entered
-    LoginBean Login = (LoginBean) session.getAttribute("Login");
+    if (request.getParameter("Pay") != null) {
+        paymentBean.setReservationID(request.getParameter("Pay"));
+        paymentBean.setTenantUsername(Login.getUsername());
+    }
 
+    if (request.getParameter("payNow") != null) {
+        if (paymentBean.validate()) {
+%>
+<jsp:forward page="index.jsp"/>
+<%
+        }
+    }
 %>
 
 <html>
@@ -43,18 +42,10 @@
     <script type="text/javascript" src="/resources/js/collapse.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-    <script type="text/javascript" src="/resources/js/picker.js"></script>
-    <script type="text/javascript" src="/resources/js/picker.date.js"></script>
-    <script type="text/javascript" src="/resources/js/picker.time.js"></script>
     <script type="text/javascript" src="/resources/js/legacy.js"></script>
 
 
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
-
-    <link rel="stylesheet" href="resources/css/pickadate/default.css">
-    <link rel="stylesheet" href="resources/css/pickadate/default.date.css">
-    <link rel="stylesheet" href="resources/css/pickadate/default.time.css">
     <%@include file="header.html" %>
 
     <title>NottiTranquille</title>
@@ -65,7 +56,6 @@
 <%@include file="navbar.jsp" %>
 
 <br><br>
-
 
 <div class="container-fluid">
     <h1>Large Grid</h1>
@@ -86,9 +76,9 @@
 
     <hr>
 
-    <form action="Payment.jsp" id="paymentForm" method="post" class="form-horizontal">
+    <form action="Payment.jsp" id="PayNow" class="form-horizontal">
         <div align="right" align="bottom">
-            <button type="submit" class="btn btn-lg btn-primary" id="payNow">Pay Now</button>
+            <button type="submit" class="btn btn-lg btn-primary" name="payNow">Pay Now</button>
         </div>
     </form>
 </div>

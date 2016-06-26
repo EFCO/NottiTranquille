@@ -16,7 +16,7 @@ public class ManagerDAO {
      *
      * @param manager the {@link Manager} to persist
      */
-    public static void store(Manager manager) throws Exception {
+    public static void store(Manager manager) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
 

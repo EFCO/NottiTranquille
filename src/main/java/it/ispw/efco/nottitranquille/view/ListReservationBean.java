@@ -10,16 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This bean contains a list of {@link ReservationBean} associated with the id of the Reservation
- * that it describes.
+ * JavaBean Class hold a List of {@link ReservationBean} matching a Tenant or a Manager
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 public class ListReservationBean {
 
     /**
-     * A ReservationBean correspond to a Long value equals to the id of reservation
-     * inner the ReservationBean itself.
+     * @see ReservationBean
      */
     private List<ReservationBean> beans;
 
@@ -80,7 +78,7 @@ public class ListReservationBean {
         Long ID = new Long(id);
 
         ReservationController controller = ReservationController.getInstance();
-        // return true if end successfull
+        // return true if end successful
         return controller.approveReservation(ID);
 
     }
@@ -95,7 +93,7 @@ public class ListReservationBean {
         Long ID = new Long(id);
 
         ReservationController controller = ReservationController.getInstance();
-        // return true if end successfull
+        // return true if end successful
         return controller.declineReservation(ID);
 
     }

@@ -1,4 +1,3 @@
-<%@ page import="it.ispw.efco.nottitranquille.view.ListReservationBean" %>
 <%@ page contentType="text/html;charset=ISO-8859-1" language="java" pageEncoding="ISO-8859-1" %>
 <%-- Use JSTL core lib in order to add some useful feature --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -7,27 +6,6 @@
              class="it.ispw.efco.nottitranquille.view.LoginBean"/>
 
 <jsp:setProperty name="Login" property="*"/>
-
-<%
-
-    session.setAttribute("Login", Login);
-
-    if (request.getParameter("sign") != null) {
-        Login.validate();
-    }
-
-    if (request.getParameter("Approve") != null) {
-
-        ListReservationBean listBean = (ListReservationBean) session.getAttribute("ListBean");
-        listBean.approve(request.getParameter("Approve"));
-
-    } else if (request.getParameter("Decline") != null) {
-
-        ListReservationBean listBean = (ListReservationBean) session.getAttribute("ListBean");
-        listBean.decline(request.getParameter("Decline"));
-    }
-%>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +20,6 @@
 
 
 <body>
-
 
 <!-- NAVBAR
 ================================================== -->

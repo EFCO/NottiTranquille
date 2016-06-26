@@ -9,7 +9,9 @@ import javax.persistence.*;
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name = "User")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "Role")
 @SuppressWarnings("JpaDataSourceORMInspection")
 public class Person {
 
@@ -17,29 +19,17 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
 
-    /**
-     *
-     */
+    @Column(name="Role", updatable=false, insertable=false)
+    private String role;
+
     protected String firstName;
 
-    /**
-     *
-     */
     protected String lastName;
 
-    /**
-     *
-     */
     protected String email;
 
-    /**
-     *
-     */
     protected DateTime birthdate;
 
-    /**
-     *
-     */
     protected String phoneNumber;
 
     protected Address address;

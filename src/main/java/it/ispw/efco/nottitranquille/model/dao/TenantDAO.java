@@ -16,7 +16,7 @@ public class TenantDAO {
      *
      * @param tenant the {@link Tenant} to persist
      */
-    public static void store(Tenant tenant) throws Exception {
+    public static void store(Tenant tenant) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
 
@@ -67,13 +67,12 @@ public class TenantDAO {
         }
     }
 
-    @SuppressWarnings("JpaQlInspection")
     public static Tenant findByNameAndPassword(String tenantName, String passWord)
             throws NoResultException {
 
         try {
             EntityManager entityManager = JPAInitializer.getEntityManager();
-            return entityManager.createQuery("from Tenant where " +
+            return entityManager.createQuery("select t from Tenant t where " +
                     " (username = :name) and (password = :pass) ", Tenant.class)
                     .setParameter("name", tenantName)
                     .setParameter("pass", passWord)

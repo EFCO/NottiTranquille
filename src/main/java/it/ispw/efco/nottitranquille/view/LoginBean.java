@@ -14,6 +14,8 @@ public class LoginBean {
 
     private String role;
 
+    private boolean isLogged = false;
+
     public LoginBean() {
         this.username = "";
         this.password = "";
@@ -60,10 +62,21 @@ public class LoginBean {
             else if (found instanceof Tenant)
                 this.setRole("Tenant");
 
-            return (found != null);
+            isLogged = true;
+
+            return true;
 
         } catch (NoResultException e) {
+            isLogged = false;
             return false;
         }
+    }
+
+    public boolean isLogged() {
+        return isLogged;
+    }
+
+    public void setLogged(boolean logged) {
+        isLogged = logged;
     }
 }

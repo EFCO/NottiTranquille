@@ -1,4 +1,10 @@
-<c:if test="${ Login == null or Login.getUsername() == '' }">
+<%
+    if (request.getParameter("sign") != null) {
+        Login.validate();
+    }
+%>
+
+<c:if test="${ !Login.logged }">
 
     <div class=" modal fade" id="signModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">

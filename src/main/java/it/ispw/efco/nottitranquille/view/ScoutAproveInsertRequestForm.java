@@ -14,12 +14,10 @@ public class ScoutAproveInsertRequestForm {
     }
 
 
-
     /**
-     * 
+     *
      */
     public void filter() {
-        // TODO implement here
     }
 
 }

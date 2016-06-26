@@ -127,7 +127,6 @@ public class Location {
      * @param bookingPeriod the interval of days that now is not available for reservation.
      */
     public void bookPeriod(Interval bookingPeriod) throws IllegalArgumentException {
-        // TODO: 21/06/16 To test
         boolean found = false;
 
         for (Interval avlPeriod : availableDate) {

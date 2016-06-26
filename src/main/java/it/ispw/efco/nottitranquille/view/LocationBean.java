@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Bean for Location. Boundary class that contains information for {@link Location}
+ * JavaBean for {@link Location}
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
@@ -19,28 +19,21 @@ public class LocationBean {
 
     private String id;
 
-    /**
-     * @see Location#name
-     */
     private String name;
 
-    /**
-     * @see Location#description
-     */
     private String description;
 
-    /**
-     * @see Location#availableDate
-     */
     private List<Interval> enablesDate;
 
-    /**
-     * @see Location#services
-     */
     private List<Service> services;
 
     private Float price;
 
+    /**
+     * Populate the instance with information from the model layer.
+     *
+     * @param id matching a {@link Location}
+     */
     public void populate(String id) {
 
         Long ID = new Long(id);
@@ -52,6 +45,7 @@ public class LocationBean {
         description = location.getDescription();
         enablesDate = location.getAvailableDate();
         price = location.getPrice();
+        this.id = id;
 
     }
 

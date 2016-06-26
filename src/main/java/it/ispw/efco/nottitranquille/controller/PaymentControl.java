@@ -1,6 +1,7 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.*;
+import it.ispw.efco.nottitranquille.model.Exception.IllagalBookingDate;
 import it.ispw.efco.nottitranquille.model.dao.ReservationDAO;
 import it.ispw.efco.nottitranquille.model.dao.TenantDAO;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
@@ -18,8 +19,8 @@ public class PaymentControl {
     private PaymentControl() {
     }
 
-    public void pay(Long ReservationId, Long TenantId) {
-        Person tenant = TenantDAO.findbyId(TenantId);
+    public void pay(Long ReservationId, String tenantUsername) throws IllagalBookingDate {
+        Person tenant = TenantDAO.findByUserName(tenantUsername);
         Reservation reservation = ReservationDAO.findByID(ReservationId);
 
         BankingSystem bank = BankingSystem.getInstance();
@@ -31,7 +32,7 @@ public class PaymentControl {
         try {
             location.bookPeriod(reservation.getPeriod());
         } catch (IllegalArgumentException e) {
-            // TODO: 21/06/16 throw a new Excepton
+            throw new IllagalBookingDate("The period specified is not already available ", e.getCause());
         }
 
         reservation.setState(ReservationState.Paid);

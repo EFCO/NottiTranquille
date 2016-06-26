@@ -17,8 +17,37 @@ public class DemoReservation {
 
     public static void main(String args[]) {
 
-        Manager manager = ManagerDAO.findByUserName("manager");
-        Tenant zanna = TenantDAO.findByUserName("Zanna");
+         /* Manager */
+
+        Manager manager = new Manager();
+        manager.setFirstName("Claudio");
+        manager.setLastName("Pastorini");
+
+        manager.setUsername("manager");
+        manager.setPassword("password");
+
+        try {
+            ManagerDAO.store(manager);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        /* Tenant */
+
+        Tenant me = new Tenant();
+        me.setFirstName("Emanuele");
+        me.setLastName("Vannacci");
+
+        me.setUsername("Zanna");
+        me.setPassword("password");
+
+        try {
+            TenantDAO.store(me);
+        } catch (Exception e2) {
+            e2.printStackTrace();
+            System.exit(1);
+        }
 
         /*LocationType*/
 
@@ -85,8 +114,8 @@ public class DemoReservation {
 
         ReservationController controller = ReservationController.getInstance();
 
-        controller.createReservation(zanna.getUsername(), myLocationA.getId(), intervalA, null);
-        controller.createReservation(zanna.getUsername(), myLocationB.getId(), intervalB, null);
+        controller.createReservation(me.getUsername(), myLocationA.getId(), intervalA, null);
+        controller.createReservation(me.getUsername(), myLocationB.getId(), intervalB, null);
 
     }
 

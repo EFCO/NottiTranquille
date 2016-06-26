@@ -1,12 +1,14 @@
 package it.ispw.efco.nottitranquille.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
+@DiscriminatorValue("TN")
 @SuppressWarnings("JpaDataSourceORMInspection")
 public class Tenant extends RegisteredUser {
 

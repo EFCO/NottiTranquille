@@ -8,11 +8,14 @@ import java.util.*;
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
+@DiscriminatorValue("MN")
 @SuppressWarnings("JpaDataSourceORMInspection")
 public class Manager extends RegisteredUser implements Applicant {
 
     @OneToMany
-    // Bound to use linked list and not Deque because it is not supported from JPA.
+    @JoinTable(name = "Manager_Reservation",
+            joinColumns = {@JoinColumn(name = "ReservationId", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "ManagerId", referencedColumnName = "id")})
     private List<Reservation> toApprove;
 
     /**
