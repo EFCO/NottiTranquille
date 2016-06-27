@@ -11,18 +11,18 @@
   Time: 15:11
   To change this template use File | Settings | File Templates.
 --%>
-
-
 <%@ page contentType="text/html;charset=ISO-8859-1" language="java" pageEncoding="ISO-8859-1" session="true"%>
+<%--session=true keep the session alive and it should be used inside pages that initialize session beans--%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <%@ taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
 
 <jsp:useBean id="basicSearchBean" scope="session" class="it.ispw.efco.nottitranquille.view.SearchBean" />
+<%--scope can be "session", "application", "page", "request"--%>
 <jsp:useBean id="loginBean" scope="session" class="it.ispw.efco.nottitranquille.view.LoginBean"/>
 
 <jsp:setProperty name="basicSearchBean" property="*" />
+<%--it sets all the properties of the requried bean if such properties are passed throught a GET or POST request--%>
 
 <%
     if (request.getParameter("search") != null) {
@@ -71,31 +71,31 @@
 
     </style>
     <script>
-        $(document).ready(function () {
-            //Per funzionamento guarda nota su Google Keep (Federico)
-            $("#orderBy").click(function () {
-                var order = {};
-                var keys = {};
+        $(function () {
+            function orderBy(type) {
+
+                var order = {}; //it will contain all the hmtl for each card
+                var keys = {}; //it will contain all the price texts
                 var appoggio = [];
-                $("div.panel-body").each(function (j,elem) {
-                    keys[j] = $(elem).text();
-                    appoggio[j] = keys[j];
+                $(type + "_text").each(function (j, elem) {
+                    keys[j] = $(elem).text(); //copy price text of each card
+                    appoggio[j] = keys[j]; //mantain the same copy in "appoggio"
                 });
-                $("div.paneldiv").each(function (i,elem) {
-                    order[i] = $(elem).html();
+                $("div.paneldiv").each(function (i, elem) {
+                    order[i] = $(elem).html(); //copy html for each card
                 });
 
-                $("#row").empty();
+                $("#result_row").empty(); //empty the row containing the cards
 
-                appoggio.sort();
+                appoggio.sort(); //reorder just appoggio
                 for (var i = 0; i < appoggio.length; i++) {
                     for (var key in keys) {
-                        if (keys[key] == appoggio[i]) {
-                            $("#row").append(order[key]);
+                        if (keys[key] == appoggio[i]) { //confront an element of appoggio with an element of key (that has the same order of "order"
+                            $("#row").append(order[key]); //append an element of order that has the same key ordered in appoggio
                         }
                     }
                 }
-            });
+            }
         });
     </script>
 </head>
@@ -147,7 +147,7 @@
 </c:if>
 
 
-<div id="searchForm">
+<div id="searchFormContainer">
     <form action="search.jsp" name="myform" method="POST" id="searchForm">
         <div class="row">
             <div class="form-group col-xs-4 col-md-4">
@@ -160,7 +160,7 @@
             </div>
             <div class="form-group col-xs-4 col-md-4">
                 <label for="pricerange">Prezzo :</label>
-                <select name="pricerange" id="pricerange" class="form-control" value="${pricerange}">
+                <select name="pricerange" id="pricerange" class="form-control">
                     <c:forEach items="${priceranges}" var="pr">
                         <option value="${pr.name()}" ${pricerange == pr.name() ? "selected='selected'" : ''}>${pr.text}</option>
                     </c:forEach>
@@ -209,7 +209,7 @@
         <div class="collapse row" id="collapseSearch">
             <div class="form-group col-xs-4 col-md-4">
                 <label for="locationtype">Tipo di alloggio :</label>
-                <select name="locationtype" id="locationtype" class="form-control" value="${locationtype}">
+                <select name="locationtype" id="locationtype" class="form-control">
                     <c:forEach items="${locationtypes}" var="type">
                         <option value="${type.name()}" ${locationtype == type.name() ? "selected='selected'" : ''}>${type.text}</option>
                     </c:forEach>
@@ -217,9 +217,9 @@
             </div>
             <div class="form-group col-xs-4 col-md-4">
                 <label for="maxtenant">Numero di ospiti :</label>
-                <select name="maxtenant" id="maxtenant" class="form-control" value="${maxtenant}">
+                <select name="maxtenant" id="maxtenant" class="form-control">
                     <c:forEach begin="1" end="5" step="1" var="num">
-                        <option ${maxtenant == num ? "selected='selected'" : ''}>${num}</option>
+                        <option value="${num}" ${maxtenant == num ? "selected='selected'" : ''}>${num}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -247,15 +247,15 @@
                 </div>
             </div>
         </div>
-        <%
-            if (request.getParameter("search") != null) {
-        %>
-            <div class="alert alert-danger" role="alert" id="alert" style="display:none">
-                Devi riempire tutti i campi per effettuare una ricerca!
-            </div>
-        <%
-            }
-        %>
+        <%--<%--%>
+            <%--if (request.getParameter("search") != null) {--%>
+        <%--%>--%>
+            <%--<div class="alert alert-danger" role="alert" id="alert" style="display:none">--%>
+                <%--Devi riempire tutti i campi per effettuare una ricerca!--%>
+            <%--</div>--%>
+        <%--<%--%>
+            <%--}--%>
+        <%--%>--%>
         <div class="btn-group btn-group-justified">
             <div class="btn-group">
                 <script>
@@ -284,7 +284,8 @@
     </form>
 </div>
 
-<button id="orderBy">Order by Price</button>
+<button onclick="orderBy('price')">Order by Price</button>
+<button onclick="orderBy('name')">Order by Name</button>
 
 <div id="resultSet" >
     <%
@@ -306,7 +307,7 @@
             if (result.size() > 0) {
         %>
             <div class="container">
-                <div class="row" id="row">
+                <div class="row" id="result_row">
                     <c:forEach items="${result}" var="location">
                     <div class = "paneldiv">
                         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
@@ -314,9 +315,9 @@
                                 <div class="thumbnail">
                                     <%--${location.photos}--%>
                                     <img src="resources/img/piscine-di-albergo-Medulin-2.jpg" alt="...">
-                                    <div class="panel-heading text-center"><h3>${location.structure.name}</h3></div>
+                                    <div class="panel-heading text-center" id="name_text"><h3>${location.structure.name}</h3></div>
                                             <%--${location.locationAddress}--%>
-                                    <div class="panel-body text-center"><p class="lead"><strong>28 &euro; a notte</strong></p></div>
+                                    <div class="panel-body text-center" id="price_text"><p class="lead"><strong>28 &euro; a notte</strong></p></div>
                                     <div class="panel-footer text-center"><a href="<c:url value="showOffer.jsp"><c:param name="id" value="${result.indexOf(location)}"/></c:url>" type="submit" class="btn btn-lg btn-block" role="button">Mostra</a></div>
                                     </div>
                                 </div>
@@ -335,7 +336,6 @@
         }
     %>
 </div>
-
 
 <%@include file="bootstrap_core_js.html" %>
 

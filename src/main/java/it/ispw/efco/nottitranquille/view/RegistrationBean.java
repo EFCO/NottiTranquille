@@ -1,27 +1,48 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.AccessController;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONObject;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
  * Created by Federico on 02/05/2016.
  */
-@Entity(name = "registeredusersdata")
 public class RegistrationBean {
 
     private String username = "";
     private String password = "";
-    private String name = "Federico Vagnoni";
+    private String firstName = "Federico";
+    private String lastName = "Vagnoni";
     private String email = "fede93.vagnoni@gmail.com";
     private String address = "Piazza Ciao";
-    private String dateofbirth = "duemilamai";
+    private String city = "Roma";
+    private DateTime dateofbirth = null;
+    private String phonenumber = "";
+    private String gender;
     private String hash = "";
     private String req_status = "";
 
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     public String getReq_status() {
         return req_status;
@@ -29,15 +50,6 @@ public class RegistrationBean {
 
     public void setReq_status(String req_status) {
         this.req_status = req_status;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getAddress() {
@@ -48,12 +60,13 @@ public class RegistrationBean {
         this.address = address;
     }
 
-    public String getDateofbirth() {
+    public DateTime getDateofbirth() {
         return dateofbirth;
     }
 
     public void setDateofbirth(String dateofbirth) {
-        this.dateofbirth = dateofbirth;
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-MM-yyyy");
+        this.dateofbirth = DateTime.parse(dateofbirth, dateTimeFormatter);
     }
 
     //-------------------------------------------------------------------//
@@ -85,7 +98,11 @@ public class RegistrationBean {
     //-------------------------------------------------------------------//
 
     public void register() throws Exception {
-        if (!this.username.equals("") && !this.password.equals("") && !this.name.equals("") && !this.address.equals("") && !this.dateofbirth.equals("") && !this.email.equals("")) {
+        System.out.println("Ciao a tutti");
+        if (!this.username.equals("") && !this.password.equals("")
+                && !this.firstName.equals("") && !this.lastName.equals("")
+                && !this.address.equals("") && this.dateofbirth != null
+                && !this.email.equals("")) {
             if (AccessController.getRegisteredUserId(this.username,this.password) == null) {
                 AccessController.registration(this);
             } else {
@@ -135,15 +152,23 @@ public class RegistrationBean {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "RegistrationBean{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                ", dateofbirth='" + dateofbirth + '\'' +
-                '}';
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getCity() {
+        return city;
     }
 }

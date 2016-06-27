@@ -37,7 +37,8 @@
             <Label layoutX="213.0" layoutY="89.0" text="City" />
             <MenuButton fx:id="status" layoutX="14.0" layoutY="107.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0">
             </MenuButton>
-            <Button fx:id="searchButton" onAction="#handleSearchButtonAction" layoutX="457.0" layoutY="77.0" mnemonicParsing="false" text="Search" />
+            <Button layoutX="426.0" layoutY="107.0" mnemonicParsing="false" onAction="#handleSearchButtonAction" prefHeight="25.0" prefWidth="149.0" text="Search" />
+            <CheckBox id="notaccepted_checkbox" layoutX="426.0" layoutY="53.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="149.0" text="Show not accepted only" />
          </children>
       </Pane>
       <TableView fx:id="tableview" layoutY="174.0" prefHeight="251.0" prefWidth="606.0">

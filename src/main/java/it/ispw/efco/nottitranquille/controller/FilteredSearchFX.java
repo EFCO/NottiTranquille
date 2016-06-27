@@ -87,8 +87,7 @@ public class FilteredSearchFX {
                 return new ReadOnlyObjectWrapper(p.getValue().getStatus().toString());
             }
         });
-        tableview.getColumns().setAll(nameCol, addressCol, managedByCol, requestedByCol, statusCol
-        );
+        tableview.getColumns().setAll(nameCol, addressCol, managedByCol, requestedByCol, statusCol);
 
     }
 }

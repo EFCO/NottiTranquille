@@ -31,6 +31,8 @@
           <element id="library" level="project" name="Maven: org.json:json:20160212" />
           <element id="library" level="project" name="Maven: javax.mail:mail:1.4.7" />
           <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
+          <element id="library" level="project" name="Maven: org.jadira.usertype:usertype.core:5.0.0.GA" />
+          <element id="library" level="project" name="Maven: org.jadira.usertype:usertype.spi:5.0.0.GA" />
         </element>
       </element>
       <element id="artifact" artifact-name="NottiTranquille" />

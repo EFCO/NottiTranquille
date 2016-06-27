@@ -1,7 +1,6 @@
 package it.ispw.efco.nottitranquille.model;
 
 import it.ispw.efco.nottitranquille.view.LoginBean;
-import it.ispw.efco.nottitranquille.view.RegistrationBean;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -15,13 +14,13 @@ public class AccessDAO {
     public AccessDAO() {
     }
 
-    public List<RegistrationBean> isRegistered(String username, String password) {
+    public List<Person> isRegistered(String username, String password) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
-        String querystring = "FROM registeredusersdata WHERE (username = :u OR email =:u) AND password = :p";
-        TypedQuery<RegistrationBean> query = entityManager.createQuery(querystring,RegistrationBean.class);
+        String querystring = "FROM Person WHERE (username = :u OR email =:u) AND password = :p";
+        TypedQuery<Person> query = entityManager.createQuery(querystring,Person.class);
         query.setParameter("u",username);
         query.setParameter("p",password);
-        List<RegistrationBean> result = query.getResultList();
+        List<Person> result = query.getResultList();
         return result;
     }
 
@@ -75,28 +74,28 @@ public class AccessDAO {
         return true;
     }
 
-    public void register(RegistrationBean registrationBean) throws Exception {
+    public void register(Person person) throws Exception {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
-        entityManager.persist(registrationBean);
+        entityManager.persist(person);
         entityManager.getTransaction().commit();
     }
 
     public Long verifyPendingStatus(String hash) throws Exception {
         EntityManager entityManager = JPAInitializer.getEntityManager();
-        String querystring = "FROM registeredusersdata WHERE hash = :h AND req_status = :rs";
-        TypedQuery<RegistrationBean> query = entityManager.createQuery(querystring,RegistrationBean.class);
+        String querystring = "FROM Person WHERE hash = :h AND req_status = :rs";
+        TypedQuery<Person> query = entityManager.createQuery(querystring,Person.class);
         query.setParameter("h",hash);
         query.setParameter("rs","pending");
-        List<RegistrationBean> result = query.getResultList();
+        List<Person> result = query.getResultList();
         return result.get(0).getId();
     }
 
     public void verify(Long id) throws Exception {
         EntityManager entityManager = JPAInitializer.getEntityManager();
-        RegistrationBean rb = entityManager.find(RegistrationBean.class,id);
+        Person person = entityManager.find(Person.class,id);
         entityManager.getTransaction().begin();
-        rb.setReq_status("accepted");
+        person.setReq_status("accepted");
         entityManager.getTransaction().commit();
     }
 }

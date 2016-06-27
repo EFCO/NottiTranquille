@@ -65,5 +65,13 @@
             <artifactId>mail</artifactId>
             <version>1.4.7</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jadira.usertype/usertype.jodatime -->
+        <!-- https://mvnrepository.com/artifact/org.jadira.usertype/usertype.core -->
+        <dependency>
+            <groupId>org.jadira.usertype</groupId>
+            <artifactId>usertype.core</artifactId>
+            <version>5.0.0.GA</version>
+        </dependency>
+
     </dependencies>
 </project>

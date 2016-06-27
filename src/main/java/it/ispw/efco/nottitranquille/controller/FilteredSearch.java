@@ -25,6 +25,7 @@ public class FilteredSearch {
         if (searchBean.getCheckin().isAfter(searchBean.getCheckout()) && searchBean.getCheckin().isBeforeNow()) {
             throw new Exception("Invalid datetime");
         }
+
         //TODO to use
         int maxPrice = PriceRanges.valueOf(searchBean.getPricerange()).getMaxvalue();
 

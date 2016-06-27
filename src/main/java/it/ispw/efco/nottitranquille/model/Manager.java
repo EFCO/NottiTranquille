@@ -7,12 +7,13 @@ import javax.persistence.Entity;
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
-@DiscriminatorValue("Manager")
-public class Manager extends Person implements Applicant {
+@DiscriminatorValue("manager")
+public class Manager extends Role implements Applicant {
 
     /**
      * Default constructor
      */
+
     public Manager() {
     }
 

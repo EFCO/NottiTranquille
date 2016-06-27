@@ -1,6 +1,7 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.AccessController;
+import it.ispw.efco.nottitranquille.model.Person;
 import org.json.JSONObject;
 
 import javax.persistence.Entity;
@@ -30,11 +31,11 @@ public class LoginBean {
 
     public void login() throws Exception {
         if (!this.username.equals("") && !this.password.equals("")) {
-            RegistrationBean rb = AccessController.getRegisteredUserId(this.username, this.password);
-            if (rb == null) {
+            Person person= AccessController.getRegisteredUserId(this.username, this.password);
+            if (person == null) {
                 throw new Exception("User not registered");
             } else {
-                this.username = rb.getUsername();
+                this.username = person.getUsername();
                 int value = LoggedIn();
                 if (value != 2) {
                     //you can not perform login if you are already logged

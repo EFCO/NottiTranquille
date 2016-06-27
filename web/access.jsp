@@ -1,4 +1,5 @@
 <%@ page import="it.ispw.efco.nottitranquille.view.LoginBean" %>
+<%@ page import="java.util.Arrays" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
@@ -50,6 +51,7 @@
 
         if (request.getParameter("register") != null) {
             try {
+                registrationBean.setDateofbirth(request.getParameter("dateofbirth"));
                 registrationBean.register();
                 String referer = request.getHeader("Referer");
                 // handle empty referer.....

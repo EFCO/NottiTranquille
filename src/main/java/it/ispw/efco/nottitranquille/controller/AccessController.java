@@ -1,6 +1,8 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.AccessDAO;
+import it.ispw.efco.nottitranquille.model.Person;
+import it.ispw.efco.nottitranquille.model.Tenant;
 import it.ispw.efco.nottitranquille.model.mail.Mailer;
 import it.ispw.efco.nottitranquille.view.LoginBean;
 import it.ispw.efco.nottitranquille.view.RegistrationBean;
@@ -15,9 +17,9 @@ import java.util.List;
  */
 public class AccessController {
 
-    public static RegistrationBean getRegisteredUserId(String username, String password) {
+    public static Person getRegisteredUserId(String username, String password) {
         AccessDAO accessDAO = new AccessDAO();
-        List<RegistrationBean> result = accessDAO.isRegistered(username, password);
+        List<Person> result = accessDAO.isRegistered(username, password);
         if (result.isEmpty()) {
             return null;
         } else {
@@ -82,10 +84,12 @@ public class AccessController {
                 e.printStackTrace();
             }
             String link = "localhost:8080/access.jsp?verify=verify&hash=" + code;
-            mailer.send(registrationBean.getEmail(), "Welcome to Notti Tranquille", "In order to verify your account click on the following link\n" + link, null);
+            mailer.send(registrationBean.getEmail(), "Welcome to Notti Tranquille", "In order to verify your account click on the following link\n<a href=\"" + link + "\"></a>", null);
             registrationBean.setHash(code);
             registrationBean.setReq_status("pending");
-            accessDAO.register(registrationBean);
+            Person person = new Person(registrationBean);
+            person.addRole(new Tenant());
+            accessDAO.register(person);
         } else {
             Long id = accessDAO.verifyPendingStatus(registrationBean.getHash());
             accessDAO.verify(id);

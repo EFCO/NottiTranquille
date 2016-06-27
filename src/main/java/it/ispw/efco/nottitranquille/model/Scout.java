@@ -8,8 +8,8 @@ import javax.persistence.Entity;
  */
 
 @Entity
-@DiscriminatorValue("Scout")
-public class Scout extends Person implements Applicant {
+@DiscriminatorValue("scout")
+public class Scout extends Role implements Applicant {
 
     /**
      * Default constructor

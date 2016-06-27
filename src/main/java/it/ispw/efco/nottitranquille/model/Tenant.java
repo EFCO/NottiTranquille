@@ -1,22 +1,16 @@
 package it.ispw.efco.nottitranquille.model;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+import java.util.List;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
-@DiscriminatorValue("Tenant")
-public class Tenant extends Person {
-
-    /**
-     * Default constructor
-     * @param reservations
-     */
-    public Tenant(List<Reservation> reservations) {
-        this.reservations = reservations;
-    }
+@DiscriminatorValue("tenant")
+public class Tenant extends Role {
 
     /**
      * 
@@ -25,6 +19,7 @@ public class Tenant extends Person {
     private List<Reservation> reservations;
 
     public Tenant() {
+        super();
     }
 
     /**
