@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class AccessController {
 
-    public static Person getRegisteredUserId(String username, String password) {
+    public static Person getRegisteredUser(String username, String password) {
         AccessDAO accessDAO = new AccessDAO();
         List<Person> result = accessDAO.isRegistered(username, password);
         if (result.isEmpty()) {

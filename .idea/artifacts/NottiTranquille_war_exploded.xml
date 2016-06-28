@@ -33,6 +33,8 @@
           <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
           <element id="library" level="project" name="Maven: org.jadira.usertype:usertype.core:5.0.0.GA" />
           <element id="library" level="project" name="Maven: org.jadira.usertype:usertype.spi:5.0.0.GA" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.12" />
+          <element id="library" level="project" name="Maven: javax.servlet:javax.servlet-api:3.1.0" />
         </element>
       </element>
       <element id="artifact" artifact-name="NottiTranquille" />

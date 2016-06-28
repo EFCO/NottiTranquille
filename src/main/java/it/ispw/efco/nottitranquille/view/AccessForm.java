@@ -1,6 +1,6 @@
 package it.ispw.efco.nottitranquille.view;
 
-import it.ispw.efco.nottitranquille.controller.FilteredSearchFX;
+import it.ispw.efco.nottitranquille.controller.AccessControllerFX;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,28 +8,34 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
+ * Created by Federico on 28/06/2016.
  */
-public class ScoutFilteredSearchForm extends Application {
+public class AccessForm extends Application {
 
     /**
      * Default constructor
      */
-    public ScoutFilteredSearchForm() {
+
+    public AccessForm() {
     }
 
     @Override
     public void start(Stage stage) throws Exception {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                "/fxml/ScoutFilteredSearchForm.fxml"));
+                "/fxml/AccessForm.fxml"));
 
         Parent root = (Parent) loader.load();
         stage.setScene(new Scene(root));
         stage.show();
 
-        FilteredSearchFX controller = loader.getController();
-//        controller.setStatusMenuButton();
+        AccessControllerFX controller = loader.getController();
+        controller.setMainStage(stage);
     }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
 
 }

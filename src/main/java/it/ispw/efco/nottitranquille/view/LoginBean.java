@@ -31,7 +31,7 @@ public class LoginBean {
 
     public void login() throws Exception {
         if (!this.username.equals("") && !this.password.equals("")) {
-            Person person= AccessController.getRegisteredUserId(this.username, this.password);
+            Person person= AccessController.getRegisteredUser(this.username, this.password);
             if (person == null) {
                 throw new Exception("User not registered");
             } else {
@@ -119,14 +119,6 @@ public class LoginBean {
     public void setExpired(boolean expired) {
         this.expired = expired;
     }
-
-//    public Long getUser_id() {
-//        return user_id;
-//    }
-//
-//    public void setUser_id(Long user_id) {
-//        this.user_id = user_id;
-//    }
 
     @Override
     public String toString() {

@@ -122,7 +122,7 @@ public class RegistrationBean {
                 && !this.firstName.equals("") && !this.lastName.equals("")
                 && !this.address.equals("") && this.dateofbirth != null
                 && !this.email.equals("")) {
-            if (AccessController.getRegisteredUserId(this.username,this.password) == null) {
+            if (AccessController.getRegisteredUser(this.username,this.password) == null) {
                 AccessController.registration(this);
             } else {
                 throw new Exception("User already registered or waiting for verification");
