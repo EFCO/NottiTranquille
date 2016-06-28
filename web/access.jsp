@@ -65,7 +65,7 @@
             try {
                 registrationBean.verify();
                 // handle empty referer.....
-                response.sendRedirect("index.jsp");
+                response.sendRedirect("errorPage.jsp?" + "success=success");
             } catch (Exception e) {
                 response.sendRedirect("errorPage.jsp?" + "error=" + e.getMessage());
             }

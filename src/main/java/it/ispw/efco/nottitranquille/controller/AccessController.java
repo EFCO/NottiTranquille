@@ -83,8 +83,8 @@ public class AccessController {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            String link = "localhost:8080/access.jsp?verify=verify&hash=" + code;
-            mailer.send(registrationBean.getEmail(), "Welcome to Notti Tranquille", "In order to verify your account click on the following link\n<a href=\"" + link + "\"></a>", null);
+            String link = "<a href=\"http://localhost:8080/access.jsp?verify=verify&hash=" + code + "\">Verify your account here</a>";
+            mailer.sendHtml(registrationBean.getEmail(), "Welcome to Notti Tranquille", "In order to verify your account click on the following link\n"  + link);
             registrationBean.setHash(code);
             registrationBean.setReq_status("pending");
             Person person = new Person(registrationBean);

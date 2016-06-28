@@ -27,9 +27,7 @@ public class Person {
         this.email = registrationBean.getEmail();
         this.birthdate = registrationBean.getDateofbirth();
         this.phoneNumber = registrationBean.getPhonenumber();
-        Address address = new Address();
-        address.setAddress(registrationBean.getAddress());
-        this.address = address;
+        this.address = new Address(registrationBean.getNation(),registrationBean.getCity(),registrationBean.getAddress(),registrationBean.getPostalcode());
         this.gender = Gender.valueOf(registrationBean.getGender());
         this.hash = registrationBean.getHash();
         this.req_status = registrationBean.getReq_status();

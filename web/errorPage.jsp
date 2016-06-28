@@ -11,10 +11,17 @@
 </head>
 <body>
 <%@include file="navbar.html"%>
-<div class="alert alert-danger" role="alert" style="padding-top: 50px">
-    <c:out value="${param['error']}"></c:out>
-    <a href="index.jsp" class="alert-link">Torna alla home page</a>
-</div>
-
+<c:if test="${param['success'] == null}">
+    <div class="alert alert-danger" role="alert" style="margin-top: 50px">
+        <c:out value="${param['error']}"></c:out>
+        <a href="index.jsp" class="alert-link">Torna alla home page</a>
+    </div>
+</c:if>
+<c:if test="${param['success'] != null}">
+    <div class="alert alert-success" role="alert" style="margin-top: 50px">
+        Il tuo account è stato verificato con successo!
+        <a href="index.jsp" class="alert-link">Torna alla home page</a>
+    </div>
+</c:if>
 </body>
 </html>

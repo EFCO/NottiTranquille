@@ -21,12 +21,31 @@ public class RegistrationBean {
     private String email = "fede93.vagnoni@gmail.com";
     private String address = "Piazza Ciao";
     private String city = "Roma";
+
+
+    private String postalcode = "Roma";
+    private String nation = "Roma";
     private DateTime dateofbirth = null;
     private String phonenumber = "";
     private String gender;
     private String hash = "";
     private String req_status = "";
 
+    public String getPostalcode() {
+        return postalcode;
+    }
+
+    public void setPostalcode(String postalcode) {
+        this.postalcode = postalcode;
+    }
+
+    public String getNation() {
+        return nation;
+    }
+
+    public void setNation(String nation) {
+        this.nation = nation;
+    }
 
     public String getFirstName() {
         return firstName;

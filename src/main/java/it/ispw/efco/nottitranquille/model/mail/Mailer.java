@@ -77,13 +77,18 @@ public class Mailer {
         Session session = setProperties();
 
         try {
+            MimeBodyPart mbp = new MimeBodyPart();
+            mbp.setContent(html,"text/html");
+            MimeMultipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mbp);
 
-            Message message = new MimeMessage(session);
+            MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(dest));
             message.setSubject(object);
-            message.setContent(html, "text/html");
+            message.setContent(multipart);
+            message.setText(html, "UTF-8", "html");
 
             Transport.send(message);
 

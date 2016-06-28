@@ -13,6 +13,23 @@ public class Address {
 
     private String city;
 
+    private String address;
+
+    private String postalcode;
+
+    public Address(String nation, String city, String address, String postalcode) {
+        this.nation = nation;
+        this.city = city;
+        this.address = address;
+        this.postalcode = postalcode;
+    }
+    /**
+     * Default constructor
+     */
+    public Address() {
+
+    }
+
     public String getNation() {
         return nation;
     }
@@ -40,25 +57,6 @@ public class Address {
     public void setPostalcode(String postalcode) {
         this.postalcode = postalcode;
     }
-
-    private String address;
-
-    private String postalcode;
-
-    public Address(String nation, String city, String address, String postalcode) {
-        this.nation = nation;
-        this.city = city;
-        this.address = address;
-        this.postalcode = postalcode;
-    }
-
-    /**
-     * Default constructor
-     */
-    public Address() {
-
-    }
-
     @Id
     @GeneratedValue
     private Long id;
