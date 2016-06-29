@@ -11,17 +11,17 @@
   Time: 15:11
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=ISO-8859-1" language="java" pageEncoding="ISO-8859-1" session="true"%>
+<%@ page contentType="text/html;charset=ISO-8859-1" language="java" pageEncoding="ISO-8859-1" session="true" %>
 <%--session=true keep the session alive and it should be used inside pages that initialize session beans--%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
 
-<jsp:useBean id="basicSearchBean" scope="session" class="it.ispw.efco.nottitranquille.view.SearchBean" />
+<jsp:useBean id="basicSearchBean" scope="session" class="it.ispw.efco.nottitranquille.view.SearchBean"/>
 <%--scope can be "session", "application", "page", "request"--%>
 <jsp:useBean id="loginBean" scope="session" class="it.ispw.efco.nottitranquille.view.LoginBean"/>
 
-<jsp:setProperty name="basicSearchBean" property="*" />
+<jsp:setProperty name="basicSearchBean" property="*"/>
 <%--it sets all the properties of the requried bean if such properties are passed throught a GET or POST request--%>
 
 <%
@@ -29,10 +29,10 @@
 //       This two checks are required beacuse the bean does not override a previously set variable if it is empty
 //       e.g.: if city was "Cagliari" the bean has "Cagliari" as value for its city attribute, but if I clean the textfield and make a new search
 //       it remains "Cagliari" and it is not overridden.
-        if(request.getParameter("nation").equals("")) {
+        if (request.getParameter("nation").equals("")) {
             basicSearchBean.setNation("");
         }
-        if(request.getParameter("city").equals("")) {
+        if (request.getParameter("city").equals("")) {
             basicSearchBean.setCity("");
         }
         if (!request.getParameter("checkin").equals("") && !request.getParameter("checkout").equals("")) {
@@ -54,15 +54,16 @@
         body {
             padding-top: 50px;
         }
+
         #searchForm {
             padding: 15px 15px;
             /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0fb4e7+0,a9e4f7+100 */
             /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#76d8f6+0,cff0fb+100 */
             background: #76d8f6; /* Old browsers */
-            background: -moz-linear-gradient(top,  #76d8f6 0%, #cff0fb 100%); /* FF3.6-15 */
-            background: -webkit-linear-gradient(top,  #76d8f6 0%,#cff0fb 100%); /* Chrome10-25,Safari5.1-6 */
-            background: linear-gradient(to bottom,  #76d8f6 0%,#cff0fb 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#76d8f6', endColorstr='#cff0fb',GradientType=0 ); /* IE6-9 */
+            background: -moz-linear-gradient(top, #76d8f6 0%, #cff0fb 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(top, #76d8f6 0%, #cff0fb 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to bottom, #76d8f6 0%, #cff0fb 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#76d8f6', endColorstr='#cff0fb', GradientType=0); /* IE6-9 */
         }
 
         #resultSet {
@@ -103,14 +104,14 @@
 
 <%@include file="navbar.html" %>
 
-<c:set var="nation"  value="${param.nation}"/>
-<c:set var="city"  value="${param.city}"/>
+<c:set var="nation" value="${param.nation}"/>
+<c:set var="city" value="${param.city}"/>
 <c:set var="pricerange" value="${param.pricerange}"/>
-<c:set var="checkin"  value="${param.checkin}"/>
-<c:set var="checkout"  value="${param.checkout}"/>
+<c:set var="checkin" value="${param.checkin}"/>
+<c:set var="checkout" value="${param.checkout}"/>
 <c:set var="search" value="${param.search}"/>
-<c:set var="locationtype" value = "${param.locationtype}"/>
-<c:set var="maxtenant" value = "${param.maxtenant}"/>
+<c:set var="locationtype" value="${param.locationtype}"/>
+<c:set var="maxtenant" value="${param.maxtenant}"/>
 
 <%
     for (Commodities elem : Commodities.values()) {
@@ -118,7 +119,7 @@
         if (request.getParameter(elem.name()) != null) {
             pageContext.setAttribute(elem.name(), request.getParameter(elem.name()));
         } else {
-            pageContext.setAttribute(elem.name(),"");
+            pageContext.setAttribute(elem.name(), "");
         }
     }
     //It useful for checkbox setting later
@@ -171,7 +172,8 @@
             <div class="container">
                 <div class='form-group col-md-6 col-xs-6'>
                     <div class='input-group date' id='checkinpicker'>
-                        <input type='text' name="checkin" id ="checkin" class="form-control" placeholder="Check In" value="${checkin}" required/>
+                        <input type='text' name="checkin" id="checkin" class="form-control" placeholder="Check In"
+                               value="${checkin}" required/>
                         <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -179,7 +181,8 @@
                 </div>
                 <div class='form-group col-md-6 col-xs-6'>
                     <div class='input-group date' id='checkoutpicker'>
-                        <input type='text' name="checkout" id="checkout" class="form-control" placeholder="Check Out" value="${checkout}" required/>
+                        <input type='text' name="checkout" id="checkout" class="form-control" placeholder="Check Out"
+                               value="${checkout}" required/>
                         <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -191,7 +194,7 @@
                     var checkinpicker = $('#checkinpicker');
                     var checkoutpricker = $('#checkoutpicker');
                     checkinpicker.datetimepicker({
-                       format: 'DD-MM-YYYY'
+                        format: 'DD-MM-YYYY'
                     });
                     checkoutpricker.datetimepicker({
                         format: 'DD-MM-YYYY',
@@ -227,7 +230,8 @@
                 <div class="form-group col-xs-4 col-md-4">
                     <c:forEach items="${Commodities}" var="commodity">
                         <label class="checkbox">
-                            <input id="${commodity.name()}" name ="${commodity.name()}" type="checkbox" ${param[commodity.name()] == 'on' ? 'checked' : ''}> ${commodity.text}
+                            <input id="${commodity.name()}" name="${commodity.name()}"
+                                   type="checkbox" ${param[commodity.name()] == 'on' ? 'checked' : ''}> ${commodity.text}
                             <%
                                 //I have to set Commodities attribute as an array with 0 or 1 depending on which commodity is checked
                                 int[] array = new int[Commodities.values().length];
@@ -248,13 +252,13 @@
             </div>
         </div>
         <%--<%--%>
-            <%--if (request.getParameter("search") != null) {--%>
+        <%--if (request.getParameter("search") != null) {--%>
         <%--%>--%>
-            <%--<div class="alert alert-danger" role="alert" id="alert" style="display:none">--%>
-                <%--Devi riempire tutti i campi per effettuare una ricerca!--%>
-            <%--</div>--%>
+        <%--<div class="alert alert-danger" role="alert" id="alert" style="display:none">--%>
+        <%--Devi riempire tutti i campi per effettuare una ricerca!--%>
+        <%--</div>--%>
         <%--<%--%>
-            <%--}--%>
+        <%--}--%>
         <%--%>--%>
         <div class="btn-group btn-group-justified">
             <div class="btn-group">
@@ -275,10 +279,15 @@
                         }
                     }
                 </script>
-                <button type="button" onclick="searchSwitcher()" id=advsearchbutton" class="btn btn-default" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">Advanced Search</button>
+                <button type="button" onclick="searchSwitcher()" id=advsearchbutton" class="btn btn-default"
+                        data-toggle="collapse" data-target="#collapseSearch" aria-expanded="false"
+                        aria-controls="collapseSearch">Advanced Search
+                </button>
             </div>
             <div class="btn-group">
-                <button name="search" type="submit" class="btn btn-primary" value='${search}' id="searchbutton"><span class="glyphicon glyphicon-search"></span> Search</button>
+                <button name="search" type="submit" class="btn btn-primary" value='${search}' id="searchbutton"><span
+                        class="glyphicon glyphicon-search"></span> Search
+                </button>
             </div>
         </div>
     </form>
@@ -287,49 +296,54 @@
 <button onclick="orderBy('price')">Order by Price</button>
 <button onclick="orderBy('name')">Order by Name</button>
 
-<div id="resultSet" >
+<div id="resultSet">
     <%
         List<Location> result = new ArrayList<>();
         if (request.getParameter("search") != null) {
             try {
                 basicSearchBean.validate();
             } catch (Exception e) {
-            %>
-                <div class="alert alert-danger" role="alert"><%=e.getLocalizedMessage()%></div>
-            <%
+    %>
+    <div class="alert alert-danger" role="alert"><%=e.getLocalizedMessage()%>
+    </div>
+    <%
             }
             result = basicSearchBean.getResult();
 
         }
         pageContext.setAttribute("result", result);
     %>
-        <%
-            if (result.size() > 0) {
-        %>
-            <div class="container">
-                <div class="row" id="result_row">
-                    <c:forEach items="${result}" var="location">
-                    <div class = "paneldiv">
-                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
-                            <div class="panel price panel-red">
-                                <div class="thumbnail">
+    <%
+        if (result.size() > 0) {
+    %>
+    <div class="container">
+        <div class="row" id="result_row">
+            <c:forEach items="${result}" var="location">
+                <div class="paneldiv">
+                    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                        <div class="panel price panel-red">
+                            <div class="thumbnail">
                                     <%--${location.photos}--%>
-                                    <img src="resources/img/piscine-di-albergo-Medulin-2.jpg" alt="...">
-                                    <div class="panel-heading text-center" id="name_text"><h3>${location.structure.name}</h3></div>
-                                            <%--${location.locationAddress}--%>
-                                    <div class="panel-body text-center" id="price_text"><p class="lead"><strong>28 &euro; a notte</strong></p></div>
-                                    <div class="panel-footer text-center"><a href="<c:url value="showOffer.jsp"><c:param name="id" value="${result.indexOf(location)}"/></c:url>" type="submit" class="btn btn-lg btn-block" role="button">Mostra</a></div>
-                                    </div>
-                                </div>
+                                <img src="resources/img/piscine-di-albergo-Medulin-2.jpg" alt="...">
+                                <div class="panel-heading text-center" id="name_text">
+                                    <h3>${location.structure.name}</h3></div>
+                                    <%--${location.locationAddress}--%>
+                                <div class="panel-body text-center" id="price_text"><p class="lead"><strong>28 &euro; a
+                                    notte</strong></p></div>
+                                <div class="panel-footer text-center"><a
+                                        href="<c:url value="showOffer.jsp"><c:param name="id" value="${result.indexOf(location)}"/></c:url>"
+                                        type="submit" class="btn btn-lg btn-block" role="button">Mostra</a></div>
                             </div>
                         </div>
-                    </c:forEach>
+                    </div>
                 </div>
-            </div>
-        <%
-            } else if (request.getParameter("search") != null && result.size() == 0) {
-        %>
-                <div class="alert alert-danger" role="alert">Nessun risultato trovato!</div>
+            </c:forEach>
+        </div>
+    </div>
+    <%
+    } else if (request.getParameter("search") != null && result.size() == 0) {
+    %>
+    <div class="alert alert-danger" role="alert">Nessun risultato trovato!</div>
 
     <%
         } else {

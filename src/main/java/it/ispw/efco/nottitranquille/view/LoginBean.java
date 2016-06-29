@@ -20,7 +20,6 @@ public class LoginBean {
     private String cookie = "";
 //    private Long user_id;
 
-
     public boolean isExpired() {
         return expired;
     }
@@ -63,6 +62,16 @@ public class LoginBean {
         if (this.id != null) {
             AccessController.setLogout(this.id);
         }
+    }
+
+    @Transient
+    public Person getUser() {
+       return AccessController.getRegisteredUser(this.username,this.password);
+    }
+
+    public int modifyField(String field, String value) {
+        System.out.println(field + value);
+        return 1;
     }
 
     public String api_login_response() {

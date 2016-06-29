@@ -26,6 +26,8 @@ public class MainScreenController {
     private Text employeeLastName;
     @FXML
     private Text employeeRoles;
+
+
     @FXML
     private Button ScoutFilteredSearchForm;
     @FXML
@@ -49,6 +51,37 @@ public class MainScreenController {
         this.mainStage = stage;
     }
 
+    public Text getEmployeeFirstName() {
+        return employeeFirstName;
+    }
+
+    public Text getEmployeeLastName() {
+        return employeeLastName;
+    }
+
+    public Text getEmployeeRoles() {
+        return employeeRoles;
+    }
+
+    public Button getScoutFilteredSearchForm() {
+        return ScoutFilteredSearchForm;
+    }
+
+    public Button getScuoutAddRequestForm() {
+        return scuoutAddRequestForm;
+    }
+
+    public Button getManagePacketsForm() {
+        return managePacketsForm;
+    }
+
+    public Button getManageEmployeesForm() {
+        return manageEmployeesForm;
+    }
+
+    public Button getManageGlobalSettingsForm() {
+        return manageGlobalSettingsForm;
+    }
 
     public void logoutHandler(ActionEvent actionEvent) {
         try {

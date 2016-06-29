@@ -193,8 +193,16 @@
                 <h4 class="modal-title">Profile Manager</h4>
             </div>
             <div class="modal-body">
+                <form action="manageProfile.jsp" name="myform" method="POST">
+                    <button type="submit" class="btn btn-default">Modifica i tuoi dati personali</button>
+                </form>
+                <form action="manageLocation.jsp" name="myform" method="POST">
+                    <button type="submit" class="btn btn-default">Gestisci le tue locazioni</button>
+                </form>
+            </div>
+            <div class="modal-footer">
                 <form action="access.jsp" name="myform" method="POST">
-                    <button type="submit" name="logout" class="btn btn-default" id="logout" value="logout">Logout</button>
+                    <button type="submit" name="logout" class="btn btn-default btn-primary" id="logout" value="logout">Logout</button>
                 </form>
             </div>
         </div>
