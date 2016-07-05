@@ -50,6 +50,9 @@
     <orderEntry type="library" name="moment" level="application" />
     <orderEntry type="library" name="daterangepicker" level="application" />
     <orderEntry type="library" name="mysql:mysql-connector-java:5.1.38" level="application" />
+    <orderEntry type="library" name="Maven: org.jadira.usertype:usertype.core:5.0.0.GA" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.12" level="project" />
+    <orderEntry type="library" name="Maven: org.jadira.usertype:usertype.spi:5.0.0.GA" level="project" />
     <orderEntry type="library" name="Maven: jstl:jstl:1.2" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time-jsptags:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
