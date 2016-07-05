@@ -69,9 +69,20 @@ public class LoginBean {
        return AccessController.getRegisteredUser(this.username,this.password);
     }
 
-    public int modifyField(String field, String value) {
-        System.out.println(field + value);
-        return 1;
+    public int modifyField(String field, String[] value) {
+        if (field != null && value != null) {
+            try {
+                AccessController.modifyField(field,value,getUser().getId());
+                //In order to refresh data for user after suc
+                if (field.equals("password"))
+                    this.password = value[1];
+                System.out.println(password);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return 1;
+        }
+        return 0;
     }
 
     public String api_login_response() {

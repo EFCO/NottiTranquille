@@ -98,4 +98,41 @@ public class AccessDAO {
         person.setReq_status("accepted");
         entityManager.getTransaction().commit();
     }
+
+    public void modifyField(String field, String value, Long id) throws Exception{
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        String querystring = "UPDATE Person p SET p." + field + " = :v WHERE p.id = :id";
+        entityManager.getTransaction().begin();
+        entityManager.createQuery(querystring).setParameter("v",value).setParameter("id",id).executeUpdate();
+        entityManager.getTransaction().commit();
+    }
+
+    public void modifyAddress(Address newAddress, Long id) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        Person person = entityManager.find(Person.class,id);
+        entityManager.getTransaction().begin();
+        //I have to do this because new Address records would be created otherwise
+        person.getAddress().setAddress(newAddress.getAddress());
+        person.getAddress().setCity(newAddress.getCity());
+        person.getAddress().setNation(newAddress.getNation());
+        person.getAddress().setPostalcode(newAddress.getPostalcode());
+        entityManager.getTransaction().commit();
+    }
+
+    public void updateLoggedUser(String old_pass, String new_pass) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        String querystring = "UPDATE loggedusers lu SET lu.password = :n WHERE lu.password = :o";
+        entityManager.getTransaction().begin();
+        entityManager.createQuery(querystring).setParameter("n",new_pass).setParameter("o",old_pass).executeUpdate();
+        entityManager.getTransaction().commit();
+    }
+
+    public String checkPassword(Long id) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        Person person = entityManager.find(Person.class,id);
+        entityManager.getTransaction().begin();
+        String password = person.getPassword();
+        entityManager.getTransaction().commit();
+        return password;
+    }
 }

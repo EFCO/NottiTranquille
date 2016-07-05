@@ -1,6 +1,7 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.AccessDAO;
+import it.ispw.efco.nottitranquille.model.Address;
 import it.ispw.efco.nottitranquille.model.Person;
 import it.ispw.efco.nottitranquille.model.Tenant;
 import it.ispw.efco.nottitranquille.model.mail.Mailer;
@@ -93,6 +94,24 @@ public class AccessController {
         } else {
             Long id = accessDAO.verifyPendingStatus(registrationBean.getHash());
             accessDAO.verify(id);
+        }
+    }
+
+    public static void modifyField(String field, String[] value, Long id) throws Exception {
+        AccessDAO accessDAO = new AccessDAO();
+        if (value.length == 1) {
+            accessDAO.modifyField(field, value[0], id);
+        } else {
+            if (field.equals("address")) {
+                Address newAddress = new Address(value[1],value[2],value[0],value[3]);
+                accessDAO.modifyAddress(newAddress,id);
+            } else if (field.equals("password")) {
+                if (accessDAO.checkPassword(id).equals(value[0])) {
+                    accessDAO.modifyField(field, value[1], id);
+                    //user get logged off otherwise
+                    accessDAO.updateLoggedUser(value[0],value[1]);
+                }
+            }
         }
     }
 }
