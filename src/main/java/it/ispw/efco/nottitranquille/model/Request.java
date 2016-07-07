@@ -4,7 +4,6 @@ import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
@@ -22,7 +21,7 @@ public class Request {
      * @param structure
      * @param status
      */
-    public Request(DateTime requestDate, DateTime acceptedDate, DateTime lastModified, Person requestedBy, Scout reviewedBy, Structure structure, RequestStatus status) {
+    public Request(DateTime requestDate, DateTime acceptedDate, DateTime lastModified, Applicant requestedBy, Person reviewedBy, Structure structure, RequestStatus status) {
         this.requestDate = requestDate;
         this.acceptedDate = acceptedDate;
         this.lastModified = lastModified;
@@ -57,11 +56,11 @@ public class Request {
      */
     private DateTime lastModified;
 
-    @ManyToOne      //Scout/Manager
-    private Person requestedBy;
+    @Transient //TODO Fix annotation (//Scout/Manager)
+    private Applicant requestedBy;
 
     @ManyToOne
-    private Scout reviewedBy;
+    private Person reviewedBy;
 
     @OneToOne(optional=false, cascade = javax.persistence.CascadeType.ALL)
     private Structure structure;

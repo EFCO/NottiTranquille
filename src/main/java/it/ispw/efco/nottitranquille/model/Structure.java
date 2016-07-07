@@ -3,8 +3,9 @@ package it.ispw.efco.nottitranquille.model;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
@@ -66,10 +67,11 @@ public class Structure {
     private DateTime checkOut;
 
     @ManyToOne
-    private Manager managedBy;
+    private Person managedBy;
 
     @ManyToOne
-    private Owner owner;
+    //TODO Make List<Person>
+    private Person owner;
 
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     private Address address;
@@ -148,11 +150,11 @@ public class Structure {
         this.checkOut = checkOut;
     }
 
-    public void setManagedBy(Manager managedBy) {
+    public void setManagedBy(Person managedBy) {
         this.managedBy = managedBy;
     }
 
-    public void setOwner(Owner owner) {
+    public void setOwner(Person owner) {
         this.owner = owner;
     }
 
