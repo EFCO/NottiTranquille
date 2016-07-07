@@ -11,7 +11,7 @@ public class JPAInitializer {
     /**
      * Static field for entity manager.
      */
-    private static EntityManager entityManager;
+    //private static EntityManager entityManager;
 
     /**
      * Static field for entity manager factory.
@@ -23,14 +23,14 @@ public class JPAInitializer {
      */
     private JPAInitializer() {
         entityManagerFactory = Persistence.createEntityManagerFactory("NottiTranquille");
-        entityManager = entityManagerFactory.createEntityManager();
+        //entityManager = entityManagerFactory.createEntityManager();
     }
 
     /**
      * Close all the the stuffs used for JPA.
      */
     public static void shutdown() {
-        entityManager.close();
+        //entityManager.close();
         entityManagerFactory.close();
     }
 
@@ -39,9 +39,9 @@ public class JPAInitializer {
      * @return the static entity manager instance.
      */
     public static EntityManager getEntityManager() {
-        if (entityManager == null) {
+        if (entityManagerFactory == null) {
             new JPAInitializer();
         }
-        return entityManager;
+        return entityManagerFactory.createEntityManager();
     }
 }

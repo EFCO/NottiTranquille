@@ -21,6 +21,7 @@ public class AccessDAO {
         query.setParameter("u",username);
         query.setParameter("p",password);
         List<Person> result = query.getResultList();
+        entityManager.close();
         return result;
     }
 
@@ -29,6 +30,7 @@ public class AccessDAO {
         entityManager.getTransaction().begin();
         entityManager.persist(lb);
         entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     public void setExpired(String cookie) {
@@ -41,6 +43,7 @@ public class AccessDAO {
         entityManager.getTransaction().begin();
         lb.setExpired(true);
         entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     public LoginBean getLoggedUser(String username, String password){
@@ -53,6 +56,7 @@ public class AccessDAO {
         if (result.size() == 0) {
             return null;
         }
+        entityManager.close();
         return result.get(0);
     }
 
@@ -63,6 +67,7 @@ public class AccessDAO {
         lb.setCookie(cookie);
         lb.setExpired(false);
         entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     public boolean removeLoggedUser(Long id){
@@ -71,6 +76,7 @@ public class AccessDAO {
         entityManager.getTransaction().begin();
         entityManager.remove(lb);
         entityManager.getTransaction().commit();
+        entityManager.close();
         return true;
     }
 
@@ -79,6 +85,7 @@ public class AccessDAO {
         entityManager.getTransaction().begin();
         entityManager.persist(person);
         entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     public Long verifyPendingStatus(String hash) throws Exception {
@@ -88,6 +95,7 @@ public class AccessDAO {
         query.setParameter("h",hash);
         query.setParameter("rs","pending");
         List<Person> result = query.getResultList();
+        entityManager.close();
         return result.get(0).getId();
     }
 
@@ -97,6 +105,7 @@ public class AccessDAO {
         entityManager.getTransaction().begin();
         person.setReq_status("accepted");
         entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     public void modifyField(String field, String value, Long id) throws Exception{
@@ -105,6 +114,7 @@ public class AccessDAO {
         entityManager.getTransaction().begin();
         entityManager.createQuery(querystring).setParameter("v",value).setParameter("id",id).executeUpdate();
         entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     public void modifyAddress(Address newAddress, Long id) {
@@ -117,6 +127,7 @@ public class AccessDAO {
         person.getAddress().setNation(newAddress.getNation());
         person.getAddress().setPostalcode(newAddress.getPostalcode());
         entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     public void updateLoggedUser(String old_pass, String new_pass) {
@@ -125,6 +136,7 @@ public class AccessDAO {
         entityManager.getTransaction().begin();
         entityManager.createQuery(querystring).setParameter("n",new_pass).setParameter("o",old_pass).executeUpdate();
         entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     public String checkPassword(Long id) {
@@ -133,6 +145,7 @@ public class AccessDAO {
         entityManager.getTransaction().begin();
         String password = person.getPassword();
         entityManager.getTransaction().commit();
+        entityManager.close();
         return password;
     }
 }

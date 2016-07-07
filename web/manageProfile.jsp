@@ -1,4 +1,4 @@
-<%@ page import="java.util.ArrayList" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: Federico
   Date: 29/06/2016
@@ -25,28 +25,32 @@
 <c:if test="${loginBean.username.equals('')}">
     <jsp:forward page="index.jsp"/>
 </c:if>
-
 <div class="container" style="margin-top: 50px">
     <h4>GESTIONE PROFILO</h4>
 
     <%
         if (request.getParameter("modify") == null) {
     %>
-    <form action="manageProfile.jsp" method="POST">
+    <form class="form-horizontal" role="form" action="manageProfile.jsp" method="POST">
         <div class="row">
+            <label class="col-lg-3 control-label">First name:</label>
             <c:out value="${loginBean.user.firstName}"/>
             <button type="submit" class="btn btn-default" name="modify" value="firstName">Modifica</button>
         </div>
         <div class="row">
+            <label class="col-lg-3 control-label">Last name:</label>
             <c:out value="${loginBean.user.lastName}"/>
             <button type="submit" class="btn btn-default" name="modify" value="lastName">Modifica</button>
         </div>
         <div class="row">
+            <label class="col-lg-3 control-label">Email:</label>
             <c:out value="${loginBean.user.email}"/>
             <button type="submit" class="btn btn-default" name="modify" value="email">Modifica</button>
         </div>
+        <label class="col-lg-3 control-label">Password:</label>
         <button type="submit" class="btn btn-default" name="modify" value="password">Modifica Password</button>
         <div class="row">
+            <label class="col-lg-3 control-label">Address:</label>
             <div class="col-md-2">
                 <c:out value="${loginBean.user.address.address}"/>
             </div>
@@ -70,19 +74,24 @@
     %>
     <form action="manageProfile.jsp" method="POST">
         <div class="row">
+            <label class="col-lg-3 control-label">First name:</label>
             <c:out value="${loginBean.user.firstName}"/>
             <button type="submit" class="btn btn-default" name="modify" value="firstName">Modifica</button>
         </div>
         <div class="row">
+            <label class="col-lg-3 control-label">Last name:</label>
             <c:out value="${loginBean.user.lastName}"/>
             <button type="submit" class="btn btn-default" name="modify" value="lastName">Modifica</button>
         </div>
         <div class="row">
+            <label class="col-lg-3 control-label">Email:</label>
             <c:out value="${loginBean.user.email}"/>
             <button type="submit" class="btn btn-default" name="modify" value="email">Modifica</button>
         </div>
+        <label class="col-lg-3 control-label">Password:</label>
         <button type="submit" class="btn btn-default" name="modify" value="password">Modifica Password</button>
         <div class="row">
+            <label class="col-lg-3 control-label">Address:</label>
             <div class="col-md-2">
                 <c:out value="${loginBean.user.address.address}"/>
             </div>

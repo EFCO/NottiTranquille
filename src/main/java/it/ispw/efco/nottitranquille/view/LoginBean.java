@@ -35,7 +35,7 @@ public class LoginBean {
                 throw new Exception("User not registered");
             } else {
                 this.username = person.getUsername();
-                int value = LoggedIn();
+                int value = isLoggedIn();
                 if (value != 2) {
                     //you can not perform login if you are already logged
                     throw new Exception("User is already logged");
@@ -50,7 +50,8 @@ public class LoginBean {
         }
     }
 
-    public int LoggedIn() {
+    @Transient
+    public int isLoggedIn() {
         if (!this.username.equals("") && !this.password.equals("") && !this.cookie.equals("")) {
             return AccessController.isAlreadyLogged(this,cookie);
         } else {
@@ -76,7 +77,6 @@ public class LoginBean {
                 //In order to refresh data for user after suc
                 if (field.equals("password"))
                     this.password = value[1];
-                System.out.println(password);
             } catch (Exception e) {
                 e.printStackTrace();
             }

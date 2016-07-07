@@ -247,7 +247,7 @@
                     <form class="navbar-form navbar-right" role="search">
                         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#searchModal">Search</button>
                         <%
-                            if (loginBean.LoggedIn() != 1) {
+                        if (loginBean.isLoggedIn() != 1) {
                         %>
                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#signModal">Sign In/Sign Up</button>
                         <%
