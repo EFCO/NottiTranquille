@@ -22,9 +22,6 @@
 
 <%@include file="navbar.html" %>
 
-<c:if test="${loginBean.username.equals('')}">
-    <jsp:forward page="index.jsp"/>
-</c:if>
 <div class="container" style="margin-top: 50px">
     <h4>GESTIONE PROFILO</h4>
 
@@ -66,6 +63,22 @@
             <button type="submit" class="btn btn-default" name="modify" value="address">Modifica</button>
         </div>
     </form>
+    <c:catch var="notsuchauth">
+        <c:if test="${loginBean.user.getRole('Manager') != null}">
+            <form class="form-horizontal" role="form" action="manageLocations.jsp" method="POST">
+                <button type="submit" class="btn btn-default">Gestisci le tue locazioni</button>
+            </form>
+        </c:if>
+    </c:catch>
+    <c:if test="${notsuchauth != null}">
+        <div class="row">
+            <form action="manageProfile.jsp" method="POST">
+                <label class="col-lg-3 control-label">Hai delle locazioni da mettere in affitto?</label>
+                <input name="value" value="true" type="text" hidden>
+                <button type="submit" name="modify" value="manager" class="btn btn-primary">Si</button>
+            </form>
+        </div>
+    </c:if>
     <%
     } else if (request.getParameter("modify") != null && request.getParameter("value") != null) {
         String modify = request.getParameter("modify");
@@ -107,6 +120,24 @@
             <button type="submit" class="btn btn-default" name="modify" value="address">Modifica</button>
         </div>
     </form>
+    <c:catch var="notsuchauth">
+        <c:if test="${loginBean.user.getRole('Manager') != null}">
+            <div class="row">
+                <form class="form-horizontal" role="form" action="manageLocations.jsp" method="POST">
+                    <button type="submit" class="btn btn-primary">Gestisci le tue locazioni</button>
+                </form>
+            </div>
+        </c:if>
+    </c:catch>
+    <c:if test="${notsuchauth != null}">
+        <div class="row">
+            <form action="manageProfile.jsp" method="GET">
+                <label class="col-lg-3 control-label">Hai delle locazioni da mettere in affitto?</label>
+                <input name="value" value="true" type="text" hidden>
+                <button type="submit" name="modify" value="manager" class="btn btn-primary">Si</button>
+            </form>
+        </div>
+    </c:if>
     <%
         if (result == 1) {
     %>
@@ -165,11 +196,11 @@
 
                 if (password != confirmPassword) {
                     $("#divCheckPasswordMatch").html("Le password non coincidono");
-                    $('#chg_pass_button').prop("disabled",true);
+                    $('#chg_pass_button').prop("disabled", true);
                 }
                 else {
                     $("#divCheckPasswordMatch").html("Password coincidenti");
-                    $('#chg_pass_button').prop("disabled",false);
+                    $('#chg_pass_button').prop("disabled", false);
                 }
             }
         });

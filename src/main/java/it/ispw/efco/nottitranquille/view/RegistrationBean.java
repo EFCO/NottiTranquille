@@ -21,8 +21,6 @@ public class RegistrationBean {
     private String email = "fede93.vagnoni@gmail.com";
     private String address = "Piazza Ciao";
     private String city = "Roma";
-
-
     private String postalcode = "Roma";
     private String nation = "Roma";
     private DateTime dateofbirth = null;
@@ -30,6 +28,16 @@ public class RegistrationBean {
     private String gender;
     private String hash = "";
     private String req_status = "";
+
+    public void setManager(boolean manager) {
+        this.manager = manager;
+    }
+
+    private boolean manager;
+
+    public boolean isManager() {
+        return manager;
+    }
 
     public String getPostalcode() {
         return postalcode;
@@ -117,12 +125,12 @@ public class RegistrationBean {
     //-------------------------------------------------------------------//
 
     public void register() throws Exception {
-        System.out.println("Ciao a tutti");
         if (!this.username.equals("") && !this.password.equals("")
                 && !this.firstName.equals("") && !this.lastName.equals("")
                 && !this.address.equals("") && this.dateofbirth != null
                 && !this.email.equals("")) {
             if (AccessController.getRegisteredUser(this.username,this.password) == null) {
+                System.out.println("manger = " + manager);
                 AccessController.registration(this);
             } else {
                 throw new Exception("User already registered or waiting for verification");

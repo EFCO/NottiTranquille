@@ -42,7 +42,7 @@ public class Person {
     private String firstName;
 
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Role> roles;
     /**
      * 
@@ -168,11 +168,9 @@ public class Person {
     }
 
     public Role getRole(String rolestring) throws Exception {
-        Iterator iterator = roles.iterator();
-        while (iterator.hasNext()){
-            Role role = (Role) iterator.next();
+        for (Object role : roles) {
             if (role.getClass().getSimpleName().equals(rolestring)) {
-                return role;
+                return (Role) role;
             }
         }
         throw new Exception("This user does not have such authorization");

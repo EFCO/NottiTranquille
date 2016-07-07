@@ -148,4 +148,17 @@ public class AccessDAO {
         entityManager.close();
         return password;
     }
+
+    public void addManagerRole(Long id) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        Person person = entityManager.find(Person.class, id);
+        entityManager.getTransaction().begin();
+        try {
+            person.addRole(new Manager());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
 }

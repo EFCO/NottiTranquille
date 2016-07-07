@@ -1,9 +1,6 @@
 package it.ispw.efco.nottitranquille.controller;
 
-import it.ispw.efco.nottitranquille.model.AccessDAO;
-import it.ispw.efco.nottitranquille.model.Address;
-import it.ispw.efco.nottitranquille.model.Person;
-import it.ispw.efco.nottitranquille.model.Tenant;
+import it.ispw.efco.nottitranquille.model.*;
 import it.ispw.efco.nottitranquille.model.mail.Mailer;
 import it.ispw.efco.nottitranquille.view.LoginBean;
 import it.ispw.efco.nottitranquille.view.RegistrationBean;
@@ -90,6 +87,9 @@ public class AccessController {
             registrationBean.setReq_status("pending");
             Person person = new Person(registrationBean);
             person.addRole(new Tenant());
+            if (registrationBean.isManager()) {
+                person.addRole(new Manager());
+            }
             accessDAO.register(person);
         } else {
             Long id = accessDAO.verifyPendingStatus(registrationBean.getHash());
@@ -100,7 +100,11 @@ public class AccessController {
     public static void modifyField(String field, String[] value, Long id) throws Exception {
         AccessDAO accessDAO = new AccessDAO();
         if (value.length == 1) {
-            accessDAO.modifyField(field, value[0], id);
+            if (field.equals("manager")) {
+                accessDAO.addManagerRole(id);
+            } else {
+                accessDAO.modifyField(field, value[0], id);
+            }
         } else {
             if (field.equals("address")) {
                 Address newAddress = new Address(value[1],value[2],value[0],value[3]);
