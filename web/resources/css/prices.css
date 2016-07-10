@@ -1,0 +1,104 @@
+.under-navbar {
+    padding-top: 80px;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+#show {
+    margin: 8px;
+}
+
+#perPage {
+    margin: 8px;
+}
+
+.second {
+    margin-left: 10px;
+}
+
+footer {
+    clear:both;
+}
+
+#items-counter {
+    margin: 27px auto;
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+    text-align:center;
+    vertical-align:middle;
+}
+
+.first-radio {
+    margin-top: 0;
+}
+
+.checkbox label, .radio label {
+    padding-left: 19px;
+}
+
+.modal-dialog-prices {
+    width: 472px;
+}
+
+#first-column-radio-price-type {
+    margin-top: 10px;
+    margin-right: 20px;
+    float: left;
+}
+
+#second-column-radio-price-type {
+    margin-left: 20px;
+    margin-right: 20px;
+    float: left;
+}
+
+#third-column-radio-price-type {
+    float: left;
+    margin-left: 20px;
+}
+
+#div-repeat {
+    display: flex;
+    justify-content: space-between;
+    clear: both;
+}
+
+#div-times {
+    margin-right: 70px;
+}
+
+.input-group-addon{
+    width: 45px;
+}
+
+#input-start-date {
+    width: 394px;
+}
+
+#input-comment {
+    width: 439px;
+}
+
+#input-price {
+    width: 358px;
+}
+
+#input-occurrences {
+    width: 318px;
+}
+
+#input-end-date {
+    width: 380px;
+}

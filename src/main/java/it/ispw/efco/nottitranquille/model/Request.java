@@ -32,10 +32,13 @@ public class Request {
         this.status = status;
     }
 
-    public Request(Structure structure) {
+    public Request(Structure structure, Applicant applicant) {
         this.structure = structure;
         structure.setRequest(this);
-        this.status = RequestStatus.Accepted;
+
+        this.status = RequestStatus.To_be_reviewed;
+        this.requestDate = new DateTime();
+        this.requestedBy = applicant;
     }
 
     public Request() {
