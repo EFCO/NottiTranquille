@@ -3,11 +3,16 @@ package it.ispw.efco.nottitranquille.model;
 import it.ispw.efco.nottitranquille.DateUtils;
 import it.ispw.efco.nottitranquille.model.enumeration.Day;
 import it.ispw.efco.nottitranquille.model.enumeration.RepetitionType;
+import it.ispw.efco.nottitranquille.view.PriceBean;
+import org.apache.commons.lang3.text.WordUtils;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
 import org.joda.time.*;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import javax.persistence.*;
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -80,6 +85,11 @@ public abstract class Price {
     protected double value;
 
     /**
+     * Comment/description of the price
+     */
+    protected String comment;
+
+    /**
      * Default constructor
      */
     protected Price() {
@@ -95,6 +105,7 @@ public abstract class Price {
         this.repetitionType = builder.repetitionType;
         this.days = builder.days;
         this.value = builder.value;
+        this.comment = builder.comment;
 
         if (builder.value < 0) {
             throw new IllegalStateException("Value must be set greater than zero!");
@@ -105,7 +116,7 @@ public abstract class Price {
                 if (builder.days != null) {
                     throw new IllegalStateException("If repetition type is EVERY_DAYS it is not legal set days!");
                 }
-            } else if (builder.repetitionType == RepetitionType.EVERY_WORKDAY || builder.repetitionType == RepetitionType.EVERY_NOT_WORKDAY || builder.repetitionType == RepetitionType.EVERY_WEEKEND) {
+            } else if (builder.repetitionType == RepetitionType.EVERY_WORKDAY || builder.repetitionType == RepetitionType.EVERY_NO_WORKDAY || builder.repetitionType == RepetitionType.EVERY_WEEKEND) {
                 if (builder.days != null) {
                     throw new IllegalStateException("If repetition type is EVERY_WORKDAY or EVERY_NOT_WORKDAY it is not legal set days!");
                 }
@@ -134,6 +145,105 @@ public abstract class Price {
             // Sets default interval from now to forever
             this.interval = new Interval(DateTime.now(), new DateTime(9999, 1, 1, 0, 0, 0, DateTimeZone.UTC ));
         }
+    }
+
+    /**
+     *
+     * @param priceBean
+     * @return
+     */
+    public static Price PriceFromBean(PriceBean priceBean) {
+
+        Price price = null;
+        try {
+            price = (Price) Class.forName("it.ispw.efco.nottitranquille.model." + WordUtils.capitalize(priceBean.getPriceType())).newInstance();
+
+            //
+            DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd/MM/yyyy");
+
+            //
+            Field repetitionTypesField = Price.class.getDeclaredField("repetitionType");
+            RepetitionType repetitionType = null;
+
+            if (priceBean.getRepetitionType().equals("everyDay")) {
+                repetitionType = RepetitionType.EVERY_DAY;
+            } else if (priceBean.getRepetitionType().equals("everyWeek")) {
+                repetitionType = RepetitionType.EVERY_WEEK;
+            } else if (priceBean.getRepetitionType().equals("everyMonth")) {
+                repetitionType = RepetitionType.EVERY_MONTH;
+            } else if (priceBean.getRepetitionType().equals("everyYear")) {
+                repetitionType = RepetitionType.EVERY_YEAR;
+            } else if (priceBean.getRepetitionType().equals("everyWeekend")) {
+                repetitionType = RepetitionType.EVERY_WEEKEND;
+            } else if (priceBean.getRepetitionType().equals("everyWorkday")) {
+                repetitionType = RepetitionType.EVERY_WORKDAY;
+            } else if (priceBean.getRepetitionType().equals("everyNoWorkday")) {
+                repetitionType = RepetitionType.EVERY_NO_WORKDAY;
+            }
+
+            repetitionTypesField.setAccessible(true);
+            repetitionTypesField.set(price, repetitionType);
+            repetitionTypesField.setAccessible(false);
+
+            //
+            Field timesField = Price.class.getDeclaredField("times");
+            timesField.setAccessible(true);
+            timesField.set(price, priceBean.getTimes());
+            timesField.setAccessible(false);
+
+            //
+            if (priceBean.getId() != 0) {
+                Field idField = Price.class.getDeclaredField("id");
+                idField.setAccessible(true);
+                idField.set(price, priceBean.getId());
+                idField.setAccessible(false);
+            }
+
+            //
+            Field valueField = Price.class.getDeclaredField("value");
+            valueField.setAccessible(true);
+            valueField.set(price, priceBean.getValue());
+            valueField.setAccessible(false);
+
+            //
+            Field intervalField = Price.class.getDeclaredField("interval");
+
+            DateTime startDate = DateTime.parse(priceBean.getStartDate(), dateTimeFormatter);
+            DateTime endDate = DateTime.parse(priceBean.getEndDate(), dateTimeFormatter);
+
+            intervalField.setAccessible(true);
+            intervalField.set(price, new Interval(startDate, endDate));
+            intervalField.setAccessible(false);
+
+            //
+            Field occurrencesField = Price.class.getDeclaredField("occurrences");
+            occurrencesField.setAccessible(true);
+            occurrencesField.set(price, priceBean.getOccurrences());
+            occurrencesField.setAccessible(false);
+
+            //
+            Field daysField = Price.class.getDeclaredField("days"); //TODO controllare dato che è una lista
+            daysField.setAccessible(true);
+            daysField.set(price, priceBean.getDays());
+            daysField.setAccessible(false);
+
+            //
+            Field commentField = Price.class.getDeclaredField("comment");
+            commentField.setAccessible(true);
+            commentField.set(price, priceBean.getComment());
+            commentField.setAccessible(false);
+
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+        return price;
     }
 
     /**
@@ -217,6 +327,10 @@ public abstract class Price {
         return value;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
     /**
 	 * Shows the current Price's value decorating with all decorator applied.
      *
@@ -236,6 +350,10 @@ public abstract class Price {
         this.repetitionType = priceToUpdate.repetitionType;
         this.days = priceToUpdate.days;
         this.value = priceToUpdate.value;
+
+        System.out.print(priceToUpdate.comment);
+
+        this.comment = priceToUpdate.comment.replace("Â", "");
     }
 
     /**
@@ -260,7 +378,7 @@ public abstract class Price {
                 return true;
             }
             // the price will be repeated every not work day and the date is not a work day, then it IS eligible
-            if (repetitionType == RepetitionType.EVERY_NOT_WORKDAY && (date.getDayOfWeek() == 6 || date.getDayOfWeek() == 7)) {
+            if (repetitionType == RepetitionType.EVERY_NO_WORKDAY && (date.getDayOfWeek() == 6 || date.getDayOfWeek() == 7)) {
                 return true;
             }
 
@@ -345,6 +463,11 @@ public abstract class Price {
          * The value of the Price
          */
         protected double value = -1;
+
+        /**
+         * The comment/description of the price
+         */
+        protected String comment;
 
         /**
          * Abstract method that has to call the concrete object constructor passing builder instance.
@@ -453,6 +576,10 @@ public abstract class Price {
         public B setPrice(double price) {
             this.value = price;
             return thisObject;
+        }
+
+        public void setComment(String comment) {
+            this.comment = comment;
         }
 
         /**

@@ -72,8 +72,6 @@ public class Location {
      * @return
      */
     public double getPrice(DateTime startDate, DateTime endDate) {
-        System.out.print(startDate.toDate());
-        System.out.print(endDate.toDate());
         return getPrice(new Interval(startDate, endDate));
     }
     // TODO non overlappare price base tra loro. un giorno non può avere più prezzi base

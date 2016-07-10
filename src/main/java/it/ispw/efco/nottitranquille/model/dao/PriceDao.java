@@ -2,6 +2,7 @@ package it.ispw.efco.nottitranquille.model.dao;
 
 import it.ispw.efco.nottitranquille.JPAInitializer;
 import it.ispw.efco.nottitranquille.model.*;
+import it.ispw.efco.nottitranquille.view.PriceBean;
 import org.joda.time.Interval;
 
 import javax.persistence.EntityManager;
@@ -30,13 +31,26 @@ public class PriceDao {
      *
      * @param price the Price to persist
      */
-    public static void store(Price price) {
-        EntityManager entityManager = JPAInitializer.getEntityManager();
-        entityManager.getTransaction().begin();
+    public static void store(Price price) throws Exception {
+        if (price != null) {
+            EntityManager entityManager = JPAInitializer.getEntityManager();
+            entityManager.getTransaction().begin();
 
-        entityManager.persist(price);
+            entityManager.persist(price);
 
-        entityManager.getTransaction().commit();
+            entityManager.getTransaction().commit();
+        } else {
+            throw new Exception("The entity can not be null!");
+        }
+    }
+
+    /**
+     * Stores {@link it.ispw.efco.nottitranquille.view.PriceBean} into persistent system.
+     *
+     * @param priceToUpdate the PriceBean to persist
+     */
+    public static void store(PriceBean priceToUpdate) throws Exception {
+        store(Price.PriceFromBean(priceToUpdate));
     }
 
     /**
@@ -55,18 +69,36 @@ public class PriceDao {
     }
 
     /**
+     * Updates {@link Price} into persistent system with the given Price's state.
+     *
+     * @param priceToUpdate the Price to update with the new state
+     */
+    public static void update(PriceBean priceToUpdate) {
+        update(Price.PriceFromBean(priceToUpdate));
+    }
+
+    /**
+     * Deletes {@link Price} from persistent system.
+     *
+     * @param priceId the id of the Price to delete
+     */
+    public static void delete(long priceId) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        entityManager.getTransaction().begin();
+
+        Price priceLoaded = entityManager.find(Price.class, priceId);
+        entityManager.remove(priceLoaded);
+
+        entityManager.getTransaction().commit();
+    }
+
+    /**
      * Deletes {@link Price} from persistent system.
      *
      * @param priceToDelete the Price to remove
      */
     public static void delete(Price priceToDelete) {
-        EntityManager entityManager = JPAInitializer.getEntityManager();
-        entityManager.getTransaction().begin();
-
-        Price priceLoaded = entityManager.find(Price.class, priceToDelete.getId());
-        entityManager.remove(priceLoaded);
-
-        entityManager.getTransaction().commit();
+        delete(priceToDelete.getId());
     }
 
     /**

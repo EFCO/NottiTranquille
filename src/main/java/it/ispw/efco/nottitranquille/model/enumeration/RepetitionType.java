@@ -57,5 +57,5 @@ public enum RepetitionType {
     /**
      * Repeat every saturday and sunday
      */
-    EVERY_NOT_WORKDAY
+    EVERY_NO_WORKDAY
 }

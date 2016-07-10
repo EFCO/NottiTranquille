@@ -1,5 +1,7 @@
 package it.ispw.efco.nottitranquille.model;
 
+import it.ispw.efco.nottitranquille.view.PriceBean;
+
 import javax.persistence.*;
 
 /**

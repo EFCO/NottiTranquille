@@ -15,38 +15,22 @@ public class PriceBean extends Bean {
     /**
      *
      */
-    public static final int MAX_REPETITION_DAYS = 8;
+    private static final int MAX_REPETITION_DAYS = 31;
 
     /**
      *
      */
-    public static final int MAX_REPETITION_WEEKS = 53;
+    private static final int MAX_REPETITION_WEEKS = 53;
 
     /**
      *
      */
-    public static final int MAX_REPETITION_MONTHS = 13;
+    private static final int MAX_REPETITION_MONTHS = 31;
 
     /**
      *
      */
-    public static final int MAX_REPETITION_YEARS = 100;
-
-    /**
-     *
-     */
-    public static final int MAX_REPETITION_WEEKENDS = 53;
-
-    /**
-     *
-     */
-    public static final int MAX_REPETITION_WORKDAYS = 6;
-
-    /**
-     *
-     */
-    public static final int MAX_REPETITION_NO_WORKDAYS = 3;
-
+    private static final int MAX_REPETITION_YEARS = 31;
 
     /**
 	 * Default constructor
@@ -55,21 +39,33 @@ public class PriceBean extends Bean {
 
 	}
 
+    private long id;
+
     private String priceType;
 
     private String repetitionType;
 
     private int times;
 
-    private int value = 22;
+    private double value;
 
     private String startDate;
 
     private int occurrences;
 
+    private String comment;
+
     private String endDate;
 
 	private List<Day> days;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getPriceType() {
         return priceType;
@@ -95,11 +91,11 @@ public class PriceBean extends Bean {
         this.times = times;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(double value) {
         this.value = value;
     }
 
@@ -119,6 +115,14 @@ public class PriceBean extends Bean {
         this.occurrences = occurrences;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public String getEndDate() {
         return endDate;
     }
@@ -127,37 +131,18 @@ public class PriceBean extends Bean {
         this.endDate = endDate;
     }
 
-    public int getMaxRepetitionDays() {
-        return MAX_REPETITION_DAYS;
+    public List<Day> getDays() {
+        return days;
     }
 
-    public int getMaxRepetitionWeeks() {
-        return MAX_REPETITION_WEEKS;
-    }
-
-    public int getMaxRepetitionMonths() {
-        return MAX_REPETITION_MONTHS;
-    }
-
-    public int getMaxRepetitionYears() {
-        return MAX_REPETITION_YEARS;
-    }
-
-    public int getMaxRepetitionWeekends() {
-        return MAX_REPETITION_WEEKENDS;
-    }
-
-    public int getMaxRepetitionWorkdays() {
-        return MAX_REPETITION_WORKDAYS;
-    }
-
-    public int getMaxRepetitionNoWorkdays() {
-        return MAX_REPETITION_NO_WORKDAYS;
+    public void setDays(List<Day> days) {
+        this.days = days;
     }
 
     @Override
     public String toString() {
         return "PriceBean{" +
+                "id=" + id + '\'' +
                 "priceType='" + priceType + '\'' +
                 ", repetitionType='" + repetitionType + '\'' +
                 ", times=" + times +
@@ -165,6 +150,7 @@ public class PriceBean extends Bean {
                 ", startDate='" + startDate + '\'' +
                 ", occurrences=" + occurrences +
                 ", endDate='" + endDate + '\'' +
+                ", comment='" + comment + '\'' +
                 ", days=" + days +
                 '}';
     }
@@ -174,7 +160,7 @@ public class PriceBean extends Bean {
 
         boolean valid = true;
 
-        if (StringUtils.isBlank(this.priceType)) {
+        if (StringUtils.isBlank(priceType)) {
             setErrorMessage(PriceBean.class.getDeclaredField("priceType"), "Price Type is required");
             valid = false;
         }
@@ -184,7 +170,7 @@ public class PriceBean extends Bean {
             valid = false;
         }
 
-        if (NumberUtils.isFromTo(this.times, 0, MAX_REPETITION_DAYS)) {
+        if (!NumberUtils.isFromTo(times, 0, MAX_REPETITION_DAYS)) {
             setErrorMessage(PriceBean.class.getDeclaredField("times"), "Times must be in range 1, 7");
             valid = false;
         }
@@ -192,4 +178,19 @@ public class PriceBean extends Bean {
         return valid;
 	}
 
+    public int getMAX_REPETITION_DAY() {
+        return MAX_REPETITION_DAYS;
+    }
+
+    public int getMAX_REPETITION_WEEK() {
+        return MAX_REPETITION_WEEKS;
+    }
+
+    public int getMAX_REPETITION_MONTH() {
+        return MAX_REPETITION_MONTHS;
+    }
+
+    public int getMAX_REPETITION_YEAR() {
+        return MAX_REPETITION_YEARS;
+    }
 }

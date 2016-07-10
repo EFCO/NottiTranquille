@@ -298,12 +298,21 @@ public class Demo {
                 .build();
 
         PriceDao.store(discount);*/
+/*
 
         da = DateTime.parse("2016-06-14", dateTimeFormatter);
         a = DateTime.parse("2016-06-17", dateTimeFormatter);
 
         Location location = new Location();
         System.out.printf("The price for the location between %s - %s is: %f", da.toString(), a.toString(), location.getPrice(new Interval(da, a)));
+*/
+        try {
+            Class cls = Class.forName("it.ispw.efco.nottitranquille.model.PercentageFee");
+
+            System.out.println("Class = " + cls.getName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
 }
