@@ -17,6 +17,61 @@ import java.util.List;
 public class Person {
 
     /**
+     *
+     */
+    private String username;
+
+
+    private String firstName;
+
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Role> roles;
+
+    /**
+     *
+     */
+    private String lastName;
+
+    /**
+     *
+
+     */
+    private String password;
+
+    /**
+     *
+     */
+    private String email;
+
+    /**
+     *
+     */
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    private DateTime birthdate;
+
+    /**
+     *
+     */
+    private String phoneNumber;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
+
+    private Gender gender;
+
+    private String hash = "";
+
+    private String req_status = "";
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    public Person() {
+    }
+
+    /**
      * Default constructor
      */
     public Person(RegistrationBean registrationBean) {
@@ -34,26 +89,25 @@ public class Person {
         this.roles = new ArrayList<Role>();
     }
 
-    /**
-     * 
-     */
-    private String username;
+    public Long getId() {
+        return id;
+    }
 
-    private String firstName;
+    public void setReq_status(String req_status) {
+        this.req_status = req_status;
+    }
 
+    public String getUsername() {
+        return username;
+    }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Role> roles;
-    /**
-     * 
-     */
-    private String lastName;
+    public String getFirstName() {
+        return firstName;
+    }
 
-    /**
-     *
-
-     */
-    private String password;
+    public String getLastName() {
+        return lastName;
+    }
 
     public void setUsername(String username) {
         this.username = username;
@@ -119,35 +173,6 @@ public class Person {
         this.gender = gender;
     }
 
-    /**
-     * 
-     */
-    private String email;
-
-    /**
-     * 
-     */
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-    private DateTime birthdate;
-
-    /**
-     * 
-     */
-    private String phoneNumber;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    private Address address;
-
-    private Gender gender;
-
-    private String hash = "";
-
-    private String req_status = "";
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
     public void addRole(Role newRole) throws Exception {
         for (Role role : roles) {
             if (role.getClass().getSimpleName().equals(newRole.getClass().getSimpleName())) {
@@ -182,29 +207,6 @@ public class Person {
             list.add(role.getClass().getSimpleName());
         }
         return list;
-    }
-
-    public Person() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setReq_status(String req_status) {
-        this.req_status = req_status;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
     }
 
 }

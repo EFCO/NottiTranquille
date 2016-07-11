@@ -1,16 +1,11 @@
 package it.ispw.efco.nottitranquille.model;
 
-import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
 import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
-import it.ispw.efco.nottitranquille.view.SearchBean;
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
-import java.util.*;
+import java.util.List;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
@@ -26,12 +21,13 @@ public class RequestDAO {
     /**
      * 
      */
-    public void saveRequest(Request request) {
-        EntityManager entityManager = JPAInitializer.getEntityManager();
-        entityManager.getTransaction().begin();
-        entityManager.persist(request);
-        entityManager.getTransaction().commit();
-    }
+//    public void saveRequest(Request request) {
+//        EntityManager entityManager = JPAInitializer.getEntityManager();
+//        entityManager.getTransaction().begin();
+//        entityManager.persist(request);
+//        entityManager.getTransaction().commit();
+//        entityManager.close();
+//    }
 
     public List<Request> selectAllRequestsByFilter(String nation, String city, RequestStatus status) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
@@ -52,6 +48,7 @@ public class RequestDAO {
         query.setParameter("s", status);
         List<Request> result;
         result = query.getResultList();
+        entityManager.close();
         return result;
     }
 
@@ -75,6 +72,7 @@ public class RequestDAO {
         List<Request> result;
         //TODO tutte le eccezioni dovrebbero essere lanciate?
         result = query.getResultList();
+        entityManager.close();
         return result;
     }
 
@@ -84,6 +82,7 @@ public class RequestDAO {
         query.setParameter("id",id);
         Location result;
         result = query.getSingleResult();
+        entityManager.close();
         return result;
     }
 }

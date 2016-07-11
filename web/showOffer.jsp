@@ -1,5 +1,4 @@
-<%@ page import="it.ispw.efco.nottitranquille.model.Location" %>
-<%@ page import="it.ispw.efco.nottitranquille.controller.FilteredSearch" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: Federico
   Date: 20/01/2016
@@ -34,7 +33,7 @@
 </head>
 
 <body>
-<%@include file="navbar.html" %>
+<%@include file="navbar.jsp" %>
 
 
 <div class="container ">

@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-
 @Entity
 @DiscriminatorValue("scout")
 public class Scout extends Role implements Applicant {
@@ -18,4 +17,7 @@ public class Scout extends Role implements Applicant {
     }
 
 
+    public void addStructure(Structure structure) {
+
+    }
 }

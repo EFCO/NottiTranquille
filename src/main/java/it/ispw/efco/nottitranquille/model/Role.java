@@ -7,13 +7,13 @@ import javax.persistence.*;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "role")
 public abstract class Role {
-
-    private Long id;
 
     @Id
     @GeneratedValue
+    private Long id;
+
+
     public Long getId() {
         return id;
     }

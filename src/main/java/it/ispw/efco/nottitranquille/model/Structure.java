@@ -31,7 +31,7 @@ public class Structure {
     /**
      *
      */
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> photos;
 
     /**
@@ -55,25 +55,25 @@ public class Structure {
     private DateTime checkOut;
 
     @ManyToOne
-    private Person managedBy;
+    @Access(AccessType.PROPERTY)
+    private Manager managedBy;
 
-    @ManyToOne
-    //TODO Make List<Person>
-    private Person owner;
+    @ManyToMany(targetEntity = Owner.class, cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private List<Owner> owners;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Address address;
 
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
     private StructureType type;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Service> services;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Location> locations = new ArrayList<Location>();
 
-    @OneToOne(optional=false, mappedBy="structure")
+    @OneToOne(optional = false, mappedBy = "structure", cascade = CascadeType.ALL)
     private Request request;
 
 
@@ -85,7 +85,7 @@ public class Structure {
         this.address = address;
     }
 
-    public Structure(StructureBean bean, Person manager) {
+    public Structure(StructureBean bean, Manager manager, Owner owner) {
         this.name = bean.getName();
         this.numberOfLocations = 0;
         this.photos = new ArrayList<String>();
@@ -94,8 +94,9 @@ public class Structure {
         this.checkIn = bean.getCheckIn();
         this.checkOut = bean.getCheckOut();
         this.managedBy = manager;
-        this.owner = bean.getOwner();
-        this.address = bean.getAddress();
+        this.owners = new ArrayList<Owner>();
+        this.owners.add(owner);
+        this.address = new Address(bean.getNation(), bean.getCity(), bean.getAddress(), bean.getPostalcode());
         this.type = bean.getType();
         this.services = bean.getServices();
         this.locations = new ArrayList<Location>();
@@ -146,12 +147,12 @@ public class Structure {
         this.checkOut = checkOut;
     }
 
-    public void setManagedBy(Person managedBy) {
+    public void setManagedBy(Manager managedBy) {
         this.managedBy = managedBy;
     }
 
-    public void setOwner(Person owner) {
-        this.owner = owner;
+    public void setOwners(List<Owner> owners) {
+        this.owners = owners;
     }
 
     public void setType(StructureType type) {
@@ -170,7 +171,8 @@ public class Structure {
         return type;
     }
 
-    public Person getManagedBy() {
+
+    public Manager getManagedBy() {
         return managedBy;
     }
 
@@ -189,7 +191,7 @@ public class Structure {
                 ", checkIn=" + checkIn +
                 ", checkOut=" + checkOut +
                 ", managedBy=" + managedBy +
-                ", owner=" + owner +
+                ", owner=" + owners +
                 ", address=" + address +
                 ", type=" + type +
                 ", services=" + services +

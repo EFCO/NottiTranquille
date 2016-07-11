@@ -18,29 +18,28 @@ public class LoginBean {
     private String username = "";
     private String password = "";
     private String cookie = "";
-//    private Long user_id;
+    private boolean expired;
 
     public boolean isExpired() {
         return expired;
     }
 
-    @Transient
-    private boolean expired;
-
 
     public void login() throws Exception {
         if (!this.username.equals("") && !this.password.equals("")) {
-            Person person= AccessController.getRegisteredUser(this.username, this.password);
+            Person person = AccessController.getRegisteredUser(this.username, this.password);
             if (person == null) {
                 throw new Exception("User not registered");
             } else {
                 this.username = person.getUsername();
                 int value = isLoggedIn();
-                if (value != 2) {
+                if (value == 0) {
                     //you can not perform login if you are already logged
                     throw new Exception("User is already logged");
+                } else if (value == 1) {
+                    return;
                 } else {
-//                    this.user_id = id;
+//                  this.user_id = id;
                     AccessController.logNewUser(this);
                 }
 
@@ -53,7 +52,7 @@ public class LoginBean {
     @Transient
     public int isLoggedIn() {
         if (!this.username.equals("") && !this.password.equals("") && !this.cookie.equals("")) {
-            return AccessController.isAlreadyLogged(this,cookie);
+            return AccessController.isAlreadyLogged(this, cookie);
         } else {
             return 2;
         }
@@ -67,13 +66,13 @@ public class LoginBean {
 
     @Transient
     public Person getUser() {
-       return AccessController.getRegisteredUser(this.username,this.password);
+        return AccessController.getRegisteredUser(this.username, this.password);
     }
 
     public int modifyField(String field, String[] value) {
         if (field != null && value != null) {
             try {
-                AccessController.modifyField(field,value,getUser().getId());
+                AccessController.modifyField(field, value, getUser().getId());
                 //In order to refresh data for user after suc
                 if (field.equals("password"))
                     this.password = value[1];
@@ -89,12 +88,12 @@ public class LoginBean {
         JSONObject response = new JSONObject();
         try {
             this.login();
-            response.put("code",1);
-            response.put("message","user_logged");
+            response.put("code", 1);
+            response.put("message", "user_logged");
             return response.toString();
         } catch (Exception e) {
-            response.put("code",0);
-            response.put("message",e.getMessage());
+            response.put("code", 0);
+            response.put("message", e.getMessage());
             return response.toString();
         }
     }

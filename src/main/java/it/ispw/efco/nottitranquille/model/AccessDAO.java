@@ -14,7 +14,7 @@ public class AccessDAO {
     public AccessDAO() {
     }
 
-    public List<Person> isRegistered(String username, String password) {
+    public List<Person> selectUser(String username, String password) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         String querystring = "FROM Person WHERE (username = :u OR email =:u) AND password = :p";
         TypedQuery<Person> query = entityManager.createQuery(querystring,Person.class);

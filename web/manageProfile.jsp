@@ -20,7 +20,7 @@
 
 <body>
 
-<%@include file="navbar.html" %>
+<%@include file="navbar.jsp" %>
 
 <div class="container" style="margin-top: 50px">
     <h4>GESTIONE PROFILO</h4>
@@ -65,7 +65,7 @@
     </form>
     <c:catch var="notsuchauth">
         <c:if test="${loginBean.user.getRole('Manager') != null}">
-            <form class="form-horizontal" role="form" action="manageLocations.jsp" method="POST">
+            <form class="form-horizontal" role="form" action="manageStructures.jsp" method="POST">
                 <button type="submit" class="btn btn-default">Gestisci le tue locazioni</button>
             </form>
         </c:if>
@@ -123,7 +123,7 @@
     <c:catch var="notsuchauth">
         <c:if test="${loginBean.user.getRole('Manager') != null}">
             <div class="row">
-                <form class="form-horizontal" role="form" action="manageLocations.jsp" method="POST">
+                <form class="form-horizontal" role="form" action="manageStructures.jsp" method="POST">
                     <button type="submit" class="btn btn-primary">Gestisci le tue locazioni</button>
                 </form>
             </div>

@@ -1,10 +1,11 @@
 package it.ispw.efco.nottitranquille.model;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import it.ispw.efco.nottitranquille.model.enumeration.StructureType;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
@@ -13,8 +14,8 @@ import java.util.List;
 @DiscriminatorValue("manager")
 public class Manager extends Role implements Applicant {
 
-    @OneToMany
-    private List<Structure> structures = null;
+    @OneToMany(mappedBy = "managedBy", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private List<Structure> structures;
 
     /**
      * Default constructor
@@ -30,6 +31,10 @@ public class Manager extends Role implements Applicant {
 
     public void removeStructure(Structure structure) {
         structures.remove(structure);
+    }
+
+    private void setStructures(List<Structure> structures) {
+        this.structures = structures;
     }
 
 

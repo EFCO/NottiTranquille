@@ -17,7 +17,7 @@ public class AccessController {
 
     public static Person getRegisteredUser(String username, String password) {
         AccessDAO accessDAO = new AccessDAO();
-        List<Person> result = accessDAO.isRegistered(username, password);
+        List<Person> result = accessDAO.selectUser(username, password);
         if (result.isEmpty()) {
             return null;
         } else {

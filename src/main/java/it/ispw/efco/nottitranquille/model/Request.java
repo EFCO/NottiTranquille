@@ -1,6 +1,7 @@
 package it.ispw.efco.nottitranquille.model;
 
 import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -35,7 +36,6 @@ public class Request {
     public Request(Structure structure, Applicant applicant) {
         this.structure = structure;
         structure.setRequest(this);
-
         this.status = RequestStatus.To_be_reviewed;
         this.requestDate = new DateTime();
         this.requestedBy = applicant;
@@ -47,16 +47,19 @@ public class Request {
     /**
      * 
      */
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime requestDate;
 
     /**
      * 
      */
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime acceptedDate;
 
     /**
      * 
      */
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime lastModified;
 
     @Transient //TODO Fix annotation (//Scout/Manager)
@@ -65,7 +68,8 @@ public class Request {
     @ManyToOne
     private Person reviewedBy;
 
-    @OneToOne(optional=false, cascade = javax.persistence.CascadeType.ALL)
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @MapsId
     private Structure structure;
 
     @Enumerated

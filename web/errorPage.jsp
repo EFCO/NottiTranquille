@@ -10,7 +10,7 @@
 
 </head>
 <body>
-<%@include file="navbar.html"%>
+<%@include file="navbar.jsp" %>
 <c:if test="${param['success'] == null}">
     <div class="alert alert-danger" role="alert" style="margin-top: 50px">
         <c:out value="${param['error']}"></c:out>

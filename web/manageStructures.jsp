@@ -1,10 +1,7 @@
-<%@ page import="it.ispw.efco.nottitranquille.model.StructureDao" %>
-<%@ page import="java.lang.reflect.Field" %>
-<%@ page import="java.util.Date" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="it.ispw.efco.nottitranquille.model.Manager" %>
 <%@ page import="it.ispw.efco.nottitranquille.model.Structure" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%-- Use JSTL core lib in order to add some useful feature --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -20,7 +17,7 @@
 <jsp:useBean id="structureBean" class="it.ispw.efco.nottitranquille.view.StructureBean"/>
 <jsp:setProperty name="structureBean" property="*"/>
 
-<jsp:useBean id="loginBean" class="it.ispw.efco.nottitranquille.view.LoginBean"/>
+<jsp:useBean id="loginBean" scope="session" class="it.ispw.efco.nottitranquille.view.LoginBean"/>
 
 <c:set var="createModalHTML"
        value='<form id="create-price-form" method="post" action="structures.jsp"> <div class="form-group"> <label>Price type</label> <div id="price-type-div"> <div id="first-column-radio-price-type"> <div class="radio first-radio"> <label> <input type="radio" name="priceType" id="option-radio-base-price" value="basePrice" checked="checked"> Base Price </label> </div> </div> <div id="second-column-radio-price-type"> <div class="radio"> <label> <input type="radio" name="priceType" id="option-radio-fix-discount" value="fixDiscount"> Fix Discount </label> </div> <div class="radio"> <label> <input type="radio" name="priceType" id="option-radio-fix-fee" value="percentageDiscount"> Percentage Discount </label> </div> </div> <div id="third-column-radio-price-type"> <div class="radio"> <label> <input type="radio" name="priceType" id="option-radio-percentage-discount" value="fixFee"> Fix Fee </label> </div> <div class="radio"> <label> <input type="radio" name="priceType" id="option-radio-percentage-fee" value="percentageFee"> Percentage Fee </label> </div> </div> </div> </div> <div id="div-repeat" class="form-group"> <div id="div-repeat-select" class="form-group left"> <label>Repeat it</label> <select class="form-control" name="repetitionType" required> <option value="everyDay" selected="selected">Every day</option> <option value="everyWeek">Every week</option> <option value="everyMonth">Every month</option> <option value="everyYear">Every year</option> <option value="everyWeekend">Every weekend</option> <option value="everyWorkday">Every workday</option> <option value="everyNoWorkday">Every noworkday</option> </select> </div> <div id="div-times" class="form-group right"> <label>Times</label> <select class="form-control" name="times"> <option selected="selected">1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> <option>6</option> <option>7</option> </select> </div> </div> <div class="form-group"> <label for="input-price">Price value</label> <div class="input-group"> <div id="addon-input-price" class="input-group-addon">€</div> <input type="number" step="any" min="0" class="form-control" name="value" id="input-price" placeholder="Price" required> </div> </div> <div class="form-group date"> <label for="input-start-date">Start</label> <div class="input-group date"> <input type="text" class="form-control" name="startDate" id="input-start-date" required><div class="input-group-addon"><i class="glyphicon glyphicon-th"></i></div> </div> </div> <div class="form-group"> <label for="input-comment">Comment</label> <div class="input-group"> <input type="text" class="form-control" name="comment" id="input-comment"> </div> </div> <div id="end-div" class="form-group"> <label>End</label> <div class="radio"> <label> <input type="radio" name="option-radio-end" id="option-radio-never" value="never" checked="checked">Never</label> <input type="text" name="endDate" value="31/12/9999" hidden/> </div> <div class="radio"> <label> <input type="radio" name="option-radio-end" id="option-radio-occurrences" value="occurrences"> <div class="input-group"> <input name="occurrences" id="input-occurrences" type="number" min="1" class="form-control" value="1"><span class="input-group-addon" id="sizing-addon1">occurrences</span> </div> </label> </div> <div class="radio"> <label> <input type="radio" name="option-radio-end" id="option-radio-end-date" value="endDate"> <div class="input-group date"> <input type="text" class="form-control" name="endDate" id="input-end-date"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span> </div> </label> </div> </div> <div class="form-group"> <label>Summary</label> <p id="summary"></p> </div> <label> <input name="id" hidden> </label> </form>'/>
@@ -54,153 +51,27 @@
     List<Structure> structures = new ArrayList<>();
     try {
         structures = ((Manager) loginBean.getUser().getRole("Manager")).getStructures();
+        System.out.println("strutture: " + structures);
     } catch (Exception e) {
         e.printStackTrace();
     }
 
     request.setAttribute("structures", structures);
 
-
-    System.out.println(structureBean.toString());
-
     if (request.getParameter("create") != null || request.getParameter("update") != null) { // After CREATE or UPDATE
-
-    } else if (request.getParameter("delete") != null) {    // After delete POST
-
-    }
-
-    /*
-    // Gets pageNumber from request
-    Integer pageNumber;
-    try {
-        pageNumber = Integer.parseInt(request.getParameter("page"));
-        request.setAttribute("pageNumber", pageNumber);
-    } catch (NumberFormatException exception) {
-        // If is not provided it will be set 1 for default
-        request.setAttribute("pageNumber", 1);
-        pageNumber = Integer.parseInt(String.valueOf(request.getAttribute("pageNumber")));
-    }
-
-    // Gets limit from request
-    Integer limit;
-    try {
-        limit = Integer.parseInt(request.getParameter("limit"));
-        request.setAttribute("limit", limit);
-    } catch (NumberFormatException exception) {
-        if (request.getParameter("limit") == null) {
-            // If is not provided it will be set 25 for default
-            request.setAttribute("limit", 25);
-            limit = Integer.parseInt(String.valueOf(request.getAttribute("limit")));
-        } else {
-            // Otherwise it will be set to -1 (all)
-            request.setAttribute("limit", -1);
-            limit = Integer.parseInt(String.valueOf(request.getAttribute("limit")));
+        try {
+            structureBean.validate(loginBean.getUser());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-
-    // Gets type from request
-    String type = request.getParameter("type");
-    if (type == null) {
-        // If is not provided it will be set allPrices for default
-        request.setAttribute("type", "allPrices");
-    } else {
-        request.setAttribute("type", request.getParameter("type"));
-    }
-    type = String.valueOf(request.getAttribute("type"));
-
-    // Calculates the offset for the query (the start value)
-    Integer startPosition = (pageNumber - 1) * (limit);
-    request.setAttribute("startPosition", startPosition);
-
-    // Retrieves the counts of result for type and the list of the price of certain kind
-    if (type.equals("allPrices")) {
-        request.setAttribute("counts", StructureDao.countAllPrices());
-        // If limit is -1 it will mean that all result must be retrieve
-        if (limit == -1) {
-            limit = ((Long) Long.parseLong(String.valueOf(request.getAttribute("counts")))).intValue();
-        }
-        // Retrieves prices
-        request.setAttribute("prices", PriceDao.retrievePrices(startPosition, limit));
-    } else if (type.equals("basePrices")) {
-        request.setAttribute("counts", PriceDao.countAllBasePrices());
-        // If limit is -1 it will mean that all result must be retrieve
-        if (limit == -1) {
-            limit = ((Long) Long.parseLong(String.valueOf(request.getAttribute("counts")))).intValue();
-        }
-        // Retrieves basePrices
-        request.setAttribute("prices", PriceDao.retrieveBasePrices(startPosition, limit));
-    } else if (type.equals("discounts")) {
-        request.setAttribute("counts", PriceDao.countAllDiscounts());
-        // If limit is -1 it will mean that all result must be retrieve
-        if (limit == -1) {
-            limit = ((Long) Long.parseLong(String.valueOf(request.getAttribute("counts")))).intValue();
-        }
-        // Retrieves discounts
-        request.setAttribute("prices", PriceDao.retrieveDiscounts(startPosition, limit));
-    } else if (type.equals("fees")) {
-        request.setAttribute("counts", PriceDao.countAllFees());
-        // If limit is -1 it will mean that all result must be retrieve
-        if (limit == -1) {
-            limit = ((Long) Long.parseLong(String.valueOf(request.getAttribute("counts")))).intValue();
-        }
-        // Retrieves fees
-        request.setAttribute("prices", PriceDao.retrieveFees(startPosition, limit));
-    } else if (type.equals("fixDiscounts")) {
-        request.setAttribute("counts", PriceDao.countAllFixDiscounts());
-        // If limit is -1 it will mean that all result must be retrieve
-        if (limit == -1) {
-            limit = ((Long) Long.parseLong(String.valueOf(request.getAttribute("counts")))).intValue();
-        }
-        // Retrieves fixDiscounts
-        request.setAttribute("prices", PriceDao.retrieveFixDiscounts(startPosition, limit));
-    } else if (type.equals("fixFees")) {
-        request.setAttribute("counts", PriceDao.countAllFixFees());
-        // If limit is -1 it will mean that all result must be retrieve
-        if (limit == -1) {
-            limit = ((Long) Long.parseLong(String.valueOf(request.getAttribute("counts")))).intValue();
-        }
-        // Retrieves fixFees
-        request.setAttribute("prices", PriceDao.retrieveFixFees(startPosition, limit));
-    } else if (type.equals("percentageDiscounts")) {
-        request.setAttribute("counts", PriceDao.countAllPercentageDiscounts());
-        // If limit is -1 it will mean that all result must be retrieve
-        if (limit == -1) {
-            limit = ((Long) Long.parseLong(String.valueOf(request.getAttribute("counts")))).intValue();
-        }
-        // Retrieves percentageDiscounts
-        request.setAttribute("prices", PriceDao.retrievePercentageDiscounts(startPosition, limit));
-    } else if (type.equals("percentageFees")) {
-        request.setAttribute("counts", PriceDao.countAllPercentageFees());
-        // If limit is -1 it will mean that all result must be retrieve
-        if (limit == -1) {
-            limit = ((Long) Long.parseLong(String.valueOf(request.getAttribute("counts")))).intValue();
-        }
-        // Retrieves percentageFees
-        request.setAttribute("prices", PriceDao.retrievePercentageFees(startPosition, limit));
-    } else {
-        //TODO error
-    }
-
-    // If limit is different from 0
-    if (limit != 0) {
-        // Calculates the max pages
-        Integer maxPages = (((Long) request.getAttribute("counts")).intValue() / limit);
-        if (maxPages == 0) {
-            request.setAttribute("maxPages", 1);
-        } else {
-            request.setAttribute("maxPages", maxPages);
-        }
-    } else {
-        // Otherwise it will be set maxPages to 1
-        request.setAttribute("maxPages", 1);
-    }*/
 %>
 <body>
 <!-- NAVBAR -->
-<%@include file="navbar.html" %>
+<%@include file="navbar.jsp" %>
 
 <!-- CONTAINER -->
-<div class="container under-navbar">
+<div class="container under-navbar" style="margin-top: 50px">
 
     <div>
         <div class="left">
@@ -211,14 +82,6 @@
             <div class="btn-group left">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-<%--                    <c:choose>
-                        <c:when test="${limit eq -1}">
-                            All
-                        </c:when>
-                        <c:otherwise>
-                            ${limit}
-                        </c:otherwise>
-                    </c:choose>--%>
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
@@ -240,32 +103,7 @@
             <div class="btn-group right">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                    <%--<c:choose>
-                        <c:when test="${type.equals('allPrices')}">
-                            All prices
-                        </c:when>
-                        <c:when test="${type.equals('basePrices')}">
-                            Base prices
-                        </c:when>
-                        <c:when test="${type.equals('discounts')}">
-                            Discounts
-                        </c:when>
-                        <c:when test="${type.equals('fees')}">
-                            Fees
-                        </c:when>
-                        <c:when test="${type.equals('fixDiscounts')}">
-                            Fix discounts
-                        </c:when>
-                        <c:when test="${type.equals('fixFees')}">
-                            Fix fees
-                        </c:when>
-                        <c:when test="${type.equals('percentageDiscounts')}">
-                            Percentage discounts
-                        </c:when>
-                        <c:when test="${type.equals('percentageFees')}">
-                            Percentage fees
-                        </c:when>
-                    </c:choose> --%><span class="caret"></span>
+                    <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
                     <li><a href="<custom:replaceParam name='type' value='basePrices'/>">Base prices</a></li>
@@ -303,11 +141,11 @@
             <c:when test="${structures.size() > 0}">
                 <c:forEach items="${structures}" var="structure">
                     <tr>
-                        <td>${structures.id}</td>
+                        <td>${structure.id}</td>
                         <td>${fn:join(price['class'].simpleName.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])"), ' ')}</td>
                         <td>${structure.name}</td>
                         <td>${structure.numberOfLocations}</td>
-                        <td>${structure.structureAddress.toString}</td>
+                        <td>${structure.structureAddress}</td>
                         <td>
                             <button class='updatePrice btn btn-warning btn-sm' data-toggle="modal"
                                     data-target="#createModal" data-id=${structure.id}><span
@@ -405,15 +243,79 @@
             </div>
 
             <div class="modal-body">
-                ${createModalHTML}
+                <form action="manageStructures.jsp" name="newStructureForm" method="POST">
+                    <div class="form-group">
+                        <label for="name" id="userlabel">Structure name:</label>
+                        <input name="name" id="name" type="text" class="form-control" placeholder="Villa bella"
+                               value="Villa bella" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="termsOfService">Terms of Services:</label>
+                        <input name="termsOfService" id="termsOfService" type="text" class="form-control"
+                               placeholder="Non bisogna fare cose" value="Non bisogna fare cose" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="termsOfCancellation">Terms of Cancellation:</label>
+                        <input name="termsOfCancellation" id="termsOfCancellation" type="text" class="form-control"
+                               placeholder="Se fate casino ciao" value="Se fate casino ciao" required>
+                    </div>
+                    <div class="form-group">
+                        <div class='input-group date' id='checkinpicker'>
+                            <input type='text' name="checkIn" id="checkIn" class="form-control" placeholder="Check In"
+                                   required/>
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class='input-group date' id='checkoutpicker'>
+                            <input type='text' name="checkOut" id="checkOut" class="form-control"
+                                   placeholder="Check Out" required/>
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <script>
+                        $(function () {
+                            $('#checkinpicker').datetimepicker({
+                                format: 'DD-MM-YYYY',
+                            });
+                            $('#checkoutpicker').datetimepicker({
+                                format: 'DD-MM-YYYY',
+                            });
+                        });
+                    </script>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <label for="address">Indirizzo:</label>
+                            <input name="address" id="address" type="text" class="form-control"
+                                   placeholder="Piazza Ciao" value="Piazza Ciao">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="nation">Nazione:</label>
+                            <input name="nation" id="nation" type="text" class="form-control" placeholder="Italia"
+                                   value="Italia">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="city">Città:</label>
+                            <input name="city" id="city" type="text" class="form-control" placeholder="Roma"
+                                   value="Roma">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="postalcode">Codice postale:</label>
+                            <input name="postalcode" id="postalcode" type="text" class="form-control"
+                                   placeholder="00039" value="00039">
+                        </div>
+                    </div>
             </div>
-
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" form="create-price-form" id="create" name="create"
-                        value="create">Create price
+                <button type="submit" name="create" class="btn btn-default btn-primary" id="create" value="create">
+                    Create new Structure
                 </button>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -428,7 +330,8 @@
                 <h4 class="modal-title" id="deleteModalLabel">Are you sure?</h4>
             </div>
             <div class="modal-body">
-                <form id="delete-price-form" method="post" action="structure.jsp">Note that after the confirmation the structure will be lost.
+                <form id="delete-price-form" method="post" action="structure.jsp">Note that after the confirmation the
+                    structure will be lost.
                     <label>
                         <input name="id" id="price-id" hidden>
                     </label>

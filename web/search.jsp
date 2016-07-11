@@ -1,8 +1,8 @@
 <%@ page import="it.ispw.efco.nottitranquille.model.Location" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.enumeration.Commodities" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.enumeration.LocationType" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.enumeration.LocationType" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.enumeration.Commodities" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -102,7 +102,7 @@
 </head>
 <body>
 
-<%@include file="navbar.html" %>
+<%@include file="navbar.jsp" %>
 
 <c:set var="nation" value="${param.nation}"/>
 <c:set var="city" value="${param.city}"/>

@@ -254,7 +254,8 @@
                         <%
                             } else {
                         %>
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#profileModal" style="-fx-font-weight: 300">${loginBean.getUsername()}</button>
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#profileModal"
+                                style="-fx-font-weight: 300">${loginBean.username}</button>
                         <%
                             }
                         %>

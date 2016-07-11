@@ -15,7 +15,7 @@ public class Tenant extends Role {
     /**
      * 
      */
-    @Transient //TODO to resolve
+    @Transient
     private List<Reservation> reservations;
 
     public Tenant() {

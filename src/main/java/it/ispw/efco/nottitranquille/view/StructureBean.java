@@ -1,16 +1,20 @@
 package it.ispw.efco.nottitranquille.view;
 
+import it.ispw.efco.nottitranquille.controller.ManageStructures;
+import it.ispw.efco.nottitranquille.model.Applicant;
+import it.ispw.efco.nottitranquille.model.Person;
 import it.ispw.efco.nottitranquille.model.Service;
+import it.ispw.efco.nottitranquille.model.Structure;
 import it.ispw.efco.nottitranquille.model.enumeration.StructureType;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.List;
 
 public class StructureBean {
 
     private String name;
-
-    private String numberOfLocations;
 
     private List<String> photos;
 
@@ -30,9 +34,9 @@ public class StructureBean {
 
     private String nation;
 
-    private StructureType type;
+    private StructureType type = null;
 
-    private List<Service> services;
+    private List<Service> services = null;
 
     public String getName() {
         return name;
@@ -40,14 +44,6 @@ public class StructureBean {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getNumberOfLocations() {
-        return numberOfLocations;
-    }
-
-    public void setNumberOfLocations(String numberOfLocations) {
-        this.numberOfLocations = numberOfLocations;
     }
 
     public List<String> getPhotos() {
@@ -78,16 +74,18 @@ public class StructureBean {
         return checkIn;
     }
 
-    public void setCheckIn(DateTime checkIn) {
-        this.checkIn = checkIn;
+    public void setCheckIn(String checkIn) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-MM-yyyy");
+        this.checkIn = DateTime.parse(checkIn, dateTimeFormatter);
     }
 
     public DateTime getCheckOut() {
         return checkOut;
     }
 
-    public void setCheckOut(DateTime checkOut) {
-        this.checkOut = checkOut;
+    public void setCheckOut(String checkOut) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-MM-yyyy");
+        this.checkOut = DateTime.parse(checkOut, dateTimeFormatter);
     }
 
     public StructureType getType() {
@@ -138,7 +136,29 @@ public class StructureBean {
         this.nation = nation;
     }
 
-    public void createNewStructure() {
+    public void validate(Person manager) throws Exception {
+        ManageStructures.addNewStructure(this, manager);
+    }
 
+    public List<Structure> getAllStructures(Applicant manager) {
+        return ManageStructures.getAll(manager);
+    }
+
+    @Override
+    public String toString() {
+        return "StructureBean{" +
+                "name='" + name + '\'' +
+                ", photos=" + photos +
+                ", termsOfService='" + termsOfService + '\'' +
+                ", termsOfCancellation='" + termsOfCancellation + '\'' +
+                ", checkIn=" + checkIn +
+                ", checkOut=" + checkOut +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", postalcode='" + postalcode + '\'' +
+                ", nation='" + nation + '\'' +
+                ", type=" + type +
+                ", services=" + services +
+                '}';
     }
 }

@@ -1,6 +1,8 @@
 package it.ispw.efco.nottitranquille.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
@@ -57,6 +59,12 @@ public class Address {
     public void setPostalcode(String postalcode) {
         this.postalcode = postalcode;
     }
+
+    @Override
+    public String toString() {
+        return address + ", " + city + ", " + postalcode + " " + nation;
+    }
+
     @Id
     @GeneratedValue
     private Long id;
