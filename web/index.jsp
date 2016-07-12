@@ -5,7 +5,6 @@
 <jsp:useBean id="Login" scope="session"
              class="it.ispw.efco.nottitranquille.view.LoginBean"/>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +22,6 @@
 <!-- NAVBAR
 ================================================== -->
 <%@include file="navbar.jsp" %>
-
 
 <!-- Carousel
 ================================================== -->

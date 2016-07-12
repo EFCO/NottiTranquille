@@ -1,4 +1,4 @@
-<%-- Use JSTL joda lib in order to format joda's DataTime --%>
+<%@ page import="it.ispw.efco.nottitranquille.view.LoginBean" %><%-- Use JSTL joda lib in order to format joda's DataTime --%>
 <%@ taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
 <jsp:useBean id="TenantListBean" scope="session"
              class="it.ispw.efco.nottitranquille.view.ListReservationBean"/>
@@ -53,23 +53,3 @@
 
 </c:if>
 
-
-<c:if test="${ !Login.logged }">
-    <div style=" max-height: 420px; overflow-y: auto;" class=" modal fade" id="reservationModal" tabindex="-1"
-         role="dialog"
-         aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-
-                    <h4>
-                        Questa funzionalita' e' disponibile solo per utenti Registrati!
-                        <br><br>
-                        Se possiedi un account qui potrai visualizzare le prenotazioni da te effettuate!
-
-                    </h4>
-                </div>
-            </div>
-        </div>
-    </div>
-</c:if>
