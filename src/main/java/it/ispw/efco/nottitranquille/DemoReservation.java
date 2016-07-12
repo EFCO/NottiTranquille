@@ -61,7 +61,7 @@ public class DemoReservation {
 
         Interval intervalA = new Interval(daA, aA);
 
-        DateTime daB = DateTime.parse("2018-01-01", dateTimeFormatter);
+        DateTime daB = DateTime.parse("2017-01-01", dateTimeFormatter);
         DateTime aB = DateTime.parse("2018-12-30", dateTimeFormatter);
 
         Interval intervalB = new Interval(daB, aB);
@@ -72,8 +72,8 @@ public class DemoReservation {
 
         Interval interval1 = new Interval(da1, a1);
 
-        DateTime da2 = DateTime.parse("2018-06-01", dateTimeFormatter);
-        DateTime a2 = DateTime.parse("2018-06-12", dateTimeFormatter);
+        DateTime da2 = DateTime.parse("2017-06-01", dateTimeFormatter);
+        DateTime a2 = DateTime.parse("2017-06-12", dateTimeFormatter);
 
         Interval interval2 = new Interval(da2, a2);
 
@@ -95,9 +95,10 @@ public class DemoReservation {
         myLocationA.setPrice(400.00f);
         myLocationA.setManager(manager);
         try {
-            myLocationA.addAvalablePeriod(intervalA);
+            myLocationA.addAvailablePeriod(intervalA);
         } catch (Exception e) {
             e.printStackTrace();
+            System.exit(1);
         }
 
 
@@ -117,9 +118,13 @@ public class DemoReservation {
         myLocationB.setPrice(200.00f);
         myLocationB.setManager(manager);
         try {
-            myLocationA.addAvalablePeriod(intervalB);
+            myLocationA.addAvailablePeriod(intervalA);
+            myLocationA.addAvailablePeriod(intervalB);
+            myLocationB.addAvailablePeriod(intervalA);
+            myLocationB.addAvailablePeriod(intervalB);
         } catch (Exception e) {
             e.printStackTrace();
+            System.exit(1);
         }
 
         LocationDAO.store(myLocationA);
@@ -132,6 +137,8 @@ public class DemoReservation {
 
         controller.createReservation(me.getUsername(), myLocationA.getId(), interval1, null);
         controller.createReservation(me.getUsername(), myLocationB.getId(), interval2, null);
+
+        System.exit(0);
 
     }
 

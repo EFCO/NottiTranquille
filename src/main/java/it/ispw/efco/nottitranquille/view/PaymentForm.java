@@ -1,27 +1,29 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.PaymentControl;
+import it.ispw.efco.nottitranquille.controller.ReservationController;
 import it.ispw.efco.nottitranquille.model.Exception.IllegalBookingDate;
+import it.ispw.efco.nottitranquille.model.Reservation;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 public class PaymentForm {
 
-    private String reservationID;
+    private ReservationBean reservation;
 
     private String tenantUsername;
 
 
     public boolean validate() {
 
-        if (reservationID == null || tenantUsername == null)
+        if (reservation.getId() == null || tenantUsername == null)
             return false;
 
         PaymentControl controller = PaymentControl.getInstance();
 
         try {
-            controller.pay(new Long(reservationID), tenantUsername);
+            controller.pay(new Long(reservation.getId()), tenantUsername);
         } catch (IllegalBookingDate e) {
             e.printStackTrace();
             return false;
@@ -30,14 +32,19 @@ public class PaymentForm {
         return true;
     }
 
+    public void populate(String reservationId) {
 
-    public String getReservationID() {
-        return reservationID;
+        ReservationController controller = ReservationController.getInstance();
+        // ask for reservation matching the id
+        Reservation reservation = controller.findReservation(new Long(reservationId));
+
+        // populate the ben
+        ReservationBean reservationBean = new ReservationBean();
+        reservationBean.populate(reservation);
+
+        this.reservation = reservationBean;
     }
 
-    public void setReservationID(String reservationID) {
-        this.reservationID = reservationID;
-    }
 
     public String getTenantUsername() {
         return tenantUsername;
@@ -45,5 +52,13 @@ public class PaymentForm {
 
     public void setTenantUsername(String tenantUsername) {
         this.tenantUsername = tenantUsername;
+    }
+
+    public ReservationBean getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(ReservationBean reservation) {
+        this.reservation = reservation;
     }
 }

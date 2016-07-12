@@ -1,6 +1,7 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.*;
+import it.ispw.efco.nottitranquille.model.Exception.IllegalBookingDate;
 import it.ispw.efco.nottitranquille.model.dao.*;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
@@ -37,33 +38,52 @@ public class ReservationController {
      * @param locationId:     reserved Location
      * @param period:         Interval of time in which the Location is booked
      * @param buyers:         Other Person will stay in the Location for the respective period
+     * @return true if reservation is created successful
      */
-    public void createReservation(String tenantUsername, Long locationId, Interval period, List<String> buyers) {
+    public boolean createReservation(String tenantUsername, Long locationId, Interval period, List<String> buyers) {
 
+        // Retrieve tenant and location from the db
         Person person = UserDAO.findBy(tenantUsername);
         Location location = LocationDAO.findByID(locationId);
 
-        // FIXME: 07/07/16 period can be not available here
-        Reservation reservation = new Reservation(person, location, period);
+        if (location.isAvailable(period)) {
+            Reservation reservation = new Reservation(person, location, period);
 
-        if (buyers != null)
-            reservation.setBuyers(buyers);
 
-        if (location.getType().getReservationType() == ReservationType.Direct)
-            this.reserveDirect(reservation);
-        else if (location.getType().getReservationType() == ReservationType.WithConfirmation)
-            this.reserveWithConfirmation(reservation, location.getManager());
+            // The tenant specifies other location mates
+            if (buyers != null)
+                reservation.setBuyers(buyers);
 
-        try {
-            Tenant role = (Tenant) person.getRole("Tenant");
-            role.addReservation(reservation);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+            try {
 
-        ReservationDAO.store(reservation);
-        UserDAO.update(person);
+                // Location is reservable without the confirm of the Manager
+                if (location.getType().getReservationType() == ReservationType.Direct)
+                    this.reserveDirect(reservation);
+
+                    // Need Manager confirmation to complete the reservation
+                else if (location.getType().getReservationType() == ReservationType.WithConfirmation)
+                    this.reserveWithConfirmation(reservation, location.getManager());
+
+
+                // add reservation to the tenant collection
+                Tenant role = (Tenant) person.getRole("Tenant");
+                role.addReservation(reservation);
+
+            } catch (Exception e) {
+                // do nothing, so unusual event
+                e.printStackTrace();
+
+            }
+
+            // make persistence
+            ReservationDAO.store(reservation);
+            UserDAO.update(person);
+
+            return true;
+
+        } else
+
+            return false;
     }
 
 
@@ -74,15 +94,17 @@ public class ReservationController {
      * @param reservation: Reservation to confirm. It has ReservetionType set on 'WithConfirmation'
      * @param manager:     Manager of the Location
      */
-    private void reserveWithConfirmation(Reservation reservation, Person manager) {
+    private void reserveWithConfirmation(Reservation reservation, Person manager) throws Exception {
 
+        Manager role = null;
         try {
-            Manager role = (Manager) manager.getRole("Manager");
-            role.addReservationToApprove(reservation);
+            role = (Manager) manager.getRole("Manager");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
+            throw e;
         }
+
+        role.addReservationToApprove(reservation);
+
 
         reservation.setState(ReservationState.ToApprove);
 
@@ -203,6 +225,25 @@ public class ReservationController {
     public Location findLocation(Long id) {
         //find Location from database to show it's details
         return LocationDAO.findByID(id);
+
+    }
+
+    /**
+     * Retrieve a {@link Reservation} by its id
+     *
+     * @param id reservation's id
+     * @return {@link Reservation} asked for
+     */
+    public Reservation findReservation(Long id) {
+
+        try {
+            // retrieve reservation from db
+            return ReservationDAO.findByID(id);
+
+        } catch (NoResultException e) {
+            e.printStackTrace();
+            return null;
+        }
 
     }
 

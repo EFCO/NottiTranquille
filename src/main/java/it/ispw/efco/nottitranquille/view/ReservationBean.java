@@ -32,7 +32,7 @@ public class ReservationBean {
     /**
      * @see ReservationState
      */
-    private ReservationState state;   // state of reservation
+    private ReservationState state;   // state of reservationervation
 
     /**
      * @see it.ispw.efco.nottitranquille.model.Reservation#buyers
@@ -63,13 +63,37 @@ public class ReservationBean {
 
         Interval period = new Interval(da, a);
 
-        /* if all information are syntactically correct the system create a new reservation */
+        /* if all information are syntactically correct the system create a new reservationervation */
         ReservationController controller = ReservationController.getInstance();
 
         Long ID = new Long(locationBean.getId());
-        controller.createReservation(username, ID, period, buyers);
+        // return true if reservation is created, false is period is not available
+        return controller.createReservation(username, ID, period, buyers);
 
-        return true;
+    }
+
+    public void populate(Reservation reservation) {
+
+        this.setId(reservation.getId().toString());
+        this.setUsername(reservation.getTenant().getUsername());
+        this.setState(reservation.getState());
+        this.setBuyers(reservation.getBuyers());
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
+        this.setStartDate(reservation.getStartDate().toString(formatter));
+        this.setEndDate(reservation.getEndDate().toString(formatter));
+        this.setPrice(reservation.getPrice());
+
+        Location loc = reservation.getLocation();
+        LocationBean locBean = new LocationBean();
+        locBean.setServices(loc.getServices());
+        locBean.setName(loc.getName());
+        locBean.setDescription(loc.getDescription());
+        locBean.setEnablesDate(loc.getAvailableDate());
+        locBean.setId(loc.getId().toString());
+
+        this.setLocationBean(locBean);
+
     }
 
     public void addBuyer(String firstname, String surname) {

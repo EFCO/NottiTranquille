@@ -8,6 +8,7 @@ import org.joda.time.Interval;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+import java.rmi.UnexpectedException;
 import java.util.*;
 
 /**
@@ -126,42 +127,57 @@ public class Location {
 
     /**
      * If a Tenant reserved this Location, the system has to update the intervals of day still
-     * available
+     * available.
      *
-     * @param bookingPeriod the interval of days that now is not available for reservation.
+     * @param bookingPeriod the interval of days to reserve for booking.
+     * @throws IllegalArgumentException The interval passed in the argument might be not available
+     *                                  because already reserved or because not specified by the
+     *                                  {@link Manager} of the Location.
      */
     public void bookPeriod(Interval bookingPeriod) throws IllegalArgumentException {
-        boolean found = false;
 
-        for (Interval avlPeriod : availableDate) {
-            if (!avlPeriod.contains(bookingPeriod))
-                break;
+        // Indicates if the Interval specified in the argument is available for reservation
+        boolean avl = false;
+
+        Iterator<Interval> iterator = availableDate.iterator();
+        while (iterator.hasNext()) {
+
+            Interval period = iterator.next();
+
+            // bookingPeriod not available
+            if (!period.contains(bookingPeriod))
+                continue;
+
+            // bookingPeriod is a valid interval of time
+            avl = true;
+
+            /* Update the available period of time for a reservation */
+
+            if (bookingPeriod.isEqual(period))
+                iterator.remove();
 
 
-            found = true;
-
-            DateTime oldStart = avlPeriod.getStart();
-            DateTime oldEnd = avlPeriod.getEnd();
+            DateTime oldStart = period.getStart();
+            DateTime oldEnd = period.getEnd();
 
             DateTime bookingStart = bookingPeriod.getStart();
             DateTime bookingEnd = bookingPeriod.getEnd();
 
-            availableDate.remove(avlPeriod);
+            iterator.remove();
 
             Interval interval1 = new Interval(oldStart, bookingStart);
-            Interval interval2 = new Interval(oldEnd, bookingEnd);
+            Interval interval2 = new Interval(bookingEnd, oldEnd);
 
-            // Check that they not are zero duration intervals (ex. [29/10/2000 29/10/2000] )
-            if (!interval1.contains(interval1)) {
-                availableDate.add(interval1);
-            }
+            availableDate.add(interval1);
+            availableDate.add(interval2);
 
-            if (!interval2.contains(interval2))
-                availableDate.add(interval2);
-
+            // We assume that no other periods in the list overlap
+            // the period passed in the argument
+            // without break, an exception occurs: see ListIterator.add
+            break;
         }
 
-        if (!found)
+        if (!avl)
             throw new IllegalArgumentException("Interval of time not available for booking");
 
         booked.add(bookingPeriod);
@@ -174,6 +190,7 @@ public class Location {
      * @param interval : contiguous range of days that we want to test are available
      * @return bool Return true if interval is available
      */
+
     public boolean isAvailable(Interval interval) {
         for (Interval inter : this.booked) {
             if (interval.isEqual(inter) || (inter.getStart().isBefore(interval.getStart())
@@ -206,7 +223,7 @@ public class Location {
         this.numberOfRooms = toUpdate.numberOfRooms;
     }
 
-    public void addAvalablePeriod(Interval period) throws Exception {
+    public void addAvailablePeriod(Interval period) throws Exception {
         if (isAvailable(period))
             throw new Exception("period already exist");
         else

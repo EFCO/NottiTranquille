@@ -7,9 +7,10 @@
 <jsp:useBean id="Login" scope="session"
              class="it.ispw.efco.nottitranquille.view.LoginBean"/>
 
+
 <%
     if (request.getParameter("Pay") != null) {
-        paymentBean.setReservationID(request.getParameter("Pay"));
+        paymentBean.populate(request.getParameter("Pay"));
         paymentBean.setTenantUsername(Login.getUsername());
     }
 

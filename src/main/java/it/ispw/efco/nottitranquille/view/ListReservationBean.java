@@ -41,25 +41,8 @@ public class ListReservationBean {
         for (Reservation res : reservations) {
             ReservationBean bean = new ReservationBean();
 
-            bean.setId(res.getId().toString());
-            bean.setUsername(res.getTenant().getUsername());
-            bean.setState(res.getState());
-            bean.setBuyers(res.getBuyers());
-
-            DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
-            bean.setStartDate(res.getStartDate().toString(formatter));
-            bean.setEndDate(res.getEndDate().toString(formatter));
-            bean.setPrice(res.getPrice());
-
-            Location loc = res.getLocation();
-            LocationBean locBean = new LocationBean();
-            locBean.setServices(loc.getServices());
-            locBean.setName(loc.getName());
-            locBean.setDescription(loc.getDescription());
-            locBean.setEnablesDate(loc.getAvailableDate());
-            locBean.setId(loc.getId().toString());
-
-            bean.setLocationBean(locBean);
+            //populare reservationBean with information from the entity
+            bean.populate(res);
 
             beans.add(bean);
         }
