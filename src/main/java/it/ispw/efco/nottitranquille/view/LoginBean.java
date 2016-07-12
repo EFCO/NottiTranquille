@@ -15,10 +15,6 @@ public class LoginBean {
 
     private boolean isLogged = false;
 
-    public LoginBean() {
-        this.username = "";
-        this.password = "";
-    }
 
     public void setUsername(String user) {
         this.username = user;

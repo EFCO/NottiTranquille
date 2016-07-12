@@ -24,8 +24,6 @@ public class ReservationBean {
 
     private String username;
 
-    private String tenantName;
-
     /**
      * @see LocationBean
      */
@@ -148,11 +146,4 @@ public class ReservationBean {
         this.buyers = buyers;
     }
 
-    public String getTenantName() {
-        return tenantName;
-    }
-
-    public void setTenantName(String tenantName) {
-        this.tenantName = tenantName;
-    }
 }

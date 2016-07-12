@@ -43,7 +43,6 @@ public class ListReservationBean {
 
             bean.setId(res.getId().toString());
             bean.setUsername(res.getTenant().getUsername());
-            bean.setTenantName(res.getTenant().getfirstname() + " " + res.getTenant().getlastname());
             bean.setState(res.getState());
             bean.setBuyers(res.getBuyers());
 

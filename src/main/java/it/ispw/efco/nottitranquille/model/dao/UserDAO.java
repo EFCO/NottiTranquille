@@ -74,7 +74,7 @@ public class UserDAO {
     public static Person findBy(String personName) throws NoResultException {
         try {
             EntityManager entityManager = JPAInitializer.getEntityManager();
-            return entityManager.createQuery("from Person where (username = :name)", Person.class)
+            return entityManager.createQuery("select t from Person t where (username = :name)", Person.class)
                     .setParameter("name", personName)
                     .getSingleResult();
         } catch (NoResultException e) {

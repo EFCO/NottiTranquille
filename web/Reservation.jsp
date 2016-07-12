@@ -14,6 +14,20 @@
 <jsp:setProperty name="reservationBean" property="*"/>
 
 
+<!-- Populate JavaBean if id matching a Location is correctly passed
+================================================== -->
+<%
+    // Assuming the id of the location we want to see is in the URL
+    // because a GET request is made.
+    if (request.getParameter("id") != null) {
+        locationBean.populate(request.getParameter("id"));
+        reservationBean.setUsername(Login.getUsername());
+        reservationBean.setLocationBean(locationBean);
+    }
+
+%>
+
+
 <!-- On button pressed for Reservation confirm
 ================================================== -->
 
@@ -35,21 +49,6 @@
 <%
     }
 %>
-
-
-<!-- Populate JavaBean if id matching a Location is correctly passed
-================================================== -->
-<%
-    // Assuming the id of the location we want to see is in the URL
-    // because a GET request is made.
-    if (request.getParameter("id") != null) {
-        locationBean.populate(request.getParameter("id"));
-        reservationBean.setTenantName(Login.getUsername());
-        reservationBean.setLocationBean(locationBean);
-    }
-
-%>
-
 
 <!DOCTYPE html>
 <html lang="en">

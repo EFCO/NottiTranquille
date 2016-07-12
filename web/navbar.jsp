@@ -1,6 +1,3 @@
-<jsp:useBean id="Login" scope="session"
-             class="it.ispw.efco.nottitranquille.view.LoginBean"/>
-
 <!--Sign in Modal-->
 <%@include file="sign.jsp" %>
 
