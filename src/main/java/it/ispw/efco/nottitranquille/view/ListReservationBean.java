@@ -29,7 +29,7 @@ public class ListReservationBean {
     /**
      * Populate the instance with the information from the model
      *
-     * @param username Username of a {@link it.ispw.efco.nottitranquille.model.RegisteredUser}
+     * @param username Username of a {@link it.ispw.efco.nottitranquille.model.Person}
      * @param role     String that describe if a RegisteredUser is a Manager or a Tenant
      */
     public void populate(String username, String role) {
@@ -42,8 +42,8 @@ public class ListReservationBean {
             ReservationBean bean = new ReservationBean();
 
             bean.setId(res.getId().toString());
-            bean.setTenantUsername(res.getTenant().getUsername());
-            bean.setTenant(res.getTenant().getCompleteName());
+            bean.setUsername(res.getTenant().getUsername());
+            bean.setTenantName(res.getTenant().getfirstname() + " " + res.getTenant().getlastname());
             bean.setState(res.getState());
             bean.setBuyers(res.getBuyers());
 

@@ -1,3 +1,6 @@
+<jsp:useBean id="Login" scope="session"
+             class="it.ispw.efco.nottitranquille.view.LoginBean"/>
+
 <!--Sign in Modal-->
 <%@include file="sign.jsp" %>
 
@@ -47,10 +50,20 @@
                         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#signModal">Sign
                             In/Sign Up
                         </button>
-                        <button type="button" class="btn btn-default" data-toggle="modal"
-                                data-target="#reservationModal">
-                            Reservations
-                        </button>
+                        <c:if test="${Login.logged}">
+                            <c:if test="${Login.is('Tenant')}">
+                                <button type="button" class="btn btn-default" data-toggle="modal"
+                                        data-target="#reservationTenantModal">
+                                    Reservations
+                                </button>
+                            </c:if>
+                            <c:if test="${Login.is('Manager')}">
+                                <button type="button" class="btn btn-default" data-toggle="modal"
+                                        data-target="#reservationManagerModal">
+                                    Reservations
+                                </button>
+                            </c:if>
+                        </c:if>
                     </form>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->

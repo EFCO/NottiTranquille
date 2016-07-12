@@ -22,12 +22,9 @@ public class ReservationBean {
 
     private String id;
 
-    private String tenantUsername;
+    private String username;
 
-    /**
-     * Full name of the Tenant
-     */
-    private String tenant;
+    private String tenantName;
 
     /**
      * @see LocationBean
@@ -42,7 +39,7 @@ public class ReservationBean {
     /**
      * @see it.ispw.efco.nottitranquille.model.Reservation#buyers
      */
-    private List<Person> buyers;
+    private List<String> buyers;
 
     private String startDate;
 
@@ -60,18 +57,6 @@ public class ReservationBean {
         if (startDate == null || startDate.equals("") || endDate == null || endDate.equals(""))
             return false;
 
-        // Buyers not required
-
-//        if (buyers == null)
-//            return false;
-//
-//        for (Person buyer : buyers) {
-//            if (buyer.getFirstName() == null || buyer.getFirstName().equals("") ||
-//                    buyer.getLastName() == null || buyer.getLastName().equals("")) {
-//                return false;
-//            }
-//        }
-
         /* format date */
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-mm-yyyy");
 
@@ -84,7 +69,7 @@ public class ReservationBean {
         ReservationController controller = ReservationController.getInstance();
 
         Long ID = new Long(locationBean.getId());
-        controller.createReservation(tenantUsername, ID, period, buyers);
+        controller.createReservation(username, ID, period, buyers);
 
         return true;
     }
@@ -92,13 +77,11 @@ public class ReservationBean {
     public void addBuyer(String firstname, String surname) {
 
         if (buyers == null) {
-            buyers = new ArrayList<Person>();
+            buyers = new ArrayList<String>();
         }
 
-        Person buyer = new Person();
-        buyer.setFirstName(firstname);
-        buyer.setLastName(surname);
-        buyers.add(buyer);
+        buyers.add(firstname + " " + surname);
+
     }
 
     public String getId() {
@@ -109,20 +92,12 @@ public class ReservationBean {
         this.id = id;
     }
 
-    public String getTenantUsername() {
-        return tenantUsername;
+    public String getUsername() {
+        return username;
     }
 
-    public void setTenantUsername(String tenantUsername) {
-        this.tenantUsername = tenantUsername;
-    }
-
-    public String getTenant() {
-        return tenant;
-    }
-
-    public void setTenant(String tenant) {
-        this.tenant = tenant;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public LocationBean getLocationBean() {
@@ -139,14 +114,6 @@ public class ReservationBean {
 
     public void setState(ReservationState state) {
         this.state = state;
-    }
-
-    public List<Person> getBuyers() {
-        return buyers;
-    }
-
-    public void setBuyers(List<Person> buyers) {
-        this.buyers = buyers;
     }
 
     public String getStartDate() {
@@ -171,5 +138,21 @@ public class ReservationBean {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public List<String> getBuyers() {
+        return buyers;
+    }
+
+    public void setBuyers(List<String> buyers) {
+        this.buyers = buyers;
+    }
+
+    public String getTenantName() {
+        return tenantName;
+    }
+
+    public void setTenantName(String tenantName) {
+        this.tenantName = tenantName;
     }
 }

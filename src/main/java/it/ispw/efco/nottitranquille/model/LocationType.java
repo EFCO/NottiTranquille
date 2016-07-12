@@ -18,10 +18,11 @@ public class LocationType {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToMany
-    @JoinTable(name = "LocationType_Service",
-            joinColumns = {@JoinColumn(name = "LocationTypeId", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "ServiceId", referencedColumnName = "id")})
+    //    @ManyToMany
+//    @JoinTable(name = "LocationType_Service",
+//            joinColumns = {@JoinColumn(name = "LocationTypeId", referencedColumnName = "id")},
+//            inverseJoinColumns = {@JoinColumn(name = "ServiceId", referencedColumnName = "id")})
+    @Transient
     private List<Service> services;
 
     @Enumerated

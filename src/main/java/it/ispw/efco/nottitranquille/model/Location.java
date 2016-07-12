@@ -1,10 +1,13 @@
 package it.ispw.efco.nottitranquille.model;
 
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.*;
 
 /**
@@ -50,6 +53,7 @@ public class Location {
      * @see it.ispw.efco.nottitranquille.model.enumeration.ReservationType
      */
     @ManyToOne
+    @Cascade(CascadeType.ALL)
     private LocationType type;
 
     /**
@@ -108,7 +112,7 @@ public class Location {
     private Float price;
 
     @ManyToOne
-    private Manager manager;
+    private Person manager;
 
     /**
      * Not Used
@@ -200,6 +204,13 @@ public class Location {
         this.numberOfBedrooms = toUpdate.numberOfBedrooms;
         this.numberOfBeds = toUpdate.numberOfBeds;
         this.numberOfRooms = toUpdate.numberOfRooms;
+    }
+
+    public void addAvalablePeriod(Interval period) throws Exception {
+        if (isAvailable(period))
+            throw new Exception("period already exist");
+        else
+            availableDate.add(period);
     }
 
     /* Getter and Setter */
@@ -324,11 +335,11 @@ public class Location {
         this.services = services;
     }
 
-    public Manager getManager() {
+    public Person getManager() {
         return manager;
     }
 
-    public void setManager(Manager manager) {
+    public void setManager(Person manager) {
         this.manager = manager;
     }
 }

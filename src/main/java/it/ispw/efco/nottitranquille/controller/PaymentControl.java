@@ -1,9 +1,9 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.*;
-import it.ispw.efco.nottitranquille.model.Exception.IllagalBookingDate;
+import it.ispw.efco.nottitranquille.model.Exception.IllegalBookingDate;
+import it.ispw.efco.nottitranquille.model.dao.LocationDAO;
 import it.ispw.efco.nottitranquille.model.dao.ReservationDAO;
-import it.ispw.efco.nottitranquille.model.dao.TenantDAO;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
 
 /**
@@ -19,23 +19,24 @@ public class PaymentControl {
     private PaymentControl() {
     }
 
-    public void pay(Long ReservationId, String tenantUsername) throws IllagalBookingDate {
-        Person tenant = TenantDAO.findByUserName(tenantUsername);
+    public void pay(Long ReservationId, String tenantUsername) throws IllegalBookingDate {
         Reservation reservation = ReservationDAO.findByID(ReservationId);
+        Person manager = reservation.getLocation().getManager();
 
-        BankingSystem bank = BankingSystem.getInstance();
-        bank.transfer(tenant, null, reservation.getPrice());
-        System.out.println("Payment is made");
-
-        Location location = reservation.getLocation();
-
+        // Makes booking date not still available
         try {
-            location.bookPeriod(reservation.getPeriod());
+            reservation.getLocation().bookPeriod(reservation.getPeriod());
         } catch (IllegalArgumentException e) {
-            throw new IllagalBookingDate("The period specified is not already available ", e.getCause());
+            throw new IllegalBookingDate("The period specified is not already available ", e.getCause());
         }
 
+        // makes payment by a stub
+        PaymentSystem paymentSystem = PaymentSystem.getInstance();
+        paymentSystem.makePayment(tenantUsername, manager.getfirstname() + " " + manager.getlastname(),
+                reservation.getPrice());
+
         reservation.setState(ReservationState.Paid);
-        ReservationDAO.update(reservation);
+        LocationDAO.update(reservation.getLocation()); //update available date
+        ReservationDAO.update(reservation);     // update state of reservation
     }
 }

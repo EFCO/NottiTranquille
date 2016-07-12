@@ -8,9 +8,9 @@ import java.util.*;
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
-@DiscriminatorValue("TN")
+@DiscriminatorValue("tenant")
 @SuppressWarnings("JpaDataSourceORMInspection")
-public class Tenant extends RegisteredUser {
+public class Tenant extends Role {
 
     /**
      * Default constructor
@@ -31,7 +31,6 @@ public class Tenant extends RegisteredUser {
      * @param toUpdate: Class to update
      */
     public void update(Tenant toUpdate) {
-        super.update(toUpdate);
         this.reservations = toUpdate.getReservations();
     }
 

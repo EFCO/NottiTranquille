@@ -19,58 +19,63 @@ public class DemoReservation {
 
          /* Manager */
 
-        Manager manager = new Manager();
-        manager.setFirstName("Claudio");
-        manager.setLastName("Pastorini");
-
-        manager.setUsername("manager");
-        manager.setPassword("password");
-
+        Person manager = new Person("Claudio", "Pastorini");
         try {
-            ManagerDAO.store(manager);
+            manager.addRole(new Manager());
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
         }
+        manager.setUsername("manager");
+        manager.setPassword("password");
+
 
         /* Tenant */
 
-        Tenant me = new Tenant();
-        me.setFirstName("Emanuele");
-        me.setLastName("Vannacci");
-
+        Person me = new Person("Emanuele", "Vannacci");
+        try {
+            me.addRole(new Tenant());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
         me.setUsername("Zanna");
         me.setPassword("password");
 
-        try {
-            TenantDAO.store(me);
-        } catch (Exception e2) {
-            e2.printStackTrace();
-            System.exit(1);
-        }
+        UserDAO.store(manager);
+        UserDAO.store(me);
+
 
         /*LocationType*/
 
         LocationType locanda = new LocationType(ReservationType.Direct);
         LocationType casaInfestata = new LocationType(ReservationType.WithConfirmation);
 
-        LocationTypeDAO.store(locanda);
-        LocationTypeDAO.store(casaInfestata);
-
-
         /* Interval */
 
+        // Available date for Location
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
-        DateTime daA = DateTime.parse("2017-04-21", dateTimeFormatter);
-        DateTime aA = DateTime.parse("2017-04-30", dateTimeFormatter);
+        DateTime daA = DateTime.parse("2017-01-01", dateTimeFormatter);
+        DateTime aA = DateTime.parse("2017-12-30", dateTimeFormatter);
 
         Interval intervalA = new Interval(daA, aA);
 
-        DateTime daB = DateTime.parse("2017-02-20", dateTimeFormatter);
-        DateTime aB = DateTime.parse("2017-03-11", dateTimeFormatter);
+        DateTime daB = DateTime.parse("2018-01-01", dateTimeFormatter);
+        DateTime aB = DateTime.parse("2018-12-30", dateTimeFormatter);
 
         Interval intervalB = new Interval(daB, aB);
+
+        // booking period
+        DateTime da1 = DateTime.parse("2017-04-01", dateTimeFormatter);
+        DateTime a1 = DateTime.parse("2017-4-7", dateTimeFormatter);
+
+        Interval interval1 = new Interval(da1, a1);
+
+        DateTime da2 = DateTime.parse("2018-06-01", dateTimeFormatter);
+        DateTime a2 = DateTime.parse("2018-06-12", dateTimeFormatter);
+
+        Interval interval2 = new Interval(da2, a2);
 
 
         /* Location */
@@ -89,6 +94,12 @@ public class DemoReservation {
 
         myLocationA.setPrice(400.00f);
         myLocationA.setManager(manager);
+        try {
+            myLocationA.addAvalablePeriod(intervalA);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         Location myLocationB = new Location();
 
@@ -105,6 +116,11 @@ public class DemoReservation {
 
         myLocationB.setPrice(200.00f);
         myLocationB.setManager(manager);
+        try {
+            myLocationA.addAvalablePeriod(intervalB);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         LocationDAO.store(myLocationA);
         LocationDAO.store(myLocationB);
@@ -114,8 +130,8 @@ public class DemoReservation {
 
         ReservationController controller = ReservationController.getInstance();
 
-        controller.createReservation(me.getUsername(), myLocationA.getId(), intervalA, null);
-        controller.createReservation(me.getUsername(), myLocationB.getId(), intervalB, null);
+        controller.createReservation(me.getUsername(), myLocationA.getId(), interval1, null);
+        controller.createReservation(me.getUsername(), myLocationB.getId(), interval2, null);
 
     }
 

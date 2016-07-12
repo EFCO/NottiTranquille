@@ -21,7 +21,7 @@ public class Structure {
         this(null);
     }
 
-    public Structure(String name){
+    public Structure(String name) {
         this(name, null);
     }
 
@@ -29,7 +29,7 @@ public class Structure {
         this.name = name;
         this.address = address;
 
-        locations= new ArrayList<Location>();
+        locations = new ArrayList<Location>();
 
     }
 
@@ -89,7 +89,7 @@ public class Structure {
     @ManyToOne
     private Owner owner;
 
-    @Embedded
+    @Transient
     private Address address;
 
     @ManyToOne
@@ -107,7 +107,7 @@ public class Structure {
                 ", checkOut=" + checkOut +
                 ", managedBy=" + managedBy +
                 ", owner=" + owner +
-                ", address=" + address +
+//                ", address=" + address +
                 ", type=" + type +
                 ", id=" + id +
                 '}';
@@ -230,13 +230,13 @@ public class Structure {
         this.owner = owner;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+//    public Address getAddress() {
+//        return address;
+//    }
+//
+//    public void setAddress(Address address) {
+//        this.address = address;
+//    }
 
     public StructureType getType() {
         return type;

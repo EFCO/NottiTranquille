@@ -1,9 +1,14 @@
 package it.ispw.efco.nottitranquille.model;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-public class Scout implements Applicant {
+@Entity
+@DiscriminatorValue("scout")
+public class Scout extends Role implements Applicant {
 
     /**
      * Default constructor

@@ -18,6 +18,10 @@
 %>
 <jsp:forward page="index.jsp"/>
 <%
+} else {
+%>
+<jsp:forward page="errorPage.jsp"/>
+<%
         }
     }
 %>

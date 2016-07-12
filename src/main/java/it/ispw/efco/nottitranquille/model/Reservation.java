@@ -1,12 +1,13 @@
 package it.ispw.efco.nottitranquille.model;
 
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
-import org.hibernate.annotations.Columns;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.*;
 
 /**
@@ -24,7 +25,7 @@ public class Reservation {
         this(null, null, null);
     }
 
-    public Reservation(Tenant tenant, Location location, Interval interval) {
+    public Reservation(Person tenant, Location location, Interval interval) {
         this.tenant = tenant;
         this.location = location;
         this.period = interval;
@@ -46,13 +47,10 @@ public class Reservation {
     private Location location;
 
     @ManyToOne
-    private Tenant tenant;
+    private Person tenant;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "Reservation_buyers",
-            joinColumns = {@JoinColumn(name = "ReservationId", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "BuyerId", referencedColumnName = "id")})
-    private List<Person> buyers;
+    @ElementCollection
+    private List<String> buyers;
 
 
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentInterval")
@@ -107,19 +105,19 @@ public class Reservation {
         this.location = location;
     }
 
-    public Tenant getTenant() {
+    public Person getTenant() {
         return tenant;
     }
 
-    public void setTenant(Tenant tenant) {
+    public void setTenant(Person tenant) {
         this.tenant = tenant;
     }
 
-    public List<Person> getBuyers() {
+    public List<String> getBuyers() {
         return buyers;
     }
 
-    public void setBuyers(List<Person> buyers) {
+    public void setBuyers(List<String> buyers) {
         this.buyers = buyers;
     }
 

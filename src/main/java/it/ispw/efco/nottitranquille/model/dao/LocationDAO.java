@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * DAO for {@link it.ispw.efco.nottitranquille.model.Location} entity.
- *
+ * <p/>
  * Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 
@@ -66,13 +66,10 @@ public class LocationDAO {
                 .getResultList();
     }
 
-    public static Location findByID(Long id){
+    public static Location findByID(Long id) {
 
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
-        return entityManager.createQuery("from Location where " +
-                " (id = :ID) ", Location.class)
-                .setParameter("ID", id)
-                .getSingleResult();
+        return entityManager.find(Location.class, id);
     }
 }

@@ -1,3 +1,6 @@
+<jsp:setProperty name="Login" property="*"/>
+
+
 <%
     if (request.getParameter("sign") != null) {
         Login.validate();

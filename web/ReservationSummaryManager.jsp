@@ -1,4 +1,4 @@
-<c:if test='${ListBean.nRes > 0 }'>
+<c:if test='${ManagerListBean.nRes > 0 }'>
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -24,7 +24,7 @@
             </thead>
             <tbody>
 
-            <c:forEach items="${ListBean.beans}" var="entry">
+            <c:forEach items="${ManagerListBean.beans}" var="entry">
                 <c:set var="resBean" scope="session" value="${entry}"/>
 
                 <form action="index.jsp">
@@ -33,7 +33,7 @@
                         <td>${resBean.startDate}</td>
                         <td>${resBean.endDate}
                         <td>
-                            <c:out value=" ${resBean.tenant} "> </c:out>
+                            <c:out value=" ${resBean.tenantName} "> </c:out>
                         </td>
 
                         <c:choose>
@@ -71,7 +71,7 @@
 
 </c:if>
 
-<c:if test="${ListBean.nRes == 0}">
+<c:if test="${ManagerListBean.nRes == 0}">
 
     <div class="modal-body">
         <h4>Non sono presenti prenotazioni</h4>

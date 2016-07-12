@@ -44,7 +44,7 @@
     // because a GET request is made.
     if (request.getParameter("id") != null) {
         locationBean.populate(request.getParameter("id"));
-        reservationBean.setTenantUsername(Login.getUsername());
+        reservationBean.setTenantName(Login.getUsername());
         reservationBean.setLocationBean(locationBean);
     }
 

@@ -1,4 +1,4 @@
-<c:if test='${ListBean.nRes > 0 }'>
+<c:if test='${TenantListBean.nRes > 0 }'>
 
 
     <div class="modal-header">
@@ -28,7 +28,7 @@
             <tbody>
 
 
-            <c:forEach items="${ListBean.beans}" var="entry">
+            <c:forEach items="${TenantListBean.beans}" var="entry">
                 <c:set var="resBean" scope="session" value="${entry}"/>
 
                 <form action="Payment.jsp">
@@ -71,7 +71,7 @@
 
 </c:if>
 
-<c:if test='${ListBean.nRes == 0 }'>
+<c:if test='${TenantListBean.nRes == 0 }'>
     <div class="modal-body">
         <h4>Non sono presenti prenotazioni</h4>
     </div>

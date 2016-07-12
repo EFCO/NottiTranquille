@@ -3,7 +3,7 @@ package it.ispw.efco.nottitranquille.model.dao;
 import it.ispw.efco.nottitranquille.model.JPAInitializer;
 import it.ispw.efco.nottitranquille.model.Person;
 import it.ispw.efco.nottitranquille.model.Person;
-import it.ispw.efco.nottitranquille.model.Tenant;
+import it.ispw.efco.nottitranquille.model.Person;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -43,7 +43,22 @@ public class UserDAO {
         entityManager.getTransaction().commit();
     }
 
-    public static Person findbyId(Long id) throws NoResultException {
+    /**
+     * Updates {@link Person} into persistent system
+     *
+     * @param toUpdate the {@link Person} to update with the new state
+     */
+    public static void update(Person toUpdate) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        entityManager.getTransaction().begin();
+
+        Person personLoaded = entityManager.find(Person.class, toUpdate.getId());
+        personLoaded.update(toUpdate);
+
+        entityManager.getTransaction().commit();
+    }
+
+    public static Person findBy(Long id) throws NoResultException {
 
         try {
             EntityManager entityManager = JPAInitializer.getEntityManager();
@@ -54,15 +69,29 @@ public class UserDAO {
         }
     }
 
+
     @SuppressWarnings("JpaQlInspection")
-    public static Class discriminator(String username) {
+    public static Person findBy(String personName) throws NoResultException {
+        try {
+            EntityManager entityManager = JPAInitializer.getEntityManager();
+            return entityManager.createQuery("from Person where (username = :name)", Person.class)
+                    .setParameter("name", personName)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            throw new NoResultException();
+        }
+    }
+
+    public static Person findBy(String personName, String passWord)
+            throws NoResultException {
 
         try {
             EntityManager entityManager = JPAInitializer.getEntityManager();
-            return entityManager.createQuery("select TYPE(e) from Person e where username = :name", Class.class)
-                    .setParameter("name", username)
+            return entityManager.createQuery("select t from Person t where " +
+                    " (username = :name) and (password = :pass) ", Person.class)
+                    .setParameter("name", personName)
+                    .setParameter("pass", passWord)
                     .getSingleResult();
-
         } catch (NoResultException e) {
             throw new NoResultException();
         }

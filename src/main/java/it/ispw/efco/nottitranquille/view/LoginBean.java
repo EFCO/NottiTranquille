@@ -1,18 +1,17 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.LoginController;
-import it.ispw.efco.nottitranquille.model.Applicant;
-import it.ispw.efco.nottitranquille.model.Manager;
-import it.ispw.efco.nottitranquille.model.RegisteredUser;
-import it.ispw.efco.nottitranquille.model.Tenant;
+import it.ispw.efco.nottitranquille.model.Person;
 
 import javax.persistence.NoResultException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginBean {
     private String username;
     private String password;
 
-    private String role;
+    private List<String> roles = new ArrayList<String>();
 
     private boolean isLogged = false;
 
@@ -37,14 +36,6 @@ public class LoginBean {
         return this.password;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public boolean validate() {
         // Controllo sintattico
         if (this.username.equals("") || this.password.equals("")) {
@@ -54,16 +45,24 @@ public class LoginBean {
         try {
 
             LoginController controller = LoginController.getInstance();
-            RegisteredUser found = controller.login(this.username, this.password);
+            Person found = controller.login(this.username, this.password);
 
+            try {
 
-            if (found instanceof Manager)
-                this.setRole("Manager");
-            else if (found instanceof Tenant)
-                this.setRole("Tenant");
+                if (found.hasAuthorization("Tenant")) {
+                    roles.add("Tenant");
+                }
+
+                if (found.hasAuthorization("Manager")) {
+                    roles.add("Manager");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
 
             isLogged = true;
-
             return true;
 
         } catch (NoResultException e) {
@@ -72,11 +71,28 @@ public class LoginBean {
         }
     }
 
+    public void logout() {
+        isLogged = false;
+    }
+
+    public boolean is(String roleString) {
+        for (String role : roles) {
+            if (role.equals(roleString))
+                return true;
+        }
+
+        return false;
+    }
+
     public boolean isLogged() {
         return isLogged;
     }
 
     public void setLogged(boolean logged) {
         isLogged = logged;
+    }
+
+    public boolean getLogged() {
+        return isLogged;
     }
 }

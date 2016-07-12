@@ -1,7 +1,7 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.PaymentControl;
-import it.ispw.efco.nottitranquille.model.Exception.IllagalBookingDate;
+import it.ispw.efco.nottitranquille.model.Exception.IllegalBookingDate;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
@@ -22,7 +22,7 @@ public class PaymentForm {
 
         try {
             controller.pay(new Long(reservationID), tenantUsername);
-        } catch (IllagalBookingDate e) {
+        } catch (IllegalBookingDate e) {
             e.printStackTrace();
             return false;
         }

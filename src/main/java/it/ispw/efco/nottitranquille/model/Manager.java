@@ -8,9 +8,9 @@ import java.util.*;
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
-@DiscriminatorValue("MN")
+@DiscriminatorValue("manager")
 @SuppressWarnings("JpaDataSourceORMInspection")
-public class Manager extends RegisteredUser implements Applicant {
+public class Manager extends Role implements Applicant {
 
     @OneToMany
     @JoinTable(name = "Manager_Reservation",
@@ -23,7 +23,6 @@ public class Manager extends RegisteredUser implements Applicant {
      */
     public Manager() {
         toApprove = new ArrayList<Reservation>();
-
     }
 
     public boolean addReservationToApprove(Reservation reservation) {
@@ -50,7 +49,6 @@ public class Manager extends RegisteredUser implements Applicant {
     }
 
     public void update(Manager toUpdate) {
-        super.update(toUpdate);
         this.toApprove = toUpdate.getToApprove();
     }
 
