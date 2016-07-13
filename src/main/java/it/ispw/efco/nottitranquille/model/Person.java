@@ -89,6 +89,13 @@ public class Person {
         this.roles = new ArrayList<Role>();
     }
 
+    public Person(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.roles = new ArrayList<Role>();
+    }
+
     public Long getId() {
         return id;
     }

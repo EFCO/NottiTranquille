@@ -12,40 +12,47 @@ import java.util.List;
  */
 @Entity
 @DiscriminatorValue("manager")
-public class Manager extends Role implements Applicant {
+public class Manager extends Role {
 
     @OneToMany(mappedBy = "managedBy", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private List<Structure> structures;
+    private List<Structure> managedStructures;
+
+    @OneToMany(mappedBy = "requestedBy", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private List<Request> requests;
 
     /**
      * Default constructor
      */
     public Manager() {
-        this.structures = new ArrayList<Structure>();
+        this.managedStructures = new ArrayList<Structure>();
+        this.requests = new ArrayList<Request>();
     }
 
 
-    public void addStructure(Structure structure) {
-        structures.add(structure);
+    public void addManagedStructure(Structure structure) {
+        managedStructures.add(structure);
     }
 
-    public void removeStructure(Structure structure) {
-        structures.remove(structure);
+    public void removeManagedStructure(Structure structure) {
+        managedStructures.remove(structure);
     }
 
-    private void setStructures(List<Structure> structures) {
-        this.structures = structures;
+    public List<Structure> getManagedStructures() {
+        return managedStructures;
     }
 
+    public void addRequest(Request request) {
+        requests.add(request);
+    }
 
-    public List<Structure> getStructures() {
-        return structures;
+    public List<Request> getRequests() {
+        return requests;
     }
 
     public List<Structure> getStructuresByType(StructureType type) {
         List<Structure> structuresByType = new ArrayList<Structure>();
 
-        for (Structure structure : structures) {
+        for (Structure structure : managedStructures) {
             if (structure.getType() == type) {
                 structuresByType.add(structure);
             }

@@ -1,7 +1,7 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.ManageStructures;
-import it.ispw.efco.nottitranquille.model.Applicant;
+import it.ispw.efco.nottitranquille.model.Manager;
 import it.ispw.efco.nottitranquille.model.Person;
 import it.ispw.efco.nottitranquille.model.Service;
 import it.ispw.efco.nottitranquille.model.Structure;
@@ -33,6 +33,24 @@ public class StructureBean {
     private String postalcode;
 
     private String nation;
+
+    private boolean owner;
+
+    private String ownerFirstName;
+
+    private String ownerLastName;
+
+    private String ownerEmail;
+
+    private boolean sameaddress;
+
+    private String ownerAddress;
+
+    private String ownerCity;
+
+    private String ownerPostalcode;
+
+    private String ownerNation;
 
     private StructureType type = null;
 
@@ -136,11 +154,83 @@ public class StructureBean {
         this.nation = nation;
     }
 
+    public boolean isOwner() {
+        return owner;
+    }
+
+    public void setOwner(boolean owner) {
+        this.owner = owner;
+    }
+
+    public String getOwnerFirstName() {
+        return ownerFirstName;
+    }
+
+    public void setOwnerFirstName(String ownerFirstName) {
+        this.ownerFirstName = ownerFirstName;
+    }
+
+    public String getOwnerLastName() {
+        return ownerLastName;
+    }
+
+    public void setOwnerLastName(String ownerLastName) {
+        this.ownerLastName = ownerLastName;
+    }
+
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
+    }
+
+    public boolean isSameaddress() {
+        return sameaddress;
+    }
+
+    public void setSameaddress(boolean sameaddress) {
+        this.sameaddress = sameaddress;
+    }
+
+    public String getOwnerAddress() {
+        return ownerAddress;
+    }
+
+    public void setOwnerAddress(String ownerAddress) {
+        this.ownerAddress = ownerAddress;
+    }
+
+    public String getOwnerCity() {
+        return ownerCity;
+    }
+
+    public void setOwnerCity(String ownerCity) {
+        this.ownerCity = ownerCity;
+    }
+
+    public String getOwnerPostalcode() {
+        return ownerPostalcode;
+    }
+
+    public void setOwnerPostalcode(String ownerPostalcode) {
+        this.ownerPostalcode = ownerPostalcode;
+    }
+
+    public String getOwnerNation() {
+        return ownerNation;
+    }
+
+    public void setOwnerNation(String ownerNation) {
+        this.ownerNation = ownerNation;
+    }
+
     public void validate(Person manager) throws Exception {
         ManageStructures.addNewStructure(this, manager);
     }
 
-    public List<Structure> getAllStructures(Applicant manager) {
+    public List<Structure> getAllStructures(Manager manager) {
         return ManageStructures.getAll(manager);
     }
 

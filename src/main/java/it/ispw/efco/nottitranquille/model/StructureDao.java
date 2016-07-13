@@ -9,12 +9,14 @@ public class StructureDAO {
      *
      * @param structure the Price to persist
      */
-    public void store(Structure structure, Long id) throws Exception {
+    public void store(Structure structure, Person manager, Person owner) throws Exception {
         if (structure != null) {
             EntityManager entityManager = JPAInitializer.getEntityManager();
-            Person manager = entityManager.find(Person.class, id);
             entityManager.getTransaction().begin();
-            ((Manager) manager.getRole("Manager")).addStructure(structure);
+            entityManager.persist(structure);
+            entityManager.merge(manager);
+            if (owner != null)
+                entityManager.merge(owner);
             entityManager.getTransaction().commit();
             entityManager.close();
         } else {

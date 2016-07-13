@@ -65,7 +65,7 @@ public class Location {
     @ManyToMany
     private List<Service> services;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Structure structure;
 
     @ElementCollection(targetClass = Interval.class)

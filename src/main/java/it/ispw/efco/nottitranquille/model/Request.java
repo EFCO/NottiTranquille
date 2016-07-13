@@ -22,7 +22,7 @@ public class Request {
      * @param structure
      * @param status
      */
-    public Request(DateTime requestDate, DateTime acceptedDate, DateTime lastModified, Applicant requestedBy, Person reviewedBy, Structure structure, RequestStatus status) {
+    public Request(DateTime requestDate, DateTime acceptedDate, DateTime lastModified, Manager requestedBy, Scout reviewedBy, Structure structure, RequestStatus status) {
         this.requestDate = requestDate;
         this.acceptedDate = acceptedDate;
         this.lastModified = lastModified;
@@ -33,12 +33,11 @@ public class Request {
         this.status = status;
     }
 
-    public Request(Structure structure, Applicant applicant) {
+    public Request(Structure structure, Manager manager) {
         this.structure = structure;
-        structure.setRequest(this);
         this.status = RequestStatus.To_be_reviewed;
         this.requestDate = new DateTime();
-        this.requestedBy = applicant;
+        this.requestedBy = manager;
     }
 
     public Request() {
@@ -62,13 +61,13 @@ public class Request {
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime lastModified;
 
-    @Transient //TODO Fix annotation (//Scout/Manager)
-    private Applicant requestedBy;
+    @ManyToOne(optional = false, targetEntity = Manager.class)
+    private Manager requestedBy;
 
-    @ManyToOne
-    private Person reviewedBy;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Scout reviewedBy;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne(optional = false)
     @MapsId
     private Structure structure;
 

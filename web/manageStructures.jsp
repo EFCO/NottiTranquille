@@ -50,7 +50,7 @@
 
     List<Structure> structures = new ArrayList<>();
     try {
-        structures = ((Manager) loginBean.getUser().getRole("Manager")).getStructures();
+        structures = ((Manager) loginBean.getUser().getRole("Manager")).getManagedStructures();
         System.out.println("strutture: " + structures);
     } catch (Exception e) {
         e.printStackTrace();
@@ -239,15 +239,14 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">×</span></button>
-                <h4 class="modal-title" id="createModalLabel">Create price</h4>
+                <h4 class="modal-title" id="createModalLabel">Create Structure</h4>
             </div>
-
             <div class="modal-body">
                 <form action="manageStructures.jsp" name="newStructureForm" method="POST">
                     <div class="form-group">
                         <label for="name" id="userlabel">Structure name:</label>
-                        <input name="name" id="name" type="text" class="form-control" placeholder="Villa bella"
-                               value="Villa bella" required>
+                        <input name="name" id="name" type="text" class="form-control"
+                               placeholder="Villa bella" value="Villa bella" required>
                     </div>
                     <div class="form-group">
                         <label for="termsOfService">Terms of Services:</label>
@@ -309,45 +308,129 @@
                                    placeholder="00039" value="00039">
                         </div>
                     </div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" name="create" class="btn btn-default btn-primary" id="create" value="create">
-                    Create new Structure
-                </button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Delete Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="Delete">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="deleteModalLabel">Are you sure?</h4>
-            </div>
-            <div class="modal-body">
-                <form id="delete-price-form" method="post" action="structure.jsp">Note that after the confirmation the
-                    structure will be lost.
-                    <label>
-                        <input name="id" id="price-id" hidden>
-                    </label>
+                    <div class="form-group">
+                        <label for="owner">Sei anche il possessore della struttura?</label>
+                        <input type="checkbox" name="owner" id="owner" checked>
+                    </div>
+                    <script>
+                        $(function () {
+                            $("#owner").click(function () {
+                                if (!$('#owner').is(':checked')) {
+                                    $("#managerisownerdiv").show('slide');
+                                    $('#managerisownerdiv :input').each(function () {
+                                        $(this).prop("required", true);
+                                    })
+                                } else {
+                                    $("#managerisownerdiv").hide('slide');
+                                    $('#managerisownerdiv :input').each(function () {
+                                        $(this).prop("required", false);
+                                    })
+                                }
+                            })
+                        })
+                    </script>
+                    <div class="form-group" id="managerisownerdiv" style="display: none">
+                        <div class="col-md-6">
+                            <label for="ownerFirstName">Nome possessore struttura:</label>
+                            <input name="ownerFirstName" id="ownerFirstName" type="text" class="form-control"
+                                   value="Federico">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ownerLastName">Cognome possessore struttura:</label>
+                            <input name="ownerLastName" id="ownerLastName" type="text" class="form-control"
+                                   value="Vagnoni">
+                        </div>
+                        <div class="col-md-12">
+                            <label for="ownerEmail">Email possessore struttura:</label>
+                            <input name="ownerEmail" id="ownerEmail" type="email" class="form-control"
+                                   value="fede93.vagnoni@gmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="sameaddress">Vive all'interno della struttura?</label>
+                            <input type="checkbox" name="sameaddress" id="sameaddress" checked>
+                        </div>
+                        <script>
+                            $(function () {
+                                $("#sameaddress").click(function () {
+                                    if (!$('#sameaddress').is(':checked')) {
+                                        $("#owneraddressdiv").show('slide');
+                                        $('#owneraddressdiv :input').each(function () {
+                                            $(this).prop("required", true);
+                                        })
+                                    } else {
+                                        $("#owneraddressdiv").hide('slide');
+                                        $('#owneraddressdiv :input').each(function () {
+                                            $(this).prop("required", false);
+                                        })
+                                    }
+                                })
+                            })
+                        </script>
+                        <div class="form-group" id="owneraddressdiv" style="display: none">
+                            <div class="col-md-3">
+                                <label for="ownerAddress">Indirizzo:</label>
+                                <input name="ownerAddress" id="ownerAddress" type="text" class="form-control"
+                                       placeholder="Piazza Ciao" value="Piazza Ciao">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="ownerNation">Nazione:</label>
+                                <input name="ownerNation" id="ownerNation" type="text" class="form-control"
+                                       placeholder="Italia"
+                                       value="Italia">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="ownerCity">Città:</label>
+                                <input name="ownerCity" id="ownerCity" type="text" class="form-control"
+                                       placeholder="Roma"
+                                       value="Roma">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="ownerPostalcode">Codice postale:</label>
+                                <input name="ownerPostalcode" id="ownerPostalcode" type="text" class="form-control"
+                                       placeholder="00039" value="00039">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" name="create" class="btn btn-default btn-primary" id="create"
+                                value="create">
+                            Create new Structure
+                        </button>
+                    </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary" form="delete-price-form" id="delete" name="delete"
-                        value="delete">Delete
-                </button>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="Delete">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="deleteModalLabel">Are you sure?</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="delete-price-form" method="post" action="structure.jsp">Note that after the confirmation
+                        the
+                        structure will be lost.
+                        <label>
+                            <input name="id" id="price-id" hidden>
+                        </label>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" form="delete-price-form" id="delete" name="delete"
+                            value="delete">Delete
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Bootstrap core JavaScript -->
-<%@include file="bootstrap_core_js.html" %>
+    <!-- Bootstrap core JavaScript -->
+    <%@include file="bootstrap_core_js.html" %>
 </body>
 </html>

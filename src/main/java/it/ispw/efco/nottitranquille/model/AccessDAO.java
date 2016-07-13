@@ -161,4 +161,27 @@ public class AccessDAO {
         entityManager.getTransaction().commit();
         entityManager.close();
     }
+
+    public Person selectUserByEmail(String ownerEmail) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        String querystring = "FROM Person WHERE email =:e";
+        TypedQuery<Person> query = entityManager.createQuery(querystring, Person.class);
+        query.setParameter("e", ownerEmail);
+        List<Person> result = query.getResultList();
+        entityManager.close();
+        return result.get(0);
+    }
+
+//    public void addOwnerRole(Owner owner, Long id) {
+//        EntityManager entityManager = JPAInitializer.getEntityManager();
+//        Person person = entityManager.find(Person.class, id);
+//        entityManager.getTransaction().begin();
+//        try {
+//            person.addRole(owner);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        entityManager.getTransaction().commit();
+//        entityManager.close();
+//    }
 }

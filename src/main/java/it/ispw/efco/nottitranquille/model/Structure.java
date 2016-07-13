@@ -58,22 +58,22 @@ public class Structure {
     @Access(AccessType.PROPERTY)
     private Manager managedBy;
 
-    @ManyToMany(targetEntity = Owner.class, cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Owner.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Owner> owners;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = Address.class, optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Address address;
 
     @Enumerated(EnumType.STRING)
     private StructureType type;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Service.class, fetch = FetchType.EAGER)
     private List<Service> services;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Location> locations = new ArrayList<Location>();
+    @OneToMany(targetEntity = Location.class, cascade = CascadeType.ALL)
+    private List<Location> locations;
 
-    @OneToOne(optional = false, mappedBy = "structure", cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Request.class, optional = false, mappedBy = "structure", cascade = CascadeType.ALL)
     private Request request;
 
 
