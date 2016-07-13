@@ -8,7 +8,6 @@ import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
 import it.ispw.efco.nottitranquille.model.mail.Mailer;
 import org.joda.time.Interval;
 
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.NoResultException;
 import java.util.*;
 
@@ -38,52 +37,56 @@ public class ReservationController {
      * @param locationId:     reserved Location
      * @param period:         Interval of time in which the Location is booked
      * @param buyers:         Other Person will stay in the Location for the respective period
-     * @return true if reservation is created successful
+     * @return reservation's
      */
-    public boolean createReservation(String tenantUsername, Long locationId, Interval period, List<String> buyers) {
+    public Reservation createReservation(String tenantUsername, Long locationId, Interval period, List<String> buyers) throws IllegalBookingDate {
 
         // Retrieve tenant and location from the db
         Person person = UserDAO.findBy(tenantUsername);
         Location location = LocationDAO.findByID(locationId);
 
-        if (location.isAvailable(period)) {
-            Reservation reservation = new Reservation(person, location, period);
+        if (!location.isAvailable(period))
+            throw new IllegalBookingDate("The period is not available for reservation");
 
 
-            // The tenant specifies other location mates
-            if (buyers != null)
-                reservation.setBuyers(buyers);
-
-            try {
-
-                // Location is reservable without the confirm of the Manager
-                if (location.getType().getReservationType() == ReservationType.Direct)
-                    this.reserveDirect(reservation);
-
-                    // Need Manager confirmation to complete the reservation
-                else if (location.getType().getReservationType() == ReservationType.WithConfirmation)
-                    this.reserveWithConfirmation(reservation, location.getManager());
+        Reservation reservation = new Reservation(person, location, period);
 
 
-                // add reservation to the tenant collection
-                Tenant role = (Tenant) person.getRole("Tenant");
-                role.addReservation(reservation);
+        // The tenant specifies other location mates
+        if (buyers != null)
+            reservation.setBuyers(buyers);
 
-            } catch (Exception e) {
-                // do nothing, so unusual event
-                e.printStackTrace();
+        try {
 
-            }
+            // Location is reservable without the confirm of the Manager
+            if (location.getType().getReservationType() == ReservationType.Direct)
+                this.reserveDirect(reservation);
 
-            // make persistence
-            ReservationDAO.store(reservation);
-            UserDAO.update(person);
+                // Need Manager confirmation to complete the reservation
+            else if (location.getType().getReservationType() == ReservationType.WithConfirm)
+                this.reserveWithConfirmation(reservation, location.getManager());
 
-            return true;
 
-        } else
+            // add reservation to the tenant collection
+            Tenant role = (Tenant) person.getRole("Tenant");
+            role.addReservation(reservation);
 
-            return false;
+        } catch (Exception e) {
+            // do nothing, so unusual event
+            e.printStackTrace();
+
+        }
+
+        // make persistence
+        ReservationDAO.store(reservation);
+        UserDAO.update(person);
+
+        return reservation;
+    }
+
+
+    public Reservation createReservation(String tenantUsername, Long locationId, Interval period) throws IllegalBookingDate {
+        return createReservation(tenantUsername, locationId, period, null);
     }
 
 
@@ -91,7 +94,7 @@ public class ReservationController {
      * Reserve the Location with confirmation method: The Manager of the Location must approve the
      * reservation.
      *
-     * @param reservation: Reservation to confirm. It has ReservetionType set on 'WithConfirmation'
+     * @param reservation: Reservation to confirm. It has ReservetionType set on 'WithConfirm'
      * @param manager:     Manager of the Location
      */
     private void reserveWithConfirmation(Reservation reservation, Person manager) throws Exception {

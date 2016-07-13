@@ -33,7 +33,7 @@
                         <td>${resBean.startDate}</td>
                         <td>${resBean.endDate}
                         <td>
-                            <c:out value=" ${resBean.tenantName} "> </c:out>
+                            <c:out value=" ${resBean.username} "> </c:out>
                         </td>
 
                         <c:choose>

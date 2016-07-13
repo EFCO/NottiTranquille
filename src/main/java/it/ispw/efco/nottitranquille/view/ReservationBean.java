@@ -2,6 +2,7 @@ package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.ReservationController;
 import it.ispw.efco.nottitranquille.model.*;
+import it.ispw.efco.nottitranquille.model.Exception.IllegalBookingDate;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
@@ -56,7 +57,7 @@ public class ReservationBean {
             return false;
 
         /* format date */
-        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-mm-yyyy");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-MM-yyyy");
 
         DateTime da = DateTime.parse(startDate, dateTimeFormatter);
         DateTime a = DateTime.parse(endDate, dateTimeFormatter);
@@ -67,8 +68,19 @@ public class ReservationBean {
         ReservationController controller = ReservationController.getInstance();
 
         Long ID = new Long(locationBean.getId());
-        // return true if reservation is created, false is period is not available
-        return controller.createReservation(username, ID, period, buyers);
+
+        try {
+
+            // return true if reservation is created, false is period is not available
+            Reservation reservation = controller.createReservation(username, ID, period, buyers);
+            id = reservation.getId().toString();
+
+        } catch (IllegalBookingDate e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
 
     }
 
@@ -79,7 +91,7 @@ public class ReservationBean {
         this.setState(reservation.getState());
         this.setBuyers(reservation.getBuyers());
 
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MM-yyyy");
         this.setStartDate(reservation.getStartDate().toString(formatter));
         this.setEndDate(reservation.getEndDate().toString(formatter));
         this.setPrice(reservation.getPrice());

@@ -90,13 +90,17 @@ public class Person {
     }
 
     public Role getRole(String rolestring) throws Exception {
+
         Iterator iterator = roles.iterator();
         while (iterator.hasNext()) {
+
             Role role = (Role) iterator.next();
             if (role.getClass().getSimpleName().equals(rolestring)) {
                 return role;
             }
+
         }
+
         throw new Exception("This user does not have such authorization");
     }
 

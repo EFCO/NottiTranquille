@@ -2,6 +2,7 @@ package it.ispw.efco.nottitranquille;
 
 import it.ispw.efco.nottitranquille.controller.ReservationController;
 import it.ispw.efco.nottitranquille.model.*;
+import it.ispw.efco.nottitranquille.model.Exception.IllegalBookingDate;
 import it.ispw.efco.nottitranquille.model.dao.*;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
 import org.joda.time.DateTime;
@@ -49,31 +50,31 @@ public class DemoReservation {
         /*LocationType*/
 
         LocationType locanda = new LocationType(ReservationType.Direct);
-        LocationType casaInfestata = new LocationType(ReservationType.WithConfirmation);
+        LocationType casaInfestata = new LocationType(ReservationType.WithConfirm);
 
         /* Interval */
 
         // Available date for Location
-        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-MM-yyyy");
 
-        DateTime daA = DateTime.parse("2017-01-01", dateTimeFormatter);
-        DateTime aA = DateTime.parse("2017-12-30", dateTimeFormatter);
+        DateTime daA = DateTime.parse("01-01-2017", dateTimeFormatter);
+        DateTime aA = DateTime.parse("01-01-2018", dateTimeFormatter);
 
         Interval intervalA = new Interval(daA, aA);
 
-        DateTime daB = DateTime.parse("2017-01-01", dateTimeFormatter);
-        DateTime aB = DateTime.parse("2018-12-30", dateTimeFormatter);
+        DateTime daB = DateTime.parse("01-01-2018", dateTimeFormatter);
+        DateTime aB = DateTime.parse("30-12-2019", dateTimeFormatter);
 
         Interval intervalB = new Interval(daB, aB);
 
         // booking period
-        DateTime da1 = DateTime.parse("2017-04-01", dateTimeFormatter);
-        DateTime a1 = DateTime.parse("2017-4-7", dateTimeFormatter);
+        DateTime da1 = DateTime.parse("01-04-2017", dateTimeFormatter);
+        DateTime a1 = DateTime.parse("07-04-2017", dateTimeFormatter);
 
         Interval interval1 = new Interval(da1, a1);
 
-        DateTime da2 = DateTime.parse("2017-06-01", dateTimeFormatter);
-        DateTime a2 = DateTime.parse("2017-06-12", dateTimeFormatter);
+        DateTime da2 = DateTime.parse("01-06-2017", dateTimeFormatter);
+        DateTime a2 = DateTime.parse("12-06-2017", dateTimeFormatter);
 
         Interval interval2 = new Interval(da2, a2);
 
@@ -94,12 +95,6 @@ public class DemoReservation {
 
         myLocationA.setPrice(400.00f);
         myLocationA.setManager(manager);
-        try {
-            myLocationA.addAvailablePeriod(intervalA);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
 
 
         Location myLocationB = new Location();
@@ -135,8 +130,14 @@ public class DemoReservation {
 
         ReservationController controller = ReservationController.getInstance();
 
-        controller.createReservation(me.getUsername(), myLocationA.getId(), interval1, null);
-        controller.createReservation(me.getUsername(), myLocationB.getId(), interval2, null);
+        try {
+
+            controller.createReservation(me.getUsername(), myLocationA.getId(), interval1, null);
+            controller.createReservation(me.getUsername(), myLocationB.getId(), interval2, null);
+        } catch (IllegalBookingDate e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
 
         System.exit(0);
 

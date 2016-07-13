@@ -70,10 +70,17 @@
                         </li>
                     </ul>
 
-                    <form class="navbar-form navbar-right" role="search">
-                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#signModal">Sign
-                            In/Sign Up
-                        </button>
+                    <form action="sign.jsp" class="navbar-form navbar-right">
+                        <c:if test="${!Login.logged}">
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#signModal">
+                                Login
+                            </button>
+                        </c:if>
+                        <c:if test="${Login.logged}">
+                            <button type="submit" class="btn btn-default" >
+                                Logout
+                            </button>
+                        </c:if>
                         <c:if test="${Login.logged}">
                             <c:if test="${Login.is('Tenant')}">
                                 <button type="button" class="btn btn-default" data-toggle="modal"

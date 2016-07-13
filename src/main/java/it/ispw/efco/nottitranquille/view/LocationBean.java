@@ -3,7 +3,7 @@ package it.ispw.efco.nottitranquille.view;
 import it.ispw.efco.nottitranquille.controller.ReservationController;
 import it.ispw.efco.nottitranquille.model.Location;
 import it.ispw.efco.nottitranquille.model.Service;
-import it.ispw.efco.nottitranquille.model.dao.LocationDAO;
+import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
@@ -29,6 +29,8 @@ public class LocationBean {
 
     private Float price;
 
+    private String type;
+
     /**
      * Populate the instance with information from the model layer.
      *
@@ -45,6 +47,12 @@ public class LocationBean {
         description = location.getDescription();
         enablesDate = location.getAvailableDate();
         price = location.getPrice();
+
+        if (location.getType().getReservationType() == ReservationType.WithConfirm)
+            this.type = "WithConfirm";
+        else
+            this.type = "Direct";
+
         this.id = id;
 
     }
@@ -112,5 +120,13 @@ public class LocationBean {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

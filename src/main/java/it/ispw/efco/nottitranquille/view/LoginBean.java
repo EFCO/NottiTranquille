@@ -2,6 +2,7 @@ package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.LoginController;
 import it.ispw.efco.nottitranquille.model.Person;
+import it.ispw.efco.nottitranquille.model.Role;
 
 import javax.persistence.NoResultException;
 import java.util.ArrayList;
@@ -44,6 +45,9 @@ public class LoginBean {
             Person found = controller.login(this.username, this.password);
 
             try {
+
+                // flush previous login
+                this.roles = new ArrayList<String>();
 
                 if (found.hasAuthorization("Tenant")) {
                     roles.add("Tenant");

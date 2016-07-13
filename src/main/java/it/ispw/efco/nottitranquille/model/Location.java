@@ -137,7 +137,9 @@ public class Location {
     public void bookPeriod(Interval bookingPeriod) throws IllegalArgumentException {
 
         // Indicates if the Interval specified in the argument is available for reservation
-        boolean avl = false;
+        if (!isAvailable(bookingPeriod))
+            throw new IllegalArgumentException("Interval of time not available for booking");
+
 
         Iterator<Interval> iterator = availableDate.iterator();
         while (iterator.hasNext()) {
@@ -148,13 +150,12 @@ public class Location {
             if (!period.contains(bookingPeriod))
                 continue;
 
-            // bookingPeriod is a valid interval of time
-            avl = true;
-
             /* Update the available period of time for a reservation */
 
-            if (bookingPeriod.isEqual(period))
+            if (bookingPeriod.isEqual(period)) {
                 iterator.remove();
+                break;
+            }
 
 
             DateTime oldStart = period.getStart();
@@ -177,8 +178,6 @@ public class Location {
             break;
         }
 
-        if (!avl)
-            throw new IllegalArgumentException("Interval of time not available for booking");
 
         booked.add(bookingPeriod);
 
@@ -188,11 +187,34 @@ public class Location {
      * Check if the given interval of time is available to book the Location
      *
      * @param interval : contiguous range of days that we want to test are available
-     * @return bool Return true if interval is available
+     * @return true if interval is available
      */
-
     public boolean isAvailable(Interval interval) {
+
+        // loop on interval of available dates
+        for (Interval inter : this.availableDate) {
+
+            // Check if the argument overlaps the range of available days
+            if (interval.isEqual(inter) || (inter.getStart().isBefore(interval.getStart())
+                    && inter.getEnd().isAfter(interval.getEnd()))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the given interval of time is booked
+     *
+     * @param interval : range of time
+     * @return true if the period of time specified in the argument is reserved
+     */
+    public boolean isBooked(Interval interval) {
+        // loop on interval of booked dates
         for (Interval inter : this.booked) {
+
+            // Check if the argument overlaps the range of booked days
             if (interval.isEqual(inter) || (inter.getStart().isBefore(interval.getStart())
                     && inter.getEnd().isAfter(interval.getEnd()))) {
                 return true;

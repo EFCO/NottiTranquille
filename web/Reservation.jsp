@@ -259,6 +259,12 @@
 
 </form>
 
+<c:if test="${reservationBean.locationBean.type == 'WithConfirm' }">
+    <br>
+    <div class="alert alert-warning" role="alert">This location is available only after a owner confirm! You will
+    receive an email when the owner will display your request!</div>
+</c:if>
+
 
 <!-- IF NOT VALID INPUT
 ================================================== -->
