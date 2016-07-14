@@ -3,16 +3,14 @@ package it.ispw.efco.nottitranquille.model.dao;
 import it.ispw.efco.nottitranquille.JPAInitializer;
 import it.ispw.efco.nottitranquille.model.*;
 import it.ispw.efco.nottitranquille.view.PriceBean;
-import org.joda.time.Interval;
+import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.FlushModeType;
 import java.util.List;
 
 /**
  * DAO for {@link Price} entity.
- *
  *
  * @see Price
  * @see BasePrice
@@ -29,14 +27,15 @@ public class PriceDao {
     /**
      * Stores {@link Price} into persistent system.
      *
-     * @param price the Price to persist
+     * @param priceToStore the Price to persist
+     * @throws Exception if the entity is null
      */
-    public static void store(Price price) throws Exception {
-        if (price != null) {
+    public static void store(Price priceToStore) throws Exception {
+        if (priceToStore != null) {
             EntityManager entityManager = JPAInitializer.getEntityManager();
             entityManager.getTransaction().begin();
 
-            entityManager.persist(price);
+            entityManager.persist(priceToStore);
 
             entityManager.getTransaction().commit();
         } else {
@@ -45,12 +44,13 @@ public class PriceDao {
     }
 
     /**
-     * Stores {@link it.ispw.efco.nottitranquille.view.PriceBean} into persistent system.
+     * Stores {@link PriceBean} into persistent system.
      *
-     * @param priceToUpdate the PriceBean to persist
+     * @param priceBeanToStore the PriceBean to persist
+     * @throws Exception if the entity is null
      */
-    public static void store(PriceBean priceToUpdate) throws Exception {
-        store(Price.PriceFromBean(priceToUpdate));
+    public static void store(PriceBean priceBeanToStore) throws Exception {
+        store(Price.PriceFromBean(priceBeanToStore));
     }
 
     /**
@@ -84,6 +84,7 @@ public class PriceDao {
      */
     public static void delete(long priceId) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
+        entityManager.setFlushMode(FlushModeType.COMMIT);
         entityManager.getTransaction().begin();
 
         Price priceLoaded = entityManager.find(Price.class, priceId);
@@ -102,123 +103,132 @@ public class PriceDao {
     }
 
     /**
-     * Returns the count of all {@link Price}s into persistent system.
+     * Returns the count of all {@link Price}s for a certain {@link Location} into persistent system.
      *
      * @return the number of the Prices
      */
-    public static long countAllPrices() {
+    public static Long countAllPrices(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
-        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(Price.class)));
-
-        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+        return (Long) entityManager
+                .createQuery("select count(price) from Location location JOIN location.prices price where " +
+                                "location.id = :locationId")
+                .setParameter("locationId", location.getId())
+                .getSingleResult();
     }
 
     /**
-     * Returns the count of all {@link BasePrice}s into persistent system.
+     * Returns the count of all {@link BasePrice}s for a certain {@link Location} into persistent system.
      *
      * @return the number of the BasePrices
      */
-    public static long countAllBasePrices() {
+    public static Long countAllBasePrices(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
-        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(BasePrice.class)));
-
-        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+        return (Long) entityManager
+                .createQuery("select count(price) from Location location JOIN location.prices price where " +
+                                "location.id = :locationId and " +
+                                "type(price) = BasePrice")
+                .setParameter("locationId", location.getId())
+                .getSingleResult();
     }
 
     /**
-     * Returns the count of all {@link Discount}s into persistent system.
+     * Returns the count of all {@link Discount}s for a certain {@link Location} into persistent system.
      *
      * @return the number of the Discounts
      */
-    public static long countAllDiscounts() {
+    public static Long countAllDiscounts(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
-        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(Discount.class)));
-
-        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+        return (Long) entityManager
+                .createQuery("select count(price) from Location location JOIN location.prices price where " +
+                                "location.id = :locationId and " +
+                                "type(price) = PercentageDiscount or " +
+                                "type(price) = FixDiscount")
+                .setParameter("locationId", location.getId())
+                .getSingleResult();
     }
 
     /**
-     * Returns the count of all {@link Fee}s into persistent system.
+     * Returns the count of all {@link Fee}s for a certain {@link Location} into persistent system.
      *
      * @return the number of the Fees
      */
-    public static long countAllFees() {
+    public static Long countAllFees(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
-        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(Fee.class)));
-
-        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+        return (Long) entityManager
+                .createQuery("select count(price) from Location location JOIN location.prices price where " +
+                                "location.id = :locationId and " +
+                                "type(price) = PercentageFee or " +
+                                "type(price) = FixFee")
+                .setParameter("locationId", location.getId())
+                .getSingleResult();
     }
 
     /**
-     * Returns the count of all {@link FixDiscount}s into persistent system.
+     * Returns the count of all {@link FixDiscount}s for a certain {@link Location} into persistent system.
      *
      * @return the number of the FixDiscounts
      */
-    public static long countAllFixDiscounts() {
+    public static Long countAllFixDiscounts(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
-        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(FixDiscount.class)));
-
-        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+        return (Long) entityManager
+                .createQuery("select count(price) from Location location JOIN location.prices price where " +
+                                "location.id = :locationId and " +
+                                "type(price) = FixDiscount")
+                .setParameter("locationId", location.getId())
+                .getSingleResult();
     }
 
     /**
-     * Returns the count of all {@link FixFee}s into persistent system.
+     * Returns the count of all {@link FixFee}s for a certain {@link Location} into persistent system.
      *
      * @return the number of the FixFees
      */
-    public static long countAllFixFees() {
+    public static Long countAllFixFees(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
-        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(FixFee.class)));
-
-        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+        return (Long) entityManager
+                .createQuery("select count(price) from Location location JOIN location.prices price where " +
+                                "location.id = :locationId and " +
+                                "type(price) = FixFee")
+                .setParameter("locationId", location.getId())
+                .getSingleResult();
     }
 
     /**
-     * Returns the count of all {@link PercentageDiscount}s into persistent system.
+     * Returns the count of all {@link PercentageDiscount}s for a certain {@link Location} into persistent system.
      *
      * @return the number of the PercentageDiscounts
      */
-    public static long countAllPercentageDiscounts() {
+    public static Long countAllPercentageDiscounts(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
-        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(PercentageDiscount.class)));
-
-        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+        return (Long) entityManager
+                .createQuery("select count(price) from Location location JOIN location.prices price where " +
+                                "location.id = :locationId and " +
+                                "type(price) = PercentageDiscount")
+                .setParameter("locationId", location.getId())
+                .getSingleResult();
     }
 
     /**
-     * Returns the count of all {@link PercentageFee}s into persistent system.
+     * Returns the count of all {@link PercentageFee}s for a certain {@link Location} into persistent system.
      *
      * @return the number of the PercentageFees
      */
-    public static long countAllPercentageFees() {
+    public static Long countAllPercentageFees(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> criteriaBuilderQuery = criteriaBuilder.createQuery(Long.class);
-        criteriaBuilderQuery.select(criteriaBuilder.count(criteriaBuilderQuery.from(PercentageFee.class)));
-
-        return entityManager.createQuery(criteriaBuilderQuery).getSingleResult();
+        return (Long) entityManager
+                .createQuery("select count(price) from Location location JOIN location.prices price where " +
+                                "location.id = :locationId and " +
+                                "type(price) = PercentageFee")
+                .setParameter("locationId", location.getId())
+                .getSingleResult();
     }
 
     /**
@@ -228,36 +238,14 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of maxResult Prices into persistent system from startPosition
      */
-    public static List<Price> retrievePrices(int startPosition, int maxResult) {
+    public static List<? extends Price> retrievePrices(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
-                .createQuery("from Price", Price.class)
-                .setFirstResult(startPosition)
-                .setMaxResults(maxResult)
-                .getResultList();
-    }
-
-    /**
-     * Retrieves {@link Price}s that intersect a given {@link Interval} from persistent system.
-     *
-     * @param interval  the interval in which we are interested to retrieve Prices
-     * @param startPosition the offset of result
-     * @param maxResult the maximum number of results
-     * @return the list of all Prices into persistent system valid in the given Interval
-     */
-    @SuppressWarnings("JpaQlInspection")
-    public static List<Price> retrievePrices(Interval interval, int startPosition, int maxResult) {
-        EntityManager entityManager = JPAInitializer.getEntityManager();
-
-        return entityManager
-                .createQuery("from Price where " +
-                                "(interval.begin >= :startDate and interval.begin <= :endDate) or " +
-                                "(interval.end >= :startDate and interval.end <= :endDate) or " +
-                                "(interval.begin <= :startDate and interval.end >= :endDate)",
+                .createQuery("select price from Location location JOIN location.prices price where " +
+                        "location.id = :locationId",
                         Price.class)
-                .setParameter("startDate", interval.getStart())
-                .setParameter("endDate", interval.getEnd())
+                .setParameter("locationId", location.getId())
                 .setFirstResult(startPosition)
                 .setMaxResults(maxResult)
                 .getResultList();
@@ -270,36 +258,15 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of all BasePrice into persistent system
      */
-    public static List<BasePrice> retrieveBasePrices(int startPosition, int maxResult) {
+    public static List<? extends Price> retrieveBasePrices(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
-                .createQuery("from BasePrice", BasePrice.class)
-                .setFirstResult(startPosition)
-                .setMaxResults(maxResult)
-                .getResultList();
-    }
-
-    /**
-     * Retrieves {@link BasePrice}s that intersect a given {@link Interval} from persistent system.
-     *
-     * @param interval  the interval in which we are interested to retrieve Prices
-     * @param startPosition the offset of result
-     * @param maxResult the maximum number of results
-     * @return the list of all BasePrices into persistent system valid in the given Interval
-     */
-    @SuppressWarnings("JpaQlInspection")
-    public static List<Price> retrieveBasePrices(Interval interval, int startPosition, int maxResult) {
-        EntityManager entityManager = JPAInitializer.getEntityManager();
-
-        return entityManager
-                .createQuery("from BasePrice where " +
-                                "(interval.begin >= :startDate and interval.begin <= :endDate) or " +
-                                "(interval.end >= :startDate and interval.end <= :endDate) or " +
-                                "(interval.begin <= :startDate and interval.end >= :endDate)",
+                .createQuery("select price from Location location JOIN location.prices price where " +
+                        "location.id = :locationId and " +
+                        "type(price) = BasePrice",
                         Price.class)
-                .setParameter("startDate", interval.getStart())
-                .setParameter("endDate", interval.getEnd())
+                .setParameter("locationId", location.getId())
                 .setFirstResult(startPosition)
                 .setMaxResults(maxResult)
                 .getResultList();
@@ -312,36 +279,16 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of all Fees into persistent system
      */
-    public static List<Fee> retrieveFees(int startPosition, int maxResult) {
+    public static List<? extends Price> retrieveFees(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
-                .createQuery("from Fee", Fee.class)
-                .setFirstResult(startPosition)
-                .setMaxResults(maxResult)
-                .getResultList();
-    }
-
-    /**
-     * Retrieves {@link Fee}s that intersect a given {@link Interval} from persistent system.
-     *
-     * @param interval  the interval in which we are interested to retrieve Prices
-     * @param startPosition the offset of result
-     * @param maxResult the maximum number of results
-     * @return the list of all Fees into persistent system valid in the given Interval
-     */
-    @SuppressWarnings("JpaQlInspection")
-    public static List<Fee> retrieveFees(Interval interval, int startPosition, int maxResult) {
-        EntityManager entityManager = JPAInitializer.getEntityManager();
-
-        return entityManager
-                .createQuery("from Fee where " +
-                                "(interval.begin >= :startDate and interval.begin <= :endDate) or " +
-                                "(interval.end >= :startDate and interval.end <= :endDate) or " +
-                                "(interval.begin <= :startDate and interval.end >= :endDate)",
-                        Fee.class)
-                .setParameter("startDate", interval.getStart())
-                .setParameter("endDate", interval.getEnd())
+                .createQuery("select price from Location location JOIN location.prices price where " +
+                        "location.id = :locationId and " +
+                        "type(price) = PercentageFee or " +
+                        "type(price) = FixFee",
+                        Price.class)
+                .setParameter("locationId", location.getId())
                 .setFirstResult(startPosition)
                 .setMaxResults(maxResult)
                 .getResultList();
@@ -354,36 +301,16 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of all Discounts into persistent system
      */
-    public static List<Discount> retrieveDiscounts(int startPosition, int maxResult) {
+    public static List<? extends Price> retrieveDiscounts(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
-                .createQuery("from Discount", Discount.class)
-                .setFirstResult(startPosition)
-                .setMaxResults(maxResult)
-                .getResultList();
-    }
-
-    /**
-     * Retrieves {@link Discount}s that intersect a given {@link Interval} from persistent system.
-     *
-     * @param interval  the interval in which we are interested to retrieve Prices
-     * @param startPosition the offset of result
-     * @param maxResult the maximum number of results
-     * @return the list of all Discounts into persistent system valid in the given Interval
-     */
-    @SuppressWarnings("JpaQlInspection")
-    public static List<Discount> retrieveDiscounts(Interval interval, int startPosition, int maxResult) {
-        EntityManager entityManager = JPAInitializer.getEntityManager();
-
-        return entityManager
-                .createQuery("from Discount where " +
-                                "(interval.begin >= :startDate and interval.begin <= :endDate) or " +
-                                "(interval.end >= :startDate and interval.end <= :endDate) or " +
-                                "(interval.begin <= :startDate and interval.end >= :endDate)",
-                        Discount.class)
-                .setParameter("startDate", interval.getStart())
-                .setParameter("endDate", interval.getEnd())
+                .createQuery("select price from Location location JOIN location.prices price where " +
+                        "location.id = :locationId and " +
+                        "type(price) = PercentageDiscount or " +
+                        "type(price) = FixDiscount",
+                        Price.class)
+                .setParameter("locationId", location.getId())
                 .setFirstResult(startPosition)
                 .setMaxResults(maxResult)
                 .getResultList();
@@ -396,36 +323,15 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of all FixDiscounts into persistent system
      */
-    public static List<FixDiscount> retrieveFixDiscounts(int startPosition, int maxResult) {
+    public static List<? extends Price> retrieveFixDiscounts(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
-                .createQuery("from FixDiscount", FixDiscount.class)
-                .setFirstResult(startPosition)
-                .setMaxResults(maxResult)
-                .getResultList();
-    }
-
-    /**
-     * Retrieves {@link FixDiscount}s that intersect a given {@link Interval} from persistent system.
-     *
-     * @param interval  the interval in which we are interested to retrieve Prices
-     * @param startPosition the offset of result
-     * @param maxResult the maximum number of results
-     * @return the list of all FixDiscounts into persistent system valid in the given Interval
-     */
-    @SuppressWarnings("JpaQlInspection")
-    public static List<FixDiscount> retrieveFixDiscounts(Interval interval, int startPosition, int maxResult) {
-        EntityManager entityManager = JPAInitializer.getEntityManager();
-
-        return entityManager
-                .createQuery("from FixDiscount where " +
-                                "(interval.begin >= :startDate and interval.begin <= :endDate) or " +
-                                "(interval.end >= :startDate and interval.end <= :endDate) or " +
-                                "(interval.begin <= :startDate and interval.end >= :endDate)",
-                        FixDiscount.class)
-                .setParameter("startDate", interval.getStart())
-                .setParameter("endDate", interval.getEnd())
+                .createQuery("select price from Location location JOIN location.prices price where " +
+                        "location.id = :locationId and " +
+                        "type(price) = FixDiscount",
+                        Price.class)
+                .setParameter("locationId", location.getId())
                 .setFirstResult(startPosition)
                 .setMaxResults(maxResult)
                 .getResultList();
@@ -438,36 +344,15 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of all FixFees into persistent system
      */
-    public static List<FixFee> retrieveFixFees(int startPosition, int maxResult) {
+    public static List<? extends Price> retrieveFixFees(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
-                .createQuery("from FixFee", FixFee.class)
-                .setFirstResult(startPosition)
-                .setMaxResults(maxResult)
-                .getResultList();
-    }
-
-    /**
-     * Retrieves {@link FixFee}s that intersect a given {@link Interval} from persistent system.
-     *
-     * @param interval  the interval in which we are interested to retrieve Prices
-     * @param startPosition the offset of result
-     * @param maxResult the maximum number of results
-     * @return the list of all FixFees into persistent system valid in the given Interval
-     */
-    @SuppressWarnings("JpaQlInspection")
-    public static List<FixFee> retrieveFixFees(Interval interval, int startPosition, int maxResult) {
-        EntityManager entityManager = JPAInitializer.getEntityManager();
-
-        return entityManager
-                .createQuery("from FixFee where " +
-                                "(interval.begin >= :startDate and interval.begin <= :endDate) or " +
-                                "(interval.end >= :startDate and interval.end <= :endDate) or " +
-                                "(interval.begin <= :startDate and interval.end >= :endDate)",
-                        FixFee.class)
-                .setParameter("startDate", interval.getStart())
-                .setParameter("endDate", interval.getEnd())
+                .createQuery("select price from Location location JOIN location.prices price where " +
+                        "location.id = :locationId and " +
+                        "type(price) = FixFee",
+                        Price.class)
+                .setParameter("locationId", location.getId())
                 .setFirstResult(startPosition)
                 .setMaxResults(maxResult)
                 .getResultList();
@@ -480,36 +365,15 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of all PercentageFees into persistent system
      */
-    public static List<PercentageFee> retrievePercentageFees(int startPosition, int maxResult) {
+    public static List<? extends Price> retrievePercentageFees(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
-                .createQuery("from PercentageFee", PercentageFee.class)
-                .setFirstResult(startPosition)
-                .setMaxResults(maxResult)
-                .getResultList();
-    }
-
-    /**
-     * Retrieves {@link PercentageFee}s that intersect a given {@link Interval} from persistent system.
-     *
-     * @param interval  the interval in which we are interested to retrieve Prices
-     * @param startPosition the offset of result
-     * @param maxResult the maximum number of results
-     * @return the list of all PercentageFees into persistent system valid in the given Interval
-     */
-    @SuppressWarnings("JpaQlInspection")
-    public static List<PercentageFee> retrievePercentageFees(Interval interval, int startPosition, int maxResult) {
-        EntityManager entityManager = JPAInitializer.getEntityManager();
-
-        return entityManager
-                .createQuery("from PercentageFee where " +
-                                "(interval.begin >= :startDate and interval.begin <= :endDate) or " +
-                                "(interval.end >= :startDate and interval.end <= :endDate) or " +
-                                "(interval.begin <= :startDate and interval.end >= :endDate)",
-                        PercentageFee.class)
-                .setParameter("startDate", interval.getStart())
-                .setParameter("endDate", interval.getEnd())
+                .createQuery("select price from Location location JOIN location.prices price where " +
+                        "location.id = :locationId and " +
+                        "type(price) = PercentageFee",
+                        Price.class)
+                .setParameter("locationId", location.getId())
                 .setFirstResult(startPosition)
                 .setMaxResults(maxResult)
                 .getResultList();
@@ -522,36 +386,15 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of all PercentageDiscounts into persistent system
      */
-    public static List<PercentageDiscount> retrievePercentageDiscounts(int startPosition, int maxResult) {
+    public static List<? extends Price> retrievePercentageDiscounts(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
-                .createQuery("from PercentageDiscount", PercentageDiscount.class)
-                .setFirstResult(startPosition)
-                .setMaxResults(maxResult)
-                .getResultList();
-    }
-
-    /**
-     * Retrieves {@link PercentageDiscount}s that intersect a given {@link Interval} from persistent system.
-     *
-     * @param interval  the interval in which we are interested to retrieve Prices
-     * @param startPosition the offset of result
-     * @param maxResult the maximum number of results
-     * @return the list of all PercentageDiscounts into persistent system valid in the given Interval
-     */
-    @SuppressWarnings("JpaQlInspection")
-    public static List<PercentageDiscount> retrievePercentageDiscounts(Interval interval, int startPosition, int maxResult) {
-        EntityManager entityManager = JPAInitializer.getEntityManager();
-
-        return entityManager
-                .createQuery("from PercentageDiscount where " +
-                                "(interval.begin >= :startDate and interval.begin <= :endDate) or " +
-                                "(interval.end >= :startDate and interval.end <= :endDate) or " +
-                                "(interval.begin <= :startDate and interval.end >= :endDate)",
-                        PercentageDiscount.class)
-                .setParameter("startDate", interval.getStart())
-                .setParameter("endDate", interval.getEnd())
+                .createQuery("select price from Location location JOIN location.prices price where " +
+                        "location.id = :locationId and " +
+                        "type(price) = PercentageDiscount",
+                        Price.class)
+                .setParameter("locationId", location.getId())
                 .setFirstResult(startPosition)
                 .setMaxResults(maxResult)
                 .getResultList();

@@ -17,7 +17,7 @@ public class BasePrice extends Price {
 	/**
 	 * Default constructor
 	 */
-	public BasePrice() {
+	protected BasePrice() {
 	}
 
     /**

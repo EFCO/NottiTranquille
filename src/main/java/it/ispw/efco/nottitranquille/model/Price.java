@@ -55,17 +55,17 @@ public abstract class Price {
      */
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentInterval")
     @Columns(columns = { @Column(name = "startDate"), @Column(name = "endDate") })
-    protected Interval interval;
+    private Interval interval;
 
 	/**
 	 * The number of times that the Price must be repeated
 	 */
-    protected int times;
+    private int times;
 
 	/**
 	 * The number of the occurrences that the Price must be repeated
 	 */
-    protected int occurrences;
+    private int occurrences;
 
 	/**
 	 * The list of the days in which the Price must be repeated
@@ -77,7 +77,7 @@ public abstract class Price {
     /**
      * The type of repetition
      */
-    protected RepetitionType repetitionType;
+    private RepetitionType repetitionType;
 
     /**
      * The value of the Price
@@ -87,7 +87,7 @@ public abstract class Price {
     /**
      * Comment/description of the price
      */
-    protected String comment;
+    private String comment;
 
     /**
      * Default constructor
@@ -148,9 +148,9 @@ public abstract class Price {
     }
 
     /**
-     *
-     * @param priceBean
-     * @return
+     * Construct a {@link Price} from a {@link PriceBean}.
+     * @param priceBean the {@link PriceBean} to map into a new {@link Price}
+     * @return the new {@link Price}
      */
     public static Price PriceFromBean(PriceBean priceBean) {
 
@@ -327,6 +327,11 @@ public abstract class Price {
         return value;
     }
 
+    /**
+     * Gets the comment of Price.
+     *
+     * @return the value
+     */
     public String getComment() {
         return comment;
     }
@@ -350,10 +355,7 @@ public abstract class Price {
         this.repetitionType = priceToUpdate.repetitionType;
         this.days = priceToUpdate.days;
         this.value = priceToUpdate.value;
-
-        System.out.print(priceToUpdate.comment);
-
-        this.comment = priceToUpdate.comment.replace("Â", "");
+        this.comment = priceToUpdate.comment;
     }
 
     /**
@@ -362,7 +364,8 @@ public abstract class Price {
      * @param date the date to check
      * @return true if the price is eligible to the date, false otherwise
      */
-    public boolean isEligible(DateTime date) {
+    //TODO non sono sicuro copra tutti i casi possibili
+    boolean isEligible(DateTime date) {
         // If date is not in the price's interval IS NOT eligible
         if (!interval.contains(date)) {
             return false;
@@ -382,7 +385,7 @@ public abstract class Price {
                 return true;
             }
 
-            if (repetitionType == RepetitionType.EVERY_WEEK || repetitionType == RepetitionType.EVERY_MONTH || repetitionType == RepetitionType.EVERY_YEAR) {
+            if (repetitionType == RepetitionType.EVERY_WEEK) {
                 for (Day day : days) {
                     int dayNumber = day.ordinal() + 1;
                     if (dayNumber == date.getDayOfWeek()) {
@@ -403,21 +406,47 @@ public abstract class Price {
                         }
                     }
                 }
+            } else if (repetitionType == RepetitionType.EVERY_MONTH) {
+                if (date.getDayOfMonth() == interval.getStart().getDayOfMonth()) {
+                    for (int i=0; i <= occurrences; i++) {
+                        DateTime compare = new DateTime(interval.getStart());
+                        compare.plusMonths(i);
+                        if (date.getMonthOfYear() == interval.getStart().getMonthOfYear()) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+            } else if (repetitionType == RepetitionType.EVERY_YEAR) {
+                if (date.getDayOfMonth() == interval.getStart().getDayOfMonth() && date.getMonthOfYear() == interval.getStart().getMonthOfYear()) {
+                    for (int i=0; i <= occurrences; i++) {
+                        DateTime compare = new DateTime(interval.getStart());
+                        compare.plusYears(i);
+                        if (date.getYear() == interval.getStart().getYear()) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
             }
         }
 
-        return true;
+        return false;
     }
 
     @Override
     public String toString() {
         return "Price{" +
-                "interval=" + interval +
+                "id=" + id +
+                ", interval=" + interval +
                 ", times=" + times +
                 ", occurrences=" + occurrences +
                 ", days=" + days +
                 ", repetitionType=" + repetitionType +
                 ", value=" + value +
+                ", comment='" + comment + '\'' +
                 '}';
     }
 

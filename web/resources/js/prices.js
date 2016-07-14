@@ -1,26 +1,12 @@
 $(document).ready(
     function() {
 
-        // Sets dates into modal
-        function setDateModal() {
-            var today = new Date();
-            var day = today.getDate();
-            var month = today.getMonth() + 1;
-            var year = today.getFullYear();
-            if (day < 10) {
-                day = "0" + day;
-            }
-            if (month < 10) {
-                month = "0" + month;
-            }
-            var todayString = day + "/" + month + "/" + year;
-
-            $("#input-start-date").val(todayString);
-            $("#input-end-date").val(todayString);
-        }
-        
+        // Sets today date into modal
         setDateModal();
-        
+
+        // Creates summary string
+        refreshSummaryString();
+
         // Sets table sorter
         $("#prices-table").tablesorter({headers: { 6:{sorter: false}}});
 
@@ -30,38 +16,7 @@ $(document).ready(
             autoclose: true
         });
 
-        // Changes input price value following user selection
-        function changePercentageFix(value) {
-            if (stringStartsWith(value, "percentage")) {
-                $('#addon-input-price').html("%");
-                $('#input-price').attr("placeholder", "Percentage");
-            } else {
-                $('#addon-input-price').html("€");
-                $('#input-price').attr("placeholder", "Price");
-            }
-        }
-
-        function addSelectDays(selectedDays) {
-            var days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
-            var daysShort = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-
-            if ($("#div-select-days").length == 0) {
-                $('<div id="div-select-days" class="form-group"></div>').insertAfter("#div-repeat");
-
-                var div = $('#div-select-days');
-                var counter;
-                for (counter = 0; counter < 7; counter++) {
-                    var check = "";
-                    if ($.inArray(days[counter], selectedDays) != -1) {
-                        check = "checked";
-                    }
-
-                    div.append(' <label class="checkbox-inline"><input name="daysWeek" type="checkbox" value=' + days[counter] + ' ' + check + '> ' + daysShort[counter] + ' </label>');
-                }
-            }
-        }
-
+        // On change of price type change value input with € or %
         $('#price-type-div').find('input[type="radio"]').on('click change', function(e) {
             var element = e.toElement;
             if (element != undefined) {
@@ -88,10 +43,8 @@ $(document).ready(
 
         // Changes times following user selection
         $('#div-repeat-select').find('select[name="repetitionType"]').on('change', function() {
-
             // Gets the element selected
             var element = this.selectedOptions[0];
-
 
             var divTimes = $("#div-times");
 
@@ -144,52 +97,28 @@ $(document).ready(
             times.find('option:eq(0)').attr("selected", "selected");
         });
 
-        // Creates the summary string of the repetition
-        function refreshSummaryString() {
-            var startDate = $('#input-start-date').val();
-            var times = $('select[name=times] option:selected').text();
-            if (times == "") {
-                times = "1";
-            }
-            var timeType = $('select[name=repetitionType] option:selected').text().split(' ')[1].toLocaleLowerCase();
-            var summary = "Repeat every " + times + " " + timeType + " from " + startDate;
-
-            var endType = $('#end-div').find('input[type="radio"]:checked').val();
-            if (endType == "occurrences") {
-                summary = summary + ", " + $('#input-occurrences').val() + " occurrences";
-            } else if (endType == "never") {
-                summary = summary + ""
-            } else {
-                var endDate = $('#input-end-date').val();
-                summary = summary + " to " + endDate;
-            }
-
-            summary = summary + ".";
-
-            $('#summary').html(summary);
-        }
-
         // Refresh summary string every time something change into create modal
         $('#createModal').on('change', refreshSummaryString);
 
-        // Create summary string
-        refreshSummaryString();
-
+        // Sets data to modal in order to delete
         $(document).on("click", ".deletePrice", function() {
             var priceId = $(this).data('id');
             $(".modal-body #price-id").val(priceId);
         });
 
+        // Sets data to modal in order to update
         $(document).on("click", ".updatePrice", function() {
-
             $(".modal-header #createModalLabel").text("Update price");
             $(".modal-footer #create").attr("name", "update");
             $(".modal-footer #create").attr("value", "update");
             $(".modal-footer #create").text("Update price");
+
             
+            // Disables priceType modification
+            $("input[name=priceType]").attr('disabled', true);
+
             var priceId = $(this).data('id');
             var repetitionType = toCamelCase($(this).data('repetitiontype'));
-            console.log(repetitionType);
             var priceType = $(this).data('pricetype').charAt(0).toLowerCase() + $(this).data('pricetype').slice(1);
             var times = $(this).data('times');
             var value = $(this).data('value');
@@ -197,16 +126,12 @@ $(document).ready(
             var comment = $(this).data('comment');
             var endDate = $(this).data('enddate');
             var occurrences = $(this).data('occurrences');
-
             var rawDays = $(this).data('days');
 
-            console.log("all'aggiornamento days = " + rawDays);
             if (rawDays.length != 0) {
                 var days = (rawDays).slice(1, -1).replace(/ /g, '').split(',');
                 addSelectDays(days);
             }
-            
-            console.log("all'aggiornamento days = " + days);
 
             changePercentageFix(priceType);
 
@@ -219,36 +144,130 @@ $(document).ready(
 
             if (endDate != "31/12/9999") {
                 $(".modal-body input[name=option-radio-end][value=endDate]").prop('checked', true);
-                $(".modal-body input[name=endDate]").val(endDate);
+                $("#input-end-date").val(endDate);
             } else {
-                $(".modal-body input[name=option-radio-end][value=never]").prop('checked', true);
+                if (occurrences != 1) {
+                    $(".modal-body input[name=option-radio-end][value=occurrences]").prop('checked', true);
+                    $("#input-occurrences").val(occurrences);
+                } else {
+                    $(".modal-body input[name=option-radio-end][value=never]").prop('checked', true);
+                }
             }
 
             refreshSummaryString();
         });
 
-        // Reset modal after close
+        // Resets modal after close
         $("#createModal").on('hidden.bs.modal', function() {
             $("#createModal .modal-body").html(createModalHTML);
             setDateModal();
         });
+
+        // Changes end date before submit and enables again priceType 
+        $("#create").click(function () {
+            var endType = $('#end-div').find('input[type="radio"]:checked').val();
+            if (endType == 'never') {
+                $("#end-div").append('<input type="text" name="endDate" value="31/12/9999" hidden="">');
+            } else if (endType == 'occurrences') {
+                $("#end-div").append('<input type="text" name="endDate" value="31/12/9999" hidden="">');
+            } else if (endType == 'endDate') {
+                $("#end-div").append('<input type="text" name="endDate" value="' + $("#input-end-date").val() + '" hidden="">');
+            }
+
+            // Enables priceType modification
+            $("input[name=priceType]").attr('disabled', false);
+        });
     }
 );
+// Sets dates into modal
+function setDateModal() {
+    var today = new Date();
+    var day = today.getDate();
+    var month = today.getMonth() + 1;
+    var year = today.getFullYear();
+    if (day < 10) {
+        day = "0" + day;
+    }
+    if (month < 10) {
+        month = "0" + month;
+    }
+    var todayString = day + "/" + month + "/" + year;
+
+    $("#input-start-date").val(todayString);
+    $("#input-end-date").val(todayString);
+}
+
+// Creates the summary string of the repetition
+function refreshSummaryString() {
+    var startDate = $('#input-start-date').val();
+    var times = $('select[name=times] option:selected').text();
+    if (times == "") {
+        times = "1";
+    }
+    var timeType = $('select[name=repetitionType] option:selected').text().split(' ')[1].toLocaleLowerCase();
+    var summary = "Repeat every " + times + " " + timeType + " from " + startDate;
+
+    var endType = $('#end-div').find('input[type="radio"]:checked').val();
+    if (endType == "occurrences") {
+        summary = summary + ", " + $('#input-occurrences').val() + " occurrences";
+    } else if (endType == "never") {
+        summary = summary + ""
+    } else {
+        var endDate = $('#input-end-date').val();
+        summary = summary + " to " + endDate;
+    }
+
+    summary = summary + ".";
+
+    $('#summary').html(summary);
+}
+
+// Changes input price value following user selection
+function changePercentageFix(value) {
+    if (stringStartsWith(value, "percentage")) {
+        $('#addon-input-price').html("%");
+        $('#input-price').attr("placeholder", "Percentage");
+    } else {
+        $('#addon-input-price').html("€");
+        $('#input-price').attr("placeholder", "Price");
+    }
+}
+
+// Sets days
+function addSelectDays(selectedDays) {
+    var days = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+    var daysShort = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+
+    if ($("#div-select-days").length == 0) {
+        $('<div id="div-select-days" class="form-group"></div>').insertAfter("#div-repeat");
+
+        var div = $('#div-select-days');
+        var counter;
+        for (counter = 0; counter < 7; counter++) {
+            var check = "";
+            if ($.inArray(days[counter], selectedDays) != -1) {
+                check = "checked";
+            }
+
+            div.append(' <label class="checkbox-inline"><input name="daysWeek" type="checkbox" value=' + days[counter] + ' ' + check + '> ' + daysShort[counter] + ' </label>');
+        }
+    }
+}
 
 function toCamelCase(str) {
     // Lower cases the string
     return str.toLowerCase()
-    // Replaces any - or _ characters with a space 
+    // Replaces any - or _ characters with a space
         .replace( /[-_]+/g, ' ')
-        // Removes any non alphanumeric characters 
+        // Removes any non alphanumeric characters
         .replace( /[^\w\s]/g, '')
-        // Uppercases the first character in each group immediately following a space 
-        // (delimited by spaces) 
+        // Uppercases the first character in each group immediately following a space
+        // (delimited by spaces)
         .replace( / (.)/g, function($1) { return $1.toUpperCase(); })
-        // Removes spaces 
+        // Removes spaces
         .replace( / /g, '' );
 }
-
 
 function stringStartsWith(string, prefix) {
     return string.slice(0, prefix.length) == prefix;

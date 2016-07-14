@@ -3,32 +3,37 @@ package it.ispw.efco.nottitranquille.view;
 import it.ispw.efco.nottitranquille.Bean;
 import it.ispw.efco.nottitranquille.NumberUtils;
 import it.ispw.efco.nottitranquille.StringUtils;
+import it.ispw.efco.nottitranquille.model.Price;
 import it.ispw.efco.nottitranquille.model.enumeration.Day;
 
 import java.util.List;
 
 /**
+ * Bean for {@link Price} class.
+ *
+ * @see Price
+ *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 public class PriceBean extends Bean {
 
     /**
-     *
+     * Max number of repetition of days (+1)
      */
     private static final int MAX_REPETITION_DAYS = 31;
 
     /**
-     *
+     * Max number of repetition of weeks (+1)
      */
     private static final int MAX_REPETITION_WEEKS = 53;
 
     /**
-     *
+     * Max number of repetition of months (+1)
      */
     private static final int MAX_REPETITION_MONTHS = 31;
 
     /**
-     *
+     * Max number of repetition of years (+1)
      */
     private static final int MAX_REPETITION_YEARS = 31;
 
@@ -51,13 +56,29 @@ public class PriceBean extends Bean {
 
     private String startDate;
 
+    private String endDate;
+
     private int occurrences;
 
     private String comment;
 
-    private String endDate;
-
 	private List<Day> days;
+
+    public int getMAX_REPETITION_DAY() {
+        return MAX_REPETITION_DAYS;
+    }
+
+    public int getMAX_REPETITION_WEEK() {
+        return MAX_REPETITION_WEEKS;
+    }
+
+    public int getMAX_REPETITION_MONTH() {
+        return MAX_REPETITION_MONTHS;
+    }
+
+    public int getMAX_REPETITION_YEAR() {
+        return MAX_REPETITION_YEARS;
+    }
 
     public long getId() {
         return id;
@@ -139,22 +160,11 @@ public class PriceBean extends Bean {
         this.days = days;
     }
 
-    @Override
-    public String toString() {
-        return "PriceBean{" +
-                "id=" + id + '\'' +
-                "priceType='" + priceType + '\'' +
-                ", repetitionType='" + repetitionType + '\'' +
-                ", times=" + times +
-                ", value=" + value +
-                ", startDate='" + startDate + '\'' +
-                ", occurrences=" + occurrences +
-                ", endDate='" + endDate + '\'' +
-                ", comment='" + comment + '\'' +
-                ", days=" + days +
-                '}';
-    }
-
+    /**
+     *
+     * @return
+     * @throws NoSuchFieldException
+     */
     @Override
 	public boolean validate() throws NoSuchFieldException {
 
@@ -178,19 +188,19 @@ public class PriceBean extends Bean {
         return valid;
 	}
 
-    public int getMAX_REPETITION_DAY() {
-        return MAX_REPETITION_DAYS;
-    }
-
-    public int getMAX_REPETITION_WEEK() {
-        return MAX_REPETITION_WEEKS;
-    }
-
-    public int getMAX_REPETITION_MONTH() {
-        return MAX_REPETITION_MONTHS;
-    }
-
-    public int getMAX_REPETITION_YEAR() {
-        return MAX_REPETITION_YEARS;
+    @Override
+    public String toString() {
+        return "PriceBean{" +
+                "id=" + id + '\'' +
+                "priceType='" + priceType + '\'' +
+                ", repetitionType='" + repetitionType + '\'' +
+                ", times=" + times +
+                ", value=" + value +
+                ", startDate='" + startDate + '\'' +
+                ", occurrences=" + occurrences +
+                ", endDate='" + endDate + '\'' +
+                ", comment='" + comment + '\'' +
+                ", days=" + days +
+                '}';
     }
 }

@@ -1,12 +1,13 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.*;
-import it.ispw.efco.nottitranquille.model.enumeration.Day;
-import it.ispw.efco.nottitranquille.model.enumeration.RepetitionType;
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
+import it.ispw.efco.nottitranquille.model.dao.LocationDao;
+import it.ispw.efco.nottitranquille.model.dao.PriceDao;
+import it.ispw.efco.nottitranquille.view.PriceBean;
 
 import java.util.*;
+
+import static it.ispw.efco.nottitranquille.model.dao.PriceDao.*;
 
 /**
  * ManagesPrices Controller.
@@ -34,495 +35,307 @@ import java.util.*;
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
+@SuppressWarnings("unchecked")
 public class ManagePrices {
 
-	/**
-     * Adds a {@link BasePrice} with an {@link Interval}, in which the price is valid, to a {@link Location}.
+    /**
+     * Fetches all {@link Price}s of a certain {@link Location}.
      *
-	 * @param location  the location
-	 * @param interval  the interval in which the price must be considered
-	 * @param basePrice the price
-	 */
-	public static void addBasePrice(Location location, Interval interval, double basePrice) {
-        BasePrice price = new BasePrice.Builder()
-                .setPrice(basePrice)
-                .setInterval(interval)
-                .build();
-
-		location.getPrices().addPrice(price);
-	}
-
-	/**
-     * Adds a {@link PercentageFee} with an {@link Interval}, in which the fee is valid, to a {@link Location}.
-     *
-     * @param location  the location
-	 * @param interval  the interval in which the fee must be considered
-	 * @param fee   the fee to apply
-	 */
-	public static void addPercentageFee(Location location, Interval interval, double fee) {
-        PercentageFee price = new PercentageFee.Builder()
-                .setFee(fee)
-                .setInterval(interval)
-                .build();
-
-        location.getPrices().addPrice(price);
+     * @param location the location from where fetch prices
+     * @return the list of all Price
+     */
+	public static List<Price> fetchAllPrices(Location location) {
+        return (List<Price>) retrievePrices(location, 0, countAllPrices(location));
 	}
 
     /**
-     * Adds a {@link PercentageFee} that is valid from a certain date to another one to a {@link Location}.
+     * Fetches all {@link BasePrice}s of a certain {@link Location}.
      *
-     * @param location  the location
-     * @param starDate  the date from the fee must be considered
-     * @param endDate   the date until the fee must be considered
-     * @param fee   the fee to apply
+     * @param location the location from where fetch prices
+     * @return the list of all BasePrice
      */
-	public static void addPercentageFee(Location location, DateTime starDate, DateTime endDate, double fee) {
-        Interval interval = new Interval(starDate, endDate);
-
-        PercentageFee price = new PercentageFee.Builder()
-                .setFee(fee)
-                .setInterval(interval)
-                .build();
-
-        location.getPrices().addPrice(price);
-	}
-
-    /**
-     * Adds a {@link FixFee} with an {@link Interval}, in which the fee is valid, to a {@link Location}.
-     *
-     * @param location  the location
-     * @param interval  the interval in which the fee must be considered
-     * @param fee   the fee to apply
-     */
-    public static void addFixFee(Location location, Interval interval, double fee) {
-        FixFee price = new FixFee.Builder()
-                .setFee(fee)
-                .setInterval(interval)
-                .build();
-
-        location.getPrices().addPrice(price);
+    public static List<BasePrice> fetchAllBasePrices(Location location) {
+        return (List<BasePrice>) retrieveBasePrices(location, 0, countAllBasePrices(location));
     }
 
     /**
-     * Adds a {@link FixFee} that is valid from a certain date to another one to a {@link Location}.
+     * Fetches all {@link Discount}s of a certain {@link Location}.
      *
-     * @param location  the location
-     * @param starDate  the date from the fee must be considered
-     * @param endDate   the date until the fee must be considered
-     * @param fee   the fee to apply
+     * @param location the location from where fetch prices
+     * @return the list of all Discount
      */
-    public static void addFixFee(Location location, DateTime starDate, DateTime endDate, double fee) {
-        Interval interval = new Interval(starDate, endDate);
-
-        FixFee price = new FixFee.Builder()
-                .setFee(fee)
-                .setInterval(interval)
-                .build();
-
-        location.getPrices().addPrice(price);
+    public static List<Discount> fetchAllDiscounts(Location location) {
+        return (List<Discount>) retrieveDiscounts(location, 0, countAllDiscounts(location));
     }
 
     /**
-     * Adds a {@link PercentageDiscount} with an {@link Interval}, in which the fee is valid, to a {@link Location}.
+     * Fetches all {@link Fee}s of a certain {@link Location}.
      *
-     * @param location  the location
-     * @param interval  the interval in which the fee must be considered
-     * @param discount  the discount to apply
+     * @param location the location from where fetch prices
+     * @return the list of all Fee
      */
-    public static void addPercentageDiscount(Location location, Interval interval, double discount) {
-        PercentageDiscount price = new PercentageDiscount.Builder()
-                .setDiscount(discount)
-                .setInterval(interval)
-                .build();
-
-        location.getPrices().addPrice(price);
+    public static List<Fee> fetchAllFees(Location location) {
+        return (List<Fee>) retrieveFees(location, 0, countAllFees(location));
     }
 
     /**
-     * Adds a {@link PercentageDiscount} that is valid from a certain date to another one to a {@link Location}.
+     * Fetches all {@link FixDiscount}s of a certain {@link Location}.
      *
-     * @param location  the location
-     * @param starDate  the date from the fee must be considered
-     * @param endDate   the date until the fee must be considered
-     * @param discount  the discount to apply
+     * @param location the location from where fetch prices
+     * @return the list of all FixDiscount
      */
-    public static void addPercentageDiscount(Location location, DateTime starDate, DateTime endDate, double discount) {
-        Interval interval = new Interval(starDate, endDate);
-
-        PercentageDiscount price = new PercentageDiscount.Builder()
-                .setDiscount(discount)
-                .setInterval(interval)
-                .build();
-
-        location.getPrices().addPrice(price);
+    public static List<FixDiscount> fetchAllFixDiscounts(Location location) {
+        return (List<FixDiscount>) retrieveFixDiscounts(location, 0, countAllFixDiscounts(location));
     }
 
     /**
-     * Adds a {@link FixDiscount} with an {@link Interval}, in which the fee is valid, to a {@link Location}.
+     * Fetches all {@link FixFee}s of a certain {@link Location}.
      *
-     * @param location  the location
-     * @param interval  the interval in which the fee must be considered
-     * @param discount  the discount to apply
+     * @param location the location from where fetch prices
+     * @return the list of all FixFee
      */
-    public static void addFixDiscount(Location location, Interval interval, double discount) {
-        FixDiscount price = new FixDiscount.Builder()
-                .setDiscount(discount)
-                .setInterval(interval)
-                .build();
-
-        location.getPrices().addPrice(price);
+    public static List<FixFee> fetchAllFixFees(Location location) {
+        return (List<FixFee>) retrieveFixFees(location, 0, countAllFixFees(location));
     }
 
     /**
-     * Adds a {@link FixDiscount} that is valid from a certain date to another one to a {@link Location}.
+     * Fetches all {@link PercentageDiscount}s of a certain {@link Location}.
      *
-     * @param location  the location
-     * @param starDate  the date from the fee must be considered
-     * @param endDate   the date until the fee must be considered
-     * @param discount  the discount
+     * @param location the location from where fetch prices
+     * @return the list of all PercentageDiscount
      */
-    public static void addFixDiscount(Location location, DateTime starDate, DateTime endDate, double discount) {
-        Interval interval = new Interval(starDate, endDate);
-
-        FixDiscount price = new FixDiscount.Builder()
-                .setDiscount(discount)
-                .setInterval(interval)
-                .build();
-
-        location.getPrices().addPrice(price);
+    public static List<PercentageDiscount> fetchAllPercentageDiscounts(Location location) {
+        return (List<PercentageDiscount>) retrievePercentageDiscounts(location, 0, countAllPercentageDiscounts(location));
     }
 
     /**
-     * Adds a {@link BasePrice} (always valid) to a {@link Service}.
+     * Fetches all {@link PercentageFee}s of a certain {@link Location}.
      *
-	 * @param service   the service
-	 * @param servicePrice  the price
-	 */
-	public static void addServicePrice(Service service, double servicePrice) {
-		BasePrice price = new BasePrice.Builder()
-                .setPrice(servicePrice)
-                .build();
-
-        service.setPrice(price);
-	}
-
-    /**
-     * Adds a {@link BasePrice} that repeats itself in an {@link Interval}, in such {@link Day}s, such times to a
-     * {@link Location}.
-     *
-     * @param location  the location
-     * @param interval  the interval in which the price must be considered
-	 * @param repetitionType    the type of repetition
-     * @param times the number of times
-     * @param days  the days
-     * @param basePrice the price
+     * @param location the location from where fetch prices
+     * @return the list of all PercentageFee
      */
-	public static void addBasePriceWithRepetition(Location location, Interval interval, RepetitionType repetitionType, int times, List<Day> days, double basePrice) {
-        BasePrice price = new BasePrice.Builder()
-                .setPrice(basePrice)
-                .setInterval(interval)
-                .setRepetitionType(repetitionType)
-                .setTimes(times)
-                .setDays(days)
-                .build();
-
-        location.getPrices().addPrice(price);
-	}
-
-    /**
-     * Adds a {@link BasePrice} that repeats itself such occurrences, in such {@link Day}s, such times to a
-     * {@link Location}.
-     *
-     * @param location  the location
-     * @param occurrences   the number of repetition
-     * @param repetitionType    the type of repetition
-     * @param times the number of times
-     * @param days  the days
-     * @param basePrice the price
-     */
-	public static void addBasePriceWithRepetition(Location location, int occurrences, RepetitionType repetitionType, int times, List<Day> days, double basePrice) {
-        BasePrice price = new BasePrice.Builder()
-                .setPrice(basePrice)
-                .setOccurrences(occurrences)
-                .setRepetitionType(repetitionType)
-                .setTimes(times)
-                .setDays(days)
-                .build();
-
-        location.getPrices().addPrice(price);
-	}
-
-    /**
-     * Adds a {@link FixFee} that repeats itself in an {@link Interval}, in such {@link Day}s, such times to a
-     * {@link Location}.
-     *
-     * @param location  the location
-     * @param interval  the interval in which the price must be considered
-     * @param repetitionType    the type of repetition
-     * @param times the number of times
-     * @param days  the days
-     * @param fee   the fee
-     */
-	public static void addFixFeeWithRepetition(Location location, Interval interval, RepetitionType repetitionType, int times, List<Day> days, double fee) {
-        FixFee price = new FixFee.Builder()
-                .setFee(fee)
-                .setInterval(interval)
-                .setRepetitionType(repetitionType)
-                .setTimes(times)
-                .setDays(days)
-                .build();
-
-        location.getPrices().addPrice(price);
-	}
-
-    /**
-     * Adds a {@link FixFee} that repeats itself such occurrences, in such {@link Day}s, such times to a
-     * {@link Location}.
-     *
-     * @param location  the location
-     * @param occurrences   the number of repetition
-     * @param repetitionType    the type of repetition
-     * @param times the number of times
-     * @param days  the days
-     * @param fee   the fee
-     */
-	public static void addFixFeeWithRepetition(Location location, int occurrences, RepetitionType repetitionType, int times, List<Day> days, double fee) {
-        FixFee price = new FixFee.Builder()
-                .setFee(fee)
-                .setOccurrences(occurrences)
-                .setRepetitionType(repetitionType)
-                .setTimes(times)
-                .setDays(days)
-                .build();
-
-        location.getPrices().addPrice(price);
-	}
-
-    /**
-     * Adds a {@link PercentageFee} that repeats itself such occurrences, in such {@link Day}s, such times to a
-     * {@link Location}.
-     *
-     * @param location  the location
-     * @param interval  the interval in which the price must be considered
-     * @param repetitionType    the type of Repetition
-     * @param times the number of times
-     * @param days  the days
-     * @param fee the fee
-     */
-    public static void addPercentageFeeWithRepetition(Location location, Interval interval, RepetitionType repetitionType, int times, List<Day> days, double fee) {
-        PercentageFee price = new PercentageFee.Builder()
-                .setFee(fee)
-                .setInterval(interval)
-                .setRepetitionType(repetitionType)
-                .setTimes(times)
-                .setDays(days)
-                .build();
-
-        location.getPrices().addPrice(price);
+    public static List<PercentageFee> fetchAllPercentageFees(Location location) {
+        return (List<PercentageFee>) retrievePercentageFees(location, 0, countAllPercentageFees(location));
     }
 
     /**
-     * Adds a {@link PercentageFee} that repeats itself such occurrences, in such {@link Day}s, such times to a
-     * {@link Location}.
+     * Fetches all {@link Price}s of a certain {@link Location}.
      *
-     * @param location  the location
-     * @param occurrences   the number of repetition
-     * @param repetitionType    the type of repetition
-     * @param times the number of times
-     * @param days  the days
-     * @param fee   the fee
+     * @param location the location from where fetch prices
+     * @param page the number page to show
+     * @param limit the limit of element to show (equals to element into a page)
+     * @return the list of all Price
      */
-    public static void addPercentageFeeWithRepetition(Location location, int occurrences, RepetitionType repetitionType, int times, List<Day> days, double fee) {
-        PercentageFee price = new PercentageFee.Builder()
-                .setFee(fee)
-                .setOccurrences(occurrences)
-                .setRepetitionType(repetitionType)
-                .setTimes(times)
-                .setDays(days)
-                .build();
-
-        location.getPrices().addPrice(price);
+    public static List<Price> fetchPrices(Location location, int page, int limit) {
+        int startPosition = (page - 1) * (limit);
+        return (List<Price>) retrievePrices(location, startPosition, limit);
     }
 
     /**
-     * Adds a {@link FixDiscount} that repeats itself such occurrences, in such {@link Day}s, such times to a
-     * {@link Location}.
+     * Fetches all {@link BasePrice}s of a certain {@link Location}.
      *
-     * @param location  the location
-     * @param interval  the interval in which the price must be considered
-     * @param repetitionType    the type of Repetition
-     * @param times the number of times
-     * @param days  the days
-     * @param discount the discount
+     * @param location the location from where fetch prices
+     * @param page the number page to show
+     * @param limit the limit of element to show (equals to element into a page)
+     * @return the list of all BasePrice
      */
-    public static void addFixDiscountWithRepetition(Location location, Interval interval, RepetitionType repetitionType, int times, List<Day> days, double discount) {
-        FixDiscount price = new FixDiscount.Builder()
-                .setDiscount(discount)
-                .setInterval(interval)
-                .setRepetitionType(repetitionType)
-                .setTimes(times)
-                .setDays(days)
-                .build();
-
-        location.getPrices().addPrice(price);
+    public static List<BasePrice> fetchBasePrices(Location location, int page, int limit) {
+        int startPosition = (page - 1) * (limit);
+        return (List<BasePrice>) retrieveBasePrices(location, startPosition, limit);
     }
 
     /**
-     * Adds a {@link FixDiscount} that repeats itself such occurrences, in such {@link Day}s, such times to a
-     * {@link Location}.
+     * Fetches all {@link Discount}s of a certain {@link Location}.
      *
-     * @param location  the location
-     * @param occurrences   the number of repetition
-     * @param repetitionType    the type of repetition
-     * @param times the number of times
-     * @param days  the days
-     * @param discount   the discount
+     * @param location the location from where fetch prices
+     * @param page the number page to show
+     * @param limit the limit of element to show (equals to element into a page)
+     * @return the list of all Discount
      */
-    public static void addFixDiscountWithRepetition(Location location, int occurrences, RepetitionType repetitionType, int times, List<Day> days, double discount) {
-        FixDiscount price = new FixDiscount.Builder()
-                .setDiscount(discount)
-                .setOccurrences(occurrences)
-                .setRepetitionType(repetitionType)
-                .setTimes(times)
-                .setDays(days)
-                .build();
-
-        location.getPrices().addPrice(price);
+    public static List<Discount> fetchDiscounts(Location location, int page, int limit) {
+        int startPosition = (page - 1) * (limit);
+        return (List<Discount>) retrieveDiscounts(location, startPosition, limit);
     }
 
     /**
-     * Adds a {@link PercentageDiscount} that repeats itself such occurrences, in such {@link Day}s, such times to a
-     * {@link Location}.
+     * Fetches all {@link Fee}s of a certain {@link Location}.
      *
-     * @param location  the location
-     * @param interval  the interval in which the price must be considered
-     * @param repetitionType    the type of Repetition
-     * @param times the number of times
-     * @param days  the days
-     * @param discount the discount
+     * @param location the location from where fetch prices
+     * @param page the number page to show
+     * @param limit the limit of element to show (equals to element into a page)
+     * @return the list of all Fee
      */
-	public static void addPercentageDiscountWithRepetition(Location location, Interval interval, RepetitionType repetitionType, int times, List<Day> days, double discount) {
-        PercentageDiscount price = new PercentageDiscount.Builder()
-                .setDiscount(discount)
-                .setInterval(interval)
-                .setRepetitionType(repetitionType)
-                .setTimes(times)
-                .setDays(days)
-                .build();
-
-        location.getPrices().addPrice(price);
-	}
+    public static List<Fee> fetchFees(Location location, int page, int limit) {
+        int startPosition = (page - 1) * (limit);
+        return (List<Fee>) retrieveFees(location, startPosition, limit);
+    }
 
     /**
-     * Adds a {@link PercentageDiscount} that repeats itself such occurrences, in such {@link Day}s, such times to a
-     * {@link Location}.
+     * Fetches all {@link FixDiscount}s of a certain {@link Location}.
      *
-     * @param location  the location
-     * @param occurrences   the number of repetition
-     * @param repetitionType    the type of repetition
-     * @param times the number of times
-     * @param days  the days
-     * @param discount   the discount
+     * @param location the location from where fetch prices
+     * @param page the number page to show
+     * @param limit the limit of element to show (equals to element into a page)
+     * @return the list of all FixDiscount
      */
-	public static void addPercentageDiscountWithRepetition(Location location, int occurrences, RepetitionType repetitionType, int times, List<Day> days, double discount) {
-        PercentageDiscount price = new PercentageDiscount.Builder()
-                .setDiscount(discount)
-                .setOccurrences(occurrences)
-                .setRepetitionType(repetitionType)
-                .setTimes(times)
-                .setDays(days)
-                .build();
+    public static List<FixDiscount> fetchFixDiscounts(Location location, int page, int limit) {
+        int startPosition = (page - 1) * (limit);
+        return (List<FixDiscount>) retrieveFixDiscounts(location, startPosition, limit);
+    }
 
-        location.getPrices().addPrice(price);
-	}
+    /**
+     * Fetches all {@link FixFee}s of a certain {@link Location}.
+     *
+     * @param location the location from where fetch prices
+     * @param page the number page to show
+     * @param limit the limit of element to show (equals to element into a page)
+     * @return the list of all FixFee
+     */
+    public static List<FixFee> fetchFixFees(Location location, int page, int limit) {
+        int startPosition = (page - 1) * (limit);
+        return (List<FixFee>) retrieveFixFees(location, startPosition, limit);
+    }
 
-	/**
-	 * @param location 
-	 * @param price
-	 */
-	public static void removePrice(Location location, Price price) {
-		location.getPrices().removePrice(price);
-	}
+    /**
+     * Fetches all {@link PercentageDiscount}s of a certain {@link Location}.
+     *
+     * @param location the location from where fetch prices
+     * @param page the number page to show
+     * @param limit the limit of element to show (equals to element into a page)
+     * @return the list of all PercentageDiscount
+     */
+    public static List<PercentageDiscount> fetchPercentageDiscounts(Location location, int page, int limit) {
+        int startPosition = (page - 1) * (limit);
+        return (List<PercentageDiscount>) retrievePercentageDiscounts(location, startPosition, limit);
+    }
 
-	/**
-	 * @param location 
-	 * @param price 
-	 * @param basePrice
-	 */
-	public static void updateBasePrice(Location location, Price price, double basePrice) {
-        // TODO implement here
-	}
+    /**
+     * Fetches all {@link PercentageFee}s of a certain {@link Location}.
+     *
+     * @param location the location from where fetch prices
+     * @param page the number page to show
+     * @param limit the limit of element to show (equals to element into a page)
+     * @return the list of all PercentageFee
+     */
+    public static List<PercentageFee> fetchPercentageFees(Location location, int page, int limit) {
+        int startPosition = (page - 1) * (limit);
+        return (List<PercentageFee>) retrievePercentageFees(location, startPosition, limit);
+    }
 
-	/**
-	 * @param location 
-	 * @param price 
-	 * @param interval
-	 */
-	public static void updateInterval(Location location, Price price, Interval interval) {
-		// TODO implement here
-	}
+    /**
+     * Counts all {@link Price} of a certain {@link Location}.
+     *
+     * @param location the location where count prices
+     * @return the number of Price
+     */
+    public static int countAllPrices(Location location) {
+        return (PriceDao.countAllPrices(location)).intValue();
+    }
 
-	/**
-	 * @param location 
-	 * @param price 
-	 * @param fee
-	 */
-	public static void updateFee(Location location, Price price, double fee) {
-		// TODO implement here
-	}
+    /**
+     * Counts all {@link BasePrice} of a certain {@link Location}.
+     *
+     * @param location the location where count prices
+     * @return the number of BasePrice
+     */
+    public static int countAllBasePrices(Location location) {
+        return PriceDao.countAllBasePrices(location).intValue();
+    }
 
-	/**
-	 * @param location 
-	 * @param price 
-	 * @param discount
-	 */
-	public static void updateDiscount(Location location, Price price, double discount) {
-		// TODO implement here
-	}
+    /**
+     * Counts all {@link Discount} of a certain {@link Location}.
+     *
+     * @param location the location where count prices
+     * @return the number of Discount
+     */
+    public static int countAllDiscounts(Location location) {
+        return PriceDao.countAllDiscounts(location).intValue();
+    }
 
-	/**
-	 * @param location 
-	 * @param price 
-	 * @param servicePrice
-	 */
-	public static void updateServicePrice(Location location, Price price, double servicePrice) {
-		// TODO implement here
-	}
+    /**
+     * Counts all {@link Fee} of a certain {@link Location}.
+     *
+     * @param location the location where count prices
+     * @return the number of Fee
+     */
+    public static int countAllFees(Location location) {
+        return PriceDao.countAllFees(location).intValue();
+    }
 
-	/**
-	 * @param location 
-	 * @param price 
-	 * @param repetitionType
-	 */
-	public static void updateRepetitionType(Location location, Price price, RepetitionType repetitionType) {
-		// TODO implement here
-	}
+    /**
+     * Counts all {@link FixDiscount} of a certain {@link Location}.
+     *
+     * @param location the location where count prices
+     * @return the number of FixDiscount
+     */
+    public static int countAllFixDiscounts(Location location) {
+        return PriceDao.countAllFixDiscounts(location).intValue();
+    }
 
-	/**
-	 * @param location 
-	 * @param price 
-	 * @param times
-	 */
-	public static void updateTimes(Location location, Price price, int times) {
-		// TODO implement here
-	}
+    /**
+     * Counts all {@link FixFee} of a certain {@link Location}.
+     *
+     * @param location the location where count prices
+     * @return the number of FixFee
+     */
+    public static int countAllFixFees(Location location) {
+        return PriceDao.countAllFixFees(location).intValue();
+    }
 
-	/**
-	 * @param location 
-	 * @param price 
-	 * @param days
-	 */
-	public static void updateDays(Location location, Price price, List<Day> days) {
-		// TODO implement here
-	}
+    /**
+     * Counts all {@link PercentageDiscount} of a certain {@link Location}.
+     *
+     * @param location the location where count prices
+     * @return the number of PercentageDiscount
+     */
+    public static int countAllPercentageDiscounts(Location location) {
+        return PriceDao.countAllPercentageDiscounts(location).intValue();
+    }
 
-	/**
-	 * @param location 
-	 * @param price 
-	 * @param occurencies
-	 */
-	public static void updateOccurencies(Location location, Price price, int occurencies) {
-		// TODO implement here
-	}
+    /**
+     * Counts all {@link PercentageFee} of a certain {@link Location}.
+     *
+     * @param location the location where count prices
+     * @return the number of PercentageFee
+     */
+    public static int countAllPercentageFees(Location location) {
+        return PriceDao.countAllPercentageFees(location).intValue();
+    }
 
+    /**
+     * Adds {@link Price} to {@link Location}.
+     *
+     * @param location the location to update
+     * @param price the price to add
+     */
+    public static void addPrice(Location location, PriceBean price) {
+        location.addPrice(Price.PriceFromBean(price));
+        LocationDao.update(location);
+    }
+
+    /**
+     * Updates {@link Price} of a {@link Location}.
+     *
+     * @param location the location to update
+     * @param price the price to update
+     */
+    public static void updatePrice(Location location, PriceBean price) {
+        Price priceToUpdate = location.getPriceById(price.getId());
+        priceToUpdate.update(Price.PriceFromBean(price));
+        LocationDao.update(location);
+    }
+
+    /**
+     * Deletes {@link Price} of a {@link Location}.
+     *
+     * @param location the location to update
+     * @param price the price to delete
+     */
+    public static void deletePrice(Location location, PriceBean price) {
+        // Removes price from location and update DB
+        location.removePrice(price.getId());
+        LocationDao.update(location);
+        // Removes also price from the DB
+        delete(price.getId());
+    }
 }
