@@ -216,4 +216,10 @@ public class Person {
         return list;
     }
 
+    public Role getFirstRole() throws Exception {
+        if (roles.size() == 0) {
+            throw new Exception("This user has no Role");
+        }
+        return roles.get(0);
+    }
 }

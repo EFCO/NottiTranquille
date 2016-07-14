@@ -23,4 +23,21 @@ public class StructureDAO {
             throw new Exception("The entity can not be null!");
         }
     }
+
+    public Structure select(Long id) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        entityManager.getTransaction().begin();
+        Structure structure = entityManager.find(Structure.class, id);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        return structure;
+    }
+
+    public void delete(Structure structure) throws Exception {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.merge(structure);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
 }

@@ -3,6 +3,7 @@ package it.ispw.efco.nottitranquille.controller;
 import it.ispw.efco.nottitranquille.model.Person;
 import it.ispw.efco.nottitranquille.view.AccessForm;
 import it.ispw.efco.nottitranquille.view.LoginBean;
+import it.ispw.efco.nottitranquille.view.ManageEmployeesList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -91,5 +92,12 @@ public class MainScreenController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void manageEmployee(ActionEvent actionEvent) throws Exception {
+        ManageEmployeesList manageEmployeeList = new ManageEmployeesList();
+        manageEmployeeList.setAdministrator(employee);
+        manageEmployeeList.setLoggedAdministrator(loggedEmployee);
+        manageEmployeeList.start(mainStage);
     }
 }

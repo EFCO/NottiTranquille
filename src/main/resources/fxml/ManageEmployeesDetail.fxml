@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.ispw.efco.nottitranquille.controller.EmployeeDetails">
+    <children>
+        <Pane fx:id="bAddAuth" layoutX="4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+              minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+            <children>
+                <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="600.0">
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                                <MenuItem fx:id="bClose" mnemonicParsing="false" text="Close"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Delete"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="About"/>
+                            </items>
+                        </Menu>
+                        <Menu fx:id="mAcc" mnemonicParsing="false" text="Account">
+                            <items>
+                                <MenuItem fx:id="bLogOut" mnemonicParsing="false" onAction="#logoutHandler"
+                                          text="Log Out"/>
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+                <TextField fx:id="tvName" layoutX="88.0" layoutY="45.0" promptText="Name"/>
+                <TextField fx:id="tvSurname" layoutX="300.0" layoutY="45.0" promptText="Surname"/>
+                <TextField fx:id="tvMail" layoutX="88.0" layoutY="92.0" promptText="E-Mail"/>
+                <TextField fx:id="tvPhone" layoutX="300.0" layoutY="92.0" promptText="Phone Number"/>
+                <TextField fx:id="tvNation" layoutX="88.0" layoutY="151.0" promptText="Nation"/>
+                <TextField fx:id="tvCity" layoutX="300.0" layoutY="151.0" promptText="Ciity"/>
+                <TextField fx:id="tvAddress" layoutX="88.0" layoutY="200.0" promptText="Address"/>
+                <TextField fx:id="tvPostalCode" layoutX="300.0" layoutY="200.0" promptText="Postal Code"/>
+                <ComboBox fx:id="spRole" layoutX="87.0" layoutY="286.0" prefWidth="150.0" promptText="Choose a Role"/>
+                <Button fx:id="bAccept" layoutX="274.0" layoutY="353.0" mnemonicParsing="false" text="Accept"/>
+                <ListView fx:id="lvAuth" layoutX="249.0" layoutY="262.0" prefHeight="73.0" prefWidth="200.0"/>
+                <Button fx:id="bRemoveAuth" disable="true" layoutX="458.0" layoutY="311.0" mnemonicParsing="false"
+                        text="Remove Authorization"/>
+                <MenuButton fx:id="spAddAuth" disable="true" layoutX="457.0" layoutY="262.0" mnemonicParsing="false"
+                            popupSide="TOP" text="Add Authorizations">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Action 1"/>
+                        <MenuItem mnemonicParsing="false" text="Action 2"/>
+                    </items>
+                </MenuButton>
+            </children>
+        </Pane>
+    </children>
+</AnchorPane>

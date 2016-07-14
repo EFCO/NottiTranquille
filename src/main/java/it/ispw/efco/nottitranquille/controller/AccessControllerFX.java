@@ -46,7 +46,7 @@ public class AccessControllerFX {
         lb.setPassword(password);
         Person employee = AccessController.getRegisteredUser(username,password);
         if (employee != null) {
-            if (AccessController.isAlreadyLogged(lb, "") == 2) {
+            if (AccessController.isAlreadyLogged(lb, "") != 0) {
                 error_message.setVisible(false);
                 AccessController.logNewUser(lb);
                 try {

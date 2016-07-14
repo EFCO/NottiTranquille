@@ -1,6 +1,7 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.MainScreenController;
+import it.ispw.efco.nottitranquille.model.Administrator;
 import it.ispw.efco.nottitranquille.model.Designer;
 import it.ispw.efco.nottitranquille.model.Person;
 import it.ispw.efco.nottitranquille.model.Scout;
@@ -48,7 +49,6 @@ public class EmployeeMainScreen extends Application {
         ArrayList<String> roles = employee.getRoles();
         controller.getEmployeeRoles().setText(roles.toString());
 
-        //TODO da aggiungere attivazioni bottoni per amministratore
         if (roles.contains(Scout.class.getSimpleName())) {
             controller.getScoutFilteredSearchForm().setDisable(false);
             controller.getScuoutAddRequestForm().setDisable(false);
@@ -57,6 +57,13 @@ public class EmployeeMainScreen extends Application {
         if (roles.contains(Designer.class.getSimpleName())) {
             controller.getManagePacketsForm().setDisable(false);
         }
+
+        if (roles.contains(Administrator.class.getSimpleName())) {
+            controller.getManageEmployeesForm().setDisable(false);
+            controller.getManageGlobalSettingsForm().setDisable(false);
+        }
+        controller.getManageEmployeesForm().setDisable(false);
+        controller.getManageGlobalSettingsForm().setDisable(false);
 
         controller.setMainStage(stage);
         controller.setEmployee(employee);

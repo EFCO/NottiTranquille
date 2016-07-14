@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.ispw.efco.nottitranquille.controller.EmployeesList">
+    <children>
+        <MenuBar prefHeight="25.0" prefWidth="594.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem fx:id="bClose" mnemonicParsing="false" text="Close"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem fx:id="bAdd" onAction="#addEmployee" mnemonicParsing="false" text="Add"/>
+                        <MenuItem fx:id="bModify" onAction="#modifyEmployee" disable="true" mnemonicParsing="false"
+                                  text="Modify"/>
+                        <MenuItem fx:id="bDelete" onAction="#removeEmployee" disable="true" mnemonicParsing="false"
+                                  text="Delete"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About"/>
+                    </items>
+                </Menu>
+                <Menu fx:id="mAcc" mnemonicParsing="false" text="Account">
+                    <items>
+                        <MenuItem fx:id="bLogOut" mnemonicParsing="false" onAction="#logoutHandler" text="Log Out"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <ScrollPane layoutY="24.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    prefHeight="376.0" prefWidth="600.0">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+                    <children>
+                        <TableView fx:id="lvEmployeesList" layoutY="27.0" prefHeight="373.0" prefWidth="600.0"/>
+                    </children>
+                </AnchorPane>
+            </content>
+        </ScrollPane>
+    </children>
+</AnchorPane>
