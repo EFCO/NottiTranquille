@@ -6,10 +6,16 @@ import org.joda.time.Interval;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
- *
- *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
@@ -64,14 +70,13 @@ public class Location {
     /**
      *
      */
-    //TODO @ElementCollection(targetClass = Service.class)
-    @Transient
+    @ManyToMany
     private List<Service> services;
 
     /**
      *
      */
-    @Transient
+    @ManyToOne(cascade = CascadeType.ALL)
     private Structure structure;
 
     /**

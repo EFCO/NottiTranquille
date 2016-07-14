@@ -3,8 +3,14 @@ package it.ispw.efco.nottitranquille.model;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
-import java.net.DatagramPacket;
 import java.util.*;
+import it.ispw.efco.nottitranquille.model.enumeration.StructureType;
+import it.ispw.efco.nottitranquille.view.StructureBean;
+import org.joda.time.DateTime;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
@@ -29,7 +35,7 @@ public class Structure {
     /**
      *
      */
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> photos;
 
     /**
@@ -52,26 +58,26 @@ public class Structure {
      */
     private DateTime checkOut;
 
-    @Transient
-    private Person managedBy;
+    @ManyToOne
+    @Access(AccessType.PROPERTY)
+    private Manager managedBy;
 
-    @Transient
-    //TODO Make List<Person>
-    private Person owner;
+    @ManyToMany(targetEntity = Owner.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Owner> owners;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Address.class, optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Address address;
 
-    @Transient
+    @Enumerated(EnumType.STRING)
     private StructureType type;
 
-    @Transient
+    @OneToMany(targetEntity = Service.class, fetch = FetchType.EAGER)
     private List<Service> services;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Location> locations = new ArrayList<Location>();
+    @OneToMany(targetEntity = Location.class, cascade = CascadeType.ALL)
+    private List<Location> locations;
 
-    @Transient
+    @OneToOne(targetEntity = Request.class, optional = false, mappedBy = "structure", cascade = CascadeType.ALL)
     private Request request;
 
 
@@ -81,6 +87,23 @@ public class Structure {
     public Structure(String name, Address address) {
         this.name = name;
         this.address = address;
+    }
+
+    public Structure(StructureBean bean, Manager manager, Owner owner) {
+        this.name = bean.getName();
+        this.numberOfLocations = 0;
+        this.photos = new ArrayList<String>();
+        this.termsOfService = bean.getTermsOfService();
+        this.termsOfCancellation = bean.getTermsOfCancellation();
+        this.checkIn = bean.getCheckIn();
+        this.checkOut = bean.getCheckOut();
+        this.managedBy = manager;
+        this.owners = new ArrayList<Owner>();
+        this.owners.add(owner);
+        this.address = new Address(bean.getNation(), bean.getCity(), bean.getAddress(), bean.getPostalcode());
+        this.type = bean.getType();
+        this.services = bean.getServices();
+        this.locations = new ArrayList<Location>();
     }
 
     public Structure(List<Service> services) {
@@ -128,12 +151,12 @@ public class Structure {
         this.checkOut = checkOut;
     }
 
-    public void setManagedBy(Person managedBy) {
+    public void setManagedBy(Manager managedBy) {
         this.managedBy = managedBy;
     }
 
-    public void setOwner(Person owner) {
-        this.owner = owner;
+    public void setOwners(List<Owner> owners) {
+        this.owners = owners;
     }
 
     public void setType(StructureType type) {
@@ -152,7 +175,8 @@ public class Structure {
         return type;
     }
 
-    public Person getManagedBy() {
+
+    public Manager getManagedBy() {
         return managedBy;
     }
 
@@ -171,7 +195,7 @@ public class Structure {
                 ", checkIn=" + checkIn +
                 ", checkOut=" + checkOut +
                 ", managedBy=" + managedBy +
-                ", owner=" + owner +
+                ", owner=" + owners +
                 ", address=" + address +
                 ", type=" + type +
                 ", services=" + services +

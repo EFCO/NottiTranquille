@@ -1,11 +1,7 @@
-package it.ispw.efco.nottitranquille.model;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.*;
+package it.ispw.efco.nottitranquille.model.enumeration;
 
 /**
- * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
+ * Created by claudio on 7/10/16.
  */
 public enum LocationType {
     BedBreakfast("Bed & Breakfast"),
@@ -14,6 +10,7 @@ public enum LocationType {
     NessunaPreferenza("Nessuna Preferenza");
 
     private String text;
+
     LocationType(String text) {
         this.text = text;
     }

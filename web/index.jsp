@@ -1,6 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=ISO-8859-1" language="java" pageEncoding="ISO-8859-1"%>
 <%-- Use JSTL core lib in order to add some useful feature --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<jsp:useBean id="loginBean" scope="session" class="it.ispw.efco.nottitranquille.view.LoginBean"/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +18,7 @@
 <body>
 <!-- NAVBAR
 ================================================== -->
-<%@include file="navbar.html" %>
+<%@include file="navbar.jsp" %>
 
 <!-- Carousel
 ================================================== -->
