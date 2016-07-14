@@ -1,6 +1,7 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.*;
+import it.ispw.efco.nottitranquille.model.dao.AccessDAO;
 import it.ispw.efco.nottitranquille.model.mail.Mailer;
 import it.ispw.efco.nottitranquille.view.LoginBean;
 import it.ispw.efco.nottitranquille.view.RegistrationBean;

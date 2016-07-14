@@ -1,6 +1,6 @@
 package it.ispw.efco.nottitranquille.controller;
 
-import it.ispw.efco.nottitranquille.model.AccessDAO;
+import it.ispw.efco.nottitranquille.model.dao.AccessDAO;
 
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;

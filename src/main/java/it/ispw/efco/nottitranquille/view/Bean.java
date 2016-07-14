@@ -1,4 +1,4 @@
-package it.ispw.efco.nottitranquille;
+package it.ispw.efco.nottitranquille.view;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

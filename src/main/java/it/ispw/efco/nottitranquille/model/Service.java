@@ -3,6 +3,7 @@ package it.ispw.efco.nottitranquille.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
@@ -26,6 +27,7 @@ public class Service {
     /**
      *
      */
+    @Transient
     private BasePrice price;
 
 

@@ -57,6 +57,7 @@
                 // handle empty referer.....
                 response.sendRedirect(referer);
             } catch (Exception e) {
+                System.out.print(e.toString());
                 response.sendRedirect("errorPage.jsp?" + "error=" + e.getMessage());
             }
         }

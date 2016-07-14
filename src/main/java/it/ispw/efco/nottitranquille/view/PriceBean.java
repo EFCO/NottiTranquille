@@ -1,6 +1,5 @@
 package it.ispw.efco.nottitranquille.view;
 
-import it.ispw.efco.nottitranquille.Bean;
 import it.ispw.efco.nottitranquille.NumberUtils;
 import it.ispw.efco.nottitranquille.StringUtils;
 import it.ispw.efco.nottitranquille.model.Price;

@@ -298,7 +298,7 @@
 
 <div id="resultSet">
     <%
-        List<Location> result = new ArrayList<>();
+        List<Location> result = new ArrayList<Location>();
         if (request.getParameter("search") != null) {
             try {
                 basicSearchBean.validate();
