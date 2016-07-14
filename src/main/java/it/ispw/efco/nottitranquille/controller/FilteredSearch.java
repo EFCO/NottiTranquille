@@ -1,13 +1,15 @@
 package it.ispw.efco.nottitranquille.controller;
 
-import it.ispw.efco.nottitranquille.model.RequestDAO;
 import it.ispw.efco.nottitranquille.model.Location;
-import it.ispw.efco.nottitranquille.model.Request;
+import it.ispw.efco.nottitranquille.model.RequestDAO;
+import it.ispw.efco.nottitranquille.model.Structure;
 import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
 import it.ispw.efco.nottitranquille.model.enumeration.PriceRanges;
 import it.ispw.efco.nottitranquille.view.SearchBean;
 import org.joda.time.Interval;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,7 +23,7 @@ public class FilteredSearch {
     public FilteredSearch() {
     }
 
-    public static List<Location> getListOfLocations(SearchBean searchBean) throws Exception {
+    public static HashMap<Structure, ArrayList<Location>> getListOfLocations(SearchBean searchBean) throws Exception {
         if (searchBean.getCheckin().isAfter(searchBean.getCheckout()) && searchBean.getCheckin().isBeforeNow()) {
             throw new Exception("Invalid datetime");
         }
@@ -29,7 +31,7 @@ public class FilteredSearch {
         //TODO to use
         int maxPrice = PriceRanges.valueOf(searchBean.getPricerange()).getMaxvalue();
 
-        Interval interval = new Interval(searchBean.getCheckin(),searchBean.getCheckout());
+        Interval interval = new Interval(searchBean.getCheckin(), searchBean.getCheckout());
         LocationType type = null;
         int maxTenant = 0;
         if (searchBean.getSearch().equals("advsearch")) {
@@ -37,22 +39,26 @@ public class FilteredSearch {
             maxTenant = Integer.valueOf(searchBean.getMaxtenant());
         }
         RequestDAO requestDAO = new RequestDAO();
-        List<Request> result = requestDAO.selectAcceptedRequests(searchBean.getNation(),searchBean.getCity());
-        List<Location> final_result = new ArrayList<Location>();
-        for (Request candidate : result) {
-            for (Location location : candidate.getStructure().getLocations()) {
-                if (location.isAvailable(interval)) {
-                    //in case of advanced search
-                    if (searchBean.getSearch().equals("advsearch")) {
-                        if (location.getMaxGuestsNumber() >= maxTenant) {
-                            if (type == LocationType.NessunaPreferenza) {
-                                final_result.add(location);
-                            } else if (type == location.getType()) {
-                                final_result.add(location);
-                            }
-                        }
+        List<Location> result = requestDAO.selectAcceptedRequests(searchBean.getNation(), searchBean.getCity());
+        HashMap<Structure, ArrayList<Location>> final_result = new HashMap<Structure, ArrayList<Location>>();
+        for (Location location : result) {
+            if (location.isAvailable(interval)) {
+                //in case of advanced search
+                if (searchBean.getSearch().equals("advsearch") && location.getMaxGuestsNumber() >= maxTenant && (type == LocationType.NessunaPreferenza || type == location.getType())) {
+                    if (final_result.containsKey(location.getStructure())) {
+                        final_result.get(location.getStructure()).add(location);
                     } else {
-                        final_result.add(location);
+                        ArrayList<Location> arrayList = new ArrayList<Location>();
+                        arrayList.add(location);
+                        final_result.put(location.getStructure(), arrayList);
+                    }
+                } else if (searchBean.getSearch().equals("search")) {
+                    if (final_result.containsKey(location.getStructure())) {
+                        final_result.get(location.getStructure()).add(location);
+                    } else {
+                        ArrayList<Location> arrayList = new ArrayList<Location>();
+                        arrayList.add(location);
+                        final_result.put(location.getStructure(), arrayList);
                     }
                 }
             }

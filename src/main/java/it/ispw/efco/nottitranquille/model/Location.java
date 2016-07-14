@@ -1,8 +1,11 @@
 package it.ispw.efco.nottitranquille.model;
 
 import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
+import it.ispw.efco.nottitranquille.view.LocationBean;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -29,10 +32,6 @@ public class Location {
      *
      */
     private Integer numberOfBathrooms;
-
-    public Integer getMaxGuestsNumber() {
-        return maxGuestsNumber;
-    }
 
     /**
      *
@@ -65,10 +64,10 @@ public class Location {
     @ManyToMany
     private List<Service> services;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Structure structure;
 
-    @ElementCollection(targetClass = Interval.class)
+    @ElementCollection(targetClass = Interval.class, fetch = FetchType.EAGER)
     @Column(length=100000) //for the Data too long error
     private List<Interval> booking = new ArrayList<Interval>();
 
@@ -87,7 +86,29 @@ public class Location {
         this.structure = structure;
         this.type = type;
         this.maxGuestsNumber = maxGuestsNumber;
-        structure.addLocation(this);
+    }
+
+    public Location(LocationBean locationBean) {
+        this.description = locationBean.getDescription();
+        this.numberOfRooms = Integer.valueOf(locationBean.getNumberOfRooms());
+        this.numberOfBathrooms = Integer.valueOf(locationBean.getNumberOfBathrooms());
+        this.maxGuestsNumber = Integer.valueOf(locationBean.getMaxGuestsNumber());
+        this.numberOfBeds = Integer.valueOf(locationBean.getNumberOfBeds());
+        this.numberOfBedrooms = Integer.valueOf(locationBean.getNumberOfBedrooms());
+        this.photos = new ArrayList<String>();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-MM-yyyy");
+        DateTime start = DateTime.parse("01-01-2016", dateTimeFormatter);
+        DateTime end = DateTime.parse("30-12-2016", dateTimeFormatter);
+        booking.add(new Interval(start, end));
+        this.type = LocationType.Hotel;
+    }
+
+    public void setStructure(Structure structure) {
+        this.structure = structure;
+    }
+
+    public Integer getMaxGuestsNumber() {
+        return maxGuestsNumber;
     }
 
     public Long getId() {

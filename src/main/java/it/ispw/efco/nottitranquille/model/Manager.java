@@ -14,18 +14,18 @@ import java.util.List;
 @DiscriminatorValue("manager")
 public class Manager extends Role {
 
-    @OneToMany(mappedBy = "managedBy", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private List<Structure> managedStructures;
+    //    @OneToMany(mappedBy = "managedBy", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "managedBy", orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Structure> managedStructures = new ArrayList<Structure>();
 
-    @OneToMany(mappedBy = "requestedBy", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private List<Request> requests;
+    //    @OneToMany(mappedBy = "requestedBy", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "requestedBy", orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Request> requests = new ArrayList<Request>();
 
     /**
      * Default constructor
      */
     public Manager() {
-        this.managedStructures = new ArrayList<Structure>();
-        this.requests = new ArrayList<Request>();
     }
 
 
@@ -35,6 +35,10 @@ public class Manager extends Role {
 
     public void removeManagedStructure(Structure structure) {
         managedStructures.remove(structure);
+    }
+
+    public void removeRequest(Request request) {
+        requests.remove(request);
     }
 
     public List<Structure> getManagedStructures() {

@@ -52,24 +52,24 @@ public class RequestDAO {
         return result;
     }
 
-    public List<Request> selectAcceptedRequests(String nation, String city) throws IllegalArgumentException, PersistenceException {
+    public List<Location> selectAcceptedRequests(String nation, String city) throws IllegalArgumentException, PersistenceException {
         EntityManager entityManager = JPAInitializer.getEntityManager();
-        String querystring = "FROM Request r WHERE r.status = 0";
+        String querystring = "FROM Location l WHERE l.structure.request.status = 2";
         if (!nation.equals("")) {
-            querystring += " AND r.structure.address.nation = :n";
+            querystring += " AND l.structure.address.nation = :n";
         }
         if (!city.equals("")) {
-                querystring += " AND r.structure.address.city = :c";
+            querystring += " AND l.structure.address.city = :c";
             }
         //can throw Illegal Argument exception
-        TypedQuery<Request> query = entityManager.createQuery(querystring,Request.class);
+        TypedQuery<Location> query = entityManager.createQuery(querystring, Location.class);
         if (!nation.equals("")) {
             query.setParameter("n", nation);
         }
         if (!city.equals("")) {
             query.setParameter("c", city);
         }
-        List<Request> result;
+        List<Location> result;
         //TODO tutte le eccezioni dovrebbero essere lanciate?
         result = query.getResultList();
         entityManager.close();

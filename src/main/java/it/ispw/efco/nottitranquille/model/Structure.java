@@ -58,8 +58,10 @@ public class Structure {
     @Access(AccessType.PROPERTY)
     private Manager managedBy;
 
-    @ManyToMany(targetEntity = Owner.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Owner> owners;
+    //    @ManyToMany(targetEntity = Owner.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "ownedStructures",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    private List<Owner> owners = new ArrayList<Owner>();
 
     @OneToOne(targetEntity = Address.class, optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Address address;
@@ -67,18 +69,19 @@ public class Structure {
     @Enumerated(EnumType.STRING)
     private StructureType type;
 
-    @OneToMany(targetEntity = Service.class, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Service.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Service> services;
 
-    @OneToMany(targetEntity = Location.class, cascade = CascadeType.ALL)
-    private List<Location> locations;
+    //    @OneToMany(targetEntity = Location.class,mappedBy = "structure", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "structure", orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Location> locations = new ArrayList<Location>();
 
-    @OneToOne(targetEntity = Request.class, optional = false, mappedBy = "structure", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "structure", cascade = CascadeType.ALL, orphanRemoval = true)
     private Request request;
-
 
     public Structure() {
     }
+
 
     public Structure(String name, Address address) {
         this.name = name;
@@ -93,19 +96,54 @@ public class Structure {
         this.termsOfCancellation = bean.getTermsOfCancellation();
         this.checkIn = bean.getCheckIn();
         this.checkOut = bean.getCheckOut();
-        this.managedBy = manager;
-        this.owners = new ArrayList<Owner>();
-        this.owners.add(owner);
+        this.setManagedBy(manager);
+        this.addOwner(owner);
         this.address = new Address(bean.getNation(), bean.getCity(), bean.getAddress(), bean.getPostalcode());
         this.type = bean.getType();
         this.services = bean.getServices();
-        this.locations = new ArrayList<Location>();
     }
 
     public Structure(List<Service> services) {
         this.services = services;
     }
 
+    public void addOwner(Owner owner) {
+        this.owners.add(owner);
+        owner.ownedStructures.add(this);
+    }
+
+    private void removeOwner(Owner owner) {
+        this.owners.remove(owner);
+        owner.ownedStructures.remove(this);
+    }
+
+    public void removeOwners() {
+        for (Owner owner : new ArrayList<Owner>(this.owners)) {
+            removeOwner(owner);
+        }
+    }
+
+    public void setRequest(Request request) {
+        this.request = request;
+        request.setStructure(this);
+    }
+
+    public void removeRequest() {
+        if (this.request != null) {
+            this.request.setStructure(null);
+        }
+        this.request = null;
+    }
+
+    public void addLocation(Location location) {
+        this.locations.add(location);
+        location.setStructure(this);
+    }
+
+    public void removeLocation(Location location) {
+        location.setStructure(null);
+        this.locations.remove(location);
+    }
 
     public String getName() {
         return name;
@@ -115,16 +153,20 @@ public class Structure {
         return address;
     }
 
-    public void setRequest(Request request) {
-        this.request = request;
-    }
-
     public Long getId() {
         return id;
     }
 
     public List<Location> getLocations() {
         return locations;
+    }
+
+    public List<Owner> getOwners() {
+        return owners;
+    }
+
+    public Address getAddress() {
+        return address;
     }
 
     public void setNumberOfLocations(int numberOfLocations) {
@@ -147,8 +189,9 @@ public class Structure {
         this.checkOut = checkOut;
     }
 
-    public void setManagedBy(Manager managedBy) {
+    private void setManagedBy(Manager managedBy) {
         this.managedBy = managedBy;
+        managedBy.addManagedStructure(this);
     }
 
     public void setOwners(List<Owner> owners) {
@@ -176,10 +219,6 @@ public class Structure {
         return managedBy;
     }
 
-    public void addLocation(Location location) {
-        this.locations.add(location);
-    }
-
     @Override
     public String toString() {
         return "Structure{" +
@@ -197,5 +236,12 @@ public class Structure {
                 ", services=" + services +
                 ", id=" + id +
                 '}';
+    }
+
+    public void removeManagedBy() {
+        if (this.managedBy != null) {
+            this.managedBy.removeManagedStructure(this);
+        }
+        this.managedBy = null;
     }
 }

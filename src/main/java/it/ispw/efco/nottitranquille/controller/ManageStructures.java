@@ -15,39 +15,47 @@ public class ManageStructures {
 
         Structure newStructure;
         Person owner = null;
+        Owner ownerInstance;
         Manager managerInstance = ((Manager) manager.getRole("Manager"));
         if (structure.isOwner()) {
             try {
-                newStructure = new Structure(structure, (Manager) manager.getRole("Manager"), ((Owner) manager.getRole("Owner")));
+                ownerInstance = ((Owner) manager.getRole("Owner"));
+                newStructure = new Structure(structure, (Manager) manager.getRole("Manager"), ownerInstance);
                 ((Manager) manager.getRole("Manager")).addManagedStructure(newStructure);
-                ((Owner) manager.getRole("Owner")).addOwnedStructure(newStructure);
+                owner = manager;
             } catch (Exception e) {
-                Owner ownerInstance = new Owner();
+                ownerInstance = new Owner();
                 newStructure = new Structure(structure, ((Manager) manager.getRole("Manager")), ownerInstance);
-                ownerInstance.addOwnedStructure(newStructure);
-                ((Manager) manager.getRole("Manager")).addManagedStructure(newStructure);
                 manager.addRole(ownerInstance);
             }
         } else {
             Person newOwner = new Person(structure.getOwnerFirstName(), structure.getOwnerLastName(), structure.getOwnerEmail());
-            Owner ownerInstance = new Owner();
+            ownerInstance = new Owner();
             newStructure = new Structure(structure, ((Manager) manager.getRole("Manager")), ownerInstance);
             if (structure.isSameaddress()) {
                 newOwner.setAddress(newStructure.getStructureAddress());
             } else {
                 newOwner.setAddress(new Address(structure.getOwnerNation(), structure.getOwnerCity(), structure.getOwnerAddress(), structure.getOwnerPostalcode()));
             }
-            ownerInstance.addOwnedStructure(newStructure);
-            ((Manager) manager.getRole("Manager")).addManagedStructure(newStructure);
             newOwner.addRole(ownerInstance);
             owner = newOwner;
         }
 
-        Request newRequest = new Request(newStructure, managerInstance);
+        newStructure.addOwner(ownerInstance);
+        Request newRequest = new Request(managerInstance);
         newStructure.setRequest(newRequest);
-        ((Manager) manager.getRole("Manager")).addRequest(newRequest);
         StructureDAO structureDAO = new StructureDAO();
         structureDAO.store(newStructure, manager, owner);
+    }
+
+    public static void deleteStructure(Long id, Person manager) throws Exception {
+        StructureDAO structureDAO = new StructureDAO();
+        Structure structure = structureDAO.select(id);
+        structure.removeOwners();
+        structure.removeManagedBy();
+        structure.getRequest().removeRequestedBy();
+
+        structureDAO.delete(structure);
     }
 
     public static List<Structure> getAll(Manager manager) {

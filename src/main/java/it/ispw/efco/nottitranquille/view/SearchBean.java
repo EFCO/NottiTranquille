@@ -1,10 +1,9 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.FilteredSearch;
-import it.ispw.efco.nottitranquille.model.*;
-import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
+import it.ispw.efco.nottitranquille.model.Location;
+import it.ispw.efco.nottitranquille.model.Structure;
 import org.joda.time.DateTime;
-import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
@@ -12,7 +11,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * Created by Federico on 30/12/2015.
@@ -25,7 +24,7 @@ public class SearchBean {
     private String pricerange = "";
     private String locationtype = "";
     private String maxtenant = "";
-    private String search="";
+    private String search = "";
     private int[] commodities = null; //new String[Commodities.values().length];
 
     public void setCommodities(int[] commodities) {
@@ -40,18 +39,12 @@ public class SearchBean {
         this.search = search;
     }
 
-    private List<Location> result = new ArrayList<Location>();
+    private HashMap<Structure, ArrayList<Location>> result = new HashMap<Structure, ArrayList<Location>>();
 
 
-    public List<Location> getResult() {
+    public HashMap<Structure, ArrayList<Location>> getResult() {
         return result;
     }
-
-    public void setResult(List<Location> result) {
-        this.result = result;
-    }
-
-
 
     public SearchBean() {
     }
@@ -116,7 +109,7 @@ public class SearchBean {
 
     public void validate() throws Exception {
         //If the search is a basic one I have to check the presence of all the fields.
-        this.result = new ArrayList<Location>();
+        this.result = new HashMap<Structure, ArrayList<Location>>();
         if(search == "search" && (this.nation.equals("") && this.city.equals("") && this.checkin == null && this.checkout == null)) {
             throw new Exception("Incorrect input data");
         }
@@ -147,13 +140,13 @@ public class SearchBean {
             JSONArray jsonArray = new JSONArray();
             for (int i = 0; i < result.size(); i++) {
                 JSONObject obj = new JSONObject();
-                Location currentElem = result.get(i);
-                obj.put("id", String.valueOf(i));
-                obj.put("name", currentElem.getStructure().getName());
-                obj.put("type", currentElem.getType().toString());
-                obj.put("address", currentElem.getLocationAddress());
-                obj.put("nation", currentElem.getStructure().getStructureAddress().getNation());
-                obj.put("city", currentElem.getStructure().getStructureAddress().getCity());
+//TODO to fix                Location currentElem = result.get(i);
+//                obj.put("id", String.valueOf(i));
+//                obj.put("name", currentElem.getStructure().getName());
+//                obj.put("type", currentElem.getType().toString());
+//                obj.put("address", currentElem.getLocationAddress());
+//                obj.put("nation", currentElem.getStructure().getStructureAddress().getNation());
+//                obj.put("city", currentElem.getStructure().getStructureAddress().getCity());
                 obj.put("price", (25 + i) % 5);//TODO use the right price
                 jsonArray.put(obj);
             }

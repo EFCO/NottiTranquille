@@ -230,6 +230,14 @@ public class StructureBean {
         ManageStructures.addNewStructure(this, manager);
     }
 
+    public void delete(String parameter, Person manager) {
+        try {
+            ManageStructures.deleteStructure(Long.valueOf(parameter), manager);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<Structure> getAllStructures(Manager manager) {
         return ManageStructures.getAll(manager);
     }

@@ -51,7 +51,6 @@
     List<Structure> structures = new ArrayList<>();
     try {
         structures = ((Manager) loginBean.getUser().getRole("Manager")).getManagedStructures();
-        System.out.println("strutture: " + structures);
     } catch (Exception e) {
         e.printStackTrace();
     }
@@ -64,6 +63,10 @@
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    if (request.getParameter("delete") != null) {
+        structureBean.delete(request.getParameter("id"), loginBean.getUser());
     }
 %>
 <body>
@@ -147,10 +150,13 @@
                         <td>${structure.numberOfLocations}</td>
                         <td>${structure.structureAddress}</td>
                         <td>
-                            <button class='updatePrice btn btn-warning btn-sm' data-toggle="modal"
-                                    data-target="#createModal" data-id=${structure.id}><span
-                                    class='glyphicon glyphicon-pencil' aria-hidden='true'></span></button>
-                            <button class='deletePrice btn btn-danger btn-sm' role='button' data-toggle="modal"
+                            <form action="manageLocations.jsp" method="POST">
+                                <button class='updateStructure btn btn-warning btn-sm' name="structure-id"
+                                        value="${structures.indexOf(structure)}">
+                                    <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>
+                                </button>
+                            </form>
+                            <button class='deleteStructure btn btn-danger btn-sm' role='button' data-toggle="modal"
                                     data-target="#deleteModal" data-id=${structure.id}><span
                                     class='glyphicon glyphicon-trash' aria-hidden='true'></span></button>
                         </td>
@@ -401,36 +407,45 @@
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Delete Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="Delete">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="deleteModalLabel">Are you sure?</h4>
-                </div>
-                <div class="modal-body">
-                    <form id="delete-price-form" method="post" action="structure.jsp">Note that after the confirmation
-                        the
-                        structure will be lost.
-                        <label>
-                            <input name="id" id="price-id" hidden>
-                        </label>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" form="delete-price-form" id="delete" name="delete"
-                            value="delete">Delete
-                    </button>
-                </div>
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="Delete">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="deleteModalLabel">Are you sure?</h4>
             </div>
+            <div class="modal-body">
+                <form id="delete-structure-form" method="post" action="manageStructures.jsp">Note that after the
+                    confirmation
+                    the
+                    structure will be lost.
+                    <label>
+                        <input name="id" id="structure-id" hidden>
+                    </label>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" form="delete-structure-form" id="delete" name="delete"
+                        value="delete">Delete
+                </button>
+            </div>
+            <script>
+                $(function () {
+                    $(".deleteStructure").click(function () {
+                        var structureID = $(".deleteStructure").attr("data-id");
+                        $(".modal-body #structure-id").val(structureID);
+                    });
+                })
+            </script>
         </div>
     </div>
-
-    <!-- Bootstrap core JavaScript -->
-    <%@include file="bootstrap_core_js.html" %>
+</div>
+<!-- Bootstrap core JavaScript -->
+<%@include file="bootstrap_core_js.html" %>
 </body>
 </html>

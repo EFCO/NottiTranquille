@@ -1,8 +1,9 @@
 <%@ page import="it.ispw.efco.nottitranquille.model.Location" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.Structure" %>
 <%@ page import="it.ispw.efco.nottitranquille.model.enumeration.Commodities" %>
 <%@ page import="it.ispw.efco.nottitranquille.model.enumeration.LocationType" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.List" %>
+<%@ page import="java.util.HashMap" %>
 
 <%--
   Created by IntelliJ IDEA.
@@ -298,7 +299,7 @@
 
 <div id="resultSet">
     <%
-        List<Location> result = new ArrayList<>();
+        HashMap<Structure, ArrayList<Location>> result = new HashMap<>();
         if (request.getParameter("search") != null) {
             try {
                 basicSearchBean.validate();
@@ -318,7 +319,7 @@
     %>
     <div class="container">
         <div class="row" id="result_row">
-            <c:forEach items="${result}" var="location">
+            <c:forEach items="${result}" var="structure">
                 <div class="paneldiv">
                     <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                         <div class="panel price panel-red">
@@ -326,12 +327,14 @@
                                     <%--${location.photos}--%>
                                 <img src="resources/img/piscine-di-albergo-Medulin-2.jpg" alt="...">
                                 <div class="panel-heading text-center" id="name_text">
-                                    <h3>${location.structure.name}</h3></div>
+                                    <h3>${structure.key.name}</h3></div>
                                     <%--${location.locationAddress}--%>
                                 <div class="panel-body text-center" id="price_text"><p class="lead"><strong>28 &euro; a
                                     notte</strong></p></div>
+                                <p class="lead"><strong>Questa struttura comprende ${structure.value.size()}
+                                    locazioni</strong></p>
                                 <div class="panel-footer text-center"><a
-                                        href="<c:url value="showOffer.jsp"><c:param name="id" value="${result.indexOf(location)}"/></c:url>"
+                                        href="<c:url value="showOffer.jsp"><c:param name="id" value="${result.get(structure).id}"/></c:url>"
                                         type="submit" class="btn btn-lg btn-block" role="button">Mostra</a></div>
                             </div>
                         </div>
