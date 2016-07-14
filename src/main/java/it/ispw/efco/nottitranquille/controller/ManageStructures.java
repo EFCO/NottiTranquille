@@ -1,6 +1,7 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.*;
+import it.ispw.efco.nottitranquille.model.dao.StructureDao;
 import it.ispw.efco.nottitranquille.view.StructureBean;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class ManageStructures {
         Request newRequest = new Request(newStructure, managerInstance);
         newStructure.setRequest(newRequest);
         ((Manager) manager.getRole("Manager")).addRequest(newRequest);
-        StructureDAO structureDAO = new StructureDAO();
+        StructureDao structureDAO = new StructureDao();
         structureDAO.store(newStructure, manager, owner);
     }
 

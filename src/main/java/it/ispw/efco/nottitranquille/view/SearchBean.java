@@ -151,7 +151,9 @@ public class SearchBean {
                 obj.put("id", String.valueOf(i));
                 obj.put("name", currentElem.getStructure().getName());
                 obj.put("type", currentElem.getType().toString());
+/* TODO
                 obj.put("address", currentElem.getLocationAddress());
+*/
                 obj.put("nation", currentElem.getStructure().getStructureAddress().getNation());
                 obj.put("city", currentElem.getStructure().getStructureAddress().getCity());
                 obj.put("price", (25 + i) % 5);//TODO use the right price

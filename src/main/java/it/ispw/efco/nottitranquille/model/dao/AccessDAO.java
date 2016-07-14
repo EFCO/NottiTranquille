@@ -1,5 +1,9 @@
-package it.ispw.efco.nottitranquille.model;
+package it.ispw.efco.nottitranquille.model.dao;
 
+import it.ispw.efco.nottitranquille.model.Address;
+import it.ispw.efco.nottitranquille.model.JPAInitializer;
+import it.ispw.efco.nottitranquille.model.Manager;
+import it.ispw.efco.nottitranquille.model.Person;
 import it.ispw.efco.nottitranquille.view.LoginBean;
 
 import javax.persistence.EntityManager;

@@ -1,9 +1,4 @@
-.idea/copyright/
-.idea/libraries/
-.idea/workspace.xml
+.idea/
 lib/
 out/
-/.idea/runConfigurations/WebApp.xml
-/.idea/runConfigurations/LaptopApp.xml
-/.idea/compiler.xml
 target/
