@@ -1,24 +1,12 @@
 package it.ispw.efco.nottitranquille.controller;
 
-import it.ispw.efco.nottitranquille.model.Person;
 import it.ispw.efco.nottitranquille.view.AccessForm;
-import it.ispw.efco.nottitranquille.view.LoginBean;
-import javafx.event.ActionEvent;
+import it.ispw.efco.nottitranquille.view.ScoutFilteredSearchForm;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
-/**
- * Created by Federico on 28/06/2016.
- */
-public class MainScreenController {
-
-    private Stage mainStage;
-
-    private Person employee;
-
-    private LoginBean loggedEmployee;
+public class MainFX extends SingleWindowsLogged {
 
     @FXML
     private Text employeeFirstName;
@@ -26,30 +14,16 @@ public class MainScreenController {
     private Text employeeLastName;
     @FXML
     private Text employeeRoles;
-
-
     @FXML
-    private Button ScoutFilteredSearchForm;
+    private Button scoutFilteredSearchForm;
     @FXML
-    private Button scuoutAddRequestForm;
+    private Button scoutAddRequestForm;
     @FXML
     private Button managePacketsForm;
     @FXML
     private Button manageEmployeesForm;
     @FXML
     private Button manageGlobalSettingsForm;
-
-    public void setEmployee(Person employee) {
-        this.employee = employee;
-    }
-
-    public void setLoggedEmployee(LoginBean loggedEmployee) {
-        this.loggedEmployee = loggedEmployee;
-    }
-
-    public void setMainStage(Stage stage) {
-        this.mainStage = stage;
-    }
 
     public Text getEmployeeFirstName() {
         return employeeFirstName;
@@ -64,11 +38,11 @@ public class MainScreenController {
     }
 
     public Button getScoutFilteredSearchForm() {
-        return ScoutFilteredSearchForm;
+        return scoutFilteredSearchForm;
     }
 
-    public Button getScuoutAddRequestForm() {
-        return scuoutAddRequestForm;
+    public Button getScoutAddRequestForm() {
+        return scoutAddRequestForm;
     }
 
     public Button getManagePacketsForm() {
@@ -83,11 +57,26 @@ public class MainScreenController {
         return manageGlobalSettingsForm;
     }
 
-    public void logoutHandler(ActionEvent actionEvent) {
+    @FXML
+    public void logoutHandler() {
+        logout();
+
+        AccessForm accessForm = new AccessForm();
         try {
-            AccessController.setLogout(loggedEmployee.getId());
-            AccessForm accessForm = new AccessForm();
-            accessForm.start(mainStage);
+            // Removes close event
+            getMainStage().setOnCloseRequest(null);
+            // Goes to access form
+            accessForm.start(getMainStage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void showScoutFilteredSearchForm() {
+        ScoutFilteredSearchForm scoutFilteredSearchForm = new ScoutFilteredSearchForm();
+        try {
+            scoutFilteredSearchForm.start(getMainStage());
         } catch (Exception e) {
             e.printStackTrace();
         }

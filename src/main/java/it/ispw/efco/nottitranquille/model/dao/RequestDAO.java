@@ -65,7 +65,7 @@ public class RequestDAO {
                 querystring += " AND r.structure.address.city = :c";
             }
         //can throw Illegal Argument exception
-        TypedQuery<Request> query = entityManager.createQuery(querystring,Request.class);
+        TypedQuery<Request> query = entityManager.createQuery(querystring, Request.class);
         if (!nation.equals("")) {
             query.setParameter("n", nation);
         }

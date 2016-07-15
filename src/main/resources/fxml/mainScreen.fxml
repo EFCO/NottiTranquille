@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.ispw.efco.nottitranquille.controller.MainFX">
+   <children>
+      <Pane layoutX="4.0" layoutY="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="371.0" prefWidth="593.0">
+         <children>
+            <Button fx:id="scoutFilteredSearchForm" disable="true" layoutX="55.0" layoutY="164.0" mnemonicParsing="false" onAction="#showScoutFilteredSearchForm" prefHeight="25.0" prefWidth="235.0" text="Approve Insert Request" />
+            <Button fx:id="scoutAddRequestForm" disable="true" layoutX="303.0" layoutY="164.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="235.0" text="Add new Request" />
+            <Button fx:id="managePacketsForm" disable="true" layoutX="55.0" layoutY="218.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="235.0" text="Manage Packets" />
+            <Button fx:id="manageEmployeesForm" disable="true" layoutX="55.0" layoutY="269.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="235.0" text="Manages Employee" />
+            <Button fx:id="manageGlobalSettingsForm" disable="true" layoutX="302.0" layoutY="269.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="235.0" text="Change Global Attributes" />
+            <Text fill="#ba1a1a" layoutX="151.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOTTI TRANQUILLE">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <ToolBar layoutY="5.0" prefHeight="8.0" prefWidth="600.0">
+         <items>
+            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutHandler" text="Logout" />
+            <Text fx:id="employeeFirstName" strokeType="OUTSIDE" strokeWidth="0.0" text="Claudio" />
+            <Text fx:id="employeeLastName" strokeType="OUTSIDE" strokeWidth="0.0" text="Pastorini" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ruolo:" />
+            <Text fx:id="employeeRoles" strokeType="OUTSIDE" strokeWidth="0.0" text="[Ciao, Maria, Sofia]" />
+         </items>
+      </ToolBar>
+   </children>
+</AnchorPane>

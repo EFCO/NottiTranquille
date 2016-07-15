@@ -1,6 +1,6 @@
 package it.ispw.efco.nottitranquille.view;
 
-import it.ispw.efco.nottitranquille.controller.AccessController;
+import it.ispw.efco.nottitranquille.controller.Access;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -129,9 +129,9 @@ public class RegistrationBean {
                 && !this.firstName.equals("") && !this.lastName.equals("")
                 && !this.address.equals("") && this.dateofbirth != null
                 && !this.email.equals("")) {
-            if (AccessController.getRegisteredUser(this.username,this.password) == null) {
+            if (Access.getRegisteredUser(this.username,this.password) == null) {
                 System.out.println("manger = " + manager);
-                AccessController.registration(this);
+                Access.registration(this);
             } else {
                 throw new Exception("User already registered or waiting for verification");
             }
@@ -141,7 +141,7 @@ public class RegistrationBean {
     }
 
     public void verify() throws Exception {
-        AccessController.registration(this);
+        Access.registration(this);
     }
 
     public String api_register_response() throws Exception {

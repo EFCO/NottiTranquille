@@ -11,10 +11,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-/**
- * Created by Federico on 02/05/2016.
- */
-public class AccessController {
+public class Access {
 
     public static Person getRegisteredUser(String username, String password) {
         AccessDAO accessDAO = new AccessDAO();
@@ -30,8 +27,6 @@ public class AccessController {
         AccessDAO accessDAO = new AccessDAO();
         accessDAO.saveLogin(lb);
     }
-
-
 
     public static int isAlreadyLogged(LoginBean loginBean, String cookie) {
         AccessDAO accessDAO = new AccessDAO();

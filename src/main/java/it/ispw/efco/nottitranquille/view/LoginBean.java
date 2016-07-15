@@ -1,6 +1,6 @@
 package it.ispw.efco.nottitranquille.view;
 
-import it.ispw.efco.nottitranquille.controller.AccessController;
+import it.ispw.efco.nottitranquille.controller.Access;
 import it.ispw.efco.nottitranquille.model.Person;
 import org.json.JSONObject;
 
@@ -27,7 +27,7 @@ public class LoginBean {
 
     public void login() throws Exception {
         if (!this.username.equals("") && !this.password.equals("")) {
-            Person person = AccessController.getRegisteredUser(this.username, this.password);
+            Person person = Access.getRegisteredUser(this.username, this.password);
             if (person == null) {
                 throw new Exception("User not registered");
             } else {
@@ -40,7 +40,7 @@ public class LoginBean {
                     return;
                 } else {
 //                  this.user_id = id;
-                    AccessController.logNewUser(this);
+                    Access.logNewUser(this);
                 }
 
             }
@@ -52,7 +52,7 @@ public class LoginBean {
     @Transient
     public int isLoggedIn() {
         if (!this.username.equals("") && !this.password.equals("") && !this.cookie.equals("")) {
-            return AccessController.isAlreadyLogged(this, cookie);
+            return Access.isAlreadyLogged(this, cookie);
         } else {
             return 2;
         }
@@ -60,19 +60,19 @@ public class LoginBean {
 
     public void logout() throws Exception {
         if (this.id != null) {
-            AccessController.setLogout(this.id);
+            Access.setLogout(this.id);
         }
     }
 
     @Transient
     public Person getUser() {
-        return AccessController.getRegisteredUser(this.username, this.password);
+        return Access.getRegisteredUser(this.username, this.password);
     }
 
     public int modifyField(String field, String[] value) {
         if (field != null && value != null) {
             try {
-                AccessController.modifyField(field, value, getUser().getId());
+                Access.modifyField(field, value, getUser().getId());
                 //In order to refresh data for user after suc
                 if (field.equals("password"))
                     this.password = value[1];

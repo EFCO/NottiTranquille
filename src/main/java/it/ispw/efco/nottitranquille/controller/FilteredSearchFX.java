@@ -3,6 +3,7 @@ package it.ispw.efco.nottitranquille.controller;
 import it.ispw.efco.nottitranquille.model.dao.RequestDAO;
 import it.ispw.efco.nottitranquille.model.Request;
 import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
+import it.ispw.efco.nottitranquille.view.MainScreen;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -15,11 +16,9 @@ import javafx.util.Callback;
 
 import java.util.List;
 
-/**
- * Created by Federico on 23/03/2016.
- */
-public class FilteredSearchFX {
-    private Stage stage;
+public class FilteredSearchFX extends SingleWindow {
+    @FXML
+    private Button backButton;
 
     @FXML
     private TextField address;
@@ -41,15 +40,25 @@ public class FilteredSearchFX {
 
     public void setStatusMenuButton() {
         for (RequestStatus state : RequestStatus.values()) {
-            CheckMenuItem menuItem = new CheckMenuItem(state.name());
+            CheckMenuItem menuItem = new CheckMenuItem(state.getText());
             this.status.getItems().add(menuItem);
         }
-        status.setText(status.getItems().get(0).getText());
 
+        status.setText(status.getItems().get(0).getText());
     }
 
     @FXML
-    protected void handleSearchButtonAction(ActionEvent event) {
+    protected void backHandler() {
+        MainScreen mainScreen = new MainScreen();
+        try {
+            mainScreen.start(getMainStage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void handleSearchButtonAction() {
         RequestDAO requestDAO = new RequestDAO();
 
         List<Request> results = requestDAO.selectAllRequestsByFilter(nation.getText(),city.getText(), RequestStatus.valueOf("Accepted"));
