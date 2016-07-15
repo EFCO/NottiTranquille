@@ -62,7 +62,7 @@
         }
     }
 
-    if (request.getParameter("delete") != null) {
+    if (request.getParameter("deleteWhitMerge") != null) {
         structureBean.delete(structures, request.getParameter("id"));
     }
 %>

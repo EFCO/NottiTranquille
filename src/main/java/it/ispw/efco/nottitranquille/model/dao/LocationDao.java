@@ -1,7 +1,8 @@
-package it.ispw.efco.nottitranquille.model.dao;
+package it.ispw.efco.nottitranquille.model.DAO;
 
-import it.ispw.efco.nottitranquille.JPAInitializer;
+import it.ispw.efco.nottitranquille.model.JPAInitializer;
 import it.ispw.efco.nottitranquille.model.Location;
+import it.ispw.efco.nottitranquille.model.Structure;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -13,20 +14,21 @@ import java.util.List;
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-public class LocationDao {
+public class LocationDAO {
 
     /**
      * Stores {@link Location} into persistent system.
      *
-     * @param location the Location to persist
+     * @param newLocation the Location to persist
+     * @param structure the Structure
      */
-    public static void store(Location location) {
-        EntityManager entityManager = JPAInitializer.getEntityManager();
+    public void store(Location newLocation, Structure structure) {
+        EntityManager entityManager = it.ispw.efco.nottitranquille.model.JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
-
-        entityManager.persist(location);
-
+        structure.addLocation(newLocation);
+        entityManager.merge(structure);
         entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     /**
@@ -60,7 +62,7 @@ public class LocationDao {
     /**
      * Deletes {@link Location} from persistent system.
      *
-     * @param locationId the id of the Location to delete
+     * @param locationId the id of the Location to deleteWhitMerge
      */
     public static void delete(long locationId) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
@@ -79,5 +81,13 @@ public class LocationDao {
      */
     public static void delete(Location locationToDelete) {
         delete(locationToDelete.getId());
+    }
+
+    public void deleteWhitMerge(Location locationToDelete) {
+        EntityManager entityManager = it.ispw.efco.nottitranquille.model.JPAInitializer.getEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.remove(entityManager.merge(locationToDelete));
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 }

@@ -1,7 +1,7 @@
 package it.ispw.efco.nottitranquille.controller;
 
+import it.ispw.efco.nottitranquille.model.DAO.PersonDAO;
 import it.ispw.efco.nottitranquille.model.Person;
-import it.ispw.efco.nottitranquille.model.PersonDAO;
 import it.ispw.efco.nottitranquille.view.AccessForm;
 import it.ispw.efco.nottitranquille.view.LoginBean;
 import it.ispw.efco.nottitranquille.view.ManageEmployeesDetails;

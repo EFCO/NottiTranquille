@@ -1,7 +1,7 @@
 package it.ispw.efco.nottitranquille.controller;
 
+import it.ispw.efco.nottitranquille.model.DAO.LocationDAO;
 import it.ispw.efco.nottitranquille.model.Location;
-import it.ispw.efco.nottitranquille.model.LocationDAO;
 import it.ispw.efco.nottitranquille.model.Structure;
 import it.ispw.efco.nottitranquille.view.LocationBean;
 
@@ -22,7 +22,7 @@ public class ManageLocation {
         LocationDAO locationDAO = new LocationDAO();
         for (Location locationToDelete : locations) {
             if (locationToDelete.getId().equals(id)) {
-                locationDAO.delete(locationToDelete);
+                locationDAO.deleteWhitMerge(locationToDelete);
             }
         }
     }

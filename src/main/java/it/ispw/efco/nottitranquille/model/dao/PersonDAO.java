@@ -1,4 +1,7 @@
-package it.ispw.efco.nottitranquille.model;
+package it.ispw.efco.nottitranquille.model.DAO;
+
+import it.ispw.efco.nottitranquille.model.JPAInitializer;
+import it.ispw.efco.nottitranquille.model.Person;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;

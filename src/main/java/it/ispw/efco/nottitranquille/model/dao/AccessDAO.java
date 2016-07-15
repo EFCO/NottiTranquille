@@ -1,4 +1,4 @@
-package it.ispw.efco.nottitranquille.model.dao;
+package it.ispw.efco.nottitranquille.model.DAO;
 
 import it.ispw.efco.nottitranquille.model.Address;
 import it.ispw.efco.nottitranquille.model.JPAInitializer;

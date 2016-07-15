@@ -1,7 +1,7 @@
-package it.ispw.efco.nottitranquille.model.dao;
+package it.ispw.efco.nottitranquille.model.DAO;
 
+import it.ispw.efco.nottitranquille.model.Address;
 import it.ispw.efco.nottitranquille.model.JPAInitializer;
-import it.ispw.efco.nottitranquille.model.Location;
 import it.ispw.efco.nottitranquille.model.Person;
 import it.ispw.efco.nottitranquille.model.Structure;
 
@@ -73,7 +73,7 @@ public class StructureDAO {
     }
 
     public static List<Structure> retrieveStructures() {
-        EntityManager entityManager = it.ispw.efco.nottitranquille.JPAInitializer.getEntityManager();
+        EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
                 .createQuery("from Structure ", Structure.class)

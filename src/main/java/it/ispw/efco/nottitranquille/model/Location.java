@@ -1,11 +1,5 @@
 package it.ispw.efco.nottitranquille.model;
 
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
 import it.ispw.efco.nottitranquille.view.LocationBean;
 import org.joda.time.DateTime;
@@ -16,7 +10,6 @@ import org.joda.time.format.DateTimeFormatter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
@@ -76,18 +69,13 @@ public class Location {
     @ManyToMany
     private List<Service> services;
 
-    @ManyToOne
     /**
      *
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Structure structure;
 
     @ElementCollection(targetClass = Interval.class, fetch = FetchType.EAGER)
-    /**
-     *
-     */
-    @ElementCollection(targetClass = Interval.class)
     @Column(length=100000) //for the Data too long error
     private List<Interval> booking = new ArrayList<Interval>();
 
@@ -473,10 +461,6 @@ public class Location {
 
     public Integer getNumberOfBathrooms() {
         return numberOfBathrooms;
-    }
-
-    public Integer getMaxGuestsNumber() {
-        return maxGuestsNumber;
     }
 
     public Integer getNumberOfBeds() {

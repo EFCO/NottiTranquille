@@ -1,7 +1,7 @@
 package it.ispw.efco.nottitranquille;
 
 import it.ispw.efco.nottitranquille.model.*;
-import it.ispw.efco.nottitranquille.model.dao.LocationDao;
+import it.ispw.efco.nottitranquille.model.DAO.LocationDAO;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.joda.time.DateTime;
@@ -212,7 +212,7 @@ public class PriceTest {
 
     @Test
     public void testWithDatabase() {
-        Location location = LocationDao.retrieveLocations().get(0);
+        Location location = LocationDAO.retrieveLocations().get(0);
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-mm-dd");
 

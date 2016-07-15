@@ -1,7 +1,10 @@
 package it.ispw.efco.nottitranquille.controller;
 
-import it.ispw.efco.nottitranquille.model.*;
-import it.ispw.efco.nottitranquille.model.dao.AccessDAO;
+import it.ispw.efco.nottitranquille.model.Address;
+import it.ispw.efco.nottitranquille.model.DAO.AccessDAO;
+import it.ispw.efco.nottitranquille.model.Manager;
+import it.ispw.efco.nottitranquille.model.Person;
+import it.ispw.efco.nottitranquille.model.Tenant;
 import it.ispw.efco.nottitranquille.model.mail.Mailer;
 import it.ispw.efco.nottitranquille.view.LoginBean;
 import it.ispw.efco.nottitranquille.view.RegistrationBean;

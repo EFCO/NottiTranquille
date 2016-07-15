@@ -1,9 +1,7 @@
-package it.ispw.efco.nottitranquille.model.dao;
+package it.ispw.efco.nottitranquille.model.DAO;
 
-import it.ispw.efco.nottitranquille.JPAInitializer;
 import it.ispw.efco.nottitranquille.model.*;
 import it.ispw.efco.nottitranquille.view.PriceBean;
-import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
@@ -22,7 +20,7 @@ import java.util.List;
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-public class PriceDao {
+public class PriceDAO {
 
     /**
      * Stores {@link Price} into persistent system.
@@ -80,7 +78,7 @@ public class PriceDao {
     /**
      * Deletes {@link Price} from persistent system.
      *
-     * @param priceId the id of the Price to delete
+     * @param priceId the id of the Price to deleteWhitMerge
      */
     public static void delete(long priceId) {
         EntityManager entityManager = JPAInitializer.getEntityManager();

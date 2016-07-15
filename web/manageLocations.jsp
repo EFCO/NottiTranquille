@@ -77,7 +77,7 @@
             System.out.println("Sono entrato" + locationBean.toString());
             locationBean.validate();
         }
-        if (request.getParameter("delete") != null) {
+        if (request.getParameter("deleteWhitMerge") != null) {
             locationBean.delete(request.getParameter("id"), currentStructure.getLocations());
         }
 

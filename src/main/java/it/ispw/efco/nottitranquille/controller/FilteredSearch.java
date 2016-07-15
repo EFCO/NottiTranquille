@@ -1,7 +1,7 @@
 package it.ispw.efco.nottitranquille.controller;
 
+import it.ispw.efco.nottitranquille.model.DAO.RequestDAO;
 import it.ispw.efco.nottitranquille.model.Location;
-import it.ispw.efco.nottitranquille.model.RequestDAO;
 import it.ispw.efco.nottitranquille.model.Structure;
 import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
 import it.ispw.efco.nottitranquille.model.enumeration.PriceRanges;

@@ -1,19 +1,12 @@
-<%@ page import="java.lang.reflect.Field" %>
-<%@ page import="java.util.Date" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.enumeration.Day" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="it.ispw.efco.nottitranquille.controller.ManagePrices" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.DAO.LocationDAO" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.DAO.StructureDao" %>
 <%@ page import="it.ispw.efco.nottitranquille.model.Location" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.dao.LocationDao" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.Address" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.Structure" %>
-<%@ page import="org.joda.time.Interval" %>
-<%@ page import="org.joda.time.format.DateTimeFormatter" %>
-<%@ page import="org.joda.time.DateTime" %>
-<%@ page import="org.joda.time.format.DateTimeFormat" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.enumeration.LocationType" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.dao.StructureDao" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.enumeration.Day" %>
+<%@ page import="java.lang.reflect.Field" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%-- Use JSTL core lib in order to add some useful feature --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -82,10 +75,10 @@ value='<form id="create-price-form" method="post" action="prices.jsp"> <div clas
     booking.add(new Interval(start,end));
     Location loc = new Location(booking,s,5, LocationType.Hotel);
 
-    LocationDao.store(loc);*/
+    LocationDAO.store(loc);*/
 
     //TODO Get location from bean
-    Location location = LocationDao.retrieveLocations().get(0);
+    Location location = LocationDAO.retrieveLocations().get(0);
     request.setAttribute("locationId", location.getId());
 
     if (request.getParameter("create") != null || request.getParameter("update") != null) { // After CREATE or UPDATE
@@ -159,7 +152,7 @@ value='<form id="create-price-form" method="post" action="prices.jsp"> <div clas
             response.setHeader("Refresh", "2;url=prices.jsp");
         }
 
-    } else if (request.getParameter("delete") != null) {    // After delete POST
+    } else if (request.getParameter("deleteWhitMerge") != null) {    // After deleteWhitMerge POST
         request.setAttribute("alertType", "info");
         request.setAttribute("alertMessage", "The price was deleted!");
         ManagePrices.deletePrice(location, priceBean);

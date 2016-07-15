@@ -1,13 +1,13 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.*;
-import it.ispw.efco.nottitranquille.model.dao.LocationDao;
-import it.ispw.efco.nottitranquille.model.dao.PriceDao;
+import it.ispw.efco.nottitranquille.model.DAO.LocationDAO;
+import it.ispw.efco.nottitranquille.model.DAO.PriceDAO;
 import it.ispw.efco.nottitranquille.view.PriceBean;
 
-import java.util.*;
+import java.util.List;
 
-import static it.ispw.efco.nottitranquille.model.dao.PriceDao.*;
+import static it.ispw.efco.nottitranquille.model.DAO.PriceDAO.*;
 
 /**
  * ManagesPrices Controller.
@@ -229,7 +229,7 @@ public class ManagePrices {
      * @return the number of Price
      */
     public static int countAllPrices(Location location) {
-        return (PriceDao.countAllPrices(location)).intValue();
+        return (PriceDAO.countAllPrices(location)).intValue();
     }
 
     /**
@@ -239,7 +239,7 @@ public class ManagePrices {
      * @return the number of BasePrice
      */
     public static int countAllBasePrices(Location location) {
-        return PriceDao.countAllBasePrices(location).intValue();
+        return PriceDAO.countAllBasePrices(location).intValue();
     }
 
     /**
@@ -249,7 +249,7 @@ public class ManagePrices {
      * @return the number of Discount
      */
     public static int countAllDiscounts(Location location) {
-        return PriceDao.countAllDiscounts(location).intValue();
+        return PriceDAO.countAllDiscounts(location).intValue();
     }
 
     /**
@@ -259,7 +259,7 @@ public class ManagePrices {
      * @return the number of Fee
      */
     public static int countAllFees(Location location) {
-        return PriceDao.countAllFees(location).intValue();
+        return PriceDAO.countAllFees(location).intValue();
     }
 
     /**
@@ -269,7 +269,7 @@ public class ManagePrices {
      * @return the number of FixDiscount
      */
     public static int countAllFixDiscounts(Location location) {
-        return PriceDao.countAllFixDiscounts(location).intValue();
+        return PriceDAO.countAllFixDiscounts(location).intValue();
     }
 
     /**
@@ -279,7 +279,7 @@ public class ManagePrices {
      * @return the number of FixFee
      */
     public static int countAllFixFees(Location location) {
-        return PriceDao.countAllFixFees(location).intValue();
+        return PriceDAO.countAllFixFees(location).intValue();
     }
 
     /**
@@ -289,7 +289,7 @@ public class ManagePrices {
      * @return the number of PercentageDiscount
      */
     public static int countAllPercentageDiscounts(Location location) {
-        return PriceDao.countAllPercentageDiscounts(location).intValue();
+        return PriceDAO.countAllPercentageDiscounts(location).intValue();
     }
 
     /**
@@ -299,7 +299,7 @@ public class ManagePrices {
      * @return the number of PercentageFee
      */
     public static int countAllPercentageFees(Location location) {
-        return PriceDao.countAllPercentageFees(location).intValue();
+        return PriceDAO.countAllPercentageFees(location).intValue();
     }
 
     /**
@@ -310,7 +310,7 @@ public class ManagePrices {
      */
     public static void addPrice(Location location, PriceBean price) {
         location.addPrice(Price.PriceFromBean(price));
-        LocationDao.update(location);
+        LocationDAO.update(location);
     }
 
     /**
@@ -322,19 +322,19 @@ public class ManagePrices {
     public static void updatePrice(Location location, PriceBean price) {
         Price priceToUpdate = location.getPriceById(price.getId());
         priceToUpdate.update(Price.PriceFromBean(price));
-        LocationDao.update(location);
+        LocationDAO.update(location);
     }
 
     /**
      * Deletes {@link Price} of a {@link Location}.
      *
      * @param location the location to update
-     * @param price the price to delete
+     * @param price the price to deleteWhitMerge
      */
     public static void deletePrice(Location location, PriceBean price) {
         // Removes price from location and update DB
         location.removePrice(price.getId());
-        LocationDao.update(location);
+        LocationDAO.update(location);
         // Removes also price from the DB
         delete(price.getId());
     }

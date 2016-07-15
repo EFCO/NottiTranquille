@@ -1,6 +1,6 @@
 package it.ispw.efco.nottitranquille.controller;
 
-import it.ispw.efco.nottitranquille.model.dao.RequestDAO;
+import it.ispw.efco.nottitranquille.model.DAO.RequestDAO;
 import it.ispw.efco.nottitranquille.model.Request;
 import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
 import javafx.beans.property.ReadOnlyObjectWrapper;
