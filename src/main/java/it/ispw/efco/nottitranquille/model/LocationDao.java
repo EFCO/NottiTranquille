@@ -14,4 +14,12 @@ public class LocationDAO {
         entityManager.getTransaction().commit();
         entityManager.close();
     }
+
+    public void delete(Location locationToDelete) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.remove(entityManager.merge(locationToDelete));
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
 }

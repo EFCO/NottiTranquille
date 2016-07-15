@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="it.ispw.efco.nottitranquille.controller.EmployeeDetails">
     <children>
@@ -34,26 +35,33 @@
                         </Menu>
                     </menus>
                 </MenuBar>
-                <TextField fx:id="tvName" layoutX="88.0" layoutY="45.0" promptText="Name"/>
-                <TextField fx:id="tvSurname" layoutX="300.0" layoutY="45.0" promptText="Surname"/>
-                <TextField fx:id="tvMail" layoutX="88.0" layoutY="92.0" promptText="E-Mail"/>
-                <TextField fx:id="tvPhone" layoutX="300.0" layoutY="92.0" promptText="Phone Number"/>
-                <TextField fx:id="tvNation" layoutX="88.0" layoutY="151.0" promptText="Nation"/>
-                <TextField fx:id="tvCity" layoutX="300.0" layoutY="151.0" promptText="Ciity"/>
-                <TextField fx:id="tvAddress" layoutX="88.0" layoutY="200.0" promptText="Address"/>
-                <TextField fx:id="tvPostalCode" layoutX="300.0" layoutY="200.0" promptText="Postal Code"/>
+                <TextField fx:id="tvName" layoutX="88.0" layoutY="33.0" promptText="Name"/>
+                <TextField fx:id="tvSurname" layoutX="300.0" layoutY="33.0" promptText="Surname"/>
+                <TextField fx:id="tvMail" layoutX="88.0" layoutY="67.0" promptText="E-Mail"/>
+                <TextField fx:id="tvPhone" layoutX="300.0" layoutY="67.0" promptText="Phone Number"/>
+                <ComboBox fx:id="spGender" layoutX="299.0" layoutY="107.0" prefWidth="150.0" promptText="Gender"/>
+                <TextField fx:id="tvUsername" layoutX="88.0" layoutY="141.0" promptText="Username"/>
+                <TextField fx:id="tvPassword" layoutX="300.0" layoutY="141.0" promptText="Password"/>
+                <TextField fx:id="tvNation" layoutX="88.0" layoutY="176.0" promptText="Nation"/>
+                <TextField fx:id="tvCity" layoutX="300.0" layoutY="176.0" promptText="Ciity"/>
+                <TextField fx:id="tvAddress" layoutX="88.0" layoutY="207.0" promptText="Address"/>
+                <TextField fx:id="tvPostalCode" layoutX="300.0" layoutY="207.0" promptText="Postal Code"/>
                 <ComboBox fx:id="spRole" layoutX="87.0" layoutY="286.0" prefWidth="150.0" promptText="Choose a Role"/>
-                <Button fx:id="bAccept" layoutX="274.0" layoutY="353.0" mnemonicParsing="false" text="Accept"/>
-                <ListView fx:id="lvAuth" layoutX="249.0" layoutY="262.0" prefHeight="73.0" prefWidth="200.0"/>
+                <Button fx:id="bAccept" layoutX="274.0" layoutY="353.0" mnemonicParsing="false" onAction="#saveEmployee"
+                        text="Accept"/>
+                <TableView fx:id="lvAuth" layoutX="249.0" layoutY="262.0" prefHeight="73.0" prefWidth="200.0"/>
                 <Button fx:id="bRemoveAuth" disable="true" layoutX="458.0" layoutY="311.0" mnemonicParsing="false"
-                        text="Remove Authorization"/>
+                        onAction="#removeRole" text="Remove Authorization"/>
                 <MenuButton fx:id="spAddAuth" disable="true" layoutX="457.0" layoutY="262.0" mnemonicParsing="false"
-                            popupSide="TOP" text="Add Authorizations">
+                            onAction="#addRole" popupSide="TOP" text="Add Authorizations">
                     <items>
                         <MenuItem mnemonicParsing="false" text="Action 1"/>
                         <MenuItem mnemonicParsing="false" text="Action 2"/>
                     </items>
                 </MenuButton>
+                <TextField fx:id="tvBirthdate" layoutX="88.0" layoutY="107.0" promptText="Birthdate(dd-MM-yyyy)"/>
+                <Text fx:id="errAlert" fill="#e80909" layoutX="98.0" layoutY="370.0" strokeType="OUTSIDE"
+                      strokeWidth="0.0" text="All Fields MUST be filled" visible="false"/>
             </children>
         </Pane>
     </children>

@@ -1,6 +1,8 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.ManageLocation;
+import it.ispw.efco.nottitranquille.controller.ManageStructures;
+import it.ispw.efco.nottitranquille.model.Location;
 import it.ispw.efco.nottitranquille.model.Structure;
 
 import java.util.List;
@@ -63,8 +65,11 @@ public class LocationBean {
     }
 
     public void validate() {
-        this.toString();
         ManageLocation.addNewLocation(this, this.currentStructure);
+    }
+
+    public void delete(String id, List<Location> locations) {
+        ManageLocation.deleteStructure(Long.valueOf(id), locations);
     }
 
     public String getDescription() {
@@ -132,7 +137,7 @@ public class LocationBean {
     }
 
     public Structure getCurrentStructure() {
-        return currentStructure;
+        return ManageStructures.getStructuredWithID(currentStructure.getId());
     }
 
     public void setCurrentStructure(Structure currentStructure) {

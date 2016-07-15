@@ -25,4 +25,12 @@ public class PersonDAO {
         entityManager.getTransaction().commit();
         entityManager.close();
     }
+
+    public void store(Person revisionedEmployee) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.merge(revisionedEmployee);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
 }

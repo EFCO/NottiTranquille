@@ -230,12 +230,24 @@ public class StructureBean {
         ManageStructures.addNewStructure(this, manager);
     }
 
-    public void delete(String parameter, Person manager) {
+    public void delete(List<Structure> structures, String parameter) {
         try {
-            ManageStructures.deleteStructure(Long.valueOf(parameter), manager);
+            ManageStructures.deleteStructure(structures, Long.valueOf(parameter));
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public int modifyField(String field, String[] value, Long id) {
+        if (field != null && value != null) {
+            try {
+                ManageStructures.modifyField(field, value, id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return 1;
+        }
+        return 0;
     }
 
     public List<Structure> getAllStructures(Manager manager) {

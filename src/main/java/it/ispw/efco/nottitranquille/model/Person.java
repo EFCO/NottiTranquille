@@ -28,6 +28,8 @@ public class Person {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Role> roles;
 
+    private String mainRole = "tenant";
+
     /**
      *
      */
@@ -43,6 +45,7 @@ public class Person {
      *
      */
     private String email;
+
 
     /**
      *
@@ -86,6 +89,21 @@ public class Person {
         this.gender = Gender.valueOf(registrationBean.getGender());
         this.hash = registrationBean.getHash();
         this.req_status = registrationBean.getReq_status();
+        this.roles = new ArrayList<Role>();
+        this.mainRole = registrationBean.getMainRole();
+    }
+
+    public Person(String firstName, String lastName, String email, String phoneNumber, DateTime birthdate, Gender gender, String username, String password, Address address, String mainRole) {
+        this.gender = gender;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.birthdate = birthdate;
+        this.email = email;
+        this.password = password;
+        this.lastName = lastName;
+        this.mainRole = mainRole;
+        this.firstName = firstName;
+        this.username = username;
         this.roles = new ArrayList<Role>();
     }
 
@@ -180,6 +198,14 @@ public class Person {
         this.gender = gender;
     }
 
+    public String getMainRole() {
+        return mainRole;
+    }
+
+    public void setMainRole(String mainRole) {
+        this.mainRole = mainRole;
+    }
+
     public void addRole(Role newRole) throws Exception {
         for (Role role : roles) {
             if (role.getClass().getSimpleName().equals(newRole.getClass().getSimpleName())) {
@@ -199,13 +225,13 @@ public class Person {
         throw new Exception("This user does not have this role");
     }
 
-    public Role getRole(String rolestring) throws Exception {
+    public Role getRole(String rolestring) {
         for (Object role : roles) {
             if (role.getClass().getSimpleName().equals(rolestring)) {
                 return (Role) role;
             }
         }
-        throw new Exception("This user does not have such authorization");
+        return null;
     }
 
     public ArrayList<String> getRoles() {
@@ -216,10 +242,10 @@ public class Person {
         return list;
     }
 
-    public Role getFirstRole() throws Exception {
-        if (roles.size() == 0) {
-            throw new Exception("This user has no Role");
-        }
-        return roles.get(0);
-    }
+//    public Role getFirstRole() throws Exception {
+//        if (roles.size() == 0) {
+//            throw new Exception("This user has no Role");
+//        }
+//        return roles.get(0);
+//    }
 }

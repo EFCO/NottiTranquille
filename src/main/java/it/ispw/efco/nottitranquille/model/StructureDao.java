@@ -36,7 +36,32 @@ public class StructureDAO {
     public void delete(Structure structure) throws Exception {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
-        entityManager.merge(structure);
+        structure.removeOwners();
+//        structure.removeRequest();
+        structure.removeManagedBy();
+        entityManager.remove(entityManager.merge(structure));
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
+
+    public void modifyField(String field, String value, Long id) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        String querystring = "UPDATE Structure s SET s." + field + " = :v WHERE s.id = :id";
+        entityManager.getTransaction().begin();
+        entityManager.createQuery(querystring).setParameter("v", value).setParameter("id", id).executeUpdate();
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
+
+    public void modifyAddress(Address newAddress, Long id) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        Person person = entityManager.find(Person.class, id);
+        entityManager.getTransaction().begin();
+        //I have to do this because new Address records would be created otherwise
+        person.getAddress().setAddress(newAddress.getAddress());
+        person.getAddress().setCity(newAddress.getCity());
+        person.getAddress().setNation(newAddress.getNation());
+        person.getAddress().setPostalcode(newAddress.getPostalcode());
         entityManager.getTransaction().commit();
         entityManager.close();
     }

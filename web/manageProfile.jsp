@@ -143,10 +143,12 @@
     %>
     <div class="alert alert-success">Campo modificato correttamente!</div>
     <%
+        response.setHeader("Refresh", "2;url=manageProfile.jsp");
     } else {
     %>
     <div class="alert alert-danger">Errore nella modifica del campo!</div>
     <%
+            response.setHeader("Refresh", "2;url=manageProfile.jsp");
         }
     } else {
         if (request.getParameter("modify").equals("address")) {

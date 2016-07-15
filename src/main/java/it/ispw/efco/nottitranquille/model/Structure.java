@@ -55,7 +55,7 @@ public class Structure {
     private DateTime checkOut;
 
     @ManyToOne
-    @Access(AccessType.PROPERTY)
+//    @Access(AccessType.PROPERTY)
     private Manager managedBy;
 
     //    @ManyToMany(targetEntity = Owner.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -192,6 +192,30 @@ public class Structure {
     private void setManagedBy(Manager managedBy) {
         this.managedBy = managedBy;
         managedBy.addManagedStructure(this);
+    }
+
+    public List<String> getPhotos() {
+        return photos;
+    }
+
+    public String getTermsOfService() {
+        return termsOfService;
+    }
+
+    public String getTermsOfCancellation() {
+        return termsOfCancellation;
+    }
+
+    public DateTime getCheckIn() {
+        return checkIn;
+    }
+
+    public List<Service> getServices() {
+        return services;
+    }
+
+    public DateTime getCheckOut() {
+        return checkOut;
     }
 
     public void setOwners(List<Owner> owners) {

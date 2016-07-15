@@ -14,7 +14,7 @@
 <%-- Use JSTL custom lib in order to add some useful feature (replaceParam for customize URL with parameter) --%>
 <%@ taglib prefix="custom" tagdir="/WEB-INF/tags" %>
 
-<jsp:useBean id="structureBean" class="it.ispw.efco.nottitranquille.view.StructureBean"/>
+<jsp:useBean id="structureBean" scope="session" class="it.ispw.efco.nottitranquille.view.StructureBean"/>
 <jsp:setProperty name="structureBean" property="*"/>
 
 <jsp:useBean id="loginBean" scope="session" class="it.ispw.efco.nottitranquille.view.LoginBean"/>
@@ -66,7 +66,7 @@
     }
 
     if (request.getParameter("delete") != null) {
-        structureBean.delete(request.getParameter("id"), loginBean.getUser());
+        structureBean.delete(structures, request.getParameter("id"));
     }
 %>
 <body>
@@ -75,7 +75,6 @@
 
 <!-- CONTAINER -->
 <div class="container under-navbar" style="margin-top: 50px">
-
     <div>
         <div class="left">
             <button class='btn btn-primary' data-toggle="modal" data-target="#createModal">Create new structure</button>

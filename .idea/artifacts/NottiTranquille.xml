@@ -1,0 +1,29 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="NottiTranquille">
+    <output-path>$PROJECT_DIR$/out/artifacts/NottiTranquille</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="it.ispw.efco.nottitranquille.view.ScoutFilteredSearchForm" />
+        <option name="description" value="" />
+        <option name="htmlParamFile" value="" />
+        <option name="paramFile" value="" />
+        <option name="title" value="Prova" />
+        <option name="vendor" value="provetta" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="NottiTranquille.jar">
+        <element id="module-output" name="NottiTranquille" />
+      </element>
+      <element id="jpa-descriptors" facet="NottiTranquille/jpa/JPA" />
+      <element id="library" level="project" name="Maven: javax.transaction:jta:1.1" />
+      <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.38" />
+      <element id="library" level="project" name="Maven: org.hibernate.common:hibernate-commons-annotations:5.0.1.Final" />
+      <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final" />
+      <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:5.0.6.Final" />
+      <element id="library" level="project" name="Maven: org.hibernate:hibernate-entitymanager:5.0.6.Final" />
+      <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.3.0.Final" />
+      <element id="library" level="project" name="Maven: org.jboss:jandex:2.0.0.Final" />
+    </root>
+  </artifact>
+</component>

@@ -23,6 +23,7 @@ public class RegistrationBean {
     private String city = "Roma";
     private String postalcode = "Roma";
     private String nation = "Roma";
+    private String mainRole = "";
     private DateTime dateofbirth = null;
     private String phonenumber = "";
     private String gender;
@@ -94,6 +95,14 @@ public class RegistrationBean {
     public void setDateofbirth(String dateofbirth) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-MM-yyyy");
         this.dateofbirth = DateTime.parse(dateofbirth, dateTimeFormatter);
+    }
+
+    public String getMainRole() {
+        return mainRole;
+    }
+
+    public void setMainRole(String mainRole) {
+        this.mainRole = mainRole;
     }
 
     //-------------------------------------------------------------------//

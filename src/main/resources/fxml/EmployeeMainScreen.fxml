@@ -29,7 +29,7 @@
          <children>
             <Text fx:id="employeeFirstName" layoutX="33.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Federico" />
             <Text fx:id="employeeLastName" layoutX="90.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vagnoni" />
-            <Text layoutX="163.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ruolo:" />
+             <Text layoutX="163.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Authorizations:"/>
             <Text fx:id="employeeRoles" layoutX="204.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scuot" />
             <Button fx:id="ScoutFilteredSearchForm" disable="true" layoutX="78.0" layoutY="169.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="235.0" text="Visualizza Richieste e approva Richieste" />
             <Button fx:id="scuoutAddRequestForm" disable="true" layoutX="326.0" layoutY="169.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="168.0" text="Aggiungi nuova Richiesta" />

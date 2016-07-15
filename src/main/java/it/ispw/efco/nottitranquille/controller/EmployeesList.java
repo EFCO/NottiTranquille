@@ -10,10 +10,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -71,13 +73,10 @@ public class EmployeesList implements Initializable {
         List<Person> results = personDAO.selectEmployees();
         List<Person> employees = new ArrayList<Person>();
         for (Person p : results) {
-            try {
-                if (p.getRole("Administrator") != null || p.getRole("Designer") != null || p.getRole("Scout") != null) {
-                    employees.add(p);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (p.getRole("Administrator") != null || p.getRole("Designer") != null || p.getRole("Scout") != null) {
+                employees.add(p);
             }
+
         }
         ObservableList rows = FXCollections.observableList(employees);
         lvEmployeesList.setItems(rows);
@@ -97,7 +96,7 @@ public class EmployeesList implements Initializable {
         roleCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Person, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Person, String> p) {
                 try {
-                    return new ReadOnlyObjectWrapper(p.getValue().getFirstRole().getClass().getSimpleName());
+                    return new ReadOnlyObjectWrapper(p.getValue().getMainRole());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -105,6 +104,15 @@ public class EmployeesList implements Initializable {
             }
         });
         lvEmployeesList.getColumns().setAll(nameCol, surnameCol, roleCol);
+
+        lvEmployeesList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent mouseEvent) {
+                if (lvEmployeesList.getSelectionModel().getSelectedItem() != null) {
+                    bDelete.setDisable(false);
+                    bModify.setDisable(false);
+                }
+            }
+        });
     }
 
     public void addEmployee(ActionEvent actionEvent) {
@@ -123,7 +131,8 @@ public class EmployeesList implements Initializable {
         ManageEmployeesDetails med = new ManageEmployeesDetails();
         med.setAdministrator(this.Administrator);
         med.setLoggedAdministrator(this.loggedAdministrator);
-        med.setRevisionedEmployee(lvEmployeesList.getSelectionModel().getSelectedItem());
+        med.setRevisionedEmployee(this.lvEmployeesList.getSelectionModel().getSelectedItem());
+        System.out.println("Impiegato da cambiare:" + lvEmployeesList.getSelectionModel().getSelectedItem().getLastName());
         try {
             med.start(mainStage);
         } catch (Exception e) {
