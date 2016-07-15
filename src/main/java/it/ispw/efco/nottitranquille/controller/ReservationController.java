@@ -59,11 +59,11 @@ public class ReservationController {
         try {
 
             // Location is reservable without the confirm of the Manager
-            if (location.getType().getReservationType() == ReservationType.Direct)
+            if (location.getReservationType() == ReservationType.Direct)
                 this.reserveDirect(reservation);
 
                 // Need Manager confirmation to complete the reservation
-            else if (location.getType().getReservationType() == ReservationType.WithConfirm)
+            else if (location.getReservationType() == ReservationType.WithConfirm)
                 this.reserveWithConfirmation(reservation, location.getManager());
 
 
@@ -110,6 +110,7 @@ public class ReservationController {
 
 
         reservation.setState(ReservationState.ToApprove);
+        //todo set other all reservation to decline
 
         if (manager.getEmail() != null) {
             Mailer mailer = new Mailer();
@@ -217,6 +218,49 @@ public class ReservationController {
 
         return reservations;
 
+    }
+
+    /**
+     * An user wants remove a reservation not already in the state of Paid.
+     * The reservation is removed also from the manager reservation to approve
+     *
+     * @param id: reservation's id
+     * @return true if procedure ends successful
+     * @see ReservationState
+     * @see Manager#deleteReservationToApprove(Reservation)
+     */
+    public boolean remove(Long id) {
+
+        try {
+
+            // reservation to delete
+            Reservation reservation = ReservationDAO.findByID(id);
+
+            // the manager who inserts the reserved locations
+            Person manager = reservation.getLocation().getManager();
+            Person tenant = reservation.getTenant();
+
+            Manager managerRole = (Manager) manager.getRole("Manager");
+            managerRole.deleteReservationToApprove(reservation);
+
+            // tenant who made the reservation
+            Tenant tenantRole = (Tenant) tenant.getRole("Tenant");
+            tenantRole.deleteReservation(reservation);
+
+            // update user
+            UserDAO.update(manager);
+            UserDAO.update(tenant);
+
+            // delete reservation from db
+            ReservationDAO.delete(reservation);
+
+        } catch (Exception e) {
+            // find exception or role not found
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     /**

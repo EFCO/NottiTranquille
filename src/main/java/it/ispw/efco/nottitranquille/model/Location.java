@@ -1,6 +1,8 @@
 package it.ispw.efco.nottitranquille.model;
 
 
+import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
+import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
 import org.joda.time.DateTime;
@@ -8,7 +10,6 @@ import org.joda.time.Interval;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
-import java.rmi.UnexpectedException;
 import java.util.*;
 
 /**
@@ -47,15 +48,13 @@ public class Location {
      * Name of the Location
      */
     private String name;
-    /**
-     * A type contains service for a specific class of location and
-     * the method with it can be booked
-     *
-     * @see it.ispw.efco.nottitranquille.model.enumeration.ReservationType
-     */
-    @ManyToOne
-    @Cascade(CascadeType.ALL)
-    private LocationType type;
+
+
+   @Enumerated
+    private LocationType locationType;
+
+    @Enumerated
+    private ReservationType reservationType;
 
     /**
      * A structure is a set of locations
@@ -234,7 +233,7 @@ public class Location {
     public void update(Location toUpdate) {
         this.id = toUpdate.getId();
         this.name = toUpdate.getName();
-        this.type = toUpdate.type;
+        this.locationType = toUpdate.locationType;
         this.price = toUpdate.price;
         this.availableDate = toUpdate.availableDate;
         this.booked = toUpdate.booked;
@@ -257,10 +256,6 @@ public class Location {
 
     public Long getId() {
         return id;
-    }
-
-    public LocationType getType() {
-        return type;
     }
 
     public Structure getStructure() {
@@ -317,10 +312,6 @@ public class Location {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setType(LocationType type) {
-        this.type = type;
     }
 
     public void setStructure(Structure structure) {
@@ -381,5 +372,21 @@ public class Location {
 
     public void setManager(Person manager) {
         this.manager = manager;
+    }
+
+    public LocationType getLocationType() {
+        return locationType;
+    }
+
+    public void setLocationType(LocationType locationType) {
+        this.locationType = locationType;
+    }
+
+    public ReservationType getReservationType() {
+        return reservationType;
+    }
+
+    public void setReservationType(ReservationType reservationType) {
+        this.reservationType = reservationType;
     }
 }

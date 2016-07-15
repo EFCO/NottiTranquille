@@ -1,6 +1,11 @@
 package it.ispw.efco.nottitranquille.model;
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.loader.plan.exec.internal.AbstractLoadPlanBasedLoader;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.*;
 
@@ -23,6 +28,7 @@ public class Tenant extends Role {
     @JoinTable(name = "Tenant_Reservation",
             joinColumns = {@JoinColumn(name = "ReservationId", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "TenantsId", referencedColumnName = "id")})
+    @Cascade(CascadeType.ALL)
     private List<Reservation> reservations;
 
     /**

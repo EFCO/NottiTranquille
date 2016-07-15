@@ -109,6 +109,8 @@ public class ReservationBean {
         locBean.setDescription(loc.getDescription());
         locBean.setEnablesDate(loc.getAvailableDate());
         locBean.setBooked(loc.getBooked());
+        locBean.setLocationType(loc.getLocationType().getText());
+        locBean.setReservationType(loc.getReservationType().getText());
         locBean.setId(loc.getId().toString());
         locBean.setAddress(loc.getStructure().getAddress().getCity() +
                 " " + loc.getStructure().getAddress().getAddress() +
@@ -207,4 +209,6 @@ public class ReservationBean {
     public void setTenantSurname(String tenantSurname) {
         this.tenantSurname = tenantSurname;
     }
+
+
 }

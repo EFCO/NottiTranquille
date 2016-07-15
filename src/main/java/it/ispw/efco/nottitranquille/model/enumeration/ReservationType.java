@@ -1,7 +1,5 @@
 package it.ispw.efco.nottitranquille.model.enumeration;
 
-import it.ispw.efco.nottitranquille.model.LocationType;
-
 /**
  * Enumeration elements are types for the Class {@link LocationType}.
  * They give information about the reservation flow.
@@ -14,5 +12,17 @@ import it.ispw.efco.nottitranquille.model.LocationType;
  * Created by emanuele on 18/01/16.
  */
 public enum ReservationType {
-    Direct, WithConfirm
+    Direct("Direct"), WithConfirm("WithConfirm");
+
+    private String text;
+
+    ReservationType(String text) {
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+
 }

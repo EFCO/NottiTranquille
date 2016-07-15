@@ -103,16 +103,6 @@
         </div>
         <p>${location.description}</p>
     </div>
-    <c:if test="${location.services!=null and location.services.size() > 0}">
-        <div>
-            <p>Elenco Servizi</p>
-            <ul type=”Servizi”>
-                <li>primo</li>
-                <li>secondo</li>
-                <li>terzo</li>
-            </ul>
-        </div>
-    </c:if>
 </div>
 
 <!-- BUYERS INFO
@@ -261,7 +251,7 @@
 
 </form>
 
-<c:if test="${reservationBean.location.type == 'WithConfirm' }">
+<c:if test="${reservationBean.location.reservationType == 'WithConfirm' }">
     <br>
     <div class="alert alert-warning" role="alert">This location is available only after a owner confirm! You will
         receive an email when the owner will display your request!

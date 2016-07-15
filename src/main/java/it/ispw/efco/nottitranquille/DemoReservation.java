@@ -4,7 +4,7 @@ import it.ispw.efco.nottitranquille.controller.ReservationController;
 import it.ispw.efco.nottitranquille.model.*;
 import it.ispw.efco.nottitranquille.model.Exception.IllegalBookingDate;
 import it.ispw.efco.nottitranquille.model.dao.*;
-import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
+import it.ispw.efco.nottitranquille.model.enumeration.*;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
@@ -59,11 +59,6 @@ public class DemoReservation {
         structureB.setAddress(addressB);
 
 
-        /*LocationType*/
-
-        LocationType locanda = new LocationType(ReservationType.Direct);
-        LocationType casaInfestata = new LocationType(ReservationType.WithConfirm);
-
         /* Interval */
 
         // Available date for Location
@@ -95,7 +90,8 @@ public class DemoReservation {
 
         Location myLocationA = new Location();
 
-        myLocationA.setType(locanda);
+        myLocationA.setLocationType(LocationType.Agriturismo);
+        myLocationA.setReservationType(ReservationType.WithConfirm);
 
         myLocationA.setName("Locanda del puledro impennato");
         myLocationA.setDescription(
@@ -111,7 +107,8 @@ public class DemoReservation {
 
         Location myLocationB = new Location();
 
-        myLocationB.setType(casaInfestata);
+        myLocationB.setLocationType(LocationType.BedBreakfast);
+        myLocationB.setReservationType(ReservationType.Direct);
 
         myLocationB.setName("Stamberga Strillante");
         myLocationB.setDescription(

@@ -50,20 +50,13 @@ public class Reservation {
     private Person tenant;
 
     @ElementCollection
+    @Cascade(CascadeType.DELETE)
     private List<String> buyers;
 
 
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentInterval")
     @Columns(columns = {@Column(name = "startDate"), @Column(name = "endDate")})
     private Interval period;
-
-/*
-    @ManyToMany
-    @JoinTable(name = "Reservation_Service",
-            joinColumns = {@JoinColumn(name = "ReservationId", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "ServiceId", referencedColumnName = "id")})
-    private List<Service> services;
-*/
 
     @Enumerated
     private ReservationState state;

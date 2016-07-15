@@ -31,7 +31,9 @@ public class LocationBean {
 
     private Float price;
 
-    private String type;
+    private String locationType;
+
+    private String reservationType;
 
     private String address;
 
@@ -57,10 +59,7 @@ public class LocationBean {
                 " " + location.getStructure().getAddress().getPostalcode();
 
 
-        if (location.getType().getReservationType() == ReservationType.WithConfirm)
-            this.type = "WithConfirm";
-        else
-            this.type = "Direct";
+        this.reservationType = location.getReservationType().getText();
 
         this.id = id;
 
@@ -152,14 +151,6 @@ public class LocationBean {
         this.price = price;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -174,5 +165,21 @@ public class LocationBean {
 
     public void setBooked(List<Interval> booked) {
         this.booked = booked;
+    }
+
+    public String getLocationType() {
+        return locationType;
+    }
+
+    public void setLocationType(String locationType) {
+        this.locationType = locationType;
+    }
+
+    public String getReservationType() {
+        return reservationType;
+    }
+
+    public void setReservationType(String reservationType) {
+        this.reservationType = reservationType;
     }
 }

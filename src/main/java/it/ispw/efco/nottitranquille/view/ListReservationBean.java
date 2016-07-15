@@ -7,6 +7,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -78,6 +79,33 @@ public class ListReservationBean {
         // return true if end successful
         return controller.declineReservation(ID);
 
+    }
+
+    /**
+     * An User want remove a reservation not already paid
+     *
+     * @param id reservation's id
+     * @return bool
+     */
+    public boolean remove(String id) {
+        Long ID = new Long(id);
+
+        ReservationController controller = ReservationController.getInstance();
+
+        Boolean removed = controller.remove(ID);
+
+        /* To update the view */
+        Iterator beanIterator = beans.iterator();
+        while (beanIterator.hasNext()) {
+            ReservationBean resBean = (ReservationBean) beanIterator.next();
+            if (resBean.getId().equals(id)) {
+                beanIterator.remove();
+                break;
+            }
+
+        }
+
+        return removed;
     }
 
     public void setBeans(List<ReservationBean> beans) {

@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
 <jsp:useBean id="paymentBean" scope="session"
              class="it.ispw.efco.nottitranquille.view.PaymentForm"/>
 <jsp:useBean id="Login" scope="session"
