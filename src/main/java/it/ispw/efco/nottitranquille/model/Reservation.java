@@ -52,14 +52,6 @@ public class Reservation {
     }
 
     /**
-     * @return
-     */
-    public Prices CalculatePrice() {
-        // TODO implement here
-        return null;
-    }
-
-    /**
      * 
      */
     public void addService() {

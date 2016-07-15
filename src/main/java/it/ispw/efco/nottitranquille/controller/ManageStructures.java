@@ -1,6 +1,7 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.*;
+import it.ispw.efco.nottitranquille.model.dao.StructureDao;
 import it.ispw.efco.nottitranquille.view.StructureBean;
 
 import java.util.ArrayList;

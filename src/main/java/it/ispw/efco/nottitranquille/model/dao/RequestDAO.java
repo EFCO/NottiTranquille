@@ -1,5 +1,8 @@
-package it.ispw.efco.nottitranquille.model;
+package it.ispw.efco.nottitranquille.model.dao;
 
+import it.ispw.efco.nottitranquille.model.JPAInitializer;
+import it.ispw.efco.nottitranquille.model.Location;
+import it.ispw.efco.nottitranquille.model.Request;
 import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
 
 import javax.persistence.EntityManager;

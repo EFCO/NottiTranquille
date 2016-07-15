@@ -1,5 +1,9 @@
 package it.ispw.efco.nottitranquille.model;
 
+import org.joda.time.DateTime;
+
+import javax.persistence.*;
+import java.util.*;
 import it.ispw.efco.nottitranquille.model.enumeration.StructureType;
 import it.ispw.efco.nottitranquille.view.StructureBean;
 import org.joda.time.DateTime;

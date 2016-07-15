@@ -38,9 +38,6 @@
     <script type="text/javascript" src="<c:url value="resources/js/jquery.tablesorter.js" />"></script>
     <%--TODO manage datatime with table sorter--%>
 
-    <!-- Custom JS -->
-    <script src="<c:url value="resources/js/structures.js" />"></script>
-
     <title>Manage structures</title>
 
 </head>
@@ -48,7 +45,7 @@
 <%-- All requests are of the form: structures.jsp?page=page&limit=limit --%>
 <%
 
-    List<Structure> structures = new ArrayList<>();
+    List<Structure> structures = new ArrayList<Structure>();
     try {
         structures = ((Manager) loginBean.getUser().getRole("Manager")).getManagedStructures();
     } catch (Exception e) {

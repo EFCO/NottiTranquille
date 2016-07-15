@@ -1,6 +1,12 @@
-package it.ispw.efco.nottitranquille.model;
+package it.ispw.efco.nottitranquille.model.dao;
+
+import it.ispw.efco.nottitranquille.model.JPAInitializer;
+import it.ispw.efco.nottitranquille.model.Location;
+import it.ispw.efco.nottitranquille.model.Person;
+import it.ispw.efco.nottitranquille.model.Structure;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 public class StructureDAO {
 
@@ -64,5 +70,13 @@ public class StructureDAO {
         person.getAddress().setPostalcode(newAddress.getPostalcode());
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+
+    public static List<Structure> retrieveStructures() {
+        EntityManager entityManager = it.ispw.efco.nottitranquille.JPAInitializer.getEntityManager();
+
+        return entityManager
+                .createQuery("from Structure ", Structure.class)
+                .getResultList();
     }
 }
