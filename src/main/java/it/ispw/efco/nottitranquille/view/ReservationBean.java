@@ -28,7 +28,7 @@ public class ReservationBean {
     /**
      * @see LocationBean
      */
-    private LocationBean locationBean;
+    private LocationBean location;
 
     /**
      * @see ReservationState
@@ -45,6 +45,10 @@ public class ReservationBean {
     private String endDate;
 
     private Float price;
+
+    private String tenantFirstname;
+
+    private String tenantSurname;
 
     /**
      * Method called when a Tenant confirms the end of the booking procedure.
@@ -67,7 +71,7 @@ public class ReservationBean {
         /* if all information are syntactically correct the system create a new reservationervation */
         ReservationController controller = ReservationController.getInstance();
 
-        Long ID = new Long(locationBean.getId());
+        Long ID = new Long(location.getId());
 
         try {
 
@@ -95,6 +99,8 @@ public class ReservationBean {
         this.setStartDate(reservation.getStartDate().toString(formatter));
         this.setEndDate(reservation.getEndDate().toString(formatter));
         this.setPrice(reservation.getPrice());
+        this.setTenantFirstname(reservation.getTenant().getfirstname());
+        this.setTenantSurname(reservation.getTenant().getlastname());
 
         Location loc = reservation.getLocation();
         LocationBean locBean = new LocationBean();
@@ -102,9 +108,13 @@ public class ReservationBean {
         locBean.setName(loc.getName());
         locBean.setDescription(loc.getDescription());
         locBean.setEnablesDate(loc.getAvailableDate());
+        locBean.setBooked(loc.getBooked());
         locBean.setId(loc.getId().toString());
+        locBean.setAddress(loc.getStructure().getAddress().getCity() +
+                " " + loc.getStructure().getAddress().getAddress() +
+                " " + loc.getStructure().getAddress().getPostalcode());
 
-        this.setLocationBean(locBean);
+        this.setLocation(locBean);
 
     }
 
@@ -134,12 +144,12 @@ public class ReservationBean {
         this.username = username;
     }
 
-    public LocationBean getLocationBean() {
-        return locationBean;
+    public LocationBean getLocation() {
+        return location;
     }
 
-    public void setLocationBean(LocationBean locationBean) {
-        this.locationBean = locationBean;
+    public void setLocation(LocationBean location) {
+        this.location = location;
     }
 
     public ReservationState getState() {
@@ -182,4 +192,19 @@ public class ReservationBean {
         this.buyers = buyers;
     }
 
+    public String getTenantFirstname() {
+        return tenantFirstname;
+    }
+
+    public void setTenantFirstname(String tenantFirstname) {
+        this.tenantFirstname = tenantFirstname;
+    }
+
+    public String getTenantSurname() {
+        return tenantSurname;
+    }
+
+    public void setTenantSurname(String tenantSurname) {
+        this.tenantSurname = tenantSurname;
+    }
 }

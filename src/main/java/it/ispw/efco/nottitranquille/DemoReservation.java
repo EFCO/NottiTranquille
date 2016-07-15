@@ -46,6 +46,18 @@ public class DemoReservation {
         UserDAO.store(manager);
         UserDAO.store(me);
 
+        /* Address */
+        Address addressA = new Address("Italia", "Roma", "Via del pirata 12", "00040");
+        Address addressB = new Address("Italia", "Frascati", "Viale Ungheria 34", "00044");
+
+        /* Structure */
+
+        Structure structureA = new Structure();
+        structureA.setAddress(addressA);
+
+        Structure structureB = new Structure();
+        structureB.setAddress(addressB);
+
 
         /*LocationType*/
 
@@ -95,7 +107,7 @@ public class DemoReservation {
 
         myLocationA.setPrice(400.00f);
         myLocationA.setManager(manager);
-
+        myLocationA.setStructure(structureA);
 
         Location myLocationB = new Location();
 
@@ -112,6 +124,8 @@ public class DemoReservation {
 
         myLocationB.setPrice(200.00f);
         myLocationB.setManager(manager);
+        myLocationB.setStructure(structureB);
+
         try {
             myLocationA.addAvailablePeriod(intervalA);
             myLocationA.addAvailablePeriod(intervalB);

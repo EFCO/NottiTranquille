@@ -61,6 +61,7 @@ public class Location {
      * A structure is a set of locations
      */
     @ManyToOne
+    @Cascade(CascadeType.ALL)
     private Structure structure;
 
     /**

@@ -13,7 +13,11 @@
         paymentBean.populate(request.getParameter("Pay"));
         paymentBean.setTenantUsername(Login.getUsername());
     }
-
+    if (request.getParameter("Exit") != null) {
+%>
+<jsp:forward page="index.jsp"/>
+<%
+    }
     if (request.getParameter("payNow") != null) {
         if (paymentBean.validate()) {
 %>
@@ -63,19 +67,43 @@
 <br><br>
 
 <div class="container-fluid">
-    <h1>Large Grid</h1>
-    <p>The following example will result in a 25%/75% split on small devices, a 50%/50% split on medium devices, and a
-        33%/66% split on large devices. On extra small devices, it will automatically stack (100%).</p>
-    <p>Resize the browser window to see the effect.</p>
+    <h1>Reasume</h1>
+    <hr>
+    <p>
+    <h3>Verify the date before confirm the payment! </h3> </p>
+    </br>
     <div class="row">
         <div class="col-sm-3 col-md-6 col-lg-4" style="border-right: outset">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+            Booking made by
+            <b><c:out value="${paymentBean.reservation.tenantFirstname}"/>
+                <c:out value="${paymentBean.reservation.tenantSurname}"/> </b>
+
+            </br></br>
+
+            Booking dates : From <c:out value="${paymentBean.reservation.startDate}"/>
+            to <c:out value="${paymentBean.reservation.endDate}"/>
+
+            </br></br>
+            <ul>
+                <c:if test="${paymentBean.reservation.buyers != null && paymentBean.reservation.buyers.size() != 0}">
+                    Your room mates are :
+
+                    <c:forEach items="${paymentBean.reservation.buyers}" var="name">
+                        <li>${name}</li>
+                    </c:forEach>
+
+                </c:if>
+            </ul>
+            </br></br>
+
         </div>
         <div class="col-sm-9 col-md-6 col-lg-8">
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
-            aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+            Address: <c:out value="${paymentBean.reservation.location.address}"/>
+            <br>
+            Price: <c:out value="${paymentBean.reservation.price}"/> $
+
         </div>
     </div>
 
@@ -84,6 +112,7 @@
     <form action="Payment.jsp" id="PayNow" class="form-horizontal">
         <div align="right" align="bottom">
             <button type="submit" class="btn btn-lg btn-primary" name="payNow">Pay Now</button>
+            <button type="submit" class="btn btn-lg btn-primary" name="Exit">Exit</button>
         </div>
     </form>
 </div>

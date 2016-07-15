@@ -25,11 +25,15 @@ public class LocationBean {
 
     private List<Interval> enablesDate;
 
+    private List<Interval> booked;
+
     private List<Service> services;
 
     private Float price;
 
     private String type;
+
+    private String address;
 
     /**
      * Populate the instance with information from the model layer.
@@ -46,7 +50,12 @@ public class LocationBean {
         name = location.getName();
         description = location.getDescription();
         enablesDate = location.getAvailableDate();
+        booked = location.getBooked();
         price = location.getPrice();
+        address = location.getStructure().getAddress().getCity() +
+                " " + location.getStructure().getAddress().getAddress() +
+                " " + location.getStructure().getAddress().getPostalcode();
+
 
         if (location.getType().getReservationType() == ReservationType.WithConfirm)
             this.type = "WithConfirm";
@@ -102,6 +111,27 @@ public class LocationBean {
         return enable;
     }
 
+    public String getDisableDate() {
+        String disable = "";
+
+        Iterator<Interval> bookedIterator = booked.iterator();
+        while (bookedIterator.hasNext()) {
+            Interval interval = bookedIterator.next();
+            DateTime start = interval.getStart();
+            DateTime end = interval.getEnd();
+
+            disable += String.format(" {from : [ %d, %d, %d ] , to: [%d,%d,%d] }",
+                    start.getYear(), start.getMonthOfYear() - 1, start.getDayOfMonth() - 1,
+                    end.getYear(), end.getMonthOfYear() - 1, end.getDayOfMonth() - 1);
+
+
+            if (bookedIterator.hasNext())
+                disable += " , ";
+        }
+
+        return disable;
+    }
+
     public void setEnablesDate(List<Interval> enablesDate) {
         this.enablesDate = enablesDate;
     }
@@ -128,5 +158,21 @@ public class LocationBean {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public List<Interval> getBooked() {
+        return booked;
+    }
+
+    public void setBooked(List<Interval> booked) {
+        this.booked = booked;
     }
 }

@@ -8,57 +8,112 @@
     <artifactId>nottitranquille</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-
     <dependencies>
-        <!-- The JavaServer Pages Standard Tag Library (JSTL)
-        is a collection of useful JSP tags which encapsulates core functionality common to many JSP applications. -->
+        <!-- The JavaServer Pages Standard Tag Library (JSTL) -->
+        <!-- is a collection of useful JSP tags which encapsulates core functionality common to many JSP applications. -->
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
 
+        <!-- JavaServer Pages(TM) API -->
+        <!-- JavaServer Pages(TM) API -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Hibernate JPA Support -->
+        <!-- Hibernate O/RM implementation of the JPA specification -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>5.0.6.Final</version>
         </dependency>
 
+        <!-- Joda-Time -->
+        <!-- Date and time library to replace JDK date handling -->
         <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.9.1</version>
+          <groupId>joda-time</groupId>
+          <artifactId>joda-time</artifactId>
+          <version>2.9.1</version>
         </dependency>
 
+        <!-- Joda Time JSP Tags Support -->
+        <!-- Contribution to Joda-Time that adds JSP tags support -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time-jsptags</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <!-- Classes utilising Java 7 and/or 8 that add Hibernate support for types such as Moneta -->
         <dependency>
             <groupId>org.jadira.usertype</groupId>
-            <artifactId>usertype.core</artifactId>
+            <artifactId>usertype.extended</artifactId>
             <version>5.0.0.GA</version>
         </dependency>
 
+        <!-- Java Transaction API -->
+        <!-- It is appropriate for inclusion in a classpath, and may be added to a Java 2 installation. -->
         <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>jta</artifactId>
             <version>1.1</version>
         </dependency>
 
+        <!-- MySQL Connector/J -->
+        <!-- MySQL JDBC Type 4 driver -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.38</version>
         </dependency>
 
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-        </dependency>
-
+        <!-- JUnit -->
+        <!-- JUnit is a unit testing framework for Java, created by Erich Gamma and Kent Beck. -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Apache Commons Lang -->
+        <!-- Apache Commons Lang, a package of Java utility classes for the classes that are in java.lang's hierarchy, or are considered to be so standard as to justify existence in java.lang. -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160212</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>pl.pragmatists</groupId>
+            <artifactId>JUnitParams</artifactId>
+            <version>1.0.5</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>

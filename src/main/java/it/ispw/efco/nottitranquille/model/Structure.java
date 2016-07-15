@@ -1,10 +1,11 @@
 package it.ispw.efco.nottitranquille.model;
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 import org.joda.time.DateTime;
-import org.joda.time.Interval;
 
 import javax.persistence.*;
-import java.sql.Struct;
+import javax.persistence.Entity;
 import java.util.*;
 
 /**
@@ -28,11 +29,7 @@ public class Structure {
     public Structure(String name, Address address) {
         this.name = name;
         this.address = address;
-
-        locations = new ArrayList<Location>();
-
     }
-
 
     /**
      *
@@ -48,12 +45,6 @@ public class Structure {
      *
      */
     private Integer numberOfLocations;
-
-    @OneToMany
-    @JoinTable(name = "Structure_Location",
-            joinColumns = {@JoinColumn(name = "StructureId", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "LocationId", referencedColumnName = "id")})
-    private List<Location> locations;
 
     /**
      *
@@ -89,11 +80,12 @@ public class Structure {
     @ManyToOne
     private Owner owner;
 
-    @Transient
+    @OneToOne
+    @Cascade(CascadeType.ALL)
     private Address address;
 
-    @ManyToOne
-    private StructureType type;
+//    @ManyToOne
+//    private StructureType type;
 
     @Override
     public String toString() {
@@ -108,7 +100,7 @@ public class Structure {
                 ", managedBy=" + managedBy +
                 ", owner=" + owner +
 //                ", address=" + address +
-                ", type=" + type +
+//                ", type=" + type +
                 ", id=" + id +
                 '}';
     }
@@ -116,24 +108,6 @@ public class Structure {
     @Id
     @GeneratedValue
     private Long id;
-
-
-    public void addLocations(List<Location> newLocations) {
-        locations.addAll(newLocations);
-        for (Location location : newLocations) {
-            location.setStructure(this);
-        }
-
-        numberOfLocations += newLocations.size();
-
-    }
-
-    public void addLocation(Location location) {
-        locations.add(location);
-        location.setStructure(this);
-
-        numberOfLocations += 1;
-    }
 
 
     /* GETTER AND SETTER */
@@ -164,14 +138,6 @@ public class Structure {
 
     public void setNumberOfLocations(Integer numberOfLocations) {
         this.numberOfLocations = numberOfLocations;
-    }
-
-    public List<Location> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
     }
 
     public Set<String> getPhotos() {
@@ -230,21 +196,21 @@ public class Structure {
         this.owner = owner;
     }
 
-//    public Address getAddress() {
-//        return address;
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+//    public StructureType getType() {
+//        return type;
 //    }
 //
-//    public void setAddress(Address address) {
-//        this.address = address;
+//    public void setType(StructureType type) {
+//        this.type = type;
 //    }
-
-    public StructureType getType() {
-        return type;
-    }
-
-    public void setType(StructureType type) {
-        this.type = type;
-    }
 
     public void setId(Long id) {
         this.id = id;

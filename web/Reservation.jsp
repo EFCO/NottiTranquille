@@ -6,7 +6,7 @@
 
 <jsp:useBean id="reservationBean" scope="session"
              class="it.ispw.efco.nottitranquille.view.ReservationBean"/>
-<jsp:useBean id="locationBean" scope="session"
+<jsp:useBean id="location" scope="session"
              class="it.ispw.efco.nottitranquille.view.LocationBean"/>
 <jsp:useBean id="Login" scope="session"
              class="it.ispw.efco.nottitranquille.view.LoginBean"/>
@@ -20,9 +20,9 @@
     // Assuming the id of the location we want to see is in the URL
     // because a GET request is made.
     if (request.getParameter("id") != null) {
-        locationBean.populate(request.getParameter("id"));
+        location.populate(request.getParameter("id"));
         reservationBean.setUsername(Login.getUsername());
-        reservationBean.setLocationBean(locationBean);
+        reservationBean.setLocation(location);
     }
 
 %>
@@ -99,11 +99,11 @@
 <div class="container">
     <div class="jumbotron">
         <div class="page-header">
-            <h2>${locationBean.name}</h2>
+            <h2>${location.name}</h2>
         </div>
-        <p>${locationBean.description}</p>
+        <p>${location.description}</p>
     </div>
-    <c:if test="${locationBean.services!=null and locationBean.services.size() > 0}">
+    <c:if test="${location.services!=null and location.services.size() > 0}">
         <div>
             <p>Elenco Servizi</p>
             <ul type=”Servizi”>
@@ -217,11 +217,12 @@
                     hiddenName: true,
 
                     disable: [
-                        {from: [0, 0, 0], to: yesterday}
+                        {from: [0, 0, 0], to: yesterday},
+                        ${location.disableDate}
                     ],
 
                     enable: [
-                        ${locationBean.enablesDate}
+                        ${location.enablesDate}
                     ]
 
                 })
@@ -234,11 +235,12 @@
                     hiddenName: true,
 
                     disable: [
-                        {from: [0, 0, 0], to: yesterday}
+                        {from: [0, 0, 0], to: yesterday},
+                        ${location.disableDate}
                     ],
 
                     enable: [
-                        ${locationBean.enablesDate}
+                        ${location.enablesDate}
                     ]
 
                 })
@@ -259,10 +261,11 @@
 
 </form>
 
-<c:if test="${reservationBean.locationBean.type == 'WithConfirm' }">
+<c:if test="${reservationBean.location.type == 'WithConfirm' }">
     <br>
     <div class="alert alert-warning" role="alert">This location is available only after a owner confirm! You will
-    receive an email when the owner will display your request!</div>
+        receive an email when the owner will display your request!
+    </div>
 </c:if>
 
 

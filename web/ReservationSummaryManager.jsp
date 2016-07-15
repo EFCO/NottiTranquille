@@ -29,7 +29,7 @@
 
                 <form action="index.jsp">
                     <tr>
-                        <td>${resBean.locationBean.name}</td>
+                        <td>${resBean.location.name}</td>
                         <td>${resBean.startDate}</td>
                         <td>${resBean.endDate}
                         <td>
