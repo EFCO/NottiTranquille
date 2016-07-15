@@ -162,35 +162,35 @@
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <column id="56" parent="7" name="ReservationId">
+      <column id="56" parent="7" name="ManagerId">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <column id="57" parent="7" name="ManagerId">
+      <column id="57" parent="7" name="ReservationId">
         <mandatory>1</mandatory>
         <data-type>bigint(20)</data-type>
       </column>
-      <index id="58" parent="7" name="FKp10w0s3s78drx8mgf81ehknqs">
-        <columns>ReservationId</columns>
+      <index id="58" parent="7" name="FK36yefwj8shqkk89e82y28p9tl">
+        <columns>ManagerId</columns>
         <desc-columns></desc-columns>
       </index>
-      <index id="59" parent="7" name="UK_4e11kgq7n332alhqtlqlnklui">
-        <columns>ManagerId</columns>
+      <index id="59" parent="7" name="UK_5o7wd90g5lb5cdtrkh9pwy4jl">
+        <columns>ReservationId</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
       </index>
-      <key id="60" parent="7" name="UK_4e11kgq7n332alhqtlqlnklui">
-        <columns>ManagerId</columns>
-        <underlying-index>UK_4e11kgq7n332alhqtlqlnklui</underlying-index>
-      </key>
-      <foreign-key id="61" parent="7" name="FKp10w0s3s78drx8mgf81ehknqs">
+      <key id="60" parent="7" name="UK_5o7wd90g5lb5cdtrkh9pwy4jl">
         <columns>ReservationId</columns>
+        <underlying-index>UK_5o7wd90g5lb5cdtrkh9pwy4jl</underlying-index>
+      </key>
+      <foreign-key id="61" parent="7" name="FK36yefwj8shqkk89e82y28p9tl">
+        <columns>ManagerId</columns>
         <ref-key>~.Role.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>
       </foreign-key>
-      <foreign-key id="62" parent="7" name="FKrvldl4877dl10i5hvto0rxv10">
-        <columns>ManagerId</columns>
+      <foreign-key id="62" parent="7" name="FK70qucvm6yapda80pjfpd8rr5b">
+        <columns>ReservationId</columns>
         <ref-key>~.Reservation.PRIMARY</ref-key>
         <cascade-update-rule>restrict</cascade-update-rule>
         <cascade-delete-rule>restrict</cascade-delete-rule>

@@ -164,7 +164,7 @@ public class ReservationController {
      */
     public void declineReservation(Reservation reservation) {
         reservation.setState(ReservationState.Declined);
-        ReservationDAO.delete(reservation);
+        ReservationDAO.update(reservation);
     }
 
     /**

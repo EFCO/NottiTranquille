@@ -1,6 +1,10 @@
 package it.ispw.efco.nottitranquille.model;
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.*;
 
 
@@ -14,8 +18,9 @@ public class Manager extends Role implements Applicant {
 
     @OneToMany
     @JoinTable(name = "Manager_Reservation",
-            joinColumns = {@JoinColumn(name = "ReservationId", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "ManagerId", referencedColumnName = "id")})
+            joinColumns = {@JoinColumn(name = "ManagerId", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "ReservationId", referencedColumnName = "id")})
+    @Cascade(CascadeType.ALL)
     private List<Reservation> toApprove;
 
     /**
