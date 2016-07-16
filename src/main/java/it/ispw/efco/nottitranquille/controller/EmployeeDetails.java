@@ -94,6 +94,12 @@ public class EmployeeDetails implements Initializable {
             genders.add(g.toString());
         }
         spGender.setItems(FXCollections.observableList(genders));
+
+        EventHandler<ActionEvent> action = addRole();
+
+        for (MenuItem mi : spAddAuth.getItems()) {
+            mi.setOnAction(action);
+        }
 //        System.out.println("Initializing" + revisionedEmployee.getLastName());
 //        List<String> allRoles = new ArrayList<String>();
 //        allRoles.add("Administrator");
@@ -148,17 +154,23 @@ public class EmployeeDetails implements Initializable {
 //
 //        }
 
+
         spRole.valueProperty().addListener(new ChangeListener<String>() {
             public void changed(ObservableValue ov, String t, String t1) {
-                if (t1.equals("administrator") && !lvAuth.getItems().contains("Administrator_Privileges")) {
+                System.out.println("CHanging" + t1);
+                if (t1.equals("Administrator") && !lvAuth.getItems().contains("Administrator_Privileges")) {
                     lvAuth.getItems().add("Administrator_Privileges");
-                } else if (t1.equals("designer") && !lvAuth.getItems().contains("Manage_Packets")) {
+                } else if (t1.equals("Designer") && !lvAuth.getItems().contains("Manage_Packets")) {
                     lvAuth.getItems().add("Manage_Packets");
-                } else if (t1.equals("manager") && !lvAuth.getItems().contains("Insert_Requests")) {
-                    lvAuth.getItems().add("Insert_Requests");
-                } else if (t1.equals("scout") && !lvAuth.getItems().contains("Approve_Requests")) {
-                    lvAuth.getItems().add("Approve_Requests");
+                } else if (t1.equals("Scout")) {
+                    if (!lvAuth.getItems().contains("Insert_Requests")) {
+                        lvAuth.getItems().add("Insert_Requests");
+                    }
+                    if (!lvAuth.getItems().contains("Approve_Requests")) {
+                        lvAuth.getItems().add("Approve_Requests");
+                    }
                 }
+                System.out.println(lvAuth.getItems().get(0));
                 spAddAuth.setDisable(false);
             }
         });
@@ -174,28 +186,38 @@ public class EmployeeDetails implements Initializable {
 
     }
 
-    public void addRole(ActionEvent actionEvent) {
-        for (MenuItem item : spAddAuth.getItems()) {
-            CheckMenuItem checkMenuItem = (CheckMenuItem) item;
-            if (checkMenuItem.isSelected() && !lvAuth.getItems().contains(item.getText())) {
-                lvAuth.getItems().add(item.getText());
+//    public void addRole(MenuItem mi) {
+////        for (MenuItem item : spAddAuth.getItems()) {
+////            CheckMenuItem checkMenuItem = (CheckMenuItem) item;
+////            if (checkMenuItem.isSelected() && !lvAuth.getItems().contains(item.getText())) {
+////                lvAuth.getItems().add(item.getText());
+////            }
+////        }
+//        //MenuItem item = (MenuItem) actionEvent.getSource().toString()
+//        System.out.println("Button: " + mi.getText());
+//    }
+
+    private EventHandler<ActionEvent> addRole() {
+        return new EventHandler<ActionEvent>() {
+
+            public void handle(ActionEvent event) {
+                MenuItem mItem = (MenuItem) event.getSource();
+                String side = mItem.getText();
+                if ("left".equalsIgnoreCase(side)) {
+                    System.out.println("left");
+                } else if ("right".equalsIgnoreCase(side)) {
+                    System.out.println("right");
+                } else if ("top".equalsIgnoreCase(side)) {
+                    System.out.println("top");
+                } else if ("bottom".equalsIgnoreCase(side)) {
+                    System.out.println("bottom");
+                }
             }
-        }
+        };
     }
 
     public void removeRole(ActionEvent actionEvent) {
-        List<String> auths = new ArrayList<String>();
-        auths = lvAuth.getItems();
-        for (MenuItem item : spAddAuth.getItems()) {
-            CheckMenuItem checkMenuItem = (CheckMenuItem) item;
-            if (checkMenuItem.isSelected()) {
-                for (String r : auths) {
-                    if (r.equals(checkMenuItem.toString())) {
-                        lvAuth.getItems().remove(r);
-                    }
-                }
-            }
-        }
+        lvAuth.getItems().remove(lvAuth.getSelectionModel().getSelectedItem());
     }
 
     public void saveEmployee(ActionEvent actionEvent) {

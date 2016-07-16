@@ -1,9 +1,7 @@
 package it.ispw.efco.nottitranquille.model.DAO;
 
-import it.ispw.efco.nottitranquille.model.Address;
-import it.ispw.efco.nottitranquille.model.JPAInitializer;
-import it.ispw.efco.nottitranquille.model.Person;
-import it.ispw.efco.nottitranquille.model.Structure;
+import it.ispw.efco.nottitranquille.model.*;
+import it.ispw.efco.nottitranquille.view.StructureBean;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -15,14 +13,12 @@ public class StructureDAO {
      *
      * @param structure the Price to persist
      */
-    public void store(Structure structure, Person manager, Person owner) throws Exception {
+    public void store(Structure structure, Person manager) throws Exception {
         if (structure != null) {
             EntityManager entityManager = JPAInitializer.getEntityManager();
             entityManager.getTransaction().begin();
-            entityManager.persist(structure);
             entityManager.merge(manager);
-            if (owner != null)
-                entityManager.merge(owner);
+            entityManager.persist(structure);
             entityManager.getTransaction().commit();
             entityManager.close();
         } else {
@@ -40,17 +36,32 @@ public class StructureDAO {
     }
 
     public void delete(Structure structure) throws Exception {
-        EntityManager entityManager = JPAInitializer.getEntityManager();
+        EntityManager entityManager;
+        entityManager = JPAInitializer.getEntityManager();
+        Structure structureToDelete;
+        structureToDelete = entityManager.find(Structure.class, structure.getId());
+//        Request requestToDelete = entityManager.find(Request.class,structure.getRequest().getId());
         entityManager.getTransaction().begin();
-        structure.removeOwners();
-//        structure.removeRequest();
-        structure.removeManagedBy();
-        entityManager.remove(entityManager.merge(structure));
+
+        structureToDelete.removeOwners();
+        structureToDelete.removeManagedBy();
+        structureToDelete.removeAddress();
+        structureToDelete.removeRequest();
+        structureToDelete.removeLocations();
+        entityManager.remove(structureToDelete);
+
+        entityManager.getTransaction().commit();
+        entityManager.close();
+
+        entityManager = JPAInitializer.getEntityManager();
+        structureToDelete = entityManager.find(Structure.class, structure.getId());
+        entityManager.getTransaction().begin();
+        entityManager.remove(structureToDelete);
         entityManager.getTransaction().commit();
         entityManager.close();
     }
 
-    public void modifyField(String field, String value, Long id) {
+    public void modifyField(String field, Object value, Long id) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         String querystring = "UPDATE Structure s SET s." + field + " = :v WHERE s.id = :id";
         entityManager.getTransaction().begin();
@@ -78,5 +89,16 @@ public class StructureDAO {
         return entityManager
                 .createQuery("from Structure ", Structure.class)
                 .getResultList();
+    }
+
+    public void store(StructureBean structure, Manager managerInstance, Owner ownerInstance) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        entityManager.getTransaction().begin();
+        Structure newStructure = new Structure(structure, managerInstance, ownerInstance);
+        Request request = new Request(managerInstance);
+        newStructure.setRequest(request);
+        entityManager.merge(newStructure);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 }
