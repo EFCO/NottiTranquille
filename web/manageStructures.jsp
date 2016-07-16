@@ -56,9 +56,9 @@
 
     if (request.getParameter("create") != null || request.getParameter("update") != null) { // After CREATE or UPDATE
         try {
-            if (request.getParameter("checIn") != null && request.getParameter("checkOut") != null) {
-                structureBean.setCheckIn(request.getParameter("checIn"));
-                structureBean.setCheckOut(request.getParameter("checOut"));
+            if (request.getParameter("checkIn") != null && request.getParameter("checkOut") != null) {
+                structureBean.setCheckIn(request.getParameter("checkIn"));
+                structureBean.setCheckOut(request.getParameter("checkOut"));
             }
             structureBean.validate(loginBean.getUser());
         } catch (Exception e) {
@@ -80,7 +80,6 @@
         <div class="left">
             <button class='btn btn-primary' data-toggle="modal" data-target="#createModal">Create new structure</button>
         </div>
-        n
         <!-- Table with prices -->
         <table id="prices-table" class="tablesorter table table-bordered table-hover table-striped">
             <%--<caption>Ini adalah data biodata anda</caption>--%>
@@ -127,292 +126,231 @@
             </tbody>
         </table>
 
-        <!-- Pagination -->
-        <div>
-            <div class="left">
-                <nav>
-                    <ul class="pagination">
-                        <%--<c:if test="${pageNumber != 1}">
-                            <li><a href='<custom:replaceParam name='page' value='1'/>'
-                                   title='Go to the first page.'>&laquo;</a></li>
-                        </c:if>
-                        <c:forEach begin="1" end="${maxPages.intValue()}" varStatus="pageLoop">
-                            <c:choose>
-                                <c:when test="${pageNumber eq pageLoop.count}">
-                                    <li class='active'><a href='#'>${pageLoop.count}</a></li>
-                                </c:when>
-                                <c:otherwise>
-                                    <li>
-                                        <a href='<custom:replaceParam name='page' value='${(pageLoop.count).toString()}'/>'>${pageLoop.count}</a>
-                                    </li>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:forEach>
-                        <c:if test="${pageNumber != maxPages}">
-                            <li><a href='<custom:replaceParam name='page' value='${maxPages}'/>'
-                                   title='Go to the last page.'>&raquo;</a></li>
-                        </c:if>--%>
-                    </ul>
-                </nav>
-            </div>
-            <div id="items-counter" class="right">
-                <%--<p>
-                    Items <b>
-                    <c:choose>
-                        <c:when test="${counts == 0}">
-                            0
-                        </c:when>
-                        <c:otherwise>
-                            ${startPosition + 1}
-                        </c:otherwise>
-                    </c:choose>
-                </b> to <b>
-                    <c:choose>
-                        <c:when test="${limit eq -1}">
-                            ${counts}
-                        </c:when>
-                        <c:otherwise>
-                            <c:choose>
-                                <c:when test="${counts < (limit * pageNumber)}">
-                                    ${counts}
-                                </c:when>
-                                <c:otherwise>
-                                    ${limit * pageNumber}
-                                </c:otherwise>
-                            </c:choose>
-                        </c:otherwise>
-                    </c:choose>
-                </b> of <b>${counts}</b>.
-                </p>--%>
-            </div>
-        </div>
-
-
-        <!-- FOOTER -->
-        <%@include file="footer.html" %>
-
-    </div>
-
-    <!-- Create Modal -->
-    <div class="modal fade in" id="createModal" tabindex="-1" role="dialog" aria-labelledby="Create">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">×</span></button>
-                    <h4 class="modal-title" id="createModalLabel">Create Structure</h4>
-                </div>
-                <div class="modal-body">
-                    <form action="manageStructures.jsp" name="newStructureForm" id="newStructureForm" method="GET">
-                        <div class="form-group">
-                            <label for="name" id="userlabel">Structure name:</label>
-                            <input name="name" id="name" type="text" class="form-control"
-                                   placeholder="Villa bella" value="Villa bella" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="termsOfService">Terms of Services:</label>
-                            <input name="termsOfService" id="termsOfService" type="text" class="form-control"
-                                   placeholder="Non bisogna fare cose" value="Non bisogna fare cose" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="termsOfCancellation">Terms of Cancellation:</label>
-                            <input name="termsOfCancellation" id="termsOfCancellation" type="text" class="form-control"
-                                   placeholder="Se fate casino ciao" value="Se fate casino ciao" required>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label for="checkinpicker">Check In:</label>
-                                <div class='input-group date' id='checkinpicker'>
-                                    <input type='text' name="checkIn" id="checkIn" class="form-control" required/>
-                            <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="checkoutpicker">Check Out:</label>
-                                <div class='input-group date' id='checkoutpicker'>
-                                    <input type='text' name="checkOut" id="checkOut" class="form-control" required/>
-                            <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                                </div>
-                            </div>
-                        </div>
-                        <script>
-                            $(function () {
-                                $('#checkinpicker').datetimepicker({
-                                    format: 'DD-MM-YYYY',
-                                });
-                                $('#checkoutpicker').datetimepicker({
-                                    format: 'DD-MM-YYYY',
-                                });
-                            });
-                        </script>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label for="address">Indirizzo:</label>
-                                <input name="address" id="address" type="text" class="form-control"
-                                       placeholder="Piazza Ciao" value="Piazza Ciao">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="nation">Nazione:</label>
-                                <input name="nation" id="nation" type="text" class="form-control"
-                                       placeholder="Italia"
-                                       value="Italia">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="city">Città:</label>
-                                <input name="city" id="city" type="text" class="form-control" placeholder="Roma"
-                                       value="Roma">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="postalcode">Codice postale:</label>
-                                <input name="postalcode" id="postalcode" type="text" class="form-control"
-                                       placeholder="00039" value="00039">
-                            </div>
-                        </div>
-                        <div class="row" style="margin-top: 6px">
-                            <div class="form-group col-md-12">
-                                <label for="owner">Sei anche il possessore della struttura?</label>
-                                <input type="checkbox" name="owner" id="owner" checked>
-                            </div>
-                        </div>
-                        <script>
-                            $(function () {
-                                $("#owner").click(function () {
-                                    if (!$('#owner').is(':checked')) {
-                                        $('#owner').attr("checked", false);
-                                        $("#managerisownerdiv").show('slide');
-                                        $('#managerisownerdiv :input').slice(0, 3).prop("required", true);
-                                    } else {
-                                        $('#owner').attr("checked", true);
-                                        $("#managerisownerdiv").hide('slide');
-                                        $('#managerisownerdiv :input').slice(0, 3).prop("required", false);
-                                    }
-                                })
-                            })
-                        </script>
-                        <div class="form-group" id="managerisownerdiv" style="display: none">
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label for="ownerFirstName">Nome possessore struttura:</label>
-                                    <input name="ownerFirstName" id="ownerFirstName" type="text" class="form-control"
-                                           value="Federico">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="ownerLastName">Cognome possessore struttura:</label>
-                                    <input name="ownerLastName" id="ownerLastName" type="text" class="form-control"
-                                           value="Vagnoni">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label for="ownerEmail">Email possessore struttura:</label>
-                                    <input name="ownerEmail" id="ownerEmail" type="email" class="form-control"
-                                           value="fede93.vagnoni@gmail.com">
-                                </div>
+        <!-- Create Modal -->
+        <div class="modal fade in" id="createModal" tabindex="-1" role="dialog" aria-labelledby="Create">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="createModalLabel">Create Structure</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="manageStructures.jsp" name="newStructureForm" id="newStructureForm" method="GET">
+                            <div class="form-group">
+                                <label for="name" id="userlabel">Structure name:</label>
+                                <input name="name" id="name" type="text" class="form-control"
+                                       placeholder="Villa bella" value="Villa bella" required>
                             </div>
                             <div class="form-group">
-                                <label for="sameaddress">Vive all'interno della struttura?</label>
-                                <input type="checkbox" name="sameaddress" id="sameaddress" checked>
+                                <label for="termsOfService">Terms of Services:</label>
+                                <input name="termsOfService" id="termsOfService" type="text" class="form-control"
+                                       placeholder="Non bisogna fare cose" value="Non bisogna fare cose" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="termsOfCancellation">Terms of Cancellation:</label>
+                                <input name="termsOfCancellation" id="termsOfCancellation" type="text"
+                                       class="form-control"
+                                       placeholder="Se fate casino ciao" value="Se fate casino ciao" required>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="checkinpicker">Check In:</label>
+                                    <div class='input-group date' id='checkinpicker'>
+                                        <input type='text' name="checkIn" id="checkIn" class="form-control" required/>
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="checkoutpicker">Check Out:</label>
+                                    <div class='input-group date' id='checkoutpicker'>
+                                        <input type='text' name="checkOut" id="checkOut" class="form-control" required/>
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                                    </div>
+                                </div>
                             </div>
                             <script>
                                 $(function () {
-                                    $("#sameaddress").click(function () {
-                                        if (!$('#sameaddress').is(':checked')) {
-                                            $('#sameaddress').attr("checked", false);
-                                            $("#owneraddressdiv").show('slide');
-                                            $('#owneraddressdiv :input').each(function () {
-                                                $(this).prop("required", true);
-                                            })
+                                    $('#checkinpicker').datetimepicker({
+                                        format: 'DD-MM-YYYY',
+                                    });
+                                    $('#checkoutpicker').datetimepicker({
+                                        format: 'DD-MM-YYYY',
+                                    });
+                                });
+                            </script>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="address">Indirizzo:</label>
+                                    <input name="address" id="address" type="text" class="form-control"
+                                           placeholder="Piazza Ciao" value="Piazza Ciao">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="nation">Nazione:</label>
+                                    <input name="nation" id="nation" type="text" class="form-control"
+                                           placeholder="Italia"
+                                           value="Italia">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="city">Città:</label>
+                                    <input name="city" id="city" type="text" class="form-control" placeholder="Roma"
+                                           value="Roma">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="postalcode">Codice postale:</label>
+                                    <input name="postalcode" id="postalcode" type="text" class="form-control"
+                                           placeholder="00039" value="00039">
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 6px">
+                                <div class="form-group col-md-12">
+                                    <label for="owner">Sei anche il possessore della struttura?</label>
+                                    <input type="checkbox" name="owner" id="owner" checked>
+                                </div>
+                            </div>
+                            <script>
+                                $(function () {
+                                    $("#owner").click(function () {
+                                        if (!$('#owner').is(':checked')) {
+                                            $('#owner').attr("checked", false);
+                                            $("#managerisownerdiv").show('slide');
+                                            $('#managerisownerdiv :input').slice(0, 3).prop("required", true);
                                         } else {
-                                            $('#sameaddress').attr("checked", true);
-                                            $("#owneraddressdiv").hide('slide');
-                                            $('#owneraddressdiv :input').each(function () {
-                                                $(this).prop("required", false);
-                                            })
+                                            $('#owner').attr("checked", true);
+                                            $("#managerisownerdiv").hide('slide');
+                                            $('#managerisownerdiv :input').slice(0, 3).prop("required", false);
                                         }
                                     })
                                 })
                             </script>
-                            <div class="row" id="owneraddressdiv" style="display: none">
-                                <div class="form-group col-md-3">
-                                    <label for="ownerAddress">Indirizzo:</label>
-                                    <input name="ownerAddress" id="ownerAddress" type="text" class="form-control"
-                                           placeholder="Piazza Ciao" value="Piazza Ciao">
+                            <div class="form-group" id="managerisownerdiv" style="display: none">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="ownerFirstName">Nome possessore struttura:</label>
+                                        <input name="ownerFirstName" id="ownerFirstName" type="text"
+                                               class="form-control"
+                                               value="Federico">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="ownerLastName">Cognome possessore struttura:</label>
+                                        <input name="ownerLastName" id="ownerLastName" type="text" class="form-control"
+                                               value="Vagnoni">
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label for="ownerNation">Nazione:</label>
-                                    <input name="ownerNation" id="ownerNation" type="text" class="form-control"
-                                           placeholder="Italia"
-                                           value="Italia">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="ownerEmail">Email possessore struttura:</label>
+                                        <input name="ownerEmail" id="ownerEmail" type="email" class="form-control"
+                                               value="fede93.vagnoni@gmail.com">
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label for="ownerCity">Città:</label>
-                                    <input name="ownerCity" id="ownerCity" type="text" class="form-control"
-                                           placeholder="Roma"
-                                           value="Roma">
+                                <div class="form-group">
+                                    <label for="sameaddress">Vive all'interno della struttura?</label>
+                                    <input type="checkbox" name="sameaddress" id="sameaddress" checked>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label for="ownerPostalcode">Codice postale:</label>
-                                    <input name="ownerPostalcode" id="ownerPostalcode" type="text" class="form-control"
-                                           placeholder="00039" value="00039">
+                                <script>
+                                    $(function () {
+                                        $("#sameaddress").click(function () {
+                                            if (!$('#sameaddress').is(':checked')) {
+                                                $('#sameaddress').attr("checked", false);
+                                                $("#owneraddressdiv").show('slide');
+                                                $('#owneraddressdiv :input').each(function () {
+                                                    $(this).prop("required", true);
+                                                })
+                                            } else {
+                                                $('#sameaddress').attr("checked", true);
+                                                $("#owneraddressdiv").hide('slide');
+                                                $('#owneraddressdiv :input').each(function () {
+                                                    $(this).prop("required", false);
+                                                })
+                                            }
+                                        })
+                                    })
+                                </script>
+                                <div class="row" id="owneraddressdiv" style="display: none">
+                                    <div class="form-group col-md-3">
+                                        <label for="ownerAddress">Indirizzo:</label>
+                                        <input name="ownerAddress" id="ownerAddress" type="text" class="form-control"
+                                               placeholder="Piazza Ciao" value="Piazza Ciao">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="ownerNation">Nazione:</label>
+                                        <input name="ownerNation" id="ownerNation" type="text" class="form-control"
+                                               placeholder="Italia"
+                                               value="Italia">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="ownerCity">Città:</label>
+                                        <input name="ownerCity" id="ownerCity" type="text" class="form-control"
+                                               placeholder="Roma"
+                                               value="Roma">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="ownerPostalcode">Codice postale:</label>
+                                        <input name="ownerPostalcode" id="ownerPostalcode" type="text"
+                                               class="form-control"
+                                               placeholder="00039" value="00039">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" form="newStructureForm" name="create" class="btn btn-default btn-primary"
+                                id="create"
+                                value="create">
+                            Create new Structure
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="Delete">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="deleteModalLabel">Are you sure?</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="delete-structure-form" method="post" action="manageStructures.jsp">Note that after the
+                        confirmation
+                        the
+                        structure will be lost.
+                        <label>
+                            <input name="id" id="structure-id" hidden>
+                        </label>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" form="newStructureForm" name="create" class="btn btn-default btn-primary"
-                            id="create"
-                            value="create">
-                        Create new Structure
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" form="delete-structure-form" id="delete" name="delete"
+                            value="delete">Delete
                     </button>
                 </div>
-
+                <script>
+                    $(function () {
+                        $(".deleteStructure").click(function () {
+                            var structureID = $(".deleteStructure").attr("data-id");
+                            $(".modal-body #structure-id").val(structureID);
+                        });
+                    })
+                </script>
             </div>
         </div>
     </div>
-</div>
-
-<!-- Delete Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="Delete">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="deleteModalLabel">Are you sure?</h4>
-            </div>
-            <div class="modal-body">
-                <form id="delete-structure-form" method="post" action="manageStructures.jsp">Note that after the
-                    confirmation
-                    the
-                    structure will be lost.
-                    <label>
-                        <input name="id" id="structure-id" hidden>
-                    </label>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary" form="delete-structure-form" id="delete" name="delete"
-                        value="delete">Delete
-                </button>
-            </div>
-            <script>
-                $(function () {
-                    $(".deleteStructure").click(function () {
-                        var structureID = $(".deleteStructure").attr("data-id");
-                        $(".modal-body #structure-id").val(structureID);
-                    });
-                })
-            </script>
-        </div>
-    </div>
-</div>
-<!-- Bootstrap core JavaScript -->
-<%@include file="bootstrap_core_js.html" %>
+    <!-- FOOTER -->
+    <%@include file="footer.html" %>
+    <!-- Bootstrap core JavaScript -->
+    <%@include file="bootstrap_core_js.html" %>
 </body>
 </html>

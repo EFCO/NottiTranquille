@@ -46,10 +46,18 @@ public class StructureDAO {
         structureToDelete.removeOwners();
         structureToDelete.removeManagedBy();
         structureToDelete.removeAddress();
-        structureToDelete.removeRequest();
         structureToDelete.removeLocations();
-        entityManager.remove(structureToDelete);
+//        entityManager.remove(structureToDelete);
 
+        entityManager.getTransaction().commit();
+        entityManager.close();
+
+        entityManager = JPAInitializer.getEntityManager();
+        structureToDelete = entityManager.find(Structure.class, structure.getId());
+        entityManager.getTransaction().begin();
+        structureToDelete.removeRequest();
+
+        entityManager.remove(structureToDelete);
         entityManager.getTransaction().commit();
         entityManager.close();
 
@@ -59,6 +67,7 @@ public class StructureDAO {
         entityManager.remove(structureToDelete);
         entityManager.getTransaction().commit();
         entityManager.close();
+
     }
 
     public void modifyField(String field, Object value, Long id) {

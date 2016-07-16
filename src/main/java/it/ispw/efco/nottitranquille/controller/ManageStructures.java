@@ -24,16 +24,18 @@ public class ManageStructures {
         AccessDAO accessDAO = new AccessDAO();
 
         if (structure.isOwner()) {
+            System.out.println("Hai scelto di essere un owner");
             ownerInstance = (Owner) manager.getRole("Owner");
             if (ownerInstance != null) {
                 structureDAO.store(structure, managerInstance, ownerInstance);
             } else {
                 accessDAO.addOwnerRole(manager);
-                manager = accessDAO.selectUserByEmail(manager.getEmail());
-                structureDAO.store(structure, (Manager) manager.getRole("Manager"), (Owner) manager.getRole("Owner"));
+                Person updatedManager = accessDAO.selectUserByEmail(manager.getEmail());
+                structureDAO.store(structure, (Manager) updatedManager.getRole("Manager"), (Owner) manager.getRole("Owner"));
             }
 
         } else {
+            System.out.println("Hai scelto un nuovo owner");
             Person newOwner = new Person(structure.getOwnerFirstName(), structure.getOwnerLastName(), structure.getOwnerEmail());
             if (structure.isSameaddress()) {
                 newOwner.setAddress(structure.getNation(), structure.getCity(), structure.getAddress(), structure.getPostalcode());
@@ -41,11 +43,11 @@ public class ManageStructures {
                 newOwner.setAddress(structure.getOwnerNation(), structure.getOwnerCity(), structure.getOwnerAddress(), structure.getOwnerPostalcode());
             }
             accessDAO.register(newOwner);
+            newOwner = accessDAO.selectUserByEmail(newOwner.getEmail());
             accessDAO.addOwnerRole(newOwner);
             newOwner = accessDAO.selectUserByEmail(newOwner.getEmail());
-            manager = accessDAO.selectUserByEmail(manager.getEmail());
-            structureDAO.store(structure, (Manager) manager.getRole("Manager"), (Owner) newOwner.getRole("Owner"));
-
+            Person updatedManager = accessDAO.selectUserByEmail(manager.getEmail());
+            structureDAO.store(structure, (Manager) updatedManager.getRole("Manager"), (Owner) newOwner.getRole("Owner"));
 
         }
     }

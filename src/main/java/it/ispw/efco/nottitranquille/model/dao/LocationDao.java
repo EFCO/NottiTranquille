@@ -3,6 +3,7 @@ package it.ispw.efco.nottitranquille.model.DAO;
 import it.ispw.efco.nottitranquille.model.JPAInitializer;
 import it.ispw.efco.nottitranquille.model.Location;
 import it.ispw.efco.nottitranquille.model.Structure;
+import org.joda.time.Interval;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -108,6 +109,16 @@ public class LocationDAO {
         entityManager.getTransaction().commit();
         entityManager.close();
         return l;
+
+    }
+
+    public void modifyBooking(List<Interval> intervalList, Long id) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        Location l = entityManager.find(Location.class, id);
+        entityManager.getTransaction().begin();
+        l.setBooking(intervalList);
+        entityManager.getTransaction().commit();
+        entityManager.close();
 
     }
 }

@@ -73,7 +73,7 @@ public class LocationBean {
         ManageLocation.addNewLocation(this, this.currentStructure);
     }
 
-    public int modifyField(String field, String value, Long id) {
+    public int modifyField(String field, String[] value, Long id) {
         if (field != null && value != null) {
             try {
                 ManageLocation.modifyField(field, value, id);

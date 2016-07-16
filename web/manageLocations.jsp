@@ -59,7 +59,7 @@
 
     <title>Manage Locations</title>
     <%
-        Structure currentStructure = null;
+        Structure currentStructure;
         List<Structure> managedStructures = null;
 
         try {
