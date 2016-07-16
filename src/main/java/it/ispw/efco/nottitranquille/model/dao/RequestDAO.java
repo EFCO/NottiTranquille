@@ -2,6 +2,7 @@ package it.ispw.efco.nottitranquille.model.DAO;
 
 import it.ispw.efco.nottitranquille.model.JPAInitializer;
 import it.ispw.efco.nottitranquille.model.Location;
+import it.ispw.efco.nottitranquille.model.Manager;
 import it.ispw.efco.nottitranquille.model.Request;
 import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
 
@@ -87,5 +88,14 @@ public class RequestDAO {
         result = query.getSingleResult();
         entityManager.close();
         return result;
+    }
+
+    public void store(Manager managerInstance) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        entityManager.getTransaction().begin();
+        Request newRequest = new Request(managerInstance);
+        entityManager.persist(newRequest);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 }

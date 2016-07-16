@@ -64,7 +64,7 @@ public class FilteredSearchFX {
         TableColumn<Request,String> addressCol = new TableColumn<Request,String>("Address");
         addressCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Request, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Request, String> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getStructure().getStructureAddress().getAddress());
+                return new ReadOnlyObjectWrapper(p.getValue().getStructure().getAddress().getAddress());
             }
         });
         TableColumn<Request,String> statusCol = new TableColumn<Request,String>("Status");

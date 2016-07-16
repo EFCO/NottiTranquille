@@ -4,6 +4,7 @@ import it.ispw.efco.nottitranquille.controller.ManageLocation;
 import it.ispw.efco.nottitranquille.controller.ManageStructures;
 import it.ispw.efco.nottitranquille.model.Location;
 import it.ispw.efco.nottitranquille.model.Structure;
+import org.joda.time.Interval;
 
 import java.util.List;
 
@@ -55,6 +56,10 @@ public class LocationBean {
 
     private String type;
 
+    private Location currentLocation;
+
+    private List<Interval> intervalList;
+
 //    private List<Service> services;
 
 //    private Structure structure;
@@ -68,8 +73,20 @@ public class LocationBean {
         ManageLocation.addNewLocation(this, this.currentStructure);
     }
 
+    public int modifyField(String field, String value, Long id) {
+        if (field != null && value != null) {
+            try {
+                ManageLocation.modifyField(field, value, id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return 1;
+        }
+        return 0;
+    }
+
     public void delete(String id, List<Location> locations) {
-        ManageLocation.deleteStructure(Long.valueOf(id), locations);
+        ManageLocation.deleteLocation(Long.valueOf(id), locations, currentStructure);
     }
 
     public String getDescription() {
@@ -157,5 +174,21 @@ public class LocationBean {
                 ", currentStructure=" + currentStructure +
                 ", type='" + type + '\'' +
                 '}';
+    }
+
+    public void setCurrentLocation(Location currentLocation) {
+        this.currentLocation = currentLocation;
+    }
+
+    public Location getCurrentLocation() {
+        return ManageLocation.getLocationByID(currentLocation.getId());
+    }
+
+    public List<Interval> getIntervalList() {
+        return intervalList;
+    }
+
+    public void setIntervalList(List<Interval> intervalList) {
+        this.intervalList = intervalList;
     }
 }

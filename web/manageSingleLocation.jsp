@@ -1,6 +1,4 @@
-<%@ page import="it.ispw.efco.nottitranquille.model.Manager" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.Structure" %>
-<%@ page import="java.util.List" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.Location" %>
 <%--
   Created by IntelliJ IDEA.
   User: Federico
@@ -21,9 +19,6 @@
 <%@ taglib prefix="custom" tagdir="/WEB-INF/tags" %>
 
 <jsp:useBean id="locationBean" scope="session" class="it.ispw.efco.nottitranquille.view.LocationBean"/>
-<jsp:setProperty name="locationBean" property="*"/>
-
-<jsp:useBean id="structureBean" scope="session" class="it.ispw.efco.nottitranquille.view.StructureBean"/>
 <jsp:useBean id="loginBean" scope="session" class="it.ispw.efco.nottitranquille.view.LoginBean"/>
 
 <html>
@@ -54,30 +49,16 @@
 
     <title>Manage Locations</title>
     <%
-        Structure currentStructure = null;
-        List<Structure> managedStructures = null;
-
-        try {
-            managedStructures = ((Manager) loginBean.getUser().getRole("Manager")).getManagedStructures();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (request.getParameter("structure-id") != null) {
-            currentStructure = managedStructures.get(Integer.parseInt(request.getParameter("structure-id")));
-            locationBean.setCurrentStructure(currentStructure);
-            request.setAttribute("currentStructure", currentStructure);
-            request.setAttribute("locations", currentStructure.getLocations());
+        Location currentLocation = null;
+        if (request.getParameter("location-id") != null) {
+            currentLocation = locationBean.getCurrentStructure().getLocations().get(Integer.parseInt(request.getParameter("location-id")));
+            locationBean.setCurrentLocation(currentLocation);
+            request.setAttribute("currentLocation", currentLocation);
         } else {
-            currentStructure = locationBean.getCurrentStructure();
-            request.setAttribute("currentStructure", currentStructure);
-            request.setAttribute("locations", currentStructure.getLocations());
+            currentLocation = locationBean.getCurrentLocation();
+            request.setAttribute("currentLocation", currentLocation);
         }
 
-        if (request.getParameter("create") != null) {
-            System.out.println("Sono entrato" + locationBean.toString());
-            locationBean.validate();
-        }
 
     %>
 </head>
@@ -85,114 +66,82 @@
 <%@include file="navbar.jsp" %>
 <div class="container under-navbar" style="margin-top: 50px">
     <%
-        if (request.getParameter("modify") == null) {
+        if (request.getParameter("modifyField") == null) {
     %>
-    <form class="form-horizontal" role="form" action="manageLocations.jsp" method="POST">
+    <form class="form-horizontal" role="form" action="manageSingleLocation.jsp" method="POST">
         <div class="row">
-            <label class="col-lg-3 control-label">Name:</label>
-            <c:out value="${currentStructure.name}"/>
-            <button type="submit" class="btn btn-default" name="modify" value="name">Modifica</button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Terms of Service:</label>
-            <c:out value="${currentStructure.termsOfService}"/>
-            <button type="submit" class="btn btn-default" name="modify" value="termsOfService">Modifica</button>
+            <label class="col-lg-3 control-label">Description:</label>
+            <c:out value="${currentLocation.description}"/>
+            <button type="submit" class="btn btn-default" name="modifyField" value="description">Modifica</button>
         </div>
         <div class="row">
-            <label class="col-lg-3 control-label">Terms of Cancellation:</label>
-            <c:out value="${currentStructure.termsOfCancellation}"/>
-            <button type="submit" class="btn btn-default" name="modify" value="termsOfCancellation">Modifica</button>
-        </div>
-        <div class="form-group">
-            <div class='input-group date'>
-                <input type='text' name="checkIn" class="form-control" value="${currentStructure.checkIn}"
-                       placeholder="Check In"/>
-                            <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class='input-group date'>
-                <input type='text' name="checkOut" class="form-control" value="${currentStructure.checkOut}"
-                       placeholder="Check Out"/>
-                            <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-            </div>
+            <label class="col-lg-3 control-label">Type:</label>
+            <c:out value="${currentLocation.type}"/>
+            <button type="submit" class="btn btn-default" name="modifyField" value="type">Modifica</button>
         </div>
         <div class="row">
-            <label class="col-lg-3 control-label">Address:</label>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.address}"/>
-            </div>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.city}"/>
-            </div>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.nation}"/>
-            </div>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.postalcode}"/>
-            </div>
-            <button type="submit" class="btn btn-default" name="modify" value="address">Modifica</button>
+            <label class="col-lg-3 control-label">Number of Rooms:</label>
+            <c:out value="${currentLocation.numberOfRooms}"/>
+            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfRooms">Modifica</button>
+        </div>
+        <div class="row">
+            <label class="col-lg-3 control-label">Number of Bedrooms:</label>
+            <c:out value="${currentLocation.numberOfBedrooms}"/>
+            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBedrooms">Modifica
+            </button>
+        </div>
+        <div class="row">
+            <label class="col-lg-3 control-label">Numbero of Beds:</label>
+            <c:out value="${currentLocation.numberOfBeds}"/>
+            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBeds">Modifica
+            </button>
+        </div>
+        <div class="row">
+            <label class="col-lg-3 control-label">Number of Bathrooms:</label>
+            <c:out value="${currentLocation.numberOfBathrooms}"/>
+            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBathrooms">Modifica
+            </button>
         </div>
     </form>
     <%
-    } else if (request.getParameter("modify") != null && request.getParameter("value") != null) {
-        String modify = request.getParameter("modify");
-        String[] value = request.getParameterValues("value");
-        int result = structureBean.modifyField(modify, value, currentStructure.getId());
+    } else if (request.getParameter("modifyField") != null && request.getParameter("fieldValue") != null) {
+        String modify = request.getParameter("modifyField");
+        String value = request.getParameter("fieldValue");
+        int result = locationBean.modifyField(modify, value, currentLocation.getId());
     %>
-    <form class="form-horizontal" role="form" action="manageLocations.jsp" method="POST">
+    <form class="form-horizontal" role="form" action="manageSingleLocation.jsp" method="POST">
         <div class="row">
-            <label class="col-lg-3 control-label">Name:</label>
-            <c:out value="${currentStructure.name}"/>
-            <button type="submit" class="btn btn-default" name="modify" value="name">Modifica</button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Terms of Service:</label>
-            <c:out value="${currentStructure.termsOfService}"/>
-            <button type="submit" class="btn btn-default" name="modify" value="termsOfService">Modifica</button>
+            <label class="col-lg-3 control-label">Description:</label>
+            <c:out value="${currentLocation.description}"/>
+            <button type="submit" class="btn btn-default" name="modifyField" value="description">Modifica</button>
         </div>
         <div class="row">
-            <label class="col-lg-3 control-label">Terms of Cancellation:</label>
-            <c:out value="${currentStructure.termsOfCancellation}"/>
-            <button type="submit" class="btn btn-default" name="modify" value="termsOfCancellation">Modifica</button>
-        </div>
-        <div class="form-group col-lg-6">
-            <div class='input-group date'>
-                <input type='text' name="checkIn" class="form-control" value="${currentStructure.checkIn}"
-                       placeholder="Check In"/>
-                            <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-            </div>
-        </div>
-        <div class="form-group col-lg-6">
-            <div class='input-group date'>
-                <input type='text' name="checkOut" class="form-control" value="${currentStructure.checkOut}"
-                       placeholder="Check Out"/>
-                            <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-            </div>
+            <label class="col-lg-3 control-label">Type:</label>
+            <c:out value="${currentLocation.type}"/>
+            <button type="submit" class="btn btn-default" name="modifyField" value="type">Modifica</button>
         </div>
         <div class="row">
-            <label class="col-lg-3 control-label">Address:</label>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.address}"/>
-            </div>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.city}"/>
-            </div>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.nation}"/>
-            </div>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.postalcode}"/>
-            </div>
-            <button type="submit" class="btn btn-default" name="modify" value="address">Modifica</button>
+            <label class="col-lg-3 control-label">Number of Rooms:</label>
+            <c:out value="${currentLocation.numberOfRooms}"/>
+            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfRooms">Modifica</button>
+        </div>
+        <div class="row">
+            <label class="col-lg-3 control-label">Number of Bedrooms:</label>
+            <c:out value="${currentLocation.numberOfBedrooms}"/>
+            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBedrooms">Modifica
+            </button>
+        </div>
+        <div class="row">
+            <label class="col-lg-3 control-label">Numbero of Beds:</label>
+            <c:out value="${currentLocation.numberOfBeds}"/>
+            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBeds">Modifica
+            </button>
+        </div>
+        <div class="row">
+            <label class="col-lg-3 control-label">Number of Bathrooms:</label>
+            <c:out value="${currentLocation.numberOfBathrooms}"/>
+            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBathrooms">Modifica
+            </button>
         </div>
     </form>
     <%
@@ -206,241 +155,21 @@
     <%
         }
     } else {
-        if (request.getParameter("modify").equals("address")) {
     %>
-    <form action="manageLocations.jsp" method="POST">
+    <form action="manageSingleLocation.jsp" method="POST">
         <div class="form-group row">
             <div class="col-md-4">
-                <label for="address_address">Modifica Indirizzo</label>
-                <input name="value" id="address_address" type="text" class="form-control"/>
-                <label for="address_city">Modifica Citta</label>
-                <input name="value" id="address_city" type="text" class="form-control"/>
-                <label for="address_nation">Modifica Nazione</label>
-                <input name="value" id="address_nation" type="text" class="form-control"/>
-                <label for="address_postalcode">Modifica Codice Postale</label>
-                <input name="value" id="address_postalcode" type="number" class="form-control"/>
-                <button type="submit" class="btn btn-default" name="modify" value="${param['modify']}">Modifica</button>
-            </div>
-        </div>
-    </form>
-
-    <%
-    } else {
-    %>
-    <form action="manageLocations.jsp" method="POST">
-        <div class="form-group row">
-            <div class="col-md-4">
-                <label for="value">Modifica <c:out value="${param['modify'].toUpperCase()}"/> </label>
-                <input name="value" id="value" type="text" class="form-control"/>
-                <button type="submit" class="btn btn-default" name="modify" value="${param['modify']}">Modifica</button>
+                <label for="value">Modifica <c:out value="${param['modifyField'].toUpperCase()}"/> </label>
+                <input name="fieldValue" id="value" type="text" class="form-control"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="${param['modifyField']}">
+                    Modifica
+                </button>
             </div>
         </div>
     </form>
     <%
-            }
         }
     %>
-    <div>
-        <div class="left">
-            <button class='btn btn-primary' data-toggle="modal" data-target="#createModal">Create new location</button>
-        </div>
-
-        <div class="second right">
-            <div class="btn-group left">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="<custom:replaceParam name='limit' value='25'/>">25</a></li>
-                    <li><a href="<custom:replaceParam name='limit' value='50'/>">50</a></li>
-                    <li><a href="<custom:replaceParam name='limit' value='100'/>">100</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="<custom:replaceParam name='limit' value='all'/>">All</a></li>
-                </ul>
-            </div>
-            <p id="perPage" class="right">per page</p>
-        </div>
-
-        <div class="right">
-            <p id="show" class="left">
-                Show:
-            </p>
-
-            <div class="btn-group right">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="<custom:replaceParam name='type' value='basePrices'/>">Base prices</a></li>
-                    <li><a href="<custom:replaceParam name='type' value='discounts'/>">Discounts</a></li>
-                    <li><a href="<custom:replaceParam name='type' value='fees'/>">Fees</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="<custom:replaceParam name='type' value='fixDiscounts'/>">Fix discounts</a></li>
-                    <li><a href="<custom:replaceParam name='type' value='fixFees'/>">Fix fees</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="<custom:replaceParam name='type' value='percentageDiscounts'/>">Percentage
-                        discounts</a></li>
-                    <li><a href="<custom:replaceParam name='type' value='percentageFees'/>">Percentage fees</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="<custom:replaceParam name='type' value='allPrices'/>">All prices</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <table id="prices-table" class="tablesorter table table-bordered table-hover table-striped">
-        <caption>Ini adalah data biodata anda</caption>
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>Address</th>
-            <th>Max Guest Number</th>
-            <th>Number of Bathrooms</th>
-            <th>Number of Bedrooms</th>
-            <th>Number of Beds</th>
-            <th>Number of Rooms</th>
-            <th>Type</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:choose>
-            <c:when test="${locations.size() > 0}">
-                <c:forEach items="${locations}" var="location">
-                    <tr>
-                        <td>${location.id}</td>
-                        <td>${fn:join(price['class'].simpleName.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])"), ' ')}</td>
-                        <td>${location.description}</td>
-                        <td>${location.structure.address}</td>
-                        <td>${location.maxGuestsNumber}</td>
-                        <td>${location.numberOfBathrooms}</td>
-                        <td>${location.numberOfBedrooms}</td>
-                        <td>${location.numberOfBeds}</td>
-                        <td>${location.numberOfRooms}</td>
-                        <td>${location.type}</td>
-                            <%--<td>${location.photos}</td>--%>
-                        <td>
-                            <form action="manageLocations.jsp" method="POST">
-                                <button class='updatePrice btn btn-warning btn-sm' name="location-id"
-                                        value="${location.id}">
-                                    <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>
-                                </button>
-                            </form>
-                            <button class='deletePrice btn btn-danger btn-sm' role='button' data-toggle="modal"
-                                    data-target="#deleteModal" data-id=${location.id}><span
-                                    class='glyphicon glyphicon-trash' aria-hidden='true'></span></button>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </c:when>
-            <c:otherwise>
-                <tr>
-                    <td colspan="7">There are no locations</td>
-                </tr>
-            </c:otherwise>
-        </c:choose>
-        </tbody>
-    </table>
-    !-- Pagination -->
-    <div>
-        <div class="left">
-            <nav>
-                <ul class="pagination">
-                </ul>
-            </nav>
-        </div>
-        <div id="items-counter" class="right">
-        </div>
-    </div>
-
-
-    <!-- FOOTER -->
-    <%@include file="footer.html" %>
-
-</div>
-
-<!-- Create Modal -->
-<div class="modal fade in" id="createModal" tabindex="-1" role="dialog" aria-labelledby="Create">
-    <div class="modal-dialog modal-dialog-prices" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">×</span></button>
-                <h4 class="modal-title" id="createModalLabel">Create Location</h4>
-            </div>
-            <div class="modal-body">
-                <form action="manageLocations.jsp" name="newLocationForm" method="POST">
-                    <div class="form-group col-md-12">
-                        <label for="description" id="userlabel">Description :</label>
-                        <input name="description" id="description" type="text" class="form-control"
-                               placeholder="E' un posto veramente bello" value="E' un posto veramente bello" required>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="numberOfRooms">Number of Rooms:</label>
-                        <input name="numberOfRooms" id="numberOfRooms" type="text" class="form-control"
-                               placeholder="2" value="2" required>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="numberOfBathrooms">Number of Bathrooms:</label>
-                        <input name="numberOfBathrooms" id="numberOfBathrooms" type="text" class="form-control"
-                               placeholder="5" value="5" required>
-                    </div>
-                    <div class="form-group col-md-3 ">
-                        <label for="maxGuestsNumber">Max Guest Number:</label>
-                        <input name="maxGuestsNumber" id="maxGuestsNumber" type="text" class="form-control"
-                               value="4">
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="numberOfBeds">Number of Beds:</label>
-                        <input name="numberOfBeds" id="numberOfBeds" type="text" class="form-control"
-                               value="5">
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="numberOfBedrooms">Number of Bedrooms</label>
-                        <input name="numberOfBedrooms" id="numberOfBedrooms" type="text" class="form-control"
-                               value="79">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" name="create" class="btn btn-default btn-primary" id="create"
-                                value="create">
-                            Create new Location
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="Delete">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="deleteModalLabel">Are you sure?</h4>
-                </div>
-                <div class="modal-body">
-                    <form id="delete-price-form" method="post" action="structure.jsp">Note that after the confirmation
-                        the
-                        structure will be lost.
-                        <label>
-                            <input name="id" id="price-id" hidden>
-                        </label>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" form="delete-price-form" id="delete" name="delete"
-                            value="delete">Delete
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Bootstrap core JavaScript -->
     <%@include file="bootstrap_core_js.html" %>

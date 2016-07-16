@@ -176,7 +176,7 @@
                                 actionButton.val("login");
                                 actionButton.attr("name",'login');
                                 $('#regdiv').hide('slide');
-                                $('#regLogForm :input').slice(2).each(function () {
+                                $('#regLogForm :input').slice(2, 8).each(function () {
                                     $(this).prop("required",false);
                                 })
                             }

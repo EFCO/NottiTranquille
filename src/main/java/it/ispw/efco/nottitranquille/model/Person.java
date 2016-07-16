@@ -59,6 +59,15 @@ public class Person {
     private String phoneNumber;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "Address_Person",
+            joinColumns = @JoinColumn(
+                    name = "person_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "address_id",
+                    referencedColumnName = "id")
+    )
     private Address address;
 
     private Gender gender;
@@ -186,8 +195,8 @@ public class Person {
         return address;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddress(String nation, String city, String address, String postalcode) {
+        this.address = new Address(nation, city, address, postalcode);
     }
 
     public Gender getGender() {

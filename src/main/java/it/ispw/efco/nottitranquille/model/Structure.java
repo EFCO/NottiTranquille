@@ -1,11 +1,8 @@
 package it.ispw.efco.nottitranquille.model;
 
-import org.joda.time.DateTime;
-
-import javax.persistence.*;
-import java.util.*;
 import it.ispw.efco.nottitranquille.model.enumeration.StructureType;
 import it.ispw.efco.nottitranquille.view.StructureBean;
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -51,11 +48,13 @@ public class Structure {
     /**
      *
      */
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime checkIn;
 
     /**
      *
      */
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime checkOut;
 
     @ManyToOne
@@ -67,7 +66,17 @@ public class Structure {
             cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private List<Owner> owners = new ArrayList<Owner>();
 
-    @OneToOne(targetEntity = Address.class, optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    //@OneToOne(targetEntity = Address.class, optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "Address_Structure",
+            joinColumns = @JoinColumn(
+                    name = "structure_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "address_id",
+                    referencedColumnName = "id")
+    )
     private Address address;
 
     @Enumerated(EnumType.STRING)
@@ -102,7 +111,7 @@ public class Structure {
         this.checkOut = bean.getCheckOut();
         this.setManagedBy(manager);
         this.addOwner(owner);
-        this.address = new Address(bean.getNation(), bean.getCity(), bean.getAddress(), bean.getPostalcode());
+        this.setAddress(bean.getNation(), bean.getCity(), bean.getAddress(), bean.getPostalcode());
         this.type = bean.getType();
         this.services = bean.getServices();
     }
@@ -112,7 +121,8 @@ public class Structure {
     }
 
     public void addOwner(Owner owner) {
-        this.owners.add(owner);
+        if (!owners.contains(owner))
+            this.owners.add(owner);
         owner.ownedStructures.add(this);
     }
 
@@ -127,35 +137,50 @@ public class Structure {
         }
     }
 
+//    public void addRequest(Manager manager) {
+//        this.request = new Request(manager);
+//    }
+//
+//    public void removeRequest() {
+//        this.request = null;
+//    }
+
     public void setRequest(Request request) {
         this.request = request;
         request.setStructure(this);
     }
 
     public void removeRequest() {
-        if (this.request != null) {
-            this.request.setStructure(null);
-        }
+//        if (this.request != null) {
+//            this.request.setStructure(null);
+//        }
         this.request = null;
+    }
+
+
+    public void setAddress(String nation, String city, String address, String postalcode) {
+        this.address = new Address(nation, city, address, postalcode);
     }
 
     public void addLocation(Location location) {
         this.locations.add(location);
+        numberOfLocations += 1;
         location.setStructure(this);
     }
 
     public void removeLocation(Location location) {
         location.setStructure(null);
         this.locations.remove(location);
+        numberOfLocations -= 1;
     }
 
     public String getName() {
         return name;
     }
 
-    public Address getStructureAddress() {
-        return address;
-    }
+//    public Address getStructureAddress() {
+//        return address;
+//    }
 
     public Long getId() {
         return id;
@@ -271,5 +296,15 @@ public class Structure {
             this.managedBy.removeManagedStructure(this);
         }
         this.managedBy = null;
+    }
+
+    public void removeAddress() {
+        this.address = null;
+    }
+
+    public void removeLocations() {
+        for (Location location : new ArrayList<Location>(this.locations)) {
+            removeLocation(location);
+        }
     }
 }

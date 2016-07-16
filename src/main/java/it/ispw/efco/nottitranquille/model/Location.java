@@ -4,8 +4,6 @@ import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
 import it.ispw.efco.nottitranquille.view.LocationBean;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -148,10 +146,10 @@ public class Location {
         this.numberOfBeds = Integer.valueOf(locationBean.getNumberOfBeds());
         this.numberOfBedrooms = Integer.valueOf(locationBean.getNumberOfBedrooms());
         this.photos = new ArrayList<String>();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-MM-yyyy");
-        DateTime start = DateTime.parse("01-01-2016", dateTimeFormatter);
-        DateTime end = DateTime.parse("30-12-2016", dateTimeFormatter);
-        booking.add(new Interval(start, end));
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-MM-yyyy");
+//        DateTime start = DateTime.parse("01-01-2016", dateTimeFormatter);
+//        DateTime end = DateTime.parse("30-12-2016", dateTimeFormatter);
+        this.booking = locationBean.getIntervalList();
         this.type = LocationType.Hotel;
     }
 

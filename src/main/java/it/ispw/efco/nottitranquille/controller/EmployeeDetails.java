@@ -211,7 +211,7 @@ public class EmployeeDetails implements Initializable {
                 revisionedEmployee.setGender(Gender.valueOf(spGender.getValue().toString()));
                 revisionedEmployee.setUsername(tvUsername.getText());
                 revisionedEmployee.setPassword(tvPassword.getText());
-                revisionedEmployee.setAddress(addr);
+                revisionedEmployee.setAddress(tvNation.getText(), tvCity.getText(), tvAddress.getText(), tvPostalCode.getText());
                 revisionedEmployee.setMainRole(spRole.getValue().toString());
 
                 List<String> oldroles = revisionedEmployee.getRoles();

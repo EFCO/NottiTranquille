@@ -12,25 +12,6 @@ import javax.persistence.*;
 @Entity
 public class Request {
 
-//    /**
-//     * Default constructor
-//     * @param requestDate
-//     * @param acceptedDate
-//     * @param lastModified
-//     * @param requestedBy
-//     * @param reviewedBy
-//     * @param structure
-//     * @param status
-//     */
-//    public Request(DateTime requestDate, DateTime acceptedDate, DateTime lastModified, Manager requestedBy, Scout reviewedBy, Structure structure, RequestStatus status) {
-//        this.requestDate = requestDate;
-//        this.acceptedDate = acceptedDate;
-//        this.lastModified = lastModified;
-//        this.requestedBy = requestedBy;
-//        this.reviewedBy = reviewedBy;
-//        this.structure = structure;
-//        this.status = status;
-//    }
 
     public Request(Manager manager) {
         this.status = RequestStatus.To_be_reviewed;

@@ -45,7 +45,7 @@
 <%-- All requests are of the form: structures.jsp?page=page&limit=limit --%>
 <%
 
-    List<Structure> structures = new ArrayList<Structure>();
+    List<Structure> structures = new ArrayList<>();
     try {
         structures = ((Manager) loginBean.getUser().getRole("Manager")).getManagedStructures();
     } catch (Exception e) {
@@ -62,7 +62,7 @@
         }
     }
 
-    if (request.getParameter("deleteWhitMerge") != null) {
+    if (request.getParameter("delete") != null) {
         structureBean.delete(structures, request.getParameter("id"));
     }
 %>
@@ -77,54 +77,9 @@
             <button class='btn btn-primary' data-toggle="modal" data-target="#createModal">Create new structure</button>
         </div>
 
-        <div class="second right">
-            <div class="btn-group left">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="<custom:replaceParam name='limit' value='25'/>">25</a></li>
-                    <li><a href="<custom:replaceParam name='limit' value='50'/>">50</a></li>
-                    <li><a href="<custom:replaceParam name='limit' value='100'/>">100</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="<custom:replaceParam name='limit' value='all'/>">All</a></li>
-                </ul>
-            </div>
-            <p id="perPage" class="right">per page</p>
-        </div>
-
-        <div class="right">
-            <p id="show" class="left">
-                Show:
-            </p>
-
-            <div class="btn-group right">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="<custom:replaceParam name='type' value='basePrices'/>">Base prices</a></li>
-                    <li><a href="<custom:replaceParam name='type' value='discounts'/>">Discounts</a></li>
-                    <li><a href="<custom:replaceParam name='type' value='fees'/>">Fees</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="<custom:replaceParam name='type' value='fixDiscounts'/>">Fix discounts</a></li>
-                    <li><a href="<custom:replaceParam name='type' value='fixFees'/>">Fix fees</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="<custom:replaceParam name='type' value='percentageDiscounts'/>">Percentage
-                        discounts</a></li>
-                    <li><a href="<custom:replaceParam name='type' value='percentageFees'/>">Percentage fees</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="<custom:replaceParam name='type' value='allPrices'/>">All prices</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
     <!-- Table with prices -->
     <table id="prices-table" class="tablesorter table table-bordered table-hover table-striped">
-        <caption>Ini adalah data biodata anda</caption>
+        <%--<caption>Ini adalah data biodata anda</caption>--%>
         <thead>
         <tr>
             <th>#</th>
@@ -144,7 +99,7 @@
                         <td>${fn:join(price['class'].simpleName.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])"), ' ')}</td>
                         <td>${structure.name}</td>
                         <td>${structure.numberOfLocations}</td>
-                        <td>${structure.structureAddress}</td>
+                        <td>${structure.address}</td>
                         <td>
                             <form action="manageLocations.jsp" method="POST">
                                 <button class='updateStructure btn btn-warning btn-sm' name="structure-id"

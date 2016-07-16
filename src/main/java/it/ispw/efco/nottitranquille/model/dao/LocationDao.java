@@ -83,11 +83,31 @@ public class LocationDAO {
         delete(locationToDelete.getId());
     }
 
-    public void deleteWhitMerge(Location locationToDelete) {
+    public void deleteWithMerge(Location locationToDelete, Structure currentStructure) {
         EntityManager entityManager = it.ispw.efco.nottitranquille.model.JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
+        currentStructure.removeLocation(locationToDelete);
         entityManager.remove(entityManager.merge(locationToDelete));
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+
+    public void modifyField(String field, Object value, Long id) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        String querystring = "UPDATE Location l SET l." + field + " = :v WHERE l.id = :id";
+        entityManager.getTransaction().begin();
+        entityManager.createQuery(querystring).setParameter("v", value).setParameter("id", id).executeUpdate();
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
+
+    public Location select(Long id) {
+        EntityManager entityManager = it.ispw.efco.nottitranquille.model.JPAInitializer.getEntityManager();
+        entityManager.getTransaction().begin();
+        Location l = entityManager.find(Location.class, id);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        return l;
+
     }
 }

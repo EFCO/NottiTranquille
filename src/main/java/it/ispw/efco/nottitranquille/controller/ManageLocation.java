@@ -18,12 +18,28 @@ public class ManageLocation {
         locationDAO.store(newLocation, structure);
     }
 
-    public static void deleteStructure(Long id, List<Location> locations) {
+    public static void deleteLocation(Long id, List<Location> locations, Structure currentStructure) {
         LocationDAO locationDAO = new LocationDAO();
         for (Location locationToDelete : locations) {
             if (locationToDelete.getId().equals(id)) {
-                locationDAO.deleteWhitMerge(locationToDelete);
+                locationDAO.deleteWithMerge(locationToDelete, currentStructure);
             }
         }
+    }
+
+    public static void modifyField(String field, String value, Long id) {
+        LocationDAO locationDAO = new LocationDAO();
+        Object newvalue;
+        if (!field.equals("description")) {
+            newvalue = Integer.valueOf(value);
+        } else {
+            newvalue = value;
+        }
+        locationDAO.modifyField(field, newvalue, id);
+    }
+
+    public static Location getLocationByID(Long id) {
+        LocationDAO locationDAO = new LocationDAO();
+        return locationDAO.select(id);
     }
 }
