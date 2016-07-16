@@ -1,0 +1,29 @@
+package it.ispw.efco.nottitranquille.view;
+
+import it.ispw.efco.nottitranquille.controller.AccessControllerFX;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class AccessForm extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                "/fxml/AccessForm.fxml"));
+
+        Parent root = (Parent) loader.load();
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
+
+        AccessControllerFX controller = loader.getController();
+        controller.setMainStage(primaryStage);
+    }
+
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
