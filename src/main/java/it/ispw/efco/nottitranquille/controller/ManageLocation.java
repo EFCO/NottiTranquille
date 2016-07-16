@@ -4,7 +4,11 @@ import it.ispw.efco.nottitranquille.model.DAO.LocationDAO;
 import it.ispw.efco.nottitranquille.model.Location;
 import it.ispw.efco.nottitranquille.model.Structure;
 import it.ispw.efco.nottitranquille.view.LocationBean;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,15 +31,26 @@ public class ManageLocation {
         }
     }
 
-    public static void modifyField(String field, String value, Long id) {
+    public static void modifyField(String field, String[] value, Long id) {
         LocationDAO locationDAO = new LocationDAO();
         Object newvalue;
-        if (!field.equals("description")) {
-            newvalue = Integer.valueOf(value);
+        if (value.length == 1) {
+            if (!field.equals("description")) {
+                newvalue = Integer.valueOf(value[0]);
+            } else {
+                newvalue = value;
+            }
+            locationDAO.modifyField(field, newvalue, id);
         } else {
-            newvalue = value;
+            List<Interval> intervalList = new ArrayList<Interval>();
+            for (int i = 0; i < value.length; ) {
+                DateTime firstDate = DateTime.parse(value[i], DateTimeFormat.forPattern("dd-MM-yyyy"));
+                DateTime secondDate = DateTime.parse(value[i + 1], DateTimeFormat.forPattern("dd-MM-yyyy"));
+                intervalList.add(new Interval(firstDate, secondDate));
+                i += 2;
+            }
+            locationDAO.modifyBooking(intervalList, id);
         }
-        locationDAO.modifyField(field, newvalue, id);
     }
 
     public static Location getLocationByID(Long id) {

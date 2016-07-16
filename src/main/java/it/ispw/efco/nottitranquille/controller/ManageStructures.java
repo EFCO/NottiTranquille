@@ -43,7 +43,8 @@ public class ManageStructures {
             accessDAO.register(newOwner);
             accessDAO.addOwnerRole(newOwner);
             newOwner = accessDAO.selectUserByEmail(newOwner.getEmail());
-            structureDAO.store(structure, (Manager) newOwner.getRole("Manager"), (Owner) newOwner.getRole("Owner"));
+            manager = accessDAO.selectUserByEmail(manager.getEmail());
+            structureDAO.store(structure, (Manager) manager.getRole("Manager"), (Owner) newOwner.getRole("Owner"));
 
 
         }

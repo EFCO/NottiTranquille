@@ -65,7 +65,7 @@
 <body>
 <%@include file="navbar.jsp" %>
 <div class="container under-navbar" style="margin-top: 50px">
-    <%
+        <%
         if (request.getParameter("modifyField") == null) {
     %>
     <form class="form-horizontal" role="form" action="manageSingleLocation.jsp" method="POST">
@@ -102,11 +102,21 @@
             <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBathrooms">Modifica
             </button>
         </div>
+        <div class="row">
+            <label class="col-lg-3 control-label">Time intervals of availability:</label>
+            <c:forEach items="${currentLocation.booking}" var="book">
+                <c:out value="${book.toString()}"/>
+            </c:forEach>
+            <button type="submit" class="btn btn-default" name="modifyField" value="intervals">Modifica
+            </button>
+        </div>
+
+
     </form>
-    <%
+        <%
     } else if (request.getParameter("modifyField") != null && request.getParameter("fieldValue") != null) {
         String modify = request.getParameter("modifyField");
-        String value = request.getParameter("fieldValue");
+        String value[] = request.getParameterValues("fieldValue");
         int result = locationBean.modifyField(modify, value, currentLocation.getId());
     %>
     <form class="form-horizontal" role="form" action="manageSingleLocation.jsp" method="POST">
@@ -144,16 +154,69 @@
             </button>
         </div>
     </form>
-    <%
+        <%
         if (result == 1) {
     %>
     <div class="alert alert-success">Campo modificato correttamente!</div>
-    <%
+        <%
     } else {
     %>
     <div class="alert alert-danger">Errore nella modifica del campo!</div>
-    <%
+        <%
         }
+        } else if (request.getParameter("modifyField").equals("intervals")) {
+       %>
+    <form action="manageSingleLocation.jsp" method="POST">
+        <div id="intervals">
+            <div id="intervaldiv">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <div class='input-group date'>
+                            <input type='text' name="interval" class="form-control"
+                                   placeholder="Interval start date" required>
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <div class='input-group date'>
+                            <input type='text' name="interval" class="form-control"
+                                   placeholder="Interval end date" required/>
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='form-group'>
+            <button type='button' class="btn btn-default" id="plusInterval"/>
+            <span class="glyphicon glyphicon-plus"></span>
+        </div>
+        <script>
+            $(function () {
+                $("#intervals .date").each(function () {
+                    $(this).datetimepicker({
+                        format: 'DD-MM-YYYY'
+                    });
+                });
+                $('#plusInterval').click(function () {
+                    $('#intervals').append($('#intervaldiv').html());
+                    $("#intervals .date").each(function () {
+                        $(this).datetimepicker({
+                            format: 'DD-MM-YYYY'
+                        });
+                    });
+                })
+            });
+        </script>
+        <button type="submit" class="btn btn-default" name="modifyField" value="${param['modifyField']}">
+            Modifica
+        </button>
+    </form>
+        <%
     } else {
     %>
     <form action="manageSingleLocation.jsp" method="POST">
@@ -167,7 +230,7 @@
             </div>
         </div>
     </form>
-    <%
+        <%
         }
     %>
 

@@ -514,4 +514,8 @@ public class Location {
                 ", percentageDiscounts=" + percentageDiscounts +
                 '}';
     }
+
+    public void setBooking(List<Interval> booking) {
+        this.booking = booking;
+    }
 }

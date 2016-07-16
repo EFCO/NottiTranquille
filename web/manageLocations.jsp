@@ -381,7 +381,7 @@
                                        placeholder="5" value="5" required>
                             </div>
                             <div class="form-group col-md-4">
-                                <label for="numberOfBedrooms">#Bedrooms</label>
+                                <label for="numberOfBedrooms"># Bedrooms</label>
                                 <input name="numberOfBedrooms" id="numberOfBedrooms" type="text" class="form-control"
                                        value="79">
                             </div>
@@ -398,42 +398,56 @@
                                        value="5">
                             </div>
                         </div>
-                        <div id="intevals">
-                            <div id="newInterval">
-                                <div class="form-group">
-                                    <div class='input-group date col-md-12'>
-                                        <label>Interval start date</label>
-                                        <input type='text' name="interval" class="form-control" required>
-
+                        <label for="intervals">Time intervals of availability</label>
+                        <div id="intervals">
+                            <div id="intervaldiv">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <div class='input-group date'>
+                                            <input type='text' name="interval" class="form-control"
+                                                   placeholder="Interval start date" required>
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class='input-group date col-md-12'>
-                                        <label>Interval end date</label>
-                                        <input type='text' name="interval" class="form-control" required/>
+                                    <div class="form-group col-md-6">
+                                        <div class='input-group date'>
+                                            <input type='text' name="interval" class="form-control"
+                                                   placeholder="Interval end date" required/>
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class='input-group date'>
+                        <div class='form-group'>
                             <button type='button' class="btn btn-default" id="plusInterval"/>
                             <span class="glyphicon glyphicon-plus"></span>
                         </div>
                         <script>
                             $(function () {
-//                            $("div[name='interval']").each(
-//                                    this.datetimepicker({
-//                                        format: 'DD-MM-YYYY',
-//                                    }));
-
+                                $("#intervals .date").each(function () {
+                                    $(this).datetimepicker({
+                                        format: 'DD-MM-YYYY'
+                                    });
+                                });
                                 $('#plusInterval').click(function () {
-                                    $('#intevals').append($('#newInterval').html());
+                                    $('#intervals').append($('#intervaldiv').html());
+                                    $("#intervals .date").each(function () {
+                                        $(this).datetimepicker({
+                                            format: 'DD-MM-YYYY'
+                                        });
+                                    });
                                 })
                             });
                         </script>
 
                     </form>
+                    <div class="alert-warning">Do not forget to set the prices of your location after you created it!
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" name="create" form="newLocationForm" class="btn btn-default btn-primary"
@@ -455,10 +469,8 @@
                     <h4 class="modal-title" id="deleteModalLabel">Are you sure?</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="delete-price-form" method="post" action="manageLocations.jsp">Note that after the
-                        confirmation
-                        the
-                        location will be lost.
+                    <form id="delete-location-form" method="post" action="manageLocations.jsp">Note that after the
+                        confirmation the location will be lost.
                         <label>
                             <input name="id" id="location-id" hidden>
                         </label>
@@ -466,7 +478,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" form="delete-price-form" id="delete" name="delete"
+                    <button type="submit" class="btn btn-primary" form="delete-location-form" id="delete" name="delete"
                             value="delete">Delete
                     </button>
                 </div>

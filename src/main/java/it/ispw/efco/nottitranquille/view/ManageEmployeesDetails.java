@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -60,12 +60,13 @@ public class ManageEmployeesDetails extends Application {
         allRoles.add("Scout");
         controller.getSpRole().setItems(FXCollections.observableList(allRoles));
 
-        ObservableList<CheckMenuItem> allAuth = FXCollections.observableArrayList();
-        allAuth.add(new CheckMenuItem("Administrator_Privileges"));
-        allAuth.add(new CheckMenuItem("Manage_Packets"));
-        allAuth.add(new CheckMenuItem("Insert_Requests"));
-        allAuth.add(new CheckMenuItem("Approve_Requests"));
+        ObservableList<MenuItem> allAuth = FXCollections.observableArrayList();
+        allAuth.add(new MenuItem("Administrator_Privileges"));
+        allAuth.add(new MenuItem("Manage_Packets"));
+        allAuth.add(new MenuItem("Insert_Requests"));
+        allAuth.add(new MenuItem("Approve_Requests"));
         controller.getSpAddAuth().getItems().addAll(allAuth);
+        List<String> roles = new ArrayList<String>();
         if (revisionedEmployee != null) {
             controller.getTvName().setText(revisionedEmployee.getFirstName());
             controller.getTvSurname().setText(revisionedEmployee.getLastName());
@@ -83,7 +84,7 @@ public class ManageEmployeesDetails extends Application {
 
             controller.getSpRole().setValue(revisionedEmployee.getMainRole());
 
-            List<String> roles = new ArrayList<String>();
+
             System.out.println("Old roles:" + revisionedEmployee.getRoles());
             for (String r : revisionedEmployee.getRoles()) {
                 if (r.equals("administrator")) {
@@ -96,17 +97,20 @@ public class ManageEmployeesDetails extends Application {
                     roles.add("Approve_Requests");
                 }
             }
-            ObservableList rows = FXCollections.observableList(roles);
-            controller.getLvAuth().setItems(rows);
-            TableColumn<String, String> nameCol = new TableColumn<String, String>("Authorization");
-            nameCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String, String>, ObservableValue<String>>() {
-                public ObservableValue<String> call(TableColumn.CellDataFeatures<String, String> p) {
-                    return new ReadOnlyObjectWrapper(p);
-                }
-            });
+
 
             controller.getSpAddAuth().setDisable(false);
         }
+        ObservableList rows = FXCollections.observableList(roles);
+        controller.getLvAuth().setItems(rows);
+        TableColumn<String, String> authCol = new TableColumn<String, String>("Authorization");
+        authCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<String, String> p) {
+                return new ReadOnlyObjectWrapper(p.getValue());
+            }
+        });
+
+        controller.getLvAuth().getColumns().setAll(authCol);
         controller.setMainStage(stage);
         controller.setAdministrator(administrator);
         controller.setLoggedAdministrator(loggedAdministrator);

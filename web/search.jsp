@@ -334,7 +334,7 @@
                                 <p class="lead"><strong>Questa struttura comprende ${structure.value.size()}
                                     locazioni</strong></p>
                                 <div class="panel-footer text-center"><a
-                                        href="<c:url value="showOffer.jsp"><c:param name="id" value="${result.get(structure).id}"/></c:url>"
+                                        href="<c:url value="showOffer.jsp"><c:param name="id" value="${structure.key.id}"/></c:url>"
                                         type="submit" class="btn btn-lg btn-block" role="button">Mostra</a></div>
                             </div>
                         </div>

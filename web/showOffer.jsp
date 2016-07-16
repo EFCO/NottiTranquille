@@ -1,4 +1,4 @@
-<%--
+<%@ page import="it.ispw.efco.nottitranquille.model.Structure" %><%--
   Created by IntelliJ IDEA.
   User: Federico
   Date: 20/01/2016
@@ -20,10 +20,19 @@
     <%@include file="header.html" %>
 
     <%--TODO Inserire nome offerta al posto del title--%>
-    <c:set var="location" value="${basicSearchBean.result.get(requestScope.id)}"/>
+    <%
+        if (request.getParameter("id") != null) {
+            for (Structure structure : basicSearchBean.getResult().keySet()) {
+                if (structure.getId() == Long.valueOf(request.getParameter("id"))) {
+                    request.setAttribute("structure", structure);
+                }
+            }
+        }
+    %>
+    <c:set var="locations" value="${basicSearchBean.result.get(structure)}"/>
 
 
-    <title>${location.structure.name}</title>
+    <title>Struttura ${structure.name}</title>
     <style>
         body {
             padding-top: 70px;
@@ -41,8 +50,8 @@
         <img id="item-display" src="resources/img/piscine-di-albergo-Medulin-2.jpg" class="img-responsive" alt="">
     </div>
     <div class="col-md-7 col-xs-7">
-        <h2>${location.structure.name}</h2>
-        <div class="product-desc">${location.description}</div>
+        <h2>${structure.name}</h2>
+        <div class="product-desc"></div>
         <hr>
         <div class="product-price">1234.00 &euro;</div>
         <hr>
@@ -66,10 +75,12 @@
             <div class="tab-pane fade in active" id="service-one">
 
                 <section class="container product-info">
-                    Numero di ospiti massimi: ${location.maxGuestsNumber}
-                    Numero di bagni: ${location.numberOfBathrooms}
-                    Numero di letti: ${location.numberOfBeds}
-                    Numero di stanze: ${location.numberOfRooms}
+                    Tipo di struttura: ${structure.type}
+                    Oraio di checkin: ${structure.checkIn} Orario di checkout: ${structure.checkOut}
+                    Termini di cancellazione della struttura: ${structure.termsOfCancellation}
+                    Termini di servizio: ${structure.termsOfService}
+                    Sita in: ${structure.address}
+                    Offre i seguenti servizi: ${structure.services}
                     <%--TODO quando saranno riempiti li useremo Termini di cancellazione: ${location.structure.termsOfCancellation}--%>
                     <%--TODO Termini di servizio: ${location.structure.termsofService}--%>
                 </section>
@@ -78,7 +89,7 @@
             <div class="tab-pane fade" id="service-two">
 
                 <section class="container">
-                    ${location.photos}
+
                 </section>
 
             </div>

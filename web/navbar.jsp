@@ -7,37 +7,44 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">Search</h4>
             </div>
             <div class="modal-body">
-                <form action="search.jsp" name="myform" method="GET">
-                    <div class="form-group">
-                        <label for="nation">Nazione :</label>
-                        <input name="nation" id="nation" type="text" class="form-control" placeholder="Roma">
-                    </div>
-                    <div class="form-group">
-                        <label for="city">Citt&agrave; :</label>
-                        <input name="city" id="city" type="text" class="form-control" placeholder="Zagarolo">
-                    </div>
-                    <div class="form-group">
-                        <div class='input-group date' id='checkinpickermodal'>
-                            <input type='text' name="checkin" id ="checkin" class="form-control" placeholder="Check In" required/>
-                            <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
+                <form action="search.jsp" id="searchForm" name="myform" method="GET">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="nation">Nazione :</label>
+                            <input name="nation" id="nation" type="text" class="form-control" placeholder="Roma">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="city">Citt&agrave; :</label>
+                            <input name="city" id="city" type="text" class="form-control" placeholder="Zagarolo">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class='input-group date' id='checkoutpickermodal'>
-                            <input type='text' name="checkout" id="checkout" class="form-control" placeholder="Check Out" required/>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="checkinpickermodal">Check In:</label>
+                            <div class='input-group date' id='checkinpickermodal'>
+                                <input type='text' name="checkin" id="checkin" class="form-control" required/>
                             <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                             </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="checkoutpickermodal">Check Out:</label>
+                            <div class='input-group date' id='checkoutpickermodal'>
+                                <input type='text' name="checkout" id="checkout" class="form-control" required/>
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                            </div>
                         </div>
                     </div>
                     <script type="text/javascript">
-                        $(function() {
+                        $(function () {
                             $('#birthdatepickermodal').datetimepicker({
                                 format: 'DD-MM-YYYY',
                             });
@@ -57,21 +64,29 @@
                         });
 
                     </script>
-                    <div class="form-group">
-                        <label for="pricerange">Prezzo :</label>
-                        <select name="pricerange" id="pricerange" class="form-control">
-                            <c:forEach items="${priceranges}" var="pr">
-                                <option value="${pr.name()}">${pr.text}</option>
-                            </c:forEach>
-                        </select>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="pricerange">Prezzo :</label>
+                            <select name="pricerange" id="pricerange" class="form-control">
+                                <c:forEach items="${priceranges}" var="pr">
+                                    <option value="${pr.name()}">${pr.text}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
                     </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="submit" form="searchForm" name="search" class="btn btn-default" id="advsearch"
+                            value="advsearch">
+                        Advanced
+                        Search
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" form="searchForm" name="search" class="btn btn-primary" id="search"
+                            value="search">Search
+                    </button>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="submit" name="search" class="btn btn-default" id="advsearch" value="advsearch">Advanced Search</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" name="search" class="btn btn-primary" id="search" value="search">Search</button>
-            </div>
-            </form>
         </div>
     </div>
 </div>
@@ -80,77 +95,105 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel2">Sign In</h4>
             </div>
             <div class="modal-body">
                 <form action="access.jsp" name="loginForm" id="regLogForm" method="POST">
-                    <div class="form-group">
-                        <label for="username" id="userlabel">Username or Email:</label>
-                        <input name="username" id="username" type="text" class="form-control" placeholder="fede" value="fede" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password:</label>
-                        <input name="password" id="password" type="password" class="password-field form-control" placeholder="password" value="fede" required>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="username" id="userlabel">Username or Email:</label>
+                            <input name="username" id="username" type="text" class="form-control" placeholder="fede"
+                                   value="fede" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="password">Password:</label>
+                            <input name="password" id="password" type="password" class="password-field form-control"
+                                   placeholder="password" value="fede" required>
+                        </div>
                     </div>
                     <div id="regdiv" style="display: none">
-                        <div class="form-group" >
-                            <label for="firstName">Nome:</label>
-                            <input name="firstName" id="firstName" type="text" class="form-control" placeholder="Federico" value="Federico">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="firstName">Nome:</label>
+                                <input name="firstName" id="firstName" type="text" class="form-control"
+                                       placeholder="Federico" value="Federico">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lastName">Cognome:</label>
+                                <input name="lastName" id="lastName" type="text" class="form-control"
+                                       placeholder="Vagnoni"
+                                       value="Vagnoni">
+                            </div>
                         </div>
-                        <div class="form-group" >
-                            <label for="lastName">Cognome:</label>
-                            <input name="lastName" id="lastName" type="text" class="form-control" placeholder="Vagnoni" value="Vagnoni">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="email">Email:</label>
+                                <input name="email" id="email" type="email" class="form-control"
+                                       placeholder="fede93.vagnoni@gmail.com" value="fede93.vagnoni@gmail.com">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="phonenumber">Numero di telefono:</label>
+                                <input name="phonenumber" id="phonenumber" type="text" class="form-control"
+                                       placeholder="331 4447041" value="331 4447041">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input name="email" id="email" type="email" class="form-control" placeholder="fede93.vagnoni@gmail.com" value="fede93.vagnoni@gmail.com">
-                        </div>
-                        <div class="form-group" >
-                            <label for="phonenumber">Numero di telefono:</label>
-                            <input name="phonenumber" id="phonenumber" type="text" class="form-control" placeholder="331 4447041" value="331 4447041">
-                        </div>
-                        <div class="form-group">
+                        <div class="row">
                             <div class="col-md-3">
                                 <label for="address">Indirizzo:</label>
-                                <input name="address" id="address" type="text" class="form-control" placeholder="Piazza Ciao" value="Piazza Ciao">
+                                <input name="address" id="address" type="text" class="form-control"
+                                       placeholder="Piazza Ciao" value="Piazza Ciao">
                             </div>
                             <div class="col-md-3">
                                 <label for="nation">Nazione:</label>
-                                <input name="nation" id="nation" type="text" class="form-control" placeholder="Italia" value="Italia">
+                                <input name="nation" id="nation" type="text" class="form-control" placeholder="Italia"
+                                       value="Italia">
                             </div>
                             <div class="col-md-3">
-                                <label for="city">Città:</label>
-                                <input name="city" id="city" type="text" class="form-control" placeholder="Roma" value="Roma">
+                                <label for="city">Citt&agrave;:</label>
+                                <input name="city" id="city" type="text" class="form-control" placeholder="Roma"
+                                       value="Roma">
                             </div>
                             <div class="col-md-3">
                                 <label for="postalcode">Codice postale:</label>
-                                <input name="postalcode" id="postalcode" type="text" class="form-control" placeholder="00039" value="00039">
+                                <input name="postalcode" id="postalcode" type="text" class="form-control"
+                                       placeholder="00039" value="00039">
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="gender">Sesso:</label>
-                            <select name="gender" id="gender" class="form-control">
-                                <option>Male</option>
-                                <option>Female</option>
-                            </select>
-                        </div>
-                        <div class='input-group date' id="birthdatepickermodal">
-                            <input type='text' name="dateofbirth" id ="dateofbirth" class="form-control" placeholder="Data di nascita" value="01-08-1993"/>
+                        <div class="row" style="margin-top: 5px">
+                            <div class="form-group col-md-6">
+                                <label for="gender">Sesso:</label>
+                                <select name="gender" id="gender" class="form-control">
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="birthdatepickermodal">Data di nascita:</label>
+                                <div class='input-group date' id="birthdatepickermodal">
+                                    <input type='text' name="dateofbirth" id="dateofbirth" class="form-control"
+                                           value="01-08-1993"/>
                             <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                             </span>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="manager">Vorresti anche mettere in affitto locazioni?</label>
                             <input type="checkbox" name="manager" id="manager"/>
                         </div>
                     </div>
-            <div class="modal-footer">
-                <button type="submit" name="login" class="btn btn-default btn-primary" id="action" value="login">Log in</button>
-                <button type="button" name="switcher" class="btn btn-default" id="switcher">Or Register</button>
-            </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="submit" form="regLogForm" name="login" class="btn btn-default btn-primary" id="action"
+                            value="login">Log In
+                    </button>
+                    <button type="button" form="regLogForm" name="switcher" class="btn btn-default" id="switcher">Or
+                        Register
+                    </button>
+                </div>
                 <script>
                     $(function () {
                         var switchButton = $('#switcher');
@@ -161,29 +204,24 @@
                                 $('#userlabel').text("Username :");
                                 switchButton.text("or Log In");
                                 actionButton.text("Register");
-                                $("#regLogForm :input").each(function () {
-                                    $(this).prop("required",true);
-                                })
+                                $("#regdiv :input").slice(0, 10).prop("required", true);
                                 $('#regdiv').show('slide');
-                                $("#regLogForm").attr("name","regForm");
+                                $("#regLogForm").attr("name", "regForm");
                                 actionButton.val("register");
-                                actionButton.attr("name",'register');
+                                actionButton.attr("name", 'register');
                             } else {
                                 $('#userlabel').text("Username or Email :");
                                 $("#regLogForm").attr("name", "loginForm");
                                 switchButton.text("or Register");
-                                actionButton.text("Log in");
+                                actionButton.text("Log In");
                                 actionButton.val("login");
-                                actionButton.attr("name",'login');
+                                actionButton.attr("name", 'login');
                                 $('#regdiv').hide('slide');
-                                $('#regLogForm :input').slice(2, 8).each(function () {
-                                    $(this).prop("required",false);
-                                })
+                                $('#regdiv :input').slice(0, 10).prop("required", false);
                             }
                         });
                     });
                 </script>
-                </form>
             </div>
         </div>
     </div>
@@ -193,7 +231,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Profile Manager</h4>
             </div>
             <div class="modal-body">
@@ -203,7 +242,9 @@
             </div>
             <div class="modal-footer">
                 <form action="access.jsp" name="myform" method="POST">
-                    <button type="submit" name="logout" class="btn btn-default btn-primary" id="logout" value="logout">Logout</button>
+                    <button type="submit" name="logout" class="btn btn-default btn-primary" id="logout" value="logout">
+                        Logout
+                    </button>
                 </form>
             </div>
         </div>
@@ -218,7 +259,8 @@
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -233,7 +275,8 @@
                         <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
                         <li><a href="#">Chi Siamo</a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Action</a></li>
                                 <li><a href="#">Another action</a></li>
@@ -246,13 +289,17 @@
                         </li>
                     </ul>
                     <form class="navbar-form navbar-right" role="search">
-                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#searchModal">Search</button>
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#searchModal">
+                            Search
+                        </button>
                         <%
-                        if (loginBean.isLoggedIn() != 1) {
+                            if (loginBean.isLoggedIn() != 1) {
                         %>
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#signModal">Sign In/Sign Up</button>
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#signModal">Sign
+                            In/Sign Up
+                        </button>
                         <%
-                            } else {
+                        } else {
                         %>
                         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#profileModal"
                                 style="-fx-font-weight: 300">${loginBean.username}</button>

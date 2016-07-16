@@ -1,9 +1,6 @@
 package it.ispw.efco.nottitranquille.model.DAO;
 
-import it.ispw.efco.nottitranquille.model.Address;
-import it.ispw.efco.nottitranquille.model.JPAInitializer;
-import it.ispw.efco.nottitranquille.model.Manager;
-import it.ispw.efco.nottitranquille.model.Person;
+import it.ispw.efco.nottitranquille.model.*;
 import it.ispw.efco.nottitranquille.view.LoginBean;
 
 import javax.persistence.EntityManager;
@@ -174,6 +171,19 @@ public class AccessDAO {
         List<Person> result = query.getResultList();
         entityManager.close();
         return result.get(0);
+    }
+
+    public void addOwnerRole(Person manager) {
+        EntityManager entityManager = JPAInitializer.getEntityManager();
+        Person person = entityManager.find(Person.class, manager.getId());
+        entityManager.getTransaction().begin();
+        try {
+            person.addRole(new Owner());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
 //    public void addOwnerRole(Owner owner, Long id) {
