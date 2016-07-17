@@ -97,176 +97,174 @@
 <!-- LOCATION DESCRIPTION
 ================================================== -->
 <div class="container">
-    <div class="jumbotron">
-        <div class="page-header">
-            <h2>${location.name}</h2>
-        </div>
-        <p>${location.description}</p>
+    <div class="page-header">
+        <h2>${location.name}</h2>
+        <h4>${location.address}</h4>
     </div>
-</div>
+    <p>${location.description}</p>
 
-<!-- BUYERS INFO
-================================================== -->
 
-<form action="Reservation.jsp" id="myform" method="post" class="form-horizontal">
+    <form action="Reservation.jsp" id="myform" method="post" class="form-horizontal">
 
-    <div class="container">
 
-        <h2>Personal Info</h2>
+        <!-- IF NOT VALID INPUT
+        ================================================== -->
+        <%
+            if (request.getParameter("Reserve") != null) {
+        %>
+        <div class="alert alert-danger" role="alert">Hai dimenticato di immettere qualche dato,
+            oppure le date selezionate non sono piu' valide!
+        </div>
+        <% } %>
+
+
+        <h3>Personal Info</h3>
         <p>Please enter your info to complete reservation</p>
 
+        <div class="col-sm-9 col-md-6 col-lg-8" style="border-right: outset">
 
-        <div class="row clearfix">
-            <div class="col-md-6 column">
-                <table class="table table-hove table-condensed" id="tab_logic">
-                    <thead>
-                    <tr>
-                        <th class="text-center">
-                            Firstname
-                        </th>
-                        <th class="text-center">
-                            Surname
-                        </th>
-                    </tr>
-                    </thead>
+            <div class="row clearfix">
+                <div class="col-md-6 column">
+                    <table class="table table-hove table-condensed" id="tab_logic">
+                        <thead>
+                        <tr>
+                            <th class="text-center">
+                                Firstname
+                            </th>
+                            <th class="text-center">
+                                Surname
+                            </th>
+                        </tr>
+                        </thead>
 
-                    <tbody>
+                        <tbody>
+
+                        <div class="form-group">
+                            <tr id='addr0'>
+                        </div>
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <a id="add_row" class="btn btn-default pull-left">Add Roommate</a>
+            <a id='delete_row' class="btn btn-default">Delete</a>
+
+
+            <script>
+                var i = 0;
+                $("#add_row").click(function () {
+                    $('#addr' + i).html(
+                            "<td><input name='firstname" + i + "' type='text'  class='form-control input-md' required /></td>" +
+                            "<td><input  name='surname" + i + "' type='text'   class='form-control input-md' required /></td>");
+
+                    $('#tab_logic').append('<tr id="addr' + (i + 1) + '"></tr>');
+                    i++;
+                });
+                $("#delete_row").click(function () {
+                    if (i > 0) {
+                        $("#addr" + (i - 1)).html('');
+                        i--;
+                    }
+                });
+
+
+            </script>
+
+            </br></br>
+        </div>
+        <div class="col-sm-3 col-md-6 col-lg-4">
+
+            <!-- CHOOSE DATE
+            ================================================== -->
+
+            <div class="container">
+                <div class='col-sm-5'>
+
 
                     <div class="form-group">
-                        <tr id='addr0'>
+                        <label class="col-xs-3 control-label">start date</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" name="startDate" id="startDate"/>
+                        </div>
+
                     </div>
 
-                    </tbody>
+                    <div class="form-group">
 
-                </table>
-            </div>
-        </div>
-        <a id="add_row" class="btn btn-default pull-left">Add Roommate</a>
-        <a id='delete_row' class="btn btn-default">Delete</a>
-    </div>
+                        <label class="col-xs-3 control-label">end date</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" name="endDate" id="endDate"/>
+                        </div>
 
+                    </div>
 
-    <script>
-        var i = 0;
-        $("#add_row").click(function () {
-            $('#addr' + i).html(
-                    "<td><input name='firstname" + i + "' type='text'  class='form-control input-md' required /></td>" +
-                    "<td><input  name='surname" + i + "' type='text'   class='form-control input-md' required /></td>");
-
-            $('#tab_logic').append('<tr id="addr' + (i + 1) + '"></tr>');
-            i++;
-        });
-        $("#delete_row").click(function () {
-            if (i > 0) {
-                $("#addr" + (i - 1)).html('');
-                i--;
-            }
-        });
-
-
-    </script>
-
-    </br></br>
-
-    <!-- CHOOSE DATE
-    ================================================== -->
-
-    <div class="container">
-        <div class='col-sm-5'>
-
-
-            <div class="form-group">
-                <label class="col-xs-3 control-label">start date</label>
-                <div class="col-xs-5">
-                    <input type="text" class="form-control" name="startDate" id="startDate"/>
                 </div>
 
-            </div>
+                <script>
+                    var yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
 
-            <div class="form-group">
+                    $(document).ready(function () {
 
-                <label class="col-xs-3 control-label">end date</label>
-                <div class="col-xs-5">
-                    <input type="text" class="form-control" name="endDate" id="endDate"/>
-                </div>
+                        $('#startDate').pickadate({
+                            weekdaysShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                            showMonthsShort: true,
+                            format: 'dd-mm-yyyy',
+                            formatSubmit: 'dd-mm-yyyy',
+                            hiddenName: true,
 
+                            disable: [
+                                {from: [0, 0, 0], to: yesterday},
+                                ${location.disableDate}
+                            ],
+
+                            enable: [
+                                ${location.enablesDate}
+                            ]
+
+                        })
+
+                        $('#endDate').pickadate({
+                            weekdaysShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                            showMonthsShort: true,
+                            format: 'dd-mm-yyyy',
+                            formatSubmit: 'dd-mm-yyyy',
+                            hiddenName: true,
+
+                            disable: [
+                                {from: [0, 0, 0], to: yesterday},
+                                ${location.disableDate}
+                            ],
+
+                            enable: [
+                                ${location.enablesDate}
+                            ]
+
+                        })
+                    });
+                </script>
             </div>
 
         </div>
 
-        <script>
-            var yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
+        <!-- BUTTON
+        ================================================== -->
 
-            $(document).ready(function () {
+        <div class="container" align="right">
+            <form action="Reservation.jsp">
+                <button type="submit" class="btn btn-primary" name="Reserve" id="Reserve">Conferma</button>
+            </form>
+        </div>
 
-                $('#startDate').pickadate({
-                    weekdaysShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-                    showMonthsShort: true,
-                    format: 'dd-mm-yyyy',
-                    formatSubmit: 'dd-mm-yyyy',
-                    hiddenName: true,
+    </form>
 
-                    disable: [
-                        {from: [0, 0, 0], to: yesterday},
-                        ${location.disableDate}
-                    ],
-
-                    enable: [
-                        ${location.enablesDate}
-                    ]
-
-                })
-
-                $('#endDate').pickadate({
-                    weekdaysShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-                    showMonthsShort: true,
-                    format: 'dd-mm-yyyy',
-                    formatSubmit: 'dd-mm-yyyy',
-                    hiddenName: true,
-
-                    disable: [
-                        {from: [0, 0, 0], to: yesterday},
-                        ${location.disableDate}
-                    ],
-
-                    enable: [
-                        ${location.enablesDate}
-                    ]
-
-                })
-            });
-        </script>
-    </div>
-
-
-    <!-- BUTTON
-    ================================================== -->
-
-    <div class="container" align="right" align="bottom">
-        <button type="button" class="btn btn-default">Back</button>
-        <form action="Reservation.jsp">
-            <button type="submit" class="btn btn-primary" name="Reserve" id="Reserve">Conferma</button>
-        </form>
-    </div>
-
-</form>
-
-<c:if test="${reservationBean.location.reservationType == 'WithConfirm' }">
+    <c:if test="${reservationBean.location.reservationType == 'WithConfirm' }">
     <br>
     <div class="alert alert-warning" role="alert">This location is available only after a owner confirm! You will
         receive an email when the owner will display your request!
     </div>
-</c:if>
-
-
-<!-- IF NOT VALID INPUT
-================================================== -->
-<%
-
-    if (request.getParameter("Reserve") != null) {
-%>
-<div class="alert alert-danger" role="alert">Immetti tutti i dati!</div>
-<% } %>
+    </c:if>
 
 
 </body>

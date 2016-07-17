@@ -105,7 +105,6 @@ public class ReservationController {
 
 
         reservation.setState(ReservationState.ToApprove);
-        //todo set other all reservation to decline
 
         if (manager.getEmail() != null) {
             Mailer mailer = new Mailer();
