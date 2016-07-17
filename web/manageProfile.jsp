@@ -63,22 +63,24 @@
             <button type="submit" class="btn btn-default" name="modify" value="address">Modifica</button>
         </div>
     </form>
-    <c:catch var="notsuchauth">
-        <c:if test="${loginBean.user.getRole('Manager') != null}">
-            <form class="form-horizontal" role="form" action="manageStructures.jsp" method="POST">
-                <button type="submit" class="btn btn-default">Gestisci le tue locazioni</button>
-            </form>
-        </c:if>
-    </c:catch>
-    <c:if test="${notsuchauth != null}">
-        <div class="row">
-            <form action="manageProfile.jsp" method="POST">
-                <label class="col-lg-3 control-label">Hai delle locazioni da mettere in affitto?</label>
-                <input name="value" value="true" type="text" hidden>
-                <button type="submit" name="modify" value="manager" class="btn btn-primary">Si</button>
-            </form>
-        </div>
-    </c:if>
+    <c:choose>
+        <c:when test="${loginBean.user.getRole('Manager') != null}">
+            <div class="row">
+                <form class="form-horizontal" role="form" action="manageStructures.jsp" method="POST">
+                    <button type="submit" class="btn btn-primary">Gestisci le tue locazioni</button>
+                </form>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="row">
+                <form action="manageProfile.jsp" method="GET">
+                    <label class="col-lg-3 control-label">Hai delle locazioni da mettere in affitto?</label>
+                    <input name="value" value="true" type="text" hidden>
+                    <button type="submit" name="modify" value="manager" class="btn btn-primary">Si</button>
+                </form>
+            </div>
+        </c:otherwise>
+    </c:choose>
     <%
     } else if (request.getParameter("modify") != null && request.getParameter("value") != null) {
         String modify = request.getParameter("modify");
@@ -120,35 +122,33 @@
             <button type="submit" class="btn btn-default" name="modify" value="address">Modifica</button>
         </div>
     </form>
-    <c:catch var="notsuchauth">
-        <c:if test="${loginBean.user.getRole('Manager') != null}">
+    <c:choose>
+        <c:when test="${loginBean.user.getRole('Manager') != null}">
             <div class="row">
                 <form class="form-horizontal" role="form" action="manageStructures.jsp" method="POST">
                     <button type="submit" class="btn btn-primary">Gestisci le tue locazioni</button>
                 </form>
             </div>
-        </c:if>
-    </c:catch>
-    <c:if test="${notsuchauth != null}">
-        <div class="row">
-            <form action="manageProfile.jsp" method="GET">
-                <label class="col-lg-3 control-label">Hai delle locazioni da mettere in affitto?</label>
-                <input name="value" value="true" type="text" hidden>
-                <button type="submit" name="modify" value="manager" class="btn btn-primary">Si</button>
-            </form>
-        </div>
-    </c:if>
+        </c:when>
+        <c:otherwise>
+            <div class="row">
+                <form action="manageProfile.jsp" method="GET">
+                    <label class="col-lg-3 control-label">Hai delle locazioni da mettere in affitto?</label>
+                    <input name="value" value="true" type="text" hidden>
+                    <button type="submit" name="modify" value="manager" class="btn btn-primary">Si</button>
+                </form>
+            </div>
+        </c:otherwise>
+    </c:choose>
     <%
         if (result == 1) {
     %>
     <div class="alert alert-success">Campo modificato correttamente!</div>
     <%
-        response.setHeader("Refresh", "2;url=manageProfile.jsp");
     } else {
     %>
     <div class="alert alert-danger">Errore nella modifica del campo!</div>
     <%
-            response.setHeader("Refresh", "2;url=manageProfile.jsp");
         }
     } else {
         if (request.getParameter("modify").equals("address")) {
@@ -190,7 +190,7 @@
         </div>
     </form>
     <script>
-        $(document).ready(function () {
+        $(function () {
             $("#check_password").keyup(checkPasswordMatch);
             function checkPasswordMatch() {
                 var password = $("#new_password").val();
@@ -225,6 +225,9 @@
     %>
 
 </div>
+<!-- FOOTER -->
+<%@include file="footer.html" %>
+
 <%@include file="bootstrap_core_js.html" %>
 </body>
 </html>

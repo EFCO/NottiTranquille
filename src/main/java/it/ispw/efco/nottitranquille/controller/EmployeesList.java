@@ -3,6 +3,7 @@ package it.ispw.efco.nottitranquille.controller;
 import it.ispw.efco.nottitranquille.model.DAO.PersonDAO;
 import it.ispw.efco.nottitranquille.model.Person;
 import it.ispw.efco.nottitranquille.view.AccessForm;
+import it.ispw.efco.nottitranquille.view.EmployeeMainScreen;
 import it.ispw.efco.nottitranquille.view.LoginBean;
 import it.ispw.efco.nottitranquille.view.ManageEmployeesDetails;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -36,6 +37,7 @@ public class EmployeesList implements Initializable {
     private LoginBean loggedAdministrator;
 
     public MenuItem bClose;
+    public MenuItem bBack;
     public MenuItem bAdd;
     public MenuItem bModify;
     public MenuItem bDelete;
@@ -142,5 +144,16 @@ public class EmployeesList implements Initializable {
 
     public void removeEmployee(ActionEvent actionEvent) {
         personDAO.remove(lvEmployeesList.getSelectionModel().getSelectedItem());
+    }
+
+    public void backButton(ActionEvent actionEvent) {
+        EmployeeMainScreen ems = new EmployeeMainScreen();
+        ems.setEmployee(this.Administrator);
+        ems.setLoggedEmployee(this.loggedAdministrator);
+        try {
+            ems.start(mainStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

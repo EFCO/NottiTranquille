@@ -5,6 +5,7 @@ import it.ispw.efco.nottitranquille.model.DAO.PersonDAO;
 import it.ispw.efco.nottitranquille.model.enumeration.Gender;
 import it.ispw.efco.nottitranquille.view.AccessForm;
 import it.ispw.efco.nottitranquille.view.LoginBean;
+import it.ispw.efco.nottitranquille.view.ManageEmployeesList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -95,11 +96,13 @@ public class EmployeeDetails implements Initializable {
         }
         spGender.setItems(FXCollections.observableList(genders));
 
-        EventHandler<ActionEvent> action = addRole();
-
-        for (MenuItem mi : spAddAuth.getItems()) {
-            mi.setOnAction(action);
-        }
+//        EventHandler<ActionEvent> action = addRole();
+//
+//        System.out.println("Qua ci sto" + spAddAuth.getItems().toString());
+//        for (MenuItem mi : spAddAuth.getItems()) {
+//            System.out.println("aggiungo action");
+//            mi.setOnAction(action);
+//        }
 //        System.out.println("Initializing" + revisionedEmployee.getLastName());
 //        List<String> allRoles = new ArrayList<String>();
 //        allRoles.add("Administrator");
@@ -197,21 +200,28 @@ public class EmployeeDetails implements Initializable {
 //        System.out.println("Button: " + mi.getText());
 //    }
 
-    private EventHandler<ActionEvent> addRole() {
+    public EventHandler<ActionEvent> addRole() {
         return new EventHandler<ActionEvent>() {
 
             public void handle(ActionEvent event) {
+                System.out.println("Sto aggiungendo");
                 MenuItem mItem = (MenuItem) event.getSource();
-                String side = mItem.getText();
-                if ("left".equalsIgnoreCase(side)) {
-                    System.out.println("left");
-                } else if ("right".equalsIgnoreCase(side)) {
-                    System.out.println("right");
-                } else if ("top".equalsIgnoreCase(side)) {
-                    System.out.println("top");
-                } else if ("bottom".equalsIgnoreCase(side)) {
-                    System.out.println("bottom");
+                String auth = mItem.getText();
+                System.out.println(auth);
+                if (!lvAuth.getItems().contains(auth)) {
+                    lvAuth.getItems().add(auth);
                 }
+//                if ("left".equalsIgnoreCase(side)) {
+//                    System.out.println("left");
+//                } else if ("right".equalsIgnoreCase(side)) {
+//                    System.out.println("right");
+//                } else if ("top".equalsIgnoreCase(side)) {
+//                    System.out.println("top");
+//                } else if ("bottom".equalsIgnoreCase(side)) {
+//                    System.out.println("bottom");
+//                }
+                // System.out.println("Button: " +  event.getSource().toString());
+
             }
         };
     }
@@ -241,13 +251,13 @@ public class EmployeeDetails implements Initializable {
                 String roleAuth = "";
                 for (String r : oldroles) {
 
-                    if (r.equals("administrator")) {
+                    if (r.equals("Administrator")) {
                         roleAuth = "Administrator_Privileges";
-                    } else if (r.equals("designer")) {
+                    } else if (r.equals("Designer")) {
                         roleAuth = "Manage_Packets";
-                    } else if (r.equals("manager")) {
+                    } else if (r.equals("Manager")) {
                         roleAuth = "Insert_Requests";
-                    } else if (r.equals("scout")) {
+                    } else if (r.equals("Scout")) {
                         roleAuth = "Approve_Requests";
                     } else {
                         continue;
@@ -421,5 +431,16 @@ public class EmployeeDetails implements Initializable {
 
     public MenuButton getSpAddAuth() {
         return spAddAuth;
+    }
+
+    public void backButton(ActionEvent actionEvent) {
+        ManageEmployeesList mel = new ManageEmployeesList();
+        mel.setAdministrator(this.Administrator);
+        mel.setLoggedAdministrator(this.loggedAdministrator);
+        try {
+            mel.start(mainStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

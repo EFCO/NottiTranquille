@@ -1,6 +1,6 @@
-<%@ page import="org.json.JSONObject" %>
 <%@ page import="it.ispw.efco.nottitranquille.model.enumeration.Commodities" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.enumeration.LocationType" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.enumeration.StructureType" %>
+<%@ page import="org.json.JSONObject" %>
 <%--
   Created by IntelliJ IDEA.
   User: Federico
@@ -21,8 +21,8 @@
 
     if (request.getParameter("setting").equals("locationtypes")) {
         JSONObject jsonObject = new JSONObject();
-        for (LocationType lt : LocationType.values()) {
-            jsonObject.put(lt.name(), lt.toString());
+        for (StructureType st : StructureType.values()) {
+            jsonObject.put(st.name(), st.toString());
         }
         out.println(jsonObject.toString());
     }

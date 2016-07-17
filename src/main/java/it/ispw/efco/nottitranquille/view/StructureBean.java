@@ -232,6 +232,7 @@ public class StructureBean {
 
     public void delete(List<Structure> structures, String parameter) {
         try {
+            System.out.println("Il parametro passato è: " + parameter);
             ManageStructures.deleteStructure(structures, Long.valueOf(parameter));
         } catch (Exception e) {
             e.printStackTrace();
@@ -241,6 +242,7 @@ public class StructureBean {
     public int modifyField(String field, String[] value, Long id) {
         if (field != null && value != null) {
             try {
+
                 ManageStructures.modifyField(field, value, id);
             } catch (Exception e) {
                 e.printStackTrace();

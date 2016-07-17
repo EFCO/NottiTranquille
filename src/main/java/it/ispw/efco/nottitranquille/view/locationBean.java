@@ -49,7 +49,7 @@ public class LocationBean {
     private String numberOfBedrooms;
 
 
-    private Structure currentStructure;
+    private Structure currentStructure = null;
 
 
 //    private Prices prices;
@@ -154,7 +154,9 @@ public class LocationBean {
     }
 
     public Structure getCurrentStructure() {
-        return ManageStructures.getStructuredWithID(currentStructure.getId());
+        if (currentStructure != null)
+            return ManageStructures.getStructuredWithID(currentStructure.getId());
+        return null;
     }
 
     public void setCurrentStructure(Structure currentStructure) {

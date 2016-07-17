@@ -22,7 +22,7 @@ public class SearchBean {
     private DateTime checkin = null;
     private DateTime checkout = null;
     private String pricerange = "";
-    private String locationtype = "";
+    private String structuretype = "";
     private String maxtenant = "";
     private String search = "";
     private int[] commodities = null; //new String[Commodities.values().length];
@@ -99,7 +99,7 @@ public class SearchBean {
                 ", checkin=" + checkin +
                 ", checkout=" + checkout +
                 ", pricerange='" + pricerange + '\'' +
-                ", locationtype='" + locationtype + '\'' +
+                ", locationtype='" + structuretype + '\'' +
                 ", maxtenant='" + maxtenant + '\'' +
                 ", search='" + search + '\'' +
                 ", commodities=" + Arrays.toString(commodities) +
@@ -171,12 +171,12 @@ public class SearchBean {
         this.maxtenant = maxtenant;
     }
 
-    public String getLocationtype() {
-        return locationtype;
+    public String getStructuretype() {
+        return structuretype;
     }
 
-    public void setLocationtype(String locationtype) {
-        this.locationtype = locationtype;
+    public void setStructuretype(String structuretype) {
+        this.structuretype = structuretype;
     }
 
     public int[] getCommodities() {

@@ -1,7 +1,7 @@
 <%@ page import="it.ispw.efco.nottitranquille.model.Location" %>
 <%@ page import="it.ispw.efco.nottitranquille.model.Structure" %>
 <%@ page import="it.ispw.efco.nottitranquille.model.enumeration.Commodities" %>
-<%@ page import="it.ispw.efco.nottitranquille.model.enumeration.LocationType" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.enumeration.StructureType" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.HashMap" %>
 
@@ -111,7 +111,7 @@
 <c:set var="checkin" value="${param.checkin}"/>
 <c:set var="checkout" value="${param.checkout}"/>
 <c:set var="search" value="${param.search}"/>
-<c:set var="locationtype" value="${param.locationtype}"/>
+<c:set var="structuretype" value="${param.structuretype}"/>
 <c:set var="maxtenant" value="${param.maxtenant}"/>
 
 <%
@@ -127,7 +127,7 @@
     pageContext.setAttribute("Commodities", Commodities.values());
 %>
 
-<c:set var="locationtypes" value="<%=LocationType.values()%>"/>
+<c:set var="structuretypes" value="<%=StructureType.values()%>"/>
 
 <c:if test="${nation == null}">
     <c:set var="nation" value=""/>
@@ -141,8 +141,8 @@
 <c:if test="${search == null}">
     <c:set var="search" value="search"/>
 </c:if>
-<c:if test="${locationtype == null}">
-    <c:set var="locationtype" value=""/>
+<c:if test="${structuretype == null}">
+    <c:set var="structuretype" value=""/>
 </c:if>
 <c:if test="${maxtenant == null}">
     <c:set var="maxtenant" value=""/>
@@ -212,10 +212,10 @@
         </div>
         <div class="collapse row" id="collapseSearch">
             <div class="form-group col-xs-4 col-md-4">
-                <label for="locationtype">Tipo di alloggio :</label>
-                <select name="locationtype" id="locationtype" class="form-control">
-                    <c:forEach items="${locationtypes}" var="type">
-                        <option value="${type.name()}" ${locationtype == type.name() ? "selected='selected'" : ''}>${type.text}</option>
+                <label for="structuretype">Tipo di alloggio :</label>
+                <select name="structuretype" id="structuretype" class="form-control">
+                    <c:forEach items="${structuretypes}" var="type">
+                        <option value="${type.name()}" ${structuretype == type.name() ? "selected='selected'" : ''}>${type.text}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -294,8 +294,8 @@
     </form>
 </div>
 
-<button onclick="orderBy('price')">Order by Price</button>
-<button onclick="orderBy('name')">Order by Name</button>
+<button class="btn btn-default" onclick="orderBy('price')">Order by Price</button>
+<button class="btn btn-default" onclick="orderBy('name')">Order by Name</button>
 
 <div id="resultSet">
     <%

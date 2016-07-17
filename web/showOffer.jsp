@@ -1,11 +1,13 @@
-<%@ page import="it.ispw.efco.nottitranquille.model.Structure" %><%--
+<%@ page import="it.ispw.efco.nottitranquille.model.Structure" %>
+<%@ page import="org.joda.time.format.DateTimeFormat" %>
+<%--
   Created by IntelliJ IDEA.
   User: Federico
   Date: 20/01/2016
   Time: 18:25
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=ISO-8859-1" language="java" pageEncoding="ISO-8859-1"%>
+<%@ page contentType="text/html;charset=ISO-8859-1" language="java" pageEncoding="ISO-8859-1" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--@ elvariable id="location" type="it.ispw.efco.nottitranquille.model.Location.java"--%>
 
@@ -21,6 +23,7 @@
 
     <%--TODO Inserire nome offerta al posto del title--%>
     <%
+        request.setAttribute("formatter", DateTimeFormat.forPattern("dd-MM-yyyy"));
         if (request.getParameter("id") != null) {
             for (Structure structure : basicSearchBean.getResult().keySet()) {
                 if (structure.getId() == Long.valueOf(request.getParameter("id"))) {
@@ -29,8 +32,8 @@
             }
         }
     %>
-    <c:set var="locations" value="${basicSearchBean.result.get(structure)}"/>
 
+    <c:set var="locations" value="${basicSearchBean.result.get(structure)}"/>
 
     <title>Struttura ${structure.name}</title>
     <style>
@@ -75,12 +78,27 @@
             <div class="tab-pane fade in active" id="service-one">
 
                 <section class="container product-info">
-                    Tipo di struttura: ${structure.type}
-                    Oraio di checkin: ${structure.checkIn} Orario di checkout: ${structure.checkOut}
-                    Termini di cancellazione della struttura: ${structure.termsOfCancellation}
-                    Termini di servizio: ${structure.termsOfService}
-                    Sita in: ${structure.address}
-                    Offre i seguenti servizi: ${structure.services}
+                    <div class="form-group">
+                        Tipo di struttura: ${structure.type}
+                    </div>
+                    <div class="form-group">
+                        Oraio di checkin: ${structure.checkIn.toString(formatter)}
+                    </div>
+                    <div class="form-group">
+                        Orario di checkout: ${structure.checkOut.toString(formatter)}
+                    </div>
+                    <div class="form-group">
+                        Termini di cancellazione della struttura: ${structure.termsOfCancellation}
+                    </div>
+                    <div class="form-group">
+                        Termini di servizio: ${structure.termsOfService}
+                    </div>
+                    <div class="form-group">
+                        Sita in: ${structure.address}
+                    </div>
+                    <div class="form-group">
+                        Offre i seguenti servizi: ${structure.services}
+                    </div>
                     <%--TODO quando saranno riempiti li useremo Termini di cancellazione: ${location.structure.termsOfCancellation}--%>
                     <%--TODO Termini di servizio: ${location.structure.termsofService}--%>
                 </section>
@@ -96,6 +114,34 @@
             <div class="tab-pane fade" id="service-three">
 
             </div>
+        </div>
+        <div class="container">
+            <c:forEach items="${locations}" var="location">
+                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Locazione #${locations.indexOf(location)}</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                Description: ${location.description}
+                            </div>
+                            <div class="form-group">
+                                # of Rooms ${location.numberOfRooms}
+                            </div>
+                            <div class="form-group">
+                                # of Bathrooms ${location.numberOfBathrooms}
+                            </div>
+                            Max Guest Number ${location.maxGuestsNumber}
+                            <div class="form-group">
+                                # of Beds: ${location.numberOfBeds}
+                            </div>
+                            # of Bedrooms: ${location.numberOfBedrooms}
+                            <div class="form-group">
+                                Type of location: ${location.type}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
         </div>
         <hr>
     </div>

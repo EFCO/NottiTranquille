@@ -40,33 +40,27 @@ public class StructureDAO {
         entityManager = JPAInitializer.getEntityManager();
         Structure structureToDelete;
         structureToDelete = entityManager.find(Structure.class, structure.getId());
-//        Request requestToDelete = entityManager.find(Request.class,structure.getRequest().getId());
         entityManager.getTransaction().begin();
 
         structureToDelete.removeOwners();
         structureToDelete.removeManagedBy();
         structureToDelete.removeAddress();
         structureToDelete.removeLocations();
-//        entityManager.remove(structureToDelete);
 
         entityManager.getTransaction().commit();
         entityManager.close();
 
         entityManager = JPAInitializer.getEntityManager();
         structureToDelete = entityManager.find(Structure.class, structure.getId());
-        entityManager.getTransaction().begin();
-        structureToDelete.removeRequest();
-
-        entityManager.remove(structureToDelete);
-        entityManager.getTransaction().commit();
-        entityManager.close();
-
-        entityManager = JPAInitializer.getEntityManager();
-        structureToDelete = entityManager.find(Structure.class, structure.getId());
-        entityManager.getTransaction().begin();
-        entityManager.remove(structureToDelete);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+        while (structureToDelete != null) {
+            entityManager.getTransaction().begin();
+            structureToDelete.removeRequest();
+            entityManager.remove(structureToDelete);
+            entityManager.getTransaction().commit();
+            entityManager.close();
+            entityManager = JPAInitializer.getEntityManager();
+            structureToDelete = entityManager.find(Structure.class, structure.getId());
+        }
 
     }
 

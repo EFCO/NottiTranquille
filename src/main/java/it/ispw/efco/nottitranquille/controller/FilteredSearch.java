@@ -3,8 +3,8 @@ package it.ispw.efco.nottitranquille.controller;
 import it.ispw.efco.nottitranquille.model.DAO.RequestDAO;
 import it.ispw.efco.nottitranquille.model.Location;
 import it.ispw.efco.nottitranquille.model.Structure;
-import it.ispw.efco.nottitranquille.model.enumeration.LocationType;
 import it.ispw.efco.nottitranquille.model.enumeration.PriceRanges;
+import it.ispw.efco.nottitranquille.model.enumeration.StructureType;
 import it.ispw.efco.nottitranquille.view.SearchBean;
 import org.joda.time.Interval;
 
@@ -32,10 +32,10 @@ public class FilteredSearch {
         int maxPrice = PriceRanges.valueOf(searchBean.getPricerange()).getMaxvalue();
 
         Interval interval = new Interval(searchBean.getCheckin(), searchBean.getCheckout());
-        LocationType type = null;
+        StructureType type = null;
         int maxTenant = 0;
         if (searchBean.getSearch().equals("advsearch")) {
-            type = LocationType.valueOf(searchBean.getLocationtype());
+            type = StructureType.valueOf(searchBean.getStructuretype());
             maxTenant = Integer.valueOf(searchBean.getMaxtenant());
         }
         RequestDAO requestDAO = new RequestDAO();
@@ -44,7 +44,7 @@ public class FilteredSearch {
         for (Location location : result) {
             if (location.isAvailable(interval)) {
                 //in case of advanced search
-                if (searchBean.getSearch().equals("advsearch") && location.getMaxGuestsNumber() >= maxTenant && (type == LocationType.NessunaPreferenza || type == location.getType())) {
+                if (searchBean.getSearch().equals("advsearch") && location.getMaxGuestsNumber() >= maxTenant && (type == StructureType.NessunaPreferenza || type == location.getStructure().getType())) {
                     if (final_result.containsKey(location.getStructure())) {
                         final_result.get(location.getStructure()).add(location);
                     } else {

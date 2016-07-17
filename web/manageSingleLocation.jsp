@@ -1,4 +1,5 @@
 <%@ page import="it.ispw.efco.nottitranquille.model.Location" %>
+<%@ page import="org.joda.time.format.DateTimeFormat" %>
 <%--
   Created by IntelliJ IDEA.
   User: Federico
@@ -49,6 +50,7 @@
 
     <title>Manage Locations</title>
     <%
+        request.setAttribute("formatter", DateTimeFormat.forPattern("dd-MM-yyyy"));
         Location currentLocation = null;
         if (request.getParameter("location-id") != null) {
             currentLocation = locationBean.getCurrentStructure().getLocations().get(Integer.parseInt(request.getParameter("location-id")));
@@ -64,51 +66,63 @@
 </head>
 <body>
 <%@include file="navbar.jsp" %>
+
+
 <div class="container under-navbar" style="margin-top: 50px">
+    <div class="left">
+        <a class='btn btn-default' type="button" href="<c:url value="manageLocations.jsp"/>">Back</a>
+    </div>
         <%
         if (request.getParameter("modifyField") == null) {
     %>
-    <form class="form-horizontal" role="form" action="manageSingleLocation.jsp" method="POST">
-        <div class="row">
-            <label class="col-lg-3 control-label">Description:</label>
-            <c:out value="${currentLocation.description}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="description">Modifica</button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Type:</label>
-            <c:out value="${currentLocation.type}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="type">Modifica</button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Number of Rooms:</label>
-            <c:out value="${currentLocation.numberOfRooms}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfRooms">Modifica</button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Number of Bedrooms:</label>
-            <c:out value="${currentLocation.numberOfBedrooms}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBedrooms">Modifica
-            </button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Numbero of Beds:</label>
-            <c:out value="${currentLocation.numberOfBeds}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBeds">Modifica
-            </button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Number of Bathrooms:</label>
-            <c:out value="${currentLocation.numberOfBathrooms}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBathrooms">Modifica
-            </button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Time intervals of availability:</label>
-            <c:forEach items="${currentLocation.booking}" var="book">
-                <c:out value="${book.toString()}"/>
-            </c:forEach>
-            <button type="submit" class="btn btn-default" name="modifyField" value="intervals">Modifica
-            </button>
+    <form class="panel form-horizontal" role="form" action="manageSingleLocation.jsp" method="POST">
+        <div class="panel-body">
+            <div class="row">
+                <label class="col-lg-3 control-label">Description:</label>
+                <c:out value="${currentLocation.description}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="description">Modifica</button>
+            </div>
+            <div class="row">
+                <label class="col-lg-3 control-label">Type:</label>
+                <c:out value="${currentLocation.type}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="type">Modifica</button>
+            </div>
+            <div class="row">
+                <label class="col-lg-3 control-label">Number of Rooms:</label>
+                <c:out value="${currentLocation.numberOfRooms}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="numberOfRooms">Modifica</button>
+            </div>
+            <div class="row">
+                <label class="col-lg-3 control-label">Number of Bedrooms:</label>
+                <c:out value="${currentLocation.numberOfBedrooms}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBedrooms">Modifica
+                </button>
+            </div>
+            <div class="row">
+                <label class="col-lg-3 control-label">Numbero of Beds:</label>
+                <c:out value="${currentLocation.numberOfBeds}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBeds">Modifica
+                </button>
+            </div>
+            <div class="row">
+                <label class="col-lg-3 control-label">Number of Bathrooms:</label>
+                <c:out value="${currentLocation.numberOfBathrooms}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBathrooms">Modifica
+                </button>
+            </div>
+            <div class="row">
+                <label class="col-lg-3 control-label">Time intervals of availability:</label>
+                <c:forEach items="${currentLocation.booking}" var="book">
+                    <div class="form-group">
+                        <c:out value="${book.start.toString(formatter)}"/>
+                    </div>
+                    <div class="form-group">
+                        <c:out value="${book.end.toString(formatter)}"/>
+                    </div>
+                </c:forEach>
+                <button type="submit" class="btn btn-default" name="modifyField" value="intervals">Modifica
+                </button>
+            </div>
         </div>
 
 
@@ -119,39 +133,54 @@
         String value[] = request.getParameterValues("fieldValue");
         int result = locationBean.modifyField(modify, value, currentLocation.getId());
     %>
-    <form class="form-horizontal" role="form" action="manageSingleLocation.jsp" method="POST">
-        <div class="row">
-            <label class="col-lg-3 control-label">Description:</label>
-            <c:out value="${currentLocation.description}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="description">Modifica</button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Type:</label>
-            <c:out value="${currentLocation.type}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="type">Modifica</button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Number of Rooms:</label>
-            <c:out value="${currentLocation.numberOfRooms}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfRooms">Modifica</button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Number of Bedrooms:</label>
-            <c:out value="${currentLocation.numberOfBedrooms}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBedrooms">Modifica
-            </button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Numbero of Beds:</label>
-            <c:out value="${currentLocation.numberOfBeds}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBeds">Modifica
-            </button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Number of Bathrooms:</label>
-            <c:out value="${currentLocation.numberOfBathrooms}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBathrooms">Modifica
-            </button>
+    <form class="panel form-horizontal" role="form" action="manageSingleLocation.jsp" method="POST">
+        <div class="panel-body">
+            <div class="row">
+                <label class="col-lg-3 control-label">Description:</label>
+                <c:out value="${currentLocation.description}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="description">Modifica</button>
+            </div>
+            <div class="row">
+                <label class="col-lg-3 control-label">Type:</label>
+                <c:out value="${currentLocation.type}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="type">Modifica</button>
+            </div>
+            <div class="row">
+                <label class="col-lg-3 control-label">Number of Rooms:</label>
+                <c:out value="${currentLocation.numberOfRooms}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="numberOfRooms">Modifica</button>
+            </div>
+            <div class="row">
+                <label class="col-lg-3 control-label">Number of Bedrooms:</label>
+                <c:out value="${currentLocation.numberOfBedrooms}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBedrooms">Modifica
+                </button>
+            </div>
+            <div class="row">
+                <label class="col-lg-3 control-label">Numbero of Beds:</label>
+                <c:out value="${currentLocation.numberOfBeds}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBeds">Modifica
+                </button>
+            </div>
+            <div class="row">
+                <label class="col-lg-3 control-label">Number of Bathrooms:</label>
+                <c:out value="${currentLocation.numberOfBathrooms}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="numberOfBathrooms">Modifica
+                </button>
+            </div>
+            <div class="row">
+                <label class="col-lg-3 control-label">Time intervals of availability:</label>
+                <c:forEach items="${currentLocation.booking}" var="book">
+                    <div class="form-group">
+                        <c:out value="${book.start.toString(formatter)}"/>
+                    </div>
+                    <div class="form-group">
+                        <c:out value="${book.end.toString(formatter)}"/>
+                    </div>
+                </c:forEach>
+                <button type="submit" class="btn btn-default" name="modifyField" value="intervals">Modifica
+                </button>
+            </div>
         </div>
     </form>
         <%
@@ -224,9 +253,13 @@
             <div class="col-md-4">
                 <label for="value">Modifica <c:out value="${param['modifyField'].toUpperCase()}"/> </label>
                 <input name="fieldValue" id="value" type="text" class="form-control"/>
-                <button type="submit" class="btn btn-default" name="modifyField" value="${param['modifyField']}">
-                    Modifica
-                </button>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" name="modifyField" value="${param['modifyField']}">
+                        Modifica
+                    </button>
+                    <button type="submit" class="btn btn-default" href="<c:url value="manageSingleLocation.jsp"/>">Back
+                    </button>
+                </div>
             </div>
         </div>
     </form>

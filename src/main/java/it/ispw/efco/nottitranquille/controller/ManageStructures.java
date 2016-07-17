@@ -31,23 +31,32 @@ public class ManageStructures {
             } else {
                 accessDAO.addOwnerRole(manager);
                 Person updatedManager = accessDAO.selectUserByEmail(manager.getEmail());
-                structureDAO.store(structure, (Manager) updatedManager.getRole("Manager"), (Owner) manager.getRole("Owner"));
+                structureDAO.store(structure, (Manager) updatedManager.getRole("Manager"), (Owner) updatedManager.getRole("Owner"));
             }
 
         } else {
             System.out.println("Hai scelto un nuovo owner");
-            Person newOwner = new Person(structure.getOwnerFirstName(), structure.getOwnerLastName(), structure.getOwnerEmail());
-            if (structure.isSameaddress()) {
-                newOwner.setAddress(structure.getNation(), structure.getCity(), structure.getAddress(), structure.getPostalcode());
+            Person newOwner = accessDAO.selectUserByEmail(structure.getOwnerEmail());
+            //if the newOwner is not already registered
+            if (newOwner == null) {
+                newOwner = new Person(structure.getOwnerFirstName(), structure.getOwnerLastName(), structure.getOwnerEmail());
+                if (structure.isSameaddress()) {
+                    newOwner.setAddress(structure.getNation(), structure.getCity(), structure.getAddress(), structure.getPostalcode());
+                } else {
+                    newOwner.setAddress(structure.getOwnerNation(), structure.getOwnerCity(), structure.getOwnerAddress(), structure.getOwnerPostalcode());
+                }
+                accessDAO.register(newOwner);
+                newOwner = accessDAO.selectUserByEmail(newOwner.getEmail());
+                accessDAO.addOwnerRole(newOwner);
+                newOwner = accessDAO.selectUserByEmail(newOwner.getEmail());
+                Person updatedManager = accessDAO.selectUserByEmail(manager.getEmail());
+                structureDAO.store(structure, (Manager) updatedManager.getRole("Manager"), (Owner) newOwner.getRole("Owner"));
             } else {
-                newOwner.setAddress(structure.getOwnerNation(), structure.getOwnerCity(), structure.getOwnerAddress(), structure.getOwnerPostalcode());
+                accessDAO.addOwnerRole(newOwner);
+                newOwner = accessDAO.selectUserByEmail(newOwner.getEmail());
+                Person updatedManager = accessDAO.selectUserByEmail(manager.getEmail());
+                structureDAO.store(structure, (Manager) updatedManager.getRole("Manager"), (Owner) newOwner.getRole("Owner"));
             }
-            accessDAO.register(newOwner);
-            newOwner = accessDAO.selectUserByEmail(newOwner.getEmail());
-            accessDAO.addOwnerRole(newOwner);
-            newOwner = accessDAO.selectUserByEmail(newOwner.getEmail());
-            Person updatedManager = accessDAO.selectUserByEmail(manager.getEmail());
-            structureDAO.store(structure, (Manager) updatedManager.getRole("Manager"), (Owner) newOwner.getRole("Owner"));
 
         }
     }

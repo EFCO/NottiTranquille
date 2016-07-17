@@ -82,18 +82,18 @@ public class ManageEmployeesDetails extends Application {
             controller.getTvPostalCode().setText(revisionedEmployee.getAddress().getPostalcode());
 
 
-            controller.getSpRole().setValue(revisionedEmployee.getMainRole());
 
 
             System.out.println("Old roles:" + revisionedEmployee.getRoles());
             for (String r : revisionedEmployee.getRoles()) {
-                if (r.equals("administrator")) {
+                System.out.println(r);
+                if (r.equals("Administrator")) {
                     roles.add("Administrator_Privileges");
-                } else if (r.equals("designer")) {
+                } else if (r.equals("Designer")) {
                     roles.add("Manage_Packets");
-                } else if (r.equals("manager")) {
+                } else if (r.equals("Manager")) {
                     roles.add("Insert_Requests");
-                } else if (r.equals("scout")) {
+                } else if (r.equals("Scout")) {
                     roles.add("Approve_Requests");
                 }
             }
@@ -101,6 +101,8 @@ public class ManageEmployeesDetails extends Application {
 
             controller.getSpAddAuth().setDisable(false);
         }
+
+
         ObservableList rows = FXCollections.observableList(roles);
         controller.getLvAuth().setItems(rows);
         TableColumn<String, String> authCol = new TableColumn<String, String>("Authorization");
@@ -110,7 +112,20 @@ public class ManageEmployeesDetails extends Application {
             }
         });
 
+
         controller.getLvAuth().getColumns().setAll(authCol);
+
+        if (revisionedEmployee != null)
+            controller.getSpRole().setValue(revisionedEmployee.getMainRole());
+
+//        EventHandler<ActionEvent> action = controller.addRole();
+//
+//        for (MenuItem mi : controller.getSpAddAuth().getItems()) {
+//            System.out.println("aggiungo action");
+//            mi.setOnAction(action);
+//        }
+
+
         controller.setMainStage(stage);
         controller.setAdministrator(administrator);
         controller.setLoggedAdministrator(loggedAdministrator);
@@ -123,4 +138,6 @@ public class ManageEmployeesDetails extends Application {
     public void setRevisionedEmployee(Person revisionedEmployee) {
         this.revisionedEmployee = revisionedEmployee;
     }
+
+
 }

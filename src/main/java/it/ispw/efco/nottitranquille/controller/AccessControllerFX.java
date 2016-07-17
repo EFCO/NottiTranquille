@@ -46,9 +46,19 @@ public class AccessControllerFX {
         lb.setPassword(password);
         Person employee = AccessController.getRegisteredUser(username,password);
         if (employee != null) {
-            if (AccessController.isAlreadyLogged(lb, "") != 0) {
+            int loginstatus = AccessController.isAlreadyLogged(lb, "");
+            if (loginstatus == 2) {
                 error_message.setVisible(false);
                 AccessController.logNewUser(lb);
+                try {
+                    EmployeeMainScreen employeeMainScreen = new EmployeeMainScreen();
+                    employeeMainScreen.setEmployee(employee);
+                    employeeMainScreen.setLoggedEmployee(lb);
+                    employeeMainScreen.start(mainStage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (loginstatus == 1) {
                 try {
                     EmployeeMainScreen employeeMainScreen = new EmployeeMainScreen();
                     employeeMainScreen.setEmployee(employee);

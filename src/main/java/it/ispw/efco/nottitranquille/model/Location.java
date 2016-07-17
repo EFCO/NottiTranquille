@@ -47,7 +47,7 @@ public class Location {
     /**
      *
      */
-    @ElementCollection(targetClass = String.class)
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     private List<String> photos;
 
     /**
@@ -150,7 +150,7 @@ public class Location {
 //        DateTime start = DateTime.parse("01-01-2016", dateTimeFormatter);
 //        DateTime end = DateTime.parse("30-12-2016", dateTimeFormatter);
         this.booking = locationBean.getIntervalList();
-        this.type = LocationType.Hotel;
+        this.type = LocationType.SingleRoom;
     }
 
     public void setStructure(Structure structure) {
@@ -184,7 +184,8 @@ public class Location {
      */
     public boolean isAvailable(Interval interval) {
         for (Interval inter : this.booking) {
-            if (interval.isEqual(inter) || (inter.getStart().isBefore(interval.getStart()) && inter.getEnd().isAfter(interval.getEnd()))) {
+            System.out.println(inter.toString());
+            if (interval.isEqual(inter) || ((inter.getStart().isBefore(interval.getStart()) || inter.getStart().isEqual(interval.getStart())) && (inter.getEnd().isAfter(interval.getEnd()) || inter.getEnd().isEqual(interval.getEnd())))) {
                 return true;
             }
         }

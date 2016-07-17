@@ -171,7 +171,7 @@ public class Structure {
     public void removeLocation(Location location) {
         location.setStructure(null);
         this.locations.remove(location);
-        numberOfLocations -= 1;
+        this.numberOfLocations -= 1;
     }
 
     public String getName() {

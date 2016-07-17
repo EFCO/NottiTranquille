@@ -1,5 +1,6 @@
 <%@ page import="it.ispw.efco.nottitranquille.model.Manager" %>
 <%@ page import="it.ispw.efco.nottitranquille.model.Structure" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.enumeration.StructureType" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -21,6 +22,8 @@
 
 <c:set var="createModalHTML"
        value='<form id="create-price-form" method="post" action="structures.jsp"> <div class="form-group"> <label>Price type</label> <div id="price-type-div"> <div id="first-column-radio-price-type"> <div class="radio first-radio"> <label> <input type="radio" name="priceType" id="option-radio-base-price" value="basePrice" checked="checked"> Base Price </label> </div> </div> <div id="second-column-radio-price-type"> <div class="radio"> <label> <input type="radio" name="priceType" id="option-radio-fix-discount" value="fixDiscount"> Fix Discount </label> </div> <div class="radio"> <label> <input type="radio" name="priceType" id="option-radio-fix-fee" value="percentageDiscount"> Percentage Discount </label> </div> </div> <div id="third-column-radio-price-type"> <div class="radio"> <label> <input type="radio" name="priceType" id="option-radio-percentage-discount" value="fixFee"> Fix Fee </label> </div> <div class="radio"> <label> <input type="radio" name="priceType" id="option-radio-percentage-fee" value="percentageFee"> Percentage Fee </label> </div> </div> </div> </div> <div id="div-repeat" class="form-group"> <div id="div-repeat-select" class="form-group left"> <label>Repeat it</label> <select class="form-control" name="repetitionType" required> <option value="everyDay" selected="selected">Every day</option> <option value="everyWeek">Every week</option> <option value="everyMonth">Every month</option> <option value="everyYear">Every year</option> <option value="everyWeekend">Every weekend</option> <option value="everyWorkday">Every workday</option> <option value="everyNoWorkday">Every noworkday</option> </select> </div> <div id="div-times" class="form-group right"> <label>Times</label> <select class="form-control" name="times"> <option selected="selected">1</option> <option>2</option> <option>3</option> <option>4</option> <option>5</option> <option>6</option> <option>7</option> </select> </div> </div> <div class="form-group"> <label for="input-price">Price value</label> <div class="input-group"> <div id="addon-input-price" class="input-group-addon">€</div> <input type="number" step="any" min="0" class="form-control" name="value" id="input-price" placeholder="Price" required> </div> </div> <div class="form-group date"> <label for="input-start-date">Start</label> <div class="input-group date"> <input type="text" class="form-control" name="startDate" id="input-start-date" required><div class="input-group-addon"><i class="glyphicon glyphicon-th"></i></div> </div> </div> <div class="form-group"> <label for="input-comment">Comment</label> <div class="input-group"> <input type="text" class="form-control" name="comment" id="input-comment"> </div> </div> <div id="end-div" class="form-group"> <label>End</label> <div class="radio"> <label> <input type="radio" name="option-radio-end" id="option-radio-never" value="never" checked="checked">Never</label> <input type="text" name="endDate" value="31/12/9999" hidden/> </div> <div class="radio"> <label> <input type="radio" name="option-radio-end" id="option-radio-occurrences" value="occurrences"> <div class="input-group"> <input name="occurrences" id="input-occurrences" type="number" min="1" class="form-control" value="1"><span class="input-group-addon" id="sizing-addon1">occurrences</span> </div> </label> </div> <div class="radio"> <label> <input type="radio" name="option-radio-end" id="option-radio-end-date" value="endDate"> <div class="input-group date"> <input type="text" class="form-control" name="endDate" id="input-end-date"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span> </div> </label> </div> </div> <div class="form-group"> <label>Summary</label> <p id="summary"></p> </div> <label> <input name="id" hidden> </label> </form>'/>
+<c:set var="structuretypes" value="<%=StructureType.values()%>"/>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,6 +64,7 @@
                 structureBean.setCheckOut(request.getParameter("checkOut"));
             }
             structureBean.validate(loginBean.getUser());
+            response.sendRedirect("manageStructures.jsp");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,6 +72,7 @@
 
     if (request.getParameter("delete") != null) {
         structureBean.delete(structures, request.getParameter("id"));
+        response.sendRedirect("manageStructures.jsp");
     }
 %>
 <body>
@@ -77,12 +82,12 @@
 <!-- CONTAINER -->
 <div class="container under-navbar" style="margin-top: 50px">
     <div>
-        <div class="left">
+        <div class="btn-group">
             <button class='btn btn-primary' data-toggle="modal" data-target="#createModal">Create new structure</button>
+            <a class='btn btn-default' type="button" href="<c:url value="manageProfile.jsp"/>">Back</a>
         </div>
         <!-- Table with prices -->
         <table id="prices-table" class="tablesorter table table-bordered table-hover table-striped">
-            <%--<caption>Ini adalah data biodata anda</caption>--%>
             <thead>
             <tr>
                 <th>#</th>
@@ -99,9 +104,9 @@
                     <c:forEach items="${structures}" var="structure">
                         <tr>
                             <td>${structure.id}</td>
-                            <td>${fn:join(price['class'].simpleName.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])"), ' ')}</td>
+                            <td>${structure.type.text}</td>
                             <td>${structure.name}</td>
-                            <td>${structure.numberOfLocations}</td>
+                            <td>${structure.locations.size()}</td>
                             <td>${structure.address}</td>
                             <td>
                                 <form action="manageLocations.jsp" method="POST">
@@ -136,11 +141,21 @@
                         <h4 class="modal-title" id="createModalLabel">Create Structure</h4>
                     </div>
                     <div class="modal-body">
-                        <form action="manageStructures.jsp" name="newStructureForm" id="newStructureForm" method="GET">
-                            <div class="form-group">
-                                <label for="name" id="userlabel">Structure name:</label>
-                                <input name="name" id="name" type="text" class="form-control"
-                                       placeholder="Villa bella" value="Villa bella" required>
+                        <form action="manageStructures.jsp" name="newStructureForm" id="newStructureForm" method="POST">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="name" id="userlabel">Structure name:</label>
+                                    <input name="name" id="name" type="text" class="form-control"
+                                           placeholder="Villa bella" value="Villa bella" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="type">Structure type:</label>
+                                    <select name="type" id="type" class="form-control">
+                                        <c:forEach items="${structuretypes}" var="type">
+                                            <option value="${type.name()}">${type.text}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="termsOfService">Terms of Services:</label>
@@ -322,7 +337,7 @@
                     <h4 class="modal-title" id="deleteModalLabel">Are you sure?</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="delete-structure-form" method="post" action="manageStructures.jsp">Note that after the
+                    <form id="delete-structure-form" method="POST" action="manageStructures.jsp">Note that after the
                         confirmation
                         the
                         structure will be lost.
@@ -338,12 +353,10 @@
                     </button>
                 </div>
                 <script>
-                    $(function () {
-                        $(".deleteStructure").click(function () {
-                            var structureID = $(".deleteStructure").attr("data-id");
-                            $(".modal-body #structure-id").val(structureID);
-                        });
-                    })
+                    $(document).on("click", ".deleteStructure", function () {
+                        var structureID = $(this).data('id');
+                        $(".modal-body #structure-id").val(structureID);
+                    });
                 </script>
             </div>
         </div>

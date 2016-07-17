@@ -27,6 +27,7 @@ public class ManageLocation {
         for (Location locationToDelete : locations) {
             if (locationToDelete.getId().equals(id)) {
                 locationDAO.deleteWithMerge(locationToDelete, currentStructure);
+                currentStructure.removeLocation(locationToDelete);
             }
         }
     }

@@ -4,8 +4,8 @@
 <%@ page import="org.joda.time.Interval" %>
 <%@ page import="org.joda.time.format.DateTimeFormat" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.Arrays" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%--
   Created by IntelliJ IDEA.
   User: claudio
   Date: 7/10/16
@@ -59,44 +59,44 @@
 
     <title>Manage Locations</title>
     <%
+        request.setAttribute("formatter", DateTimeFormat.forPattern("dd-MM-yyyy"));
         Structure currentStructure;
-        List<Structure> managedStructures = null;
-
-        try {
-            managedStructures = ((Manager) loginBean.getUser().getRole("Manager")).getManagedStructures();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        List<Structure> managedStructures;
 
         if (request.getParameter("structure-id") != null) {
+            managedStructures = ((Manager) loginBean.getUser().getRole("Manager")).getManagedStructures();
             currentStructure = managedStructures.get(Integer.parseInt(request.getParameter("structure-id")));
             locationBean.setCurrentStructure(currentStructure);
             request.setAttribute("currentStructure", currentStructure);
             request.setAttribute("locations", currentStructure.getLocations());
         } else {
             currentStructure = locationBean.getCurrentStructure();
-            request.setAttribute("currentStructure", currentStructure);
-            request.setAttribute("locations", currentStructure.getLocations());
+            if (currentStructure != null) {
+                request.setAttribute("currentStructure", currentStructure);
+                request.setAttribute("locations", currentStructure.getLocations());
+            }
         }
 
         if (request.getParameter("create") != null) {
             List<Interval> intervalList = new ArrayList<>();
             String[] intervals = request.getParameterValues("interval");
-            System.out.println(Arrays.toString(intervals));
             for (int i = 0; i < intervals.length; ) {
                 DateTime firstDate = DateTime.parse(intervals[i], DateTimeFormat.forPattern("dd-MM-yyyy"));
                 DateTime secondDate = DateTime.parse(intervals[i + 1], DateTimeFormat.forPattern("dd-MM-yyyy"));
                 intervalList.add(new Interval(firstDate, secondDate));
                 i += 2;
             }
-
             locationBean.setIntervalList(intervalList);
             System.out.println("Sono entrato" + locationBean.toString());
             locationBean.validate();
+            response.sendRedirect("manageLocations.jsp");
         }
+
         if (request.getParameter("delete") != null) {
-            locationBean.delete(request.getParameter("location-id"), currentStructure.getLocations());
+            locationBean.delete(request.getParameter("id"), currentStructure.getLocations());
+            response.sendRedirect("manageLocations.jsp");
         }
+
 
     %>
 </head>
@@ -106,50 +106,55 @@
         <%
         if (request.getParameter("modifyField") == null) {
     %>
-    <form class="form-horizontal" role="form" action="manageLocations.jsp" method="POST">
-        <div class="row">
-            <label class="col-lg-3 control-label">Name:</label>
-            <c:out value="${currentStructure.name}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="name">Modifica</button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Terms of Service:</label>
-            <c:out value="${currentStructure.termsOfService}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="termsOfService">Modifica</button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Terms of Cancellation:</label>
-            <c:out value="${currentStructure.termsOfCancellation}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="termsOfCancellation">Modifica
-            </button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Check in:</label>
-            <c:out value="${currentStructure.checkIn}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="checkIn">Modifica
-            </button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Check in:</label>
-            <c:out value="${currentStructure.checkOut}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="checkOut">Modifica
-            </button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Address:</label>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.address}"/>
+    <form class="panel form-horizontal" role="form" action="manageLocations.jsp" method="POST">
+        <div class="panel-body">
+            <div class="row">
+                <label class="col-lg-3 control-label">Name:</label>
+                <c:out value="${currentStructure.name}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="name">Modifica</button>
             </div>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.city}"/>
+            <div class="row">
+                <label class="col-lg-3 control-label">Terms of Service:</label>
+                <c:out value="${currentStructure.termsOfService}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="termsOfService">Modifica
+                </button>
             </div>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.nation}"/>
+            <div class="row">
+                <label class="col-lg-3 control-label">Terms of Cancellation:</label>
+                <c:out value="${currentStructure.termsOfCancellation}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="termsOfCancellation">Modifica
+                </button>
             </div>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.postalcode}"/>
+            <div class="row">
+                <label class="col-lg-3 control-label">Check in:</label>
+                <c:out value="${currentStructure.checkIn.toString(formatter)}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="checkIn">Modifica
+                </button>
             </div>
-            <button type="submit" class="btn btn-default" name="modifyField" value="address">Modifica</button>
+            <div class="row">
+                <label class="col-lg-3 control-label">Check in:</label>
+                <c:out value="${currentStructure.checkOut.toString(formatter)}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="checkOut">Modifica
+                </button>
+            </div>
+            <div class="row">
+                <label class="col-lg-3 control-label">Address:</label>
+                <div class="row">
+                    <div class="form-group col-md-2">
+                        <c:out value="${currentStructure.address.address}"/>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <c:out value="${currentStructure.address.city}"/>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <c:out value="${currentStructure.address.nation}"/>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <c:out value="${currentStructure.address.postalcode}"/>
+                    </div>
+                    <button type="submit" class="btn btn-default" name="modifyField" value="address">Modifica</button>
+                </div>
+            </div>
         </div>
     </form>
         <%
@@ -158,50 +163,53 @@
         String[] value = request.getParameterValues("fieldValue");
         int result = structureBean.modifyField(modify, value, currentStructure.getId());
     %>
-    <form class="form-horizontal" role="form" action="manageLocations.jsp" method="POST">
-        <div class="row">
-            <label class="col-lg-3 control-label">Name:</label>
-            <c:out value="${currentStructure.name}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="name">Modifica</button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Terms of Service:</label>
-            <c:out value="${currentStructure.termsOfService}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="termsOfService">Modifica</button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Terms of Cancellation:</label>
-            <c:out value="${currentStructure.termsOfCancellation}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="termsOfCancellation">Modifica
-            </button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Check in:</label>
-            <c:out value="${currentStructure.checkIn}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="checkIn">Modifica
-            </button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Check in:</label>
-            <c:out value="${currentStructure.checkOut}"/>
-            <button type="submit" class="btn btn-default" name="modifyField" value="checkOut">Modifica
-            </button>
-        </div>
-        <div class="row">
-            <label class="col-lg-3 control-label">Address:</label>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.address}"/>
+    <form class="panel form-horizontal" role="form" action="manageLocations.jsp" method="POST">
+        <div class="panel-body">
+            <div class="row">
+                <label class="col-lg-3 control-label">Name:</label>
+                <c:out value="${currentStructure.name}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="name">Modifica</button>
             </div>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.city}"/>
+            <div class="row">
+                <label class="col-lg-3 control-label">Terms of Service:</label>
+                <c:out value="${currentStructure.termsOfService}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="termsOfService">Modifica
+                </button>
             </div>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.nation}"/>
+            <div class="row">
+                <label class="col-lg-3 control-label">Terms of Cancellation:</label>
+                <c:out value="${currentStructure.termsOfCancellation}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="termsOfCancellation">Modifica
+                </button>
             </div>
-            <div class="col-md-2">
-                <c:out value="${currentStructure.address.postalcode}"/>
+            <div class="row">
+                <label class="col-lg-3 control-label">Check in:</label>
+                <c:out value="${currentStructure.checkIn.toString(formatter)}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="checkIn">Modifica
+                </button>
             </div>
-            <button type="submit" class="btn btn-default" name="modifyField" value="address">Modifica</button>
+            <div class="row">
+                <label class="col-lg-3 control-label">Check in:</label>
+                <c:out value="${currentStructure.checkOut.toString(formatter)}"/>
+                <button type="submit" class="btn btn-default" name="modifyField" value="checkOut">Modifica
+                </button>
+            </div>
+            <div class="row">
+                <label class="col-lg-3 control-label">Address:</label>
+                <div class="col-md-2">
+                    <c:out value="${currentStructure.address.address}"/>
+                </div>
+                <div class="col-md-2">
+                    <c:out value="${currentStructure.address.city}"/>
+                </div>
+                <div class="col-md-2">
+                    <c:out value="${currentStructure.address.nation}"/>
+                </div>
+                <div class="col-md-2">
+                    <c:out value="${currentStructure.address.postalcode}"/>
+                </div>
+                <button type="submit" class="btn btn-default" name="modifyField" value="address">Modifica</button>
+            </div>
         </div>
     </form>
         <%
@@ -228,9 +236,13 @@
                 <input name="fieldValue" id="address_nation" type="text" class="form-control"/>
                 <label for="address_postalcode">Modifica Codice Postale</label>
                 <input name="fieldValue" id="address_postalcode" type="number" class="form-control"/>
-                <button type="submit" class="btn btn-default" name="modifyField" value="${param['modifyField']}">
-                    Modifica
-                </button>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" name="modifyField" value="${param['modifyField']}">
+                        Modifica
+                    </button>
+                    <button type="submit" class="btn btn-default" href="<c:url value="manageLocations.jsp"/>">Back
+                    </button>
+                </div>
             </div>
         </div>
     </form>
@@ -242,16 +254,28 @@
     <form action="manageLocations.jsp" method="POST">
         <div class="row">
             <div class="form-group col-md-4">
-                <div class='input-group date'>
-                    <label for="value">Modifica <c:out value="${param['modifyField'].toUpperCase()}"/> </label>
+                <label for="changedate">Modifica <c:out value="${param['modifyField'].toUpperCase()}"/> </label>
+                <div class='input-group date' id="changedate">
                     <input type='text' name="fieldValue" class="form-control"/>
                             <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                             </span>
-                    <button type="submit" class="btn btn-default" name="modifyField" value="${param['modifyField']}">
-                        Modifica
-                    </button>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" name="modifyField"
+                                value="${param['modifyField']}">
+                            Modifica
+                        </button>
+                        <button type="submit" class="btn btn-default" href="<c:url value="manageLocations.jsp"/>">Back
+                        </button>
+                    </div>
                 </div>
+                <script>
+                    $(function () {
+                        $('#changedate').datetimepicker({
+                            format: 'DD-MM-YYYY',
+                        });
+                    });
+                </script>
             </div>
         </div>
     </form>
@@ -263,9 +287,13 @@
             <div class="col-md-4">
                 <label for="value">Modifica <c:out value="${param['modifyField'].toUpperCase()}"/> </label>
                 <input name="fieldValue" id="value" type="text" class="form-control"/>
-                <button type="submit" class="btn btn-default" name="modifyField" value="${param['modifyField']}">
-                    Modifica
-                </button>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" name="modifyField" value="${param['modifyField']}">
+                        Modifica
+                    </button>
+                    <button type="submit" class="btn btn-default" href="<c:url value="manageLocations.jsp"/>">Back
+                    </button>
+                </div>
             </div>
         </div>
     </form>
@@ -274,8 +302,9 @@
         }
     %>
     <div>
-        <div class="left">
+        <div class="btn-group">
             <button class='btn btn-primary' data-toggle="modal" data-target="#createModal">Create new location</button>
+            <a class='btn btn-default' type="button" href="<c:url value="manageStructures.jsp"/>">Back</a>
         </div>
 
         <table id="prices-table" class="tablesorter table table-bordered table-hover table-striped">
@@ -292,6 +321,7 @@
                 <th>Number of Beds</th>
                 <th>Number of Rooms</th>
                 <th>Type</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -332,18 +362,6 @@
             </c:choose>
             </tbody>
         </table>
-        !-- Pagination -->
-        <div>
-            <div class="left">
-                <nav>
-                    <ul class="pagination">
-                    </ul>
-                </nav>
-            </div>
-            <div id="items-counter" class="right">
-            </div>
-        </div>
-
 
         <!-- FOOTER -->
         <%@include file="footer.html" %>
@@ -424,8 +442,9 @@
                             </div>
                         </div>
                         <div class='form-group'>
-                            <button type='button' class="btn btn-default" id="plusInterval"/>
-                            <span class="glyphicon glyphicon-plus"></span>
+                            <button type='button' class="btn btn-default" id="plusInterval">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
                         </div>
                         <script>
                             $(function () {
@@ -446,7 +465,7 @@
                         </script>
 
                     </form>
-                    <div class="alert-warning">Do not forget to set the prices of your location after you created it!
+                    <div class="alert-warning">Do not forget to set the prices of your location after you create it!
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -483,12 +502,10 @@
                     </button>
                 </div>
                 <script>
-                    $(function () {
-                        $(".deleteLocation").click(function () {
-                            var locationID = $(".deleteLocation").attr("data-id");
-                            $(".modal-body #location-id").val(locationID);
-                        });
-                    })
+                    $(document).on("click", ".deleteLocation", function () {
+                        var locationID = $(this).data('id');
+                        $(".modal-body #location-id").val(locationID);
+                    });
                 </script>
             </div>
         </div>
