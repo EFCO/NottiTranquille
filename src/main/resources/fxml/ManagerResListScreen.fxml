@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.ispw.efco.nottitranquille.controller.ManagerResSummaryFX">
+    <children>
+        <MenuBar prefHeight="25.0" prefWidth="850.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem fx:id="bClose" mnemonicParsing="false" text="Close" onAction="#close" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem fx:id="bDecline" disable="true" mnemonicParsing="false" onAction="#decline" text="decline" />
+                        <MenuItem fx:id="bAccept" disable="true" mnemonicParsing="false" onAction="#accept" text="accept" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <ScrollPane layoutY="24.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="376.0" prefWidth="850.0">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="186.0" prefWidth="223.0">
+                    <children>
+                        <TableView fx:id="reservationTableView" layoutY="27.0" prefHeight="373.0" prefWidth="850.0" />
+                    </children>
+                </AnchorPane>
+            </content>
+        </ScrollPane>
+    </children>
+</AnchorPane>

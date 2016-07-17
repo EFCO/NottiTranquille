@@ -1,14 +1,18 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.Person;
-import it.ispw.efco.nottitranquille.view.LocationListScreen;
+import it.ispw.efco.nottitranquille.model.Role;
 import it.ispw.efco.nottitranquille.view.LoginBean;
+import it.ispw.efco.nottitranquille.view.UserScreen;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccessControllerFX {
 
@@ -41,30 +45,36 @@ public class AccessControllerFX {
         LoginBean lb = new LoginBean();
         lb.setUsername(username);
         lb.setPassword(password);
+
         Person user = LoginController.getInstance().login(username, password);
-        if (user != null) {
-            if (lb.isLogged()) {
-                error_message.setVisible(false);
-                try {
-                    LocationListScreen locationListScreen = new LocationListScreen();
-                    locationListScreen.setUser(user);
-                    locationListScreen.setBean(lb);
-                    locationListScreen.start(mainStage);
+        lb.setLogged(true);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        List<Role> roles = user.getRoles();
+        List<String> roleStrings = new ArrayList<String>();
+        for (Role role : roles)
+            roleStrings.add(role.getClass().getSimpleName());
 
-            } else {
-                error_message.setVisible(true);
-                username_textfield.setText("");
-                password_textfield.setText("");
+        lb.setRoles(roleStrings);
+
+        if (lb.isLogged()) {
+            error_message.setVisible(false);
+            try {
+
+                UserScreen userScreen = new UserScreen();
+                userScreen.setUser(user);
+                userScreen.setLoginBean(lb);
+                userScreen.start(mainStage);
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
         } else {
             error_message.setVisible(true);
             username_textfield.setText("");
             password_textfield.setText("");
         }
+
     }
 
 

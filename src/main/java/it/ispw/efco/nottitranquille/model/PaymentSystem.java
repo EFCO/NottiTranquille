@@ -23,7 +23,7 @@ public class PaymentSystem {
      * @return true if procedure end successful
      */
     public boolean makePayment(String usernameFrom, String name, Float amount) {
-        System.out.println(String.format("Payment is made from: %s to: %s of &f euro",
+        System.out.println(String.format("Payment is made from: %s to: %s of %f euro",
                 usernameFrom, name, amount));
 
         return true;

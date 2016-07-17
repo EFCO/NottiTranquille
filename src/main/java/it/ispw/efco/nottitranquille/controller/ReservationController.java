@@ -85,11 +85,6 @@ public class ReservationController {
     }
 
 
-    public Reservation createReservation(String tenantUsername, Long locationId, Interval period) throws IllegalBookingDate {
-        return createReservation(tenantUsername, locationId, period, null);
-    }
-
-
     /**
      * Reserve the Location with confirmation method: The Manager of the Location must approve the
      * reservation.
@@ -131,16 +126,6 @@ public class ReservationController {
     /**
      * The Manager can confirm Reservation created by a Tenant.
      *
-     * @param reservation: Reservation confirmed
-     */
-    public void approveReservation(Reservation reservation) {
-        reservation.setState(ReservationState.ToPay);
-        ReservationDAO.update(reservation);
-    }
-
-    /**
-     * The Manager can confirm Reservation created by a Tenant.
-     *
      * @param id: confirmed Reservation's id
      * @return boolean
      */
@@ -156,16 +141,6 @@ public class ReservationController {
         }
 
         return true;
-    }
-
-    /**
-     * The Manager can decline Reservation created by a Tenant.
-     *
-     * @param reservation: Reservation declined
-     */
-    public void declineReservation(Reservation reservation) {
-        reservation.setState(ReservationState.Declined);
-        ReservationDAO.update(reservation);
     }
 
     /**
@@ -235,6 +210,9 @@ public class ReservationController {
 
             // reservation to delete
             Reservation reservation = ReservationDAO.findByID(id);
+
+            if (reservation.getState() == ReservationState.Paid)
+                return false;
 
             // the manager who inserts the reserved locations
             Person manager = reservation.getLocation().getManager();

@@ -5,6 +5,7 @@ import it.ispw.efco.nottitranquille.model.dao.LocationDAO;
 import it.ispw.efco.nottitranquille.model.dao.ReservationDAO;
 import it.ispw.efco.nottitranquille.model.dao.UserDAO;
 import it.ispw.efco.nottitranquille.model.enumeration.ReservationState;
+import it.ispw.efco.nottitranquille.model.enumeration.ReservationType;
 import it.ispw.efco.nottitranquille.view.ListReservationBean;
 import it.ispw.efco.nottitranquille.view.LocationBean;
 import it.ispw.efco.nottitranquille.view.ReservationBean;
@@ -32,6 +33,7 @@ public class ReservationTest {
     @Before
     public void setUp() throws Exception {
 
+        // TODO: 17/07/16 create location
         Location loc = LocationDAO.findByID(7l);    // location to book
 
         tenant = UserDAO.findBy("Zanna");
@@ -43,7 +45,7 @@ public class ReservationTest {
         locBean.setDescription(loc.getDescription());
         locBean.setEnablesDate(loc.getAvailableDate());
         locBean.setId(loc.getId().toString());
-        locBean.setType("WithConfirm");
+        locBean.setReservationType(ReservationType.WithConfirm.getText());
 
         /* JavaBean for Reservation */
         bean = new ReservationBean();
@@ -54,7 +56,7 @@ public class ReservationTest {
         bean.setPrice(loc.getPrice());
 
         // put the JavaBean of Location into the JavaBean of Reservation
-        bean.setLocationBean(locBean);
+        bean.setLocation(locBean);
     }
 
 

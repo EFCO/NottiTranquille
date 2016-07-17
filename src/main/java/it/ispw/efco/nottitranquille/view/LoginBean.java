@@ -95,4 +95,12 @@ public class LoginBean {
     public boolean getLogged() {
         return isLogged;
     }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
 }
