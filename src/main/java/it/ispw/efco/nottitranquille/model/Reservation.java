@@ -135,20 +135,11 @@ public class Reservation {
     }
 
     public String state() {
-        switch (this.state) {
-            case Paid:
-                return "Paid";
-            case ToPay:
-                return "ToPay";
-            case Init:
-                return "Unknown";
-            case Declined:
-                return "Declined";
-            case ToApprove:
-                return "ToApprove";
-        }
 
-        return null;
+        if (state == null)
+            return null;
+
+        return state.getText();
     }
 
     public void setState(ReservationState state) {

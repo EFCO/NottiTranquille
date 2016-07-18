@@ -24,7 +24,10 @@
 <%
 } else {
 %>
-<jsp:forward page="errorPage.jsp"/>
+<jsp:forward page="errorPage.jsp">
+    <jsp:param name="error" value="The period for your reservation is no longer available!!
+    This reservation will be deleted"/>
+</jsp:forward>
 <%
         }
     }

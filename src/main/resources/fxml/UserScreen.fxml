@@ -32,8 +32,9 @@
                <children>
                   <Text fx:id="userFirstname" layoutX="33.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Emanuele" />
                   <Text fx:id="userLastname" layoutX="119.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vannacci" />
-                  <Button fx:id="tenantButton" disable="true" layoutX="146.0" layoutY="171.0" mnemonicParsing="false" onAction="#handleTenantButton" prefHeight="25.0" prefWidth="297.0" text="Visualizza prenotazioni effettuate" visible="false" />
-                  <Button fx:id="managerButton" disable="true" layoutX="152.0" layoutY="258.0" mnemonicParsing="false" onAction="#handleManagerButton" prefHeight="25.0" prefWidth="290.0" text="Viasualizza prenotazioni da giudicare" visible="false" />
+                  <Button fx:id="tenantButton" disable="true" layoutX="149.0" layoutY="93.0" mnemonicParsing="false" onAction="#handleTenantButton" prefHeight="29.0" prefWidth="297.0" text="Visualizza prenotazioni effettuate" visible="false" />
+                  <Button fx:id="managerButton" disable="true" layoutX="152.0" layoutY="173.0" mnemonicParsing="false" onAction="#handleManagerButton" prefHeight="25.0" prefWidth="290.0" text="Viasualizza prenotazioni da giudicare" visible="false" />
+                  <Button fx:id="newReservationButton" disable="true" layoutX="156.0" layoutY="269.0" mnemonicParsing="false" onAction="#handleNewReservation" prefHeight="25.0" prefWidth="282.0" text="New Reservation" visible="false" />
                </children>
             </Pane>
          </children>

@@ -104,7 +104,6 @@ public class ReservationBean {
 
         Location loc = reservation.getLocation();
         LocationBean locBean = new LocationBean();
-        locBean.setServices(loc.getServices());
         locBean.setName(loc.getName());
         locBean.setDescription(loc.getDescription());
         locBean.setEnablesDate(loc.getAvailableDate());

@@ -62,7 +62,7 @@ public class LocationDAO {
 
     public static List<Location> findAllLocation() {
         EntityManager entityManager = JPAInitializer.getEntityManager();
-        return entityManager.createQuery("from Location", Location.class)
+        return entityManager.createQuery("select t from Location t", Location.class)
                 .getResultList();
     }
 

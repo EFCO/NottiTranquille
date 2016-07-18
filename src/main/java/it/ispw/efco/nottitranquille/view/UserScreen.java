@@ -54,6 +54,8 @@ public class UserScreen extends Application {
             if (role.getClass().getSimpleName().equals(Tenant.class.getSimpleName())) {
                 controller.getTenantButton().setVisible(true);
                 controller.getTenantButton().setDisable(false);
+                controller.getNewReservationButton().setDisable(false);
+                controller.getNewReservationButton().setVisible(true);
             }
 
             if (role.getClass().getSimpleName().equals(Manager.class.getSimpleName())) {
@@ -66,7 +68,6 @@ public class UserScreen extends Application {
         controller.setLb(loginBean);
         controller.setMainStage(stage);
     }
-
 
 
 }

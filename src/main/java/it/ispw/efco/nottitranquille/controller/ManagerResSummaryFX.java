@@ -55,6 +55,7 @@ public class ManagerResSummaryFX {
 
     public void init() {
 
+        // List of all reservation to review
         List<Reservation> reservations = new ArrayList<Reservation>();
         try {
 
@@ -65,6 +66,7 @@ public class ManagerResSummaryFX {
             e.printStackTrace();
         }
 
+        /* Set Table View with Reservation information */
         ObservableList<Reservation> rows = FXCollections.observableList(reservations);
         reservationTableView.setItems(rows);
         TableColumn<Reservation, String> nameCol = new TableColumn<Reservation, String>("Address");
@@ -116,8 +118,10 @@ public class ManagerResSummaryFX {
             }
         });
 
+        // Set Table View columns
         reservationTableView.getColumns().setAll(nameCol, surnameCol, roleCol, stateCol, dateCol);
 
+        /* Listener for row selection*/
         reservationTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             public void handle(MouseEvent mouseEvent) {
@@ -137,22 +141,36 @@ public class ManagerResSummaryFX {
 
     }
 
+    /**
+     * Listener for decline Button
+     */
     @FXML
     public void decline() {
+        // ask controller to decline reservation
         ReservationController controller = ReservationController.getInstance();
         controller.declineReservation(reservationTableView.getSelectionModel().getSelectedItem().getId());
-        init();
+        init();  // update view
     }
 
+    /**
+     * Listener for accept Button
+     */
     @FXML
     public void accept() {
+        // ask to the controller to accept reservation
         ReservationController controller = ReservationController.getInstance();
         controller.approveReservation(reservationTableView.getSelectionModel().getSelectedItem().getId());
-        init();
+        init(); // update view
     }
 
+    /**
+     * Listener for close Button
+     *
+     * @throws Exception
+     */
     @FXML
     public void close() throws Exception {
+        /* switch to access form */
         loginBean.setLogged(false);
         AccessForm accessForm = new AccessForm();
         accessForm.start(mainStage);

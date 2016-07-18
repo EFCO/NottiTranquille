@@ -71,8 +71,8 @@ public class ReservationControllerFX {
     public ReservationControllerFX() {
     }
 
-
     public void init() {
+        /* set all text field visible */
         titleField.setText(locationBean.getName());
         addressField.setText(locationBean.getAddress());
         priceField.setText(locationBean.getPrice().toString());
@@ -80,16 +80,20 @@ public class ReservationControllerFX {
 
     @FXML
     public void reserve() {
+        /* get the day typed by the user for the reservation */
         String from = fromField.getText();
         String to = toField.getText();
 
         try {
+
+            /* Create an Interval of time and ask controller to book the location */
             Interval interval = createInterval(from, to);
 
             ReservationController controller = ReservationController.getInstance();
             Reservation reservation = controller.createReservation(loginBean.getUsername(), new Long(locationBean.getId()),
                     interval, null);
 
+            /* if location is directly reservable switch on payment screen*/
             if (locationBean.getReservationType() == ReservationType.Direct.getText()) {
                 PaymentFormScreen paymentFormScreen = new PaymentFormScreen();
                 paymentFormScreen.setUser(user);
@@ -97,7 +101,9 @@ public class ReservationControllerFX {
                 paymentFormScreen.setReservation(reservation);
                 paymentFormScreen.start(mainStage);
 
+
             } else if (locationBean.getReservationType() == ReservationType.WithConfirm.getText()) {
+                /* else switch on the main screen */
                 UserScreen userScreen = new UserScreen();
                 userScreen.setUser(user);
                 userScreen.setLoginBean(loginBean);
@@ -105,6 +111,7 @@ public class ReservationControllerFX {
             }
 
         } catch (Exception e) {
+            /* if interval of time is not available show an error message */
             e.printStackTrace();
             error_msg.setDisable(true);
             error_msg.setText("Invalid dates format!");
@@ -113,6 +120,14 @@ public class ReservationControllerFX {
 
     }
 
+    /**
+     * Create an Interval with a range of days
+     *
+     * @param from start date
+     * @param to   end date
+     * @return Interval
+     * @throws Exception Illegal Format
+     */
     private Interval createInterval(String from, String to) throws Exception {
 
         try {
@@ -128,6 +143,18 @@ public class ReservationControllerFX {
             throw new Exception(e.getCause());
         }
 
+    }
+
+    /**
+     * Listener for the close Button. Switch on the Access form
+     *
+     * @throws Exception
+     */
+    @FXML
+    public void close() throws Exception {
+        loginBean.setLogged(false);
+        AccessForm accessForm = new AccessForm();
+        accessForm.start(mainStage);
     }
 
 

@@ -37,18 +37,25 @@ public class AccessControllerFX {
         this.mainStage = stage;
     }
 
+    /**
+     * Listener for the login Button
+     */
     @FXML
     protected void handleLogin() {
+
+        /* Get username and password from the view field */
         String username = username_textfield.getText();
         String password = password_textfield.getText();
-        System.out.println(username + password);
-        LoginBean lb = new LoginBean();
+
+        LoginBean lb = new LoginBean(); // create a LoginBean for user data
         lb.setUsername(username);
         lb.setPassword(password);
 
+        /* ask controller for login*/
         Person user = LoginController.getInstance().login(username, password);
-        lb.setLogged(true);
+        lb.setLogged(true); // JavaBean for the user is set on logged
 
+        /* get all roles for the user and put them to the javaBean as String */
         List<Role> roles = user.getRoles();
         List<String> roleStrings = new ArrayList<String>();
         for (Role role : roles)
@@ -59,7 +66,7 @@ public class AccessControllerFX {
         if (lb.isLogged()) {
             error_message.setVisible(false);
             try {
-
+                /* Switch on the main screen for logged user */
                 UserScreen userScreen = new UserScreen();
                 userScreen.setUser(user);
                 userScreen.setLoginBean(lb);
@@ -70,6 +77,7 @@ public class AccessControllerFX {
             }
 
         } else {
+            /* show error messahe */
             error_message.setVisible(true);
             username_textfield.setText("");
             password_textfield.setText("");

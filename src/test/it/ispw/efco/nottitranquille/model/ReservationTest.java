@@ -42,7 +42,6 @@ public class ReservationTest {
 
         /*  JavaBean for Location  */
         LocationBean locBean = new LocationBean();
-        locBean.setServices(location.getServices());
         locBean.setName(location.getName());
         locBean.setDescription(location.getDescription());
         locBean.setEnablesDate(location.getAvailableDate());

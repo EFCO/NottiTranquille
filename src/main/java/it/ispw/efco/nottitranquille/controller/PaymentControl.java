@@ -23,11 +23,21 @@ public class PaymentControl {
         Reservation reservation = ReservationDAO.findByID(ReservationId);
         Person manager = reservation.getLocation().getManager();
 
-        // Makes booking date not still available
+        if (!reservation.getLocation().isAvailable(reservation.getPeriod())) {
+
+            // Remove reservation because period is no longer available
+            ReservationController controller = ReservationController.getInstance();
+            controller.remove(reservation.getId());
+
+            throw new IllegalBookingDate("The period specified is not already available ");
+
+        }
+
         try {
             reservation.getLocation().bookPeriod(reservation.getPeriod());
         } catch (IllegalArgumentException e) {
-            throw new IllegalBookingDate("The period specified is not already available ", e.getCause());
+            e.printStackTrace();
+            throw new IllegalBookingDate("The period specified is not already available ");
         }
 
         // makes payment by a stub
