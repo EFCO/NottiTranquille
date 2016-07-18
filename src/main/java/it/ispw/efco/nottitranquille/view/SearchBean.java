@@ -42,7 +42,6 @@ public class SearchBean {
 
     private List<Location> result = new ArrayList<Location>();
 
-
     public List<Location> getResult() {
         return result;
     }
@@ -50,8 +49,6 @@ public class SearchBean {
     public void setResult(List<Location> result) {
         this.result = result;
     }
-
-
 
     public SearchBean() {
     }
@@ -154,8 +151,8 @@ public class SearchBean {
 /* TODO
                 obj.put("address", currentElem.getLocationAddress());
 */
-                obj.put("nation", currentElem.getStructure().getStructureAddress().getNation());
-                obj.put("city", currentElem.getStructure().getStructureAddress().getCity());
+                obj.put("nation", currentElem.getStructure().getAddress().getNation());
+                obj.put("city", currentElem.getStructure().getAddress().getCity());
                 obj.put("price", (25 + i) % 5);//TODO use the right price
                 jsonArray.put(obj);
             }
@@ -167,9 +164,6 @@ public class SearchBean {
             jsonObject.put("results",jsonArray);
             return jsonObject.toString();
         }
-
-
-
     }
 
     public String getMaxtenant() {

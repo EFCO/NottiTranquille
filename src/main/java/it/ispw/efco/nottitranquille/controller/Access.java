@@ -1,7 +1,7 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.*;
-import it.ispw.efco.nottitranquille.model.dao.AccessDAO;
+import it.ispw.efco.nottitranquille.model.DAO.AccessDAO;
 import it.ispw.efco.nottitranquille.model.mail.Mailer;
 import it.ispw.efco.nottitranquille.view.LoginBean;
 import it.ispw.efco.nottitranquille.view.RegistrationBean;
@@ -11,8 +11,17 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+/**
+ *
+ */
 public class Access {
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     */
     public static Person getRegisteredUser(String username, String password) {
         AccessDAO accessDAO = new AccessDAO();
         List<Person> result = accessDAO.selectUser(username, password);
@@ -23,11 +32,21 @@ public class Access {
         }
     }
 
+    /**
+     *
+     * @param lb
+     */
     public static void logNewUser(LoginBean lb) {
         AccessDAO accessDAO = new AccessDAO();
         accessDAO.saveLogin(lb);
     }
 
+    /**
+     *
+     * @param loginBean
+     * @param cookie
+     * @return
+     */
     public static int isAlreadyLogged(LoginBean loginBean, String cookie) {
         AccessDAO accessDAO = new AccessDAO();
         LoginBean lb = accessDAO.getLoggedUser(loginBean.getUsername(),loginBean.getPassword());                       //TODO da migliorare il controllo dell'errore
@@ -47,11 +66,22 @@ public class Access {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
     public static boolean setLogout(Long id) throws Exception {
         AccessDAO accessDAO = new AccessDAO();
         return accessDAO.removeLoggedUser(id); //TODO da migliorare il controllo dell'errore
     }
 
+    /**
+     *
+     * @param registrationBean
+     * @throws Exception
+     */
     public static void registration(RegistrationBean registrationBean) throws Exception {
         //TODO need to cypher password before saving it maybe changing the existing one inside the attribute of the bean
         AccessDAO accessDAO = new AccessDAO();
@@ -93,6 +123,13 @@ public class Access {
         }
     }
 
+    /**
+     *
+     * @param field
+     * @param value
+     * @param id
+     * @throws Exception
+     */
     public static void modifyField(String field, String[] value, Long id) throws Exception {
         AccessDAO accessDAO = new AccessDAO();
         if (value.length == 1) {

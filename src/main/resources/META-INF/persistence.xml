@@ -9,6 +9,7 @@
             <property name="hibernate.connection.password" value="password" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
             <property name="current_session_context_class" value="thread" />
+            <property name = "hibernate.show_sql" value = "true" />
             <property name="hibernate.archive.autodetection" value="class, hbm"/>
         </properties>
     </persistence-unit>

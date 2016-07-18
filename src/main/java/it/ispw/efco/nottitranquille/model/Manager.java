@@ -6,8 +6,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
+ *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
@@ -20,35 +20,56 @@ public class Manager extends Role {
     @OneToMany(mappedBy = "requestedBy", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Request> requests;
 
-    /**
-     * Default constructor
-     */
     public Manager() {
-        this.managedStructures = new ArrayList<Structure>();
-        this.requests = new ArrayList<Request>();
+        this.managedStructures = new ArrayList<>();
+        this.requests = new ArrayList<>();
     }
 
-
+    /**
+     *
+     * @param structure
+     */
     public void addManagedStructure(Structure structure) {
         managedStructures.add(structure);
     }
 
+    /**
+     *
+     * @param structure
+     */
     public void removeManagedStructure(Structure structure) {
         managedStructures.remove(structure);
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Structure> getManagedStructures() {
         return managedStructures;
     }
 
+    /**
+     *
+     * @param request
+     */
     public void addRequest(Request request) {
         requests.add(request);
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Request> getRequests() {
         return requests;
     }
 
+    /**
+     *
+     * @param type
+     * @return
+     */
     public List<Structure> getStructuresByType(StructureType type) {
         List<Structure> structuresByType = new ArrayList<Structure>();
 
@@ -60,5 +81,4 @@ public class Manager extends Role {
 
         return structuresByType;
     }
-
 }

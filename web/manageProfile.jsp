@@ -58,7 +58,7 @@
                 <c:out value="${loginBean.user.address.nation}"/>
             </div>
             <div class="col-md-2">
-                <c:out value="${loginBean.user.address.postalcode}"/>
+                <c:out value="${loginBean.user.address.postalCode}"/>
             </div>
             <button type="submit" class="btn btn-default" name="modify" value="address">Modifica</button>
         </div>
@@ -115,7 +115,7 @@
                 <c:out value="${loginBean.user.address.nation}"/>
             </div>
             <div class="col-md-2">
-                <c:out value="${loginBean.user.address.postalcode}"/>
+                <c:out value="${loginBean.user.address.postalCode}"/>
             </div>
             <button type="submit" class="btn btn-default" name="modify" value="address">Modifica</button>
         </div>

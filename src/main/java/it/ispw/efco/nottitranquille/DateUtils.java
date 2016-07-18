@@ -2,16 +2,19 @@ package it.ispw.efco.nottitranquille;
 
 import org.joda.time.LocalDate;
 
+/**
+ * {@inheritDoc}
+ */
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     /**
+     * Gets the {@link LocalDate} of a nth day of week in a specific month and year.
      *
-     *
-     * @param n
-     * @param dayOfWeek
-     * @param month
-     * @param year
-     * @return
+     * @param n the nth
+     * @param dayOfWeek the day of week
+     * @param month the month
+     * @param year the year
+     * @return the date of the nth day of week
      */
     public static LocalDate getNthOfMonth(int n, int dayOfWeek, int month, int year) {
         if (n == -1) {

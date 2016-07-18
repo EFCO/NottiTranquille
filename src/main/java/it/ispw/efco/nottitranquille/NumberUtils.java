@@ -1,23 +1,15 @@
 package it.ispw.efco.nottitranquille;
 
 public class NumberUtils {
-    public static boolean isLowerThen(final int number, final int uppermost) {
-        return number < uppermost;
-    }
-
-    public static boolean isUpperThen(final int number, final int lowest) {
-        return number > lowest;
-    }
-
-    public static boolean isFromTo(final int number, final int lowest, final int uppermost) {
+    /**
+     * Checks if the given number is between a lower and a upper bound
+     *
+     * @param number the number to check
+     * @param lowest the lower bound
+     * @param uppermost the upper bound
+     * @return true if is between, false otherwise
+     */
+    public static boolean isBetween(final int number, final int lowest, final int uppermost) {
         return number > lowest && number < uppermost;
-    }
-
-    public static boolean isPositive(final int number) {
-        return number >= 0;
-    }
-
-    public static boolean isNegative(final int number) {
-        return number < 0;
     }
 }

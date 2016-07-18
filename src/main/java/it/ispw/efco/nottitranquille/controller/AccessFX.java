@@ -2,7 +2,7 @@ package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.SingletonEmployee;
 import it.ispw.efco.nottitranquille.model.Person;
-import it.ispw.efco.nottitranquille.view.MainScreen;
+import it.ispw.efco.nottitranquille.view.EmployeeMainScreen;
 import it.ispw.efco.nottitranquille.view.LoginBean;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -12,26 +12,26 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
+/**
+ * JavaFX controller for {@link Access} controller
+ */
 public class AccessFX extends SingleWindow {
-
-    public AccessFX() {
-    }
 
     @FXML
     private ProgressIndicator progressIndicator;
-
     @FXML
     private TextField usernameTextField;
-
     @FXML
     private PasswordField passwordTextField;
-
     @FXML
     private Button loginButton;
-
     @FXML
     public Text errorMessage;
 
+    /**
+     * Handles login with a {@link Thread} that communicates with {@link Access} controller and it updated the UI with a
+     * JavaFX thread provided by {@link Platform}.
+     */
     @FXML
     protected void handleLogin() {
         progressIndicator.setVisible(true);
@@ -43,8 +43,8 @@ public class AccessFX extends SingleWindow {
         loginBean.setUsername(username);
         loginBean.setPassword(password);
 
-
-        Thread fxThread = new Thread() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
             public void run() {
                 Person employee = Access.getRegisteredUser(username, password);
 
@@ -61,8 +61,8 @@ public class AccessFX extends SingleWindow {
                         Platform.runLater(new Runnable() {
                             public void run() {
                                 try {
-                                    MainScreen mainScreen = new MainScreen();
-                                    mainScreen.start(getMainStage());
+                                    EmployeeMainScreen employeeMainScreen = new EmployeeMainScreen();
+                                    employeeMainScreen.start(getMainStage());
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -70,7 +70,7 @@ public class AccessFX extends SingleWindow {
                         });
                     }
                 }
-                // Sets error and clean text
+                // Sets error and clean text in case of error
                 Platform.runLater(new Runnable() {
                     public void run() {
                         errorMessage.setVisible(true);
@@ -80,9 +80,9 @@ public class AccessFX extends SingleWindow {
                     }
                 });
             }
-        };
+        });
 
-        fxThread.setDaemon(true);
-        fxThread.start();
+        thread.setDaemon(true);
+        thread.start();
     }
 }

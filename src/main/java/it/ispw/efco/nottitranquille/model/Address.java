@@ -5,31 +5,55 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
+ * Represents a physical address of a {@link Structure} or of a {@link Person}
+ *
+ * @see Structure
+ * @see Person
+ *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-
 @Entity
 public class Address {
 
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    /**
+     * The nation
+     */
     private String nation;
 
+    /**
+     * The city
+     */
     private String city;
 
+    /**
+     * The address
+     */
     private String address;
 
-    private String postalcode;
+    /**
+     * The postal code
+     */
+    private String postalCode;
 
-    public Address(String nation, String city, String address, String postalcode) {
-        this.nation = nation;
-        this.city = city;
-        this.address = address;
-        this.postalcode = postalcode;
-    }
     /**
      * Default constructor
      */
     public Address() {
+    }
 
+    public Address(String nation, String city, String address, String postalCode) {
+        this.nation = nation;
+        this.city = city;
+        this.address = address;
+        this.postalCode = postalCode;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getNation() {
@@ -52,28 +76,20 @@ public class Address {
         this.address = address;
     }
 
-    public String getPostalcode() {
-        return postalcode;
+    public String getPostalCode() {
+        return postalCode;
     }
 
-    public void setPostalcode(String postalcode) {
-        this.postalcode = postalcode;
-    }
-
-    @Override
-    public String toString() {
-        return address + ", " + city + ", " + postalcode + " " + nation;
-    }
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    public Long getId() {
-        return id;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getAddress() {
         return address;
+    }
+
+    @Override
+    public String toString() {
+        return address + ", " + city + ", " + postalCode + " " + nation;
     }
 }

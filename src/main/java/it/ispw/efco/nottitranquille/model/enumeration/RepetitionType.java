@@ -13,7 +13,7 @@ import it.ispw.efco.nottitranquille.model.Price;
  *  <li>{@link #EVERY_YEAR}</li>
  *  <li>{@link #EVERY_WEEKEND}</li>
  *  <li>{@link #EVERY_WORKDAY}</li>
- *  <li>{@link #EVERY_NOT_WORKDAY}</li>
+ *  <li>{@link #EVERY_NO_WORKDAY}</li>
  * </p>
  *
  * @see Price

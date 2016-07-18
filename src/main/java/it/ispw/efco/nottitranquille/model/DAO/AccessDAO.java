@@ -1,4 +1,4 @@
-package it.ispw.efco.nottitranquille.model.dao;
+package it.ispw.efco.nottitranquille.model.DAO;
 
 import it.ispw.efco.nottitranquille.model.Address;
 import it.ispw.efco.nottitranquille.model.JPAInitializer;
@@ -94,7 +94,7 @@ public class AccessDAO {
 
     public Long verifyPendingStatus(String hash) throws Exception {
         EntityManager entityManager = JPAInitializer.getEntityManager();
-        String querystring = "FROM Person WHERE hash = :h AND req_status = :rs";
+        String querystring = "FROM Person WHERE hash = :h AND reqStatus = :rs";
         TypedQuery<Person> query = entityManager.createQuery(querystring,Person.class);
         query.setParameter("h",hash);
         query.setParameter("rs","pending");
@@ -107,7 +107,7 @@ public class AccessDAO {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         Person person = entityManager.find(Person.class,id);
         entityManager.getTransaction().begin();
-        person.setReq_status("accepted");
+        person.setReqStatus("accepted");
         entityManager.getTransaction().commit();
         entityManager.close();
     }
@@ -129,7 +129,7 @@ public class AccessDAO {
         person.getAddress().setAddress(newAddress.getAddress());
         person.getAddress().setCity(newAddress.getCity());
         person.getAddress().setNation(newAddress.getNation());
-        person.getAddress().setPostalcode(newAddress.getPostalcode());
+        person.getAddress().setPostalCode(newAddress.getPostalCode());
         entityManager.getTransaction().commit();
         entityManager.close();
     }

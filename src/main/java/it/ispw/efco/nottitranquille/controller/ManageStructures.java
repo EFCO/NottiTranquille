@@ -1,19 +1,14 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.*;
-import it.ispw.efco.nottitranquille.model.dao.StructureDao;
+import it.ispw.efco.nottitranquille.model.DAO.StructureDAO;
 import it.ispw.efco.nottitranquille.view.StructureBean;
 
 import java.util.List;
 
-/**
- * Created by claudio on 7/10/16.
- */
 public class ManageStructures {
 
     public static void addNewStructure(StructureBean structure, Person manager) throws Exception {
-
-
         Structure newStructure;
         Person owner = null;
         Manager managerInstance = ((Manager) manager.getRole("Manager"));
@@ -34,7 +29,7 @@ public class ManageStructures {
             Owner ownerInstance = new Owner();
             newStructure = new Structure(structure, ((Manager) manager.getRole("Manager")), ownerInstance);
             if (structure.isSameaddress()) {
-                newOwner.setAddress(newStructure.getStructureAddress());
+                newOwner.setAddress(newStructure.getAddress());
             } else {
                 newOwner.setAddress(new Address(structure.getOwnerNation(), structure.getOwnerCity(), structure.getOwnerAddress(), structure.getOwnerPostalcode()));
             }
@@ -47,7 +42,7 @@ public class ManageStructures {
         Request newRequest = new Request(newStructure, managerInstance);
         newStructure.setRequest(newRequest);
         ((Manager) manager.getRole("Manager")).addRequest(newRequest);
-        StructureDao structureDAO = new StructureDao();
+        StructureDAO structureDAO = new StructureDAO();
         structureDAO.store(newStructure, manager, owner);
     }
 

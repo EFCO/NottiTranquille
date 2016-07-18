@@ -1,77 +1,54 @@
 package it.ispw.efco.nottitranquille.controller;
 
-import it.ispw.efco.nottitranquille.view.AccessForm;
+import it.ispw.efco.nottitranquille.view.UserAccessForm;
 import it.ispw.efco.nottitranquille.view.ScoutFilteredSearchForm;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 
+/**
+ *
+ */
 public class MainFX extends SingleWindowsLogged {
 
     @FXML
-    private Text employeeFirstName;
+    public Text employeeFullName;
     @FXML
-    private Text employeeLastName;
+    public Text employeeRoles;
     @FXML
-    private Text employeeRoles;
+    public Button scoutFilteredSearchForm;
     @FXML
-    private Button scoutFilteredSearchForm;
+    public Button scoutAddRequestForm;
     @FXML
-    private Button scoutAddRequestForm;
+    public Button managePacketsForm;
     @FXML
-    private Button managePacketsForm;
+    public Button manageEmployeesForm;
     @FXML
-    private Button manageEmployeesForm;
+    public Button manageGlobalSettingsForm;
     @FXML
-    private Button manageGlobalSettingsForm;
+    public Button logoutButton;
 
-    public Text getEmployeeFirstName() {
-        return employeeFirstName;
-    }
-
-    public Text getEmployeeLastName() {
-        return employeeLastName;
-    }
-
-    public Text getEmployeeRoles() {
-        return employeeRoles;
-    }
-
-    public Button getScoutFilteredSearchForm() {
-        return scoutFilteredSearchForm;
-    }
-
-    public Button getScoutAddRequestForm() {
-        return scoutAddRequestForm;
-    }
-
-    public Button getManagePacketsForm() {
-        return managePacketsForm;
-    }
-
-    public Button getManageEmployeesForm() {
-        return manageEmployeesForm;
-    }
-
-    public Button getManageGlobalSettingsForm() {
-        return manageGlobalSettingsForm;
-    }
-
+    /**
+     *
+     */
     @FXML
     public void logoutHandler() {
         logout();
 
-        AccessForm accessForm = new AccessForm();
+        UserAccessForm userAccessForm = new UserAccessForm();
         try {
             // Removes close event
             getMainStage().setOnCloseRequest(null);
             // Goes to access form
-            accessForm.start(getMainStage());
+            userAccessForm.start(getMainStage());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     *
+     */
     @FXML
     public void showScoutFilteredSearchForm() {
         ScoutFilteredSearchForm scoutFilteredSearchForm = new ScoutFilteredSearchForm();

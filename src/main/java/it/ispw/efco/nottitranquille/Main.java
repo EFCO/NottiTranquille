@@ -1,10 +1,10 @@
 package it.ispw.efco.nottitranquille;
 
-import it.ispw.efco.nottitranquille.view.AccessForm;
+import it.ispw.efco.nottitranquille.view.UserAccessForm;
 
 public class Main {
 
     public static void main(String[] args) {
-        AccessForm.main(args);
+        UserAccessForm.main(args);
     }
 }

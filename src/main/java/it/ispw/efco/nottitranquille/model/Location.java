@@ -43,6 +43,11 @@ public class Location {
     /**
      *
      */
+    private Integer numberOfBedrooms;
+
+    /**
+     *
+     */
     private Integer maxGuestsNumber;
 
     /**
@@ -55,11 +60,6 @@ public class Location {
      */
     @ElementCollection(targetClass = String.class)
     private List<String> photos;
-
-    /**
-     *
-     */
-    private Integer numberOfBedrooms;
 
     /**
      *
@@ -84,55 +84,55 @@ public class Location {
      */
     @ElementCollection(targetClass = Interval.class)
     @Column(length=100000) //for the Data too long error
-    private List<Interval> booking = new ArrayList<Interval>();
+    private List<Interval> booking = new ArrayList<>();
 
     /**
      *
      */
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Price> prices = new ArrayList<Price>();
+    private List<Price> prices = new ArrayList<>();
 
     /**
      *
      */
     @Transient
-    private List<BasePrice> basePrices = new ArrayList<BasePrice>();
+    private List<BasePrice> basePrices = new ArrayList<>();
 
     /**
      *
      */
     @Transient
-    private List<Fee> fees = new ArrayList<Fee>();
+    private List<Fee> fees = new ArrayList<>();
 
     /**
      *
      */
     @Transient
-    private List<Discount> discounts = new ArrayList<Discount>();
+    private List<Discount> discounts = new ArrayList<>();
 
     /**
      *
      */
     @Transient
-    private List<FixFee> fixFees = new ArrayList<FixFee>();
+    private List<FixFee> fixFees = new ArrayList<>();
 
     /**
      *
      */
     @Transient
-    private List<PercentageFee> percentageFees = new ArrayList<PercentageFee>();
+    private List<PercentageFee> percentageFees = new ArrayList<>();
 
     /**
      *
      */
     @Transient
-    private List<FixDiscount> fixDiscounts = new ArrayList<FixDiscount>();
+    private List<FixDiscount> fixDiscounts = new ArrayList<>();
 
     /**
      *
      */
     @Transient
-    private List<PercentageDiscount> percentageDiscounts = new ArrayList<PercentageDiscount>();
+    private List<PercentageDiscount> percentageDiscounts = new ArrayList<>();
 
     /**
      * Default constructor

@@ -1,35 +1,61 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.controller.FilteredSearchFX;
-import it.ispw.efco.nottitranquille.model.Person;
-import javafx.application.Application;
+import it.ispw.efco.nottitranquille.model.Request;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
- * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
+ *
  */
-public class ScoutFilteredSearchForm extends LoggedApplication  {
-
-    public ScoutFilteredSearchForm() {
-    }
+public class ScoutFilteredSearchForm extends LoggedApplication {
 
     @Override
     public void start(Stage stage) throws Exception {
         super.start(stage);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/scoutFilteredSearchForm.fxml"));
+        final FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/scoutFilteredSearchForm.fxml"));
 
         Parent root = (Parent) loader.load();
         stage.setScene(new Scene(root));
         stage.show();
 
-        FilteredSearchFX controller = loader.getController();
+        // Centers to screen
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+
+        final FilteredSearchFX controller = loader.getController();
         controller.setMainStage(stage);
+        controller.setPrevious(EmployeeMainScreen.class);
 
-        controller.setStatusMenuButton();
+        controller.filterHandler();
+
+        // Sets selection mode of table view
+        controller.requestTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        // Sets on click event on row in order to open detail form
+        controller.requestTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent mouseEvent) {
+                Request request = controller.requestTableView.getSelectionModel().getSelectedItem();
+                if (request != null) {
+                    ScoutApproveInsertRequestForm scoutApproveInsertRequestForm = new ScoutApproveInsertRequestForm();
+                    // Passes request
+                    scoutApproveInsertRequestForm.setRequest(request);
+                    try {
+                        scoutApproveInsertRequestForm.start(controller.getMainStage());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
-
 }

@@ -1,9 +1,9 @@
 package it.ispw.efco.nottitranquille.view;
 
 import it.ispw.efco.nottitranquille.NumberUtils;
-import it.ispw.efco.nottitranquille.StringUtils;
 import it.ispw.efco.nottitranquille.model.Price;
 import it.ispw.efco.nottitranquille.model.enumeration.Day;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -179,7 +179,7 @@ public class PriceBean extends Bean {
             valid = false;
         }
 
-        if (!NumberUtils.isFromTo(times, 0, MAX_REPETITION_DAYS)) {
+        if (!NumberUtils.isBetween(times, 0, MAX_REPETITION_DAYS)) {
             setErrorMessage(PriceBean.class.getDeclaredField("times"), "Times must be in range 1, 7");
             valid = false;
         }

@@ -1,13 +1,11 @@
 package it.ispw.efco.nottitranquille.controller;
 
 import it.ispw.efco.nottitranquille.model.*;
-import it.ispw.efco.nottitranquille.model.dao.LocationDao;
-import it.ispw.efco.nottitranquille.model.dao.PriceDao;
+import it.ispw.efco.nottitranquille.model.DAO.LocationDAO;
+import it.ispw.efco.nottitranquille.model.DAO.PriceDAO;
 import it.ispw.efco.nottitranquille.view.PriceBean;
 
 import java.util.*;
-
-import static it.ispw.efco.nottitranquille.model.dao.PriceDao.*;
 
 /**
  * ManagesPrices Controller.
@@ -45,7 +43,8 @@ public class ManagePrices {
      * @return the list of all Price
      */
 	public static List<Price> fetchAllPrices(Location location) {
-        return (List<Price>) retrievePrices(location, 0, countAllPrices(location));
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<Price>) priceDAO.retrievePrices(location, 0, countAllPrices(location));
 	}
 
     /**
@@ -55,7 +54,8 @@ public class ManagePrices {
      * @return the list of all BasePrice
      */
     public static List<BasePrice> fetchAllBasePrices(Location location) {
-        return (List<BasePrice>) retrieveBasePrices(location, 0, countAllBasePrices(location));
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<BasePrice>) priceDAO.retrieveBasePrices(location, 0, countAllBasePrices(location));
     }
 
     /**
@@ -65,7 +65,8 @@ public class ManagePrices {
      * @return the list of all Discount
      */
     public static List<Discount> fetchAllDiscounts(Location location) {
-        return (List<Discount>) retrieveDiscounts(location, 0, countAllDiscounts(location));
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<Discount>) priceDAO.retrieveDiscounts(location, 0, countAllDiscounts(location));
     }
 
     /**
@@ -75,7 +76,8 @@ public class ManagePrices {
      * @return the list of all Fee
      */
     public static List<Fee> fetchAllFees(Location location) {
-        return (List<Fee>) retrieveFees(location, 0, countAllFees(location));
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<Fee>) priceDAO.retrieveFees(location, 0, countAllFees(location));
     }
 
     /**
@@ -85,7 +87,8 @@ public class ManagePrices {
      * @return the list of all FixDiscount
      */
     public static List<FixDiscount> fetchAllFixDiscounts(Location location) {
-        return (List<FixDiscount>) retrieveFixDiscounts(location, 0, countAllFixDiscounts(location));
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<FixDiscount>) priceDAO.retrieveFixDiscounts(location, 0, countAllFixDiscounts(location));
     }
 
     /**
@@ -95,7 +98,8 @@ public class ManagePrices {
      * @return the list of all FixFee
      */
     public static List<FixFee> fetchAllFixFees(Location location) {
-        return (List<FixFee>) retrieveFixFees(location, 0, countAllFixFees(location));
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<FixFee>) priceDAO.retrieveFixFees(location, 0, countAllFixFees(location));
     }
 
     /**
@@ -105,7 +109,8 @@ public class ManagePrices {
      * @return the list of all PercentageDiscount
      */
     public static List<PercentageDiscount> fetchAllPercentageDiscounts(Location location) {
-        return (List<PercentageDiscount>) retrievePercentageDiscounts(location, 0, countAllPercentageDiscounts(location));
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<PercentageDiscount>) priceDAO.retrievePercentageDiscounts(location, 0, countAllPercentageDiscounts(location));
     }
 
     /**
@@ -115,7 +120,8 @@ public class ManagePrices {
      * @return the list of all PercentageFee
      */
     public static List<PercentageFee> fetchAllPercentageFees(Location location) {
-        return (List<PercentageFee>) retrievePercentageFees(location, 0, countAllPercentageFees(location));
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<PercentageFee>) priceDAO.retrievePercentageFees(location, 0, countAllPercentageFees(location));
     }
 
     /**
@@ -128,7 +134,8 @@ public class ManagePrices {
      */
     public static List<Price> fetchPrices(Location location, int page, int limit) {
         int startPosition = (page - 1) * (limit);
-        return (List<Price>) retrievePrices(location, startPosition, limit);
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<Price>) priceDAO.retrievePrices(location, startPosition, limit);
     }
 
     /**
@@ -141,7 +148,8 @@ public class ManagePrices {
      */
     public static List<BasePrice> fetchBasePrices(Location location, int page, int limit) {
         int startPosition = (page - 1) * (limit);
-        return (List<BasePrice>) retrieveBasePrices(location, startPosition, limit);
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<BasePrice>) priceDAO.retrieveBasePrices(location, startPosition, limit);
     }
 
     /**
@@ -154,7 +162,8 @@ public class ManagePrices {
      */
     public static List<Discount> fetchDiscounts(Location location, int page, int limit) {
         int startPosition = (page - 1) * (limit);
-        return (List<Discount>) retrieveDiscounts(location, startPosition, limit);
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<Discount>) priceDAO.retrieveDiscounts(location, startPosition, limit);
     }
 
     /**
@@ -167,7 +176,8 @@ public class ManagePrices {
      */
     public static List<Fee> fetchFees(Location location, int page, int limit) {
         int startPosition = (page - 1) * (limit);
-        return (List<Fee>) retrieveFees(location, startPosition, limit);
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<Fee>) priceDAO.retrieveFees(location, startPosition, limit);
     }
 
     /**
@@ -180,7 +190,8 @@ public class ManagePrices {
      */
     public static List<FixDiscount> fetchFixDiscounts(Location location, int page, int limit) {
         int startPosition = (page - 1) * (limit);
-        return (List<FixDiscount>) retrieveFixDiscounts(location, startPosition, limit);
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<FixDiscount>) priceDAO.retrieveFixDiscounts(location, startPosition, limit);
     }
 
     /**
@@ -193,7 +204,8 @@ public class ManagePrices {
      */
     public static List<FixFee> fetchFixFees(Location location, int page, int limit) {
         int startPosition = (page - 1) * (limit);
-        return (List<FixFee>) retrieveFixFees(location, startPosition, limit);
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<FixFee>) priceDAO.retrieveFixFees(location, startPosition, limit);
     }
 
     /**
@@ -206,7 +218,8 @@ public class ManagePrices {
      */
     public static List<PercentageDiscount> fetchPercentageDiscounts(Location location, int page, int limit) {
         int startPosition = (page - 1) * (limit);
-        return (List<PercentageDiscount>) retrievePercentageDiscounts(location, startPosition, limit);
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<PercentageDiscount>) priceDAO.retrievePercentageDiscounts(location, startPosition, limit);
     }
 
     /**
@@ -219,7 +232,8 @@ public class ManagePrices {
      */
     public static List<PercentageFee> fetchPercentageFees(Location location, int page, int limit) {
         int startPosition = (page - 1) * (limit);
-        return (List<PercentageFee>) retrievePercentageFees(location, startPosition, limit);
+        PriceDAO priceDAO = new PriceDAO();
+        return (List<PercentageFee>) priceDAO.retrievePercentageFees(location, startPosition, limit);
     }
 
     /**
@@ -229,7 +243,8 @@ public class ManagePrices {
      * @return the number of Price
      */
     public static int countAllPrices(Location location) {
-        return (PriceDao.countAllPrices(location)).intValue();
+        PriceDAO priceDAO = new PriceDAO();
+        return (priceDAO.countAllPrices(location)).intValue();
     }
 
     /**
@@ -239,7 +254,8 @@ public class ManagePrices {
      * @return the number of BasePrice
      */
     public static int countAllBasePrices(Location location) {
-        return PriceDao.countAllBasePrices(location).intValue();
+        PriceDAO priceDAO = new PriceDAO();
+        return priceDAO.countAllBasePrices(location).intValue();
     }
 
     /**
@@ -249,7 +265,8 @@ public class ManagePrices {
      * @return the number of Discount
      */
     public static int countAllDiscounts(Location location) {
-        return PriceDao.countAllDiscounts(location).intValue();
+        PriceDAO priceDAO = new PriceDAO();
+        return priceDAO.countAllDiscounts(location).intValue();
     }
 
     /**
@@ -259,7 +276,8 @@ public class ManagePrices {
      * @return the number of Fee
      */
     public static int countAllFees(Location location) {
-        return PriceDao.countAllFees(location).intValue();
+        PriceDAO priceDAO = new PriceDAO();
+        return priceDAO.countAllFees(location).intValue();
     }
 
     /**
@@ -269,7 +287,8 @@ public class ManagePrices {
      * @return the number of FixDiscount
      */
     public static int countAllFixDiscounts(Location location) {
-        return PriceDao.countAllFixDiscounts(location).intValue();
+        PriceDAO priceDAO = new PriceDAO();
+        return priceDAO.countAllFixDiscounts(location).intValue();
     }
 
     /**
@@ -279,7 +298,8 @@ public class ManagePrices {
      * @return the number of FixFee
      */
     public static int countAllFixFees(Location location) {
-        return PriceDao.countAllFixFees(location).intValue();
+        PriceDAO priceDAO = new PriceDAO();
+        return priceDAO.countAllFixFees(location).intValue();
     }
 
     /**
@@ -289,7 +309,8 @@ public class ManagePrices {
      * @return the number of PercentageDiscount
      */
     public static int countAllPercentageDiscounts(Location location) {
-        return PriceDao.countAllPercentageDiscounts(location).intValue();
+        PriceDAO priceDAO = new PriceDAO();
+        return priceDAO.countAllPercentageDiscounts(location).intValue();
     }
 
     /**
@@ -299,7 +320,8 @@ public class ManagePrices {
      * @return the number of PercentageFee
      */
     public static int countAllPercentageFees(Location location) {
-        return PriceDao.countAllPercentageFees(location).intValue();
+        PriceDAO priceDAO = new PriceDAO();
+        return priceDAO.countAllPercentageFees(location).intValue();
     }
 
     /**
@@ -310,7 +332,8 @@ public class ManagePrices {
      */
     public static void addPrice(Location location, PriceBean price) {
         location.addPrice(Price.PriceFromBean(price));
-        LocationDao.update(location);
+        LocationDAO locationDAO = new LocationDAO();
+        locationDAO.update(location);
     }
 
     /**
@@ -322,7 +345,8 @@ public class ManagePrices {
     public static void updatePrice(Location location, PriceBean price) {
         Price priceToUpdate = location.getPriceById(price.getId());
         priceToUpdate.update(Price.PriceFromBean(price));
-        LocationDao.update(location);
+        LocationDAO locationDAO = new LocationDAO();
+        locationDAO.update(location);
     }
 
     /**
@@ -334,8 +358,11 @@ public class ManagePrices {
     public static void deletePrice(Location location, PriceBean price) {
         // Removes price from location and update DB
         location.removePrice(price.getId());
-        LocationDao.update(location);
+
+        LocationDAO locationDAO = new LocationDAO();
+        locationDAO.update(location);
         // Removes also price from the DB
-        delete(price.getId());
+        PriceDAO priceDAO = new PriceDAO();
+        priceDAO.delete(price.getId());
     }
 }

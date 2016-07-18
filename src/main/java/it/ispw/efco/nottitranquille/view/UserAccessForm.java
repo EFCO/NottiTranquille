@@ -3,16 +3,21 @@ package it.ispw.efco.nottitranquille.view;
 import it.ispw.efco.nottitranquille.controller.AccessFX;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public class AccessForm extends Application {
+/**
+ *
+ */
+public class UserAccessForm extends Application {
 
     /**
      * Default constructor
      */
-    public AccessForm() {
+    public UserAccessForm() {
     }
 
     @Override
@@ -23,7 +28,13 @@ public class AccessForm extends Application {
         Parent root = (Parent) loader.load();
         stage.setScene(new Scene(root));
         stage.setResizable(false);
+        stage.setTitle("Notti Tranquille");
         stage.show();
+
+        // Centers to screen
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
 
         AccessFX controller = loader.getController();
         controller.setMainStage(stage);

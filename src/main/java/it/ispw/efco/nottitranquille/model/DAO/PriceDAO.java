@@ -1,9 +1,8 @@
-package it.ispw.efco.nottitranquille.model.dao;
+package it.ispw.efco.nottitranquille.model.DAO;
 
 import it.ispw.efco.nottitranquille.JPAInitializer;
 import it.ispw.efco.nottitranquille.model.*;
 import it.ispw.efco.nottitranquille.view.PriceBean;
-import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
@@ -22,7 +21,7 @@ import java.util.List;
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-public class PriceDao {
+public class PriceDAO {
 
     /**
      * Stores {@link Price} into persistent system.
@@ -30,7 +29,7 @@ public class PriceDao {
      * @param priceToStore the Price to persist
      * @throws Exception if the entity is null
      */
-    public static void store(Price priceToStore) throws Exception {
+    public void store(Price priceToStore) throws Exception {
         if (priceToStore != null) {
             EntityManager entityManager = JPAInitializer.getEntityManager();
             entityManager.getTransaction().begin();
@@ -49,7 +48,7 @@ public class PriceDao {
      * @param priceBeanToStore the PriceBean to persist
      * @throws Exception if the entity is null
      */
-    public static void store(PriceBean priceBeanToStore) throws Exception {
+    public void store(PriceBean priceBeanToStore) throws Exception {
         store(Price.PriceFromBean(priceBeanToStore));
     }
 
@@ -58,7 +57,7 @@ public class PriceDao {
      *
      * @param priceToUpdate the Price to update with the new state
      */
-    public static void update(Price priceToUpdate) {
+    public void update(Price priceToUpdate) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
 
@@ -73,7 +72,7 @@ public class PriceDao {
      *
      * @param priceToUpdate the Price to update with the new state
      */
-    public static void update(PriceBean priceToUpdate) {
+    public void update(PriceBean priceToUpdate) {
         update(Price.PriceFromBean(priceToUpdate));
     }
 
@@ -82,7 +81,7 @@ public class PriceDao {
      *
      * @param priceId the id of the Price to delete
      */
-    public static void delete(long priceId) {
+    public void delete(long priceId) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.setFlushMode(FlushModeType.COMMIT);
         entityManager.getTransaction().begin();
@@ -98,7 +97,7 @@ public class PriceDao {
      *
      * @param priceToDelete the Price to remove
      */
-    public static void delete(Price priceToDelete) {
+    public void delete(Price priceToDelete) {
         delete(priceToDelete.getId());
     }
 
@@ -107,7 +106,7 @@ public class PriceDao {
      *
      * @return the number of the Prices
      */
-    public static Long countAllPrices(Location location) {
+    public Long countAllPrices(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return (Long) entityManager
@@ -122,7 +121,7 @@ public class PriceDao {
      *
      * @return the number of the BasePrices
      */
-    public static Long countAllBasePrices(Location location) {
+    public Long countAllBasePrices(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return (Long) entityManager
@@ -138,7 +137,7 @@ public class PriceDao {
      *
      * @return the number of the Discounts
      */
-    public static Long countAllDiscounts(Location location) {
+    public Long countAllDiscounts(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return (Long) entityManager
@@ -155,7 +154,7 @@ public class PriceDao {
      *
      * @return the number of the Fees
      */
-    public static Long countAllFees(Location location) {
+    public Long countAllFees(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return (Long) entityManager
@@ -172,7 +171,7 @@ public class PriceDao {
      *
      * @return the number of the FixDiscounts
      */
-    public static Long countAllFixDiscounts(Location location) {
+    public Long countAllFixDiscounts(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return (Long) entityManager
@@ -188,7 +187,7 @@ public class PriceDao {
      *
      * @return the number of the FixFees
      */
-    public static Long countAllFixFees(Location location) {
+    public Long countAllFixFees(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return (Long) entityManager
@@ -204,7 +203,7 @@ public class PriceDao {
      *
      * @return the number of the PercentageDiscounts
      */
-    public static Long countAllPercentageDiscounts(Location location) {
+    public Long countAllPercentageDiscounts(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return (Long) entityManager
@@ -220,7 +219,7 @@ public class PriceDao {
      *
      * @return the number of the PercentageFees
      */
-    public static Long countAllPercentageFees(Location location) {
+    public Long countAllPercentageFees(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return (Long) entityManager
@@ -238,7 +237,7 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of maxResult Prices into persistent system from startPosition
      */
-    public static List<? extends Price> retrievePrices(Location location, int startPosition, int maxResult) {
+    public List<? extends Price> retrievePrices(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -258,7 +257,7 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of all BasePrice into persistent system
      */
-    public static List<? extends Price> retrieveBasePrices(Location location, int startPosition, int maxResult) {
+    public List<? extends Price> retrieveBasePrices(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -279,7 +278,7 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of all Fees into persistent system
      */
-    public static List<? extends Price> retrieveFees(Location location, int startPosition, int maxResult) {
+    public List<? extends Price> retrieveFees(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -301,7 +300,7 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of all Discounts into persistent system
      */
-    public static List<? extends Price> retrieveDiscounts(Location location, int startPosition, int maxResult) {
+    public List<? extends Price> retrieveDiscounts(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -323,7 +322,7 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of all FixDiscounts into persistent system
      */
-    public static List<? extends Price> retrieveFixDiscounts(Location location, int startPosition, int maxResult) {
+    public List<? extends Price> retrieveFixDiscounts(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -344,7 +343,7 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of all FixFees into persistent system
      */
-    public static List<? extends Price> retrieveFixFees(Location location, int startPosition, int maxResult) {
+    public List<? extends Price> retrieveFixFees(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -365,7 +364,7 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of all PercentageFees into persistent system
      */
-    public static List<? extends Price> retrievePercentageFees(Location location, int startPosition, int maxResult) {
+    public List<? extends Price> retrievePercentageFees(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -386,7 +385,7 @@ public class PriceDao {
      * @param maxResult the maximum number of results
      * @return the list of all PercentageDiscounts into persistent system
      */
-    public static List<? extends Price> retrievePercentageDiscounts(Location location, int startPosition, int maxResult) {
+    public List<? extends Price> retrievePercentageDiscounts(Location location, int startPosition, int maxResult) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager

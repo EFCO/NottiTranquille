@@ -16,20 +16,32 @@
             <Button fx:id="managePacketsForm" disable="true" layoutX="55.0" layoutY="218.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="235.0" text="Manage Packets" />
             <Button fx:id="manageEmployeesForm" disable="true" layoutX="55.0" layoutY="269.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="235.0" text="Manages Employee" />
             <Button fx:id="manageGlobalSettingsForm" disable="true" layoutX="302.0" layoutY="269.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="235.0" text="Change Global Attributes" />
-            <Text fill="#ba1a1a" layoutX="151.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOTTI TRANQUILLE">
+            <Text fill="#ba1a1a" layoutX="185.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Panel">
                <font>
-                  <Font size="30.0" />
+                  <Font name="System Bold Italic" size="28.0" />
                </font>
             </Text>
          </children>
       </Pane>
-      <ToolBar layoutY="5.0" prefHeight="8.0" prefWidth="600.0">
+      <ToolBar layoutY="0" prefHeight="37.0" prefWidth="600.0">
          <items>
             <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutHandler" text="Logout" />
-            <Text fx:id="employeeFirstName" strokeType="OUTSIDE" strokeWidth="0.0" text="Claudio" />
-            <Text fx:id="employeeLastName" strokeType="OUTSIDE" strokeWidth="0.0" text="Pastorini" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ruolo:" />
-            <Text fx:id="employeeRoles" strokeType="OUTSIDE" strokeWidth="0.0" text="[Ciao, Maria, Sofia]" />
+            <Label contentDisplay="RIGHT" text="Nome:">
+               <graphic>
+                  <Text fx:id="employeeFullName" strokeType="OUTSIDE" strokeWidth="0.0" text="Claudio Pastorini" textAlignment="CENTER" />
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label contentDisplay="RIGHT" text="Ruolo/i:">
+               <graphic>
+                  <Text fx:id="employeeRoles" strokeType="OUTSIDE" strokeWidth="0.0" text="[Ciao, Maria, Sofia]" textAlignment="CENTER" />
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
          </items>
       </ToolBar>
    </children>

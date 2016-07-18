@@ -1,4 +1,4 @@
-package it.ispw.efco.nottitranquille.model.dao;
+package it.ispw.efco.nottitranquille.model.DAO;
 
 import it.ispw.efco.nottitranquille.JPAInitializer;
 import it.ispw.efco.nottitranquille.model.Location;
@@ -13,14 +13,14 @@ import java.util.List;
  *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
-public class LocationDao {
+public class LocationDAO {
 
     /**
      * Stores {@link Location} into persistent system.
      *
      * @param location the Location to persist
      */
-    public static void store(Location location) {
+    public void store(Location location) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
 
@@ -34,7 +34,7 @@ public class LocationDao {
      *
      * @param locationToUpdate the Location to update with the new state
      */
-    public static void update(Location locationToUpdate) {
+    public void update(Location locationToUpdate) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
 
@@ -49,7 +49,7 @@ public class LocationDao {
      *
      * @return the list of all Location into persistent system
      */
-    public static List<Location> retrieveLocations() {
+    public List<Location> retrieveLocations() {
         EntityManager entityManager = JPAInitializer.getEntityManager();
 
         return entityManager
@@ -62,7 +62,7 @@ public class LocationDao {
      *
      * @param locationId the id of the Location to delete
      */
-    public static void delete(long locationId) {
+    public void delete(long locationId) {
         EntityManager entityManager = JPAInitializer.getEntityManager();
         entityManager.getTransaction().begin();
 
@@ -77,7 +77,7 @@ public class LocationDao {
      *
      * @param locationToDelete the Location to remove
      */
-    public static void delete(Location locationToDelete) {
+    public void delete(Location locationToDelete) {
         delete(locationToDelete.getId());
     }
 }

@@ -8,14 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ *
  * @author Claudio Pastorini Omar Shalby Federico Vagnoni Emanuele Vannacci
  */
 @Entity
 @DiscriminatorValue("scout")
 public class Scout extends Role {
 
+    /**
+     *
+     */
     @OneToMany(mappedBy = "reviewedBy", cascade = CascadeType.ALL)
     private List<Request> reviewedRequests;
+
     /**
      * Default constructor
      */
@@ -23,10 +28,18 @@ public class Scout extends Role {
         this.reviewedRequests = new ArrayList<Request>();
     }
 
+    /**
+     *
+     * @param request
+     */
     public void addReviewedRequest(Request request) {
         reviewedRequests.add(request);
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Request> getReviewedRequests() {
         return reviewedRequests;
     }

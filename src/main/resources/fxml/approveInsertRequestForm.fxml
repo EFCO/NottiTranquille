@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.ispw.efco.nottitranquille.controller.ApproveInsertRequestFX">
+    <children>
+        <ToolBar prefHeight="37.0" prefWidth="1280.0">
+            <items>
+                <Button fx:id="backButton" mnemonicParsing="false" onAction="#backHandler" text="Back" />
+            </items>
+        </ToolBar>
+      <Pane layoutY="37.0" prefHeight="263.0" prefWidth="1280.0">
+         <children>
+            <ImageView fx:id="structureImageView" fitHeight="150.0" fitWidth="200.0" layoutX="62.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true">
+            </ImageView>
+            <Label fx:id="structureNameLabel" layoutX="295.0" layoutY="39.0" text="Università degli Studi di Roma Tor Vergata">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="addressLabel" layoutX="295.0" layoutY="74.0" text="Viale del Politecnico, Tor Vergata, Roma 00100, Italia" />
+            <Label fx:id="requestDateLabel" layoutX="295.0" layoutY="98.0" prefHeight="16.0" prefWidth="287.0" text="18/06/1993 22:36">
+               <font>
+                  <Font name="System Italic" size="13.0" />
+               </font>
+               <graphic>
+                  <Label contentDisplay="TOP" prefHeight="15.0" prefWidth="159.0" text="Request date:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
+               </graphic>
+            </Label>
+            <Label fx:id="acceptedDateLabel" layoutX="295.0" layoutY="145.0" prefHeight="16.0" prefWidth="287.0" text="18/06/1993">
+               <font>
+                  <Font name="System Italic" size="13.0" />
+               </font>
+               <graphic>
+                  <Label prefHeight="15.0" prefWidth="159.0" text="Accepted date:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </graphic>
+            </Label>
+            <Label fx:id="lastModifiedDate" layoutX="295.0" layoutY="115.0" prefHeight="16.0" prefWidth="287.0" text="18/06/1993">
+               <font>
+                  <Font name="System Italic" size="13.0" />
+               </font>
+               <graphic>
+                  <Label prefHeight="15.0" prefWidth="159.0" text="Last modified date:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </graphic>
+            </Label>
+            <Label contentDisplay="BOTTOM" layoutX="1056.0" layoutY="79.0" text="Change status">
+               <graphic>
+                  <ComboBox fx:id="statusComboBox" prefHeight="25.0" prefWidth="167.0" />
+               </graphic>
+            </Label>
+            <Button fx:id="saveButton" layoutX="1115.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleSave" text="Save" />
+            <Label fx:id="reviewedByLabel" layoutX="642.0" layoutY="143.0" prefHeight="16.0" prefWidth="253.0" text="Claudio Pastorini">
+               <graphic>
+                  <Label prefHeight="16.0" prefWidth="92.0" text="Reviwed by:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </graphic>
+               <font>
+                  <Font name="System Italic" size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="requestedByLabel" layoutX="642.0" layoutY="101.0" prefHeight="16.0" prefWidth="253.0" text="Claudio Pastorini" textAlignment="RIGHT">
+               <font>
+                  <Font name="System Italic" size="13.0" />
+               </font>
+               <graphic>
+                  <Label prefHeight="16.0" prefWidth="111.0" text="Requested by:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </graphic>
+            </Label>
+            <Label fx:id="checkInLabel" layoutX="62.0" layoutY="188.0" prefHeight="16.0" prefWidth="130.0" text="11:00">
+               <font>
+                  <Font name="System Italic" size="13.0" />
+               </font>
+               <graphic>
+                  <Label prefHeight="16.0" prefWidth="85.0" text="Check in:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </graphic>
+            </Label>
+            <Label fx:id="checkOutLabel" layoutX="62.0" layoutY="204.0" prefHeight="16.0" prefWidth="130.0" text="22:00">
+               <font>
+                  <Font name="System Italic" size="13.0" />
+               </font>
+               <graphic>
+                  <Label prefHeight="16.0" prefWidth="85.0" text="Check out:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </graphic>
+            </Label>
+            <Label fx:id="ownedByLabel" layoutX="295.0" layoutY="188.0" prefHeight="16.0" prefWidth="253.0" text="Claudio Pastorini" textAlignment="RIGHT">
+               <font>
+                  <Font name="System Italic" size="13.0" />
+               </font>
+               <graphic>
+                  <Label prefHeight="16.0" prefWidth="85.0" text="Owned by:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </graphic>
+            </Label>
+            <Label fx:id="managedByLabel" layoutX="295.0" layoutY="204.0" prefHeight="16.0" prefWidth="253.0" text="Claudio Pastorini" textAlignment="RIGHT">
+               <font>
+                  <Font name="System Italic" size="13.0" />
+               </font>
+               <graphic>
+                  <Label prefHeight="16.0" prefWidth="100.0" text="Managed by:">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </graphic>
+            </Label>
+            <Label fx:id="termOfServicesLabel" layoutX="643.0" layoutY="193.0" onMouseClicked="#handleClick" text="Terms of services">
+               <font>
+                  <Font name="System Bold Italic" size="13.0" />
+               </font></Label>
+            <Label fx:id="termsOfCancellationLabel" layoutX="816.0" layoutY="193.0" onMouseClicked="#handleClick" text="Terms of cancellation">
+               <font>
+                  <Font name="System Bold Italic" size="13.0" />
+               </font></Label>
+         </children>
+      </Pane>
+      <TableView fx:id="locationsTableView" layoutY="286.0" prefHeight="515.0" prefWidth="1280.0" />
+    </children>
+</AnchorPane>

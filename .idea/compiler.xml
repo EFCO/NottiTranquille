@@ -16,7 +16,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="NottiTranquille" target="1.5" />
+      <module name="NottiTranquille" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
