@@ -134,7 +134,7 @@ public class Location {
      *                                  because already reserved or because not specified by the
      *                                  {@link Manager} of the Location.
      */
-    public void bookPeriod(Interval bookingPeriod) throws IllegalArgumentException {
+    public synchronized void  bookPeriod(Interval bookingPeriod) throws IllegalArgumentException {
 
         // Indicates if the Interval specified in the argument is available for reservation
         if (!isAvailable(bookingPeriod))

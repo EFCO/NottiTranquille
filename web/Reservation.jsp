@@ -156,8 +156,8 @@
                 var i = 0;
                 $("#add_row").click(function () {
                     $('#addr' + i).html(
-                            "<td><input name='firstname" + i + "' type='text'  class='form-control input-md' required /></td>" +
-                            "<td><input  name='surname" + i + "' type='text'   class='form-control input-md' required /></td>");
+                            "<td><input name='firstname" + i + "' type='text'  class='form-control input-md'  /></td>" +
+                            "<td><input  name='surname" + i + "' type='text'   class='form-control input-md'  /></td>");
 
                     $('#tab_logic').append('<tr id="addr' + (i + 1) + '"></tr>');
                     i++;
