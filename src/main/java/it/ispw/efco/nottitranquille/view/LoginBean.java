@@ -9,10 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
-/**
- * Created by Federico on 07/06/2016.
- */
-
 @Entity(name = "loggedusers")
 public class LoginBean {
     private String username = "";

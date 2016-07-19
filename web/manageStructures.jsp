@@ -142,7 +142,7 @@
                         <td>${fn:join(price['class'].simpleName.split("(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])"), ' ')}</td>
                         <td>${structure.name}</td>
                         <td>${structure.numberOfLocations}</td>
-                        <td>${structure.structureAddress}</td>
+                        <td>${structure.address}</td>
                         <td>
                             <button class='updatePrice btn btn-warning btn-sm' data-toggle="modal"
                                     data-target="#createModal" data-id=${structure.id}><span

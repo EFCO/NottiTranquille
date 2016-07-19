@@ -1,6 +1,7 @@
 package it.ispw.efco.nottitranquille.model;
 
 import it.ispw.efco.nottitranquille.model.DAO.EmployeeDAO;
+import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -50,11 +51,13 @@ public class Structure {
     /**
      *
      */
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime checkIn;
 
     /**
      *
      */
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime checkOut;
 
     /**

@@ -29,7 +29,7 @@ public class StructureDAO {
         }
     }
 
-    public static List<Structure> retrieveStructures() {
+    public List<Structure> retrieveStructures() {
         EntityManager entityManager = it.ispw.efco.nottitranquille.JPAInitializer.getEntityManager();
 
         return entityManager

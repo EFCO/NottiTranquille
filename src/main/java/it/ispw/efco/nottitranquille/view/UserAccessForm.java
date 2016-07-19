@@ -10,7 +10,13 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
+ * Access Boundary.
+ * <br>
+ * This Use Case shows the process by which User can access to the application.
  *
+ * @see it.ispw.efco.nottitranquille.controller.Access
+ * @see it.ispw.efco.nottitranquille.model.Role
+ * @see it.ispw.efco.nottitranquille.model.Person
  */
 public class UserAccessForm extends Application {
 

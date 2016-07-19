@@ -1,7 +1,9 @@
 package it.ispw.efco.nottitranquille.view;
 
+import it.ispw.efco.nottitranquille.controller.FilteredSearch;
 import it.ispw.efco.nottitranquille.controller.FilteredSearchFX;
 import it.ispw.efco.nottitranquille.model.Request;
+import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -13,7 +15,13 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
+ * FilteredSearch Boundary.
+ * <br>
+ * This Use Case shows the process by which a Scout can view a list of {@link Request} of a {@link it.ispw.efco.nottitranquille.model.Structure}.
  *
+ * @see FilteredSearch
+ * @see Request
+ * @see RequestStatus
  */
 public class ScoutFilteredSearchForm extends LoggedApplication {
 

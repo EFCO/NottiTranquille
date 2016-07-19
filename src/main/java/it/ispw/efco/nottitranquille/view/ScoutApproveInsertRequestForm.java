@@ -1,6 +1,5 @@
 package it.ispw.efco.nottitranquille.view;
 
-import it.ispw.efco.nottitranquille.Main;
 import it.ispw.efco.nottitranquille.controller.ApproveInsertRequestFX;
 import it.ispw.efco.nottitranquille.model.Location;
 import it.ispw.efco.nottitranquille.model.Person;
@@ -104,7 +103,7 @@ public class ScoutApproveInsertRequestForm extends LoggedApplication {
         }
         controller.checkInLabel.setText(checkInString);
 
-        DateTime checkOutDateTime = request.getStructure().getCheckIn();
+        DateTime checkOutDateTime = request.getStructure().getCheckOut();
 
         String checkOutString;
         if (checkOutDateTime == null) {

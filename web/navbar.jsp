@@ -132,8 +132,8 @@
                         <div class="form-group">
                             <label for="gender">Sesso:</label>
                             <select name="gender" id="gender" class="form-control">
-                                <option>Male</option>
-                                <option>Female</option>
+                                <option>MALE</option>
+                                <option>FEMALE</option>
                             </select>
                         </div>
                         <div class='input-group date' id="birthdatepickermodal">

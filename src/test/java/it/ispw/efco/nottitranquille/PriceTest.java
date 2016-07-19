@@ -210,6 +210,9 @@ public class PriceTest {
         }
     }
 
+    /**
+     * Test if Exception is thrown because there is no BasePrice in the interval
+     * */
     @Test
     public void testWithDatabase() {
         LocationDAO locationDAO = new LocationDAO();

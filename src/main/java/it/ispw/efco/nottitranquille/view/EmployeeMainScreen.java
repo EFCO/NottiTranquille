@@ -4,7 +4,9 @@ import it.ispw.efco.nottitranquille.SingletonEmployee;
 import it.ispw.efco.nottitranquille.controller.MainFX;
 import it.ispw.efco.nottitranquille.model.Designer;
 import it.ispw.efco.nottitranquille.model.Person;
+import it.ispw.efco.nottitranquille.model.Request;
 import it.ispw.efco.nottitranquille.model.Scout;
+import it.ispw.efco.nottitranquille.model.enumeration.RequestStatus;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -16,6 +18,13 @@ import javafx.stage.WindowEvent;
 
 import java.util.ArrayList;
 
+/**
+ * This view shows the manage panel of employee.
+ *
+ * @see it.ispw.efco.nottitranquille.model.Role
+ * @see Scout
+ * @see it.ispw.efco.nottitranquille.controller.ApproveInsertRequest
+ */
 public class EmployeeMainScreen extends LoggedApplication {
 
     /**

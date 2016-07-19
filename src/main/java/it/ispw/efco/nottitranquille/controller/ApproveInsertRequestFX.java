@@ -84,10 +84,10 @@ public class ApproveInsertRequestFX extends SingleWindow implements Initializabl
         String statusString = statusComboBox.getValue();
 
         switch (statusString) {
-            case "ACCEPTED":
+            case "Accepted":
                 requestStatus = RequestStatus.ACCEPTED;
                 break;
-            case "REJECTED":
+            case "Rejected":
                 requestStatus = RequestStatus.REJECTED;
                 break;
             case "To be reviewed":

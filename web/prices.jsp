@@ -5,6 +5,13 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="it.ispw.efco.nottitranquille.controller.ManagePrices" %>
 <%@ page import="it.ispw.efco.nottitranquille.model.Location" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.Structure" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.DAO.StructureDAO" %>
+<%@ page import="org.joda.time.Interval" %>
+<%@ page import="org.joda.time.format.DateTimeFormatter" %>
+<%@ page import="org.joda.time.format.DateTimeFormat" %>
+<%@ page import="org.joda.time.DateTime" %>
+<%@ page import="it.ispw.efco.nottitranquille.model.enumeration.LocationType" %>
 <%@ page import="it.ispw.efco.nottitranquille.model.DAO.LocationDAO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%-- Use JSTL core lib in order to add some useful feature --%>
@@ -66,18 +73,24 @@ value='<form id="create-price-form" method="post" action="prices.jsp"> <div clas
 <%-- TODO USE CONTROLLER WITH LOCATION!!! -->
 <%-- All requests are of the form: prices.jsp?locationId=id&type=type&page=page&limit=limit --%>
 <%
-/*    Structure s = StructureDAO.retrieveStructures().get(0);
+
+    /*StructureDAO structureDAO = new StructureDAO();
+
+    Structure s = structureDAO.retrieveStructures().get(0);
     List<Interval> booking = new ArrayList<Interval>();
     DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd-MM-yyyy");
     DateTime start = DateTime.parse("01-01-2016", dateTimeFormatter);
     DateTime end = DateTime.parse("30-12-2016", dateTimeFormatter);
     booking.add(new Interval(start,end));
-    Location loc = new Location(booking,s,5, LocationType.Hotel);
 
-    LocationDAO.store(loc);*/
+    Location loc = new Location(booking,s,5, LocationType.Hotel);
+    LocationDAO locationDAO = new LocationDAO();
+    locationDAO.store(loc);*/
 
     //TODO Get location from bean
-    Location location = LocationDAO.retrieveLocations().get(0);
+
+    LocationDAO locationDAO = new LocationDAO();
+    Location location = locationDAO.retrieveLocations().get(0);
     request.setAttribute("locationId", location.getId());
 
     if (request.getParameter("create") != null || request.getParameter("update") != null) { // After CREATE or UPDATE
